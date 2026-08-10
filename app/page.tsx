@@ -55,8 +55,8 @@ export default function HomePage() {
 
         <div className="rail mx-auto flex w-full flex-col gap-module">
           <ProjectCard project={feature} size="feature" />
-          <ProjectCard project={second} size="medium" />
-          <ProjectCard project={third} size="medium" />
+          <ProjectCard project={second} size="feature" />
+          <ProjectCard project={third} size="feature" />
 
           <Link
             href="/work"
