@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from 'react'
 
 const stats = [
-  { value: 286, suffix: 'K+', label: 'documented views', tone: 'bg-surface-1', size: 'large' },
-  { value: 3.85, suffix: 'K', label: 'documented sends', tone: 'bg-surface-2', size: 'medium' },
+  { value: 286, suffix: 'K+', label: 'total views', tone: 'bg-surface-1', size: 'large' },
+  { value: 3.85, suffix: 'K', label: 'content sends', tone: 'bg-surface-2', size: 'medium' },
   { value: 71.5, suffix: 'K', label: 'average views', tone: 'bg-surface-2', size: 'medium' },
-  { value: 4, suffix: '', label: 'measured posts', tone: 'bg-surface-1', size: 'small' },
-  { value: 3, suffix: '', label: 'featured brands', tone: 'bg-periwinkle text-navy', size: 'small' },
+  { value: 963, suffix: '', label: 'average sends', tone: 'bg-surface-1', size: 'small' },
+  { value: 1.35, suffix: '%', label: 'view-to-send rate', tone: 'bg-periwinkle text-navy', size: 'small' },
 ]
 
 const capabilities = [
@@ -115,7 +115,7 @@ export function SocialPerformanceBand() {
                 className="block transition-transform delay-75 duration-700 ease-module motion-reduce:transform-none"
                 style={{ transform: visible ? 'translateY(0)' : 'translateY(110%)' }}
               >
-                documented.
+                in numbers.
               </span>
             </span>
           </h2>
