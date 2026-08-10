@@ -37,10 +37,31 @@ export function ProjectCard({
       } focus-visible:ring-2 focus-visible:ring-periwinkle ${HEIGHT[size]} ${className}`}
     >
       {project.heroMedia.src ? (
+        project.heroMedia.mediaType === 'video' ? (
+          <video
+            src={project.heroMedia.src}
+            poster={project.heroMedia.poster}
+            muted
+            loop
+            autoPlay
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            className="project-card-parallax absolute inset-x-0 -top-[15%] h-[130%] w-full object-cover transition-[filter] duration-700 ease-module motion-reduce:hidden"
+          />
+        ) : (
+          <img
+            src={project.heroMedia.src}
+            alt=""
+            className="project-card-parallax absolute inset-x-0 -top-[15%] h-[130%] w-full object-cover grayscale transition-[filter] duration-700 ease-module"
+          />
+        )
+      ) : null}
+      {project.heroMedia.mediaType === 'video' && project.heroMedia.poster ? (
         <img
-          src={project.heroMedia.src}
+          src={project.heroMedia.poster}
           alt=""
-          className="project-card-parallax absolute inset-x-0 -top-[15%] h-[130%] w-full object-cover grayscale transition-[filter] duration-700 ease-module"
+          className="project-card-parallax absolute inset-x-0 -top-[15%] hidden h-[130%] w-full object-cover motion-reduce:block"
         />
       ) : null}
       {project.heroMedia.src ? (

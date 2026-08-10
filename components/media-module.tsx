@@ -21,7 +21,7 @@ export function MediaFrame({
       <div
         className={`relative w-full overflow-hidden rounded-module ${RATIO[item.ratio]} ${
           toneClass[item.tone ?? 'surface-1']
-        }`}
+        } ${item.src?.includes('/wurqly/') ? 'wurqly-media-frame' : ''}`}
       >
         {item.src && item.mediaType === 'video' ? (
           <video
@@ -36,7 +36,11 @@ export function MediaFrame({
             className="h-full w-full object-cover"
           />
         ) : item.src ? (
-          <img src={item.src} alt={item.label} className="h-full w-full object-cover" />
+          <img
+            src={item.src}
+            alt={item.label}
+            className={`h-full w-full ${item.src.includes('/wurqly/') ? 'object-contain p-6 md:p-12' : 'object-cover'}`}
+          />
         ) : (
           <span className="t-title absolute inset-0 flex items-end p-6" aria-hidden="true">
             {item.label}

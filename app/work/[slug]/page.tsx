@@ -18,7 +18,13 @@ export async function generateMetadata({
   const { slug } = await params
   const project = getProject(slug)
   if (!project) return { title: 'Project' }
-  return { title: project.title, description: project.summary }
+  return {
+    title: project.title,
+    description: project.summary,
+    openGraph: project.heroMedia.poster
+      ? { images: [{ url: project.heroMedia.poster, alt: project.heroMedia.label }] }
+      : undefined,
+  }
 }
 
 export default async function ProjectPage({
@@ -44,7 +50,7 @@ export default async function ProjectPage({
 
   return (
     <>
-      <article className="rail mx-auto flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px]">
+      <article className={`rail mx-auto flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px] ${project.slug === 'wurqly' ? 'wurqly-case-study' : ''}`}>
         <header className="flex flex-col gap-module">
           <div className="rail mx-auto mb-6 flex flex-col gap-6">
             <AnimatedText as="h1" lines={[project.title]} className="t-display" />
