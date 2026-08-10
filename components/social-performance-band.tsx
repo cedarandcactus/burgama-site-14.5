@@ -130,7 +130,7 @@ export function SocialPerformanceBand() {
         {studioCapabilities.slice(0, 2).map((capability, index) => (
           <article
             key={capability.eyebrow}
-            className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[206px]"
+            className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[206px]"
             style={{
               transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)',
               transitionDelay: `${120 + index * 90}ms`,
@@ -173,7 +173,7 @@ export function SocialPerformanceBand() {
         {studioCapabilities.slice(2).map((capability) => (
           <article
             key={capability.eyebrow}
-            className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 transition-transform delay-500 duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-4"
+            className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 transition-transform delay-500 duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-4"
             style={{ transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)' }}
           >
             <p className="t-ui">{capability.eyebrow}</p>

@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { AnimatedText } from '@/components/animated-text'
 import { EntryPreferences } from '@/components/entry-preferences'
 import { HeroEntrance } from '@/components/hero-entrance'
-import { ModularButtonGroup } from '@/components/modular-buttons'
 import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
 import { SocialPerformanceBand } from '@/components/social-performance-band'
@@ -21,27 +20,35 @@ export default function HomePage() {
         className="premise-bridge section-burgundy px-module py-32 md:py-44"
       >
         <div className="rail mx-auto grid gap-module min-[900px]:grid-cols-12">
-          <div className="pair-burgundy-invert flex min-h-80 flex-col justify-between rounded-module p-5 md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[520px]">
-            <p className="t-ui">Independent marketing + design studio</p>
+          <div className="pair-burgundy-invert flex min-h-[420px] flex-col justify-between rounded-module p-5 md:p-8 min-[900px]:col-span-8 min-[900px]:min-h-[600px]">
+            <div className="flex items-start justify-between gap-6">
+              <p className="t-ui max-w-32">Independent marketing + design studio</p>
+              <p className="font-mono text-xs uppercase leading-tight tracking-[0.16em] [writing-mode:vertical-rl]">
+                Strategy / identity / experience / growth
+              </p>
+            </div>
             <AnimatedText
               as="h1"
               id="premise-title"
               lines={['Made for', 'what comes next']}
-              className="t-display w-full min-[900px]:text-left min-[900px]:text-7xl"
+              className="w-full font-serif text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.78] tracking-[-0.075em] min-[900px]:text-left"
             />
           </div>
-          <div className="flex min-h-80 flex-col justify-between rounded-module bg-surface-1 p-5 md:p-8 min-[900px]:col-span-5 min-[900px]:min-h-[520px]">
-            <p className="t-body reading-measure max-w-[36ch] text-pretty">
-              Burgama builds brands, digital experiences, content and growth systems as one
-              connected practice—from the first point of view to every place an audience meets it.
-            </p>
-            <ModularButtonGroup
-              className="premise-actions w-full"
-              actions={[
-                { label: 'Selected work', href: '/work', basis: '44%', tone: 'periwinkle' },
-                { label: 'Start a project', href: '/contact', basis: '56%', tone: 'periwinkle' },
-              ]}
-            />
+          <div className="flex min-h-[420px] flex-col justify-between rounded-module bg-surface-1 p-5 md:p-8 min-[900px]:col-span-4 min-[900px]:min-h-[600px]">
+            <p className="font-serif text-5xl leading-[0.88] tracking-[-0.06em] min-[900px]:text-6xl">One point of view. Every touchpoint.</p>
+            <div className="flex flex-col gap-8">
+              <p className="t-body reading-measure max-w-[32ch] text-pretty">
+                Burgama builds brands, digital experiences, content and growth systems as one connected practice.
+              </p>
+              <div className="grid grid-cols-2 gap-module">
+                <Link href="/work" className="pair-burgundy-invert t-ui flex min-h-24 items-end rounded-module p-4 transition-transform duration-300 hover:-translate-y-1 focus-visible:-translate-y-1">
+                  Selected work
+                </Link>
+                <Link href="/contact" className="pair-burgundy-invert t-ui flex min-h-24 items-end rounded-module p-4 transition-transform duration-300 hover:-translate-y-1 focus-visible:-translate-y-1">
+                  Start a project
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
