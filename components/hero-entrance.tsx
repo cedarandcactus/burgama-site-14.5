@@ -500,9 +500,12 @@ export function HeroEntrance({ videoSrc }: Props) {
         const span = Math.max(0.0001, (ends[index] ?? 1) - spanStart)
         const local = (overall - spanStart) / span
 
-        /* Each thought overlaps the next, compressing upward as it hands over. */
-        const enter = smoother((local + 0.15) / 0.3)
-        const leave = smoother((local - 0.74) / 0.34)
+        /*
+          Let each thought fully clear before the next arrives. The final 16%
+          of its span is intentional breathing room rather than a crossfade.
+        */
+        const enter = smoother(local / 0.2)
+        const leave = smoother((local - 0.68) / 0.16)
         const active = clamp(enter * (1 - leave) * sectionsOpacity, 0, 1)
 
         section.style.setProperty('--section-opacity', active.toFixed(4))
@@ -523,8 +526,8 @@ export function HeroEntrance({ videoSrc }: Props) {
 
         updatePhraseGroup(
           phraseGroups[index + 1],
-          clamp((local + 0.1) / 0.58),
-          clamp((local - 0.72) / 0.3),
+          clamp(local / 0.48),
+          clamp((local - 0.64) / 0.18),
           clamp(0.72 + active * 0.28, 0, 1),
         )
         updateCharacterGroup(
