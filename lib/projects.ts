@@ -1,40 +1,22 @@
-/**
- * Burgama project data model.
- * One schema drives /work and every /work/[slug] page.
- * All copy below is editable placeholder content.
- */
-
 export type Tone = 'surface-1' | 'surface-2' | 'surface-3' | 'periwinkle'
 
-export type Discipline =
-  | 'Identity'
-  | 'Digital'
-  | 'Campaign'
-  | 'Strategy'
-  | 'Motion'
-
+export type Discipline = 'Brand' | 'Web' | 'Marketing' | 'Content' | 'Production' | 'Growth'
 export type MediaRatio = 'wide' | 'video' | 'tall' | 'square' | 'full'
 
 export type MediaItem = {
-  /** Caption/alt describing what the frame holds. */
   label: string
   ratio: MediaRatio
   tone?: Tone
-  /** Optional real asset. Solid surface is used when absent. */
   src?: string
+  mediaType?: 'image' | 'video'
+  poster?: string
 }
 
 export type ContentModule =
   | { type: 'text'; title?: string; body: string[] }
   | { type: 'media'; item: MediaItem }
   | { type: 'mediaPair'; items: [MediaItem, MediaItem] }
-  | {
-      type: 'mediaSplit'
-      split: '60/40' | '40/60'
-      title: string
-      body: string[]
-      item: MediaItem
-    }
+  | { type: 'mediaSplit'; split: '60/40' | '40/60'; title: string; body: string[]; item: MediaItem }
   | { type: 'mediaGrid'; items: MediaItem[] }
   | { type: 'quote'; body: string }
   | { type: 'process'; title: string; steps: { title: string; body: string }[] }
@@ -56,281 +38,122 @@ export type Project = {
   credits: { role: string; name: string }[]
   outcomes: string[]
   externalUrl?: string
+  externalLabel?: string
   nextProjectSlug: string
 }
 
 export const projects: Project[] = [
   {
-    id: 'p-identity-system',
-    slug: 'identity-system',
-    title: 'Identity system',
-    client: 'Client to be confirmed',
-    year: 'Year to be confirmed',
-    summary:
-      'A flexible identity built to hold a growing product family without losing its centre.',
-    disciplines: ['Identity', 'Strategy'],
-    services: ['Positioning', 'Identity design', 'Typography', 'Guidelines'],
-    role: 'Studio of record',
-    collaborators: ['Collaborators to be confirmed'],
-    heroMedia: { label: 'Identity system hero frame', ratio: 'full', tone: 'surface-2' },
-    introCopy: [
-      'The identity begins as a point of view and',
-      'ends as a system other people can build with.',
-    ],
+    id: 'matchday',
+    slug: 'matchday',
+    title: 'MatchDay',
+    client: 'MatchDay',
+    year: 'Ongoing engagement',
+    summary: 'A joined-up growth and content partnership for a football pickup platform.',
+    disciplines: ['Marketing', 'Content', 'Growth', 'Production'],
+    services: ['Social media management', 'Content creation', 'SEO', 'Photography'],
+    role: 'Marketing and creative partner',
+    collaborators: [],
+    heroMedia: { label: 'MatchDay social and campaign system', ratio: 'full', tone: 'periwinkle' },
+    introCopy: ['One client story,', 'from search to social to the sideline.'],
     contentModules: [
-      {
-        type: 'text',
-        title: 'Overview',
-        body: [
-          'Placeholder overview copy. Describe what the work is, the surfaces it covers and why it exists.',
-          'Keep the paragraph short. The modules that follow carry the detail.',
-        ],
-      },
-      {
-        type: 'mediaPair',
-        items: [
-          { label: 'Mark construction', ratio: 'square', tone: 'surface-2' },
-          { label: 'Type specimen', ratio: 'square', tone: 'surface-1' },
-        ],
-      },
-      {
-        type: 'mediaSplit',
-        split: '60/40',
-        title: 'Point of view',
-        body: [
-          'Placeholder copy for the central idea. One decision, stated plainly, that the rest of the system answers to.',
-        ],
-        item: { label: 'Primary lockup', ratio: 'tall', tone: 'surface-3' },
-      },
-      {
-        type: 'process',
-        title: 'System',
-        steps: [
-          {
-            title: 'Structure',
-            body: 'Placeholder note on grid, spacing and the repeated module gap.',
-          },
-          {
-            title: 'Typography',
-            body: 'Placeholder note on the type system and how weight stays consistent.',
-          },
-          {
-            title: 'Colour',
-            body: 'Placeholder note on a small, fully opaque palette.',
-          },
-        ],
-      },
-      {
-        type: 'mediaGrid',
-        items: [
-          { label: 'Application one', ratio: 'square', tone: 'surface-1' },
-          { label: 'Application two', ratio: 'square', tone: 'surface-3' },
-          { label: 'Application three', ratio: 'square', tone: 'surface-2' },
-        ],
-      },
-      { type: 'quote', body: 'Placeholder quote. Replace with supplied words only.' },
+      { type: 'text', title: 'The engagement', body: ['Burgama supports MatchDay across social media management, search optimization, content creation and photography—bringing the brand’s channels into one coordinated body of work.'] },
+      { type: 'process', title: 'Connected scope', steps: [
+        { title: 'Social', body: 'Ongoing management and publishing for the MatchDay community.' },
+        { title: 'Search', body: 'SEO work designed to strengthen how the platform is found.' },
+        { title: 'Field content', body: 'Photography and short-form content grounded in the game itself.' },
+      ] },
+      { type: 'text', title: 'Selected reach', body: ['A selected Instagram reel reached 15K views and 550 sends. A selected TikTok reached 21K views.'] },
     ],
-    credits: [
-      { role: 'Creative direction', name: 'To be confirmed' },
-      { role: 'Design', name: 'To be confirmed' },
-      { role: 'Production', name: 'To be confirmed' },
-    ],
-    outcomes: ['Outcomes to be supplied by the client.'],
-    nextProjectSlug: 'digital-platform',
+    credits: [{ role: 'Marketing, content, SEO and photography', name: 'Burgama' }],
+    outcomes: ['15K views and 550 sends on a selected Instagram reel.', '21K views on a selected TikTok.'],
+    externalUrl: 'https://www.instagram.com/reel/DbObtvtR6Gt/',
+    externalLabel: 'View selected MatchDay content',
+    nextProjectSlug: 'go2bites',
   },
   {
-    id: 'p-digital-platform',
-    slug: 'digital-platform',
-    title: 'Digital platform',
-    client: 'Client to be confirmed',
-    year: 'Year to be confirmed',
-    summary:
-      'A product surface where editorial pacing and interface logic share the same grid.',
-    disciplines: ['Digital', 'Identity'],
-    services: ['Art direction', 'Design system', 'Front-end build'],
-    role: 'Design and build partner',
-    collaborators: ['Collaborators to be confirmed'],
-    heroMedia: { label: 'Digital platform hero frame', ratio: 'full', tone: 'surface-3' },
-    introCopy: [
-      'One grid, one radius, one gap —',
-      'repeated until the product feels inevitable.',
-    ],
+    id: 'go2bites', slug: 'go2bites', title: 'Go2Bites', client: 'Go2Bites', year: 'Selected work',
+    summary: 'A food brand expressed through digital commerce, marketing, photography and founder film.',
+    disciplines: ['Web', 'Marketing', 'Content', 'Production'],
+    services: ['Website', 'Marketing', 'Photography', 'Founder video'], role: 'Digital and creative partner', collaborators: [],
+    heroMedia: { label: 'Go2Bites ecommerce experience', ratio: 'full', tone: 'surface-2', src: '/work/go2bites/cover.png' },
+    introCopy: ['A product story built', 'to move from shelf to screen.'],
     contentModules: [
-      {
-        type: 'text',
-        title: 'Overview',
-        body: [
-          'Placeholder overview copy describing the platform, its audience and the scope of the engagement.',
-        ],
-      },
-      {
-        type: 'media',
-        item: { label: 'Primary interface', ratio: 'video', tone: 'surface-2' },
-      },
-      {
-        type: 'mediaSplit',
-        split: '40/60',
-        title: 'Context',
-        body: [
-          'Placeholder copy on what needed to change, clarify or launch before the design work began.',
-        ],
-        item: { label: 'Mobile flow', ratio: 'tall', tone: 'surface-1' },
-      },
-      {
-        type: 'process',
-        title: 'Application',
-        steps: [
-          { title: 'Navigation', body: 'Placeholder note on compact, modular navigation.' },
-          { title: 'Templates', body: 'Placeholder note on reusable page templates.' },
-          { title: 'Motion', body: 'Placeholder note on clipped, opaque transitions.' },
-        ],
-      },
-      {
-        type: 'mediaPair',
-        items: [
-          { label: 'Component set', ratio: 'square', tone: 'surface-3' },
-          { label: 'Editorial layout', ratio: 'square', tone: 'surface-2' },
-        ],
-      },
+      { type: 'text', title: 'The engagement', body: ['Burgama brought Go2Bites together across website design, marketing, product photography and a founder-led film—creating a coherent expression for both product and people.'] },
+      { type: 'media', item: { label: 'Go2Bites website and seasonal campaign', ratio: 'wide', src: '/work/go2bites/cover.png', tone: 'surface-2' } },
+      { type: 'process', title: 'One brand, four surfaces', steps: [
+        { title: 'Commerce', body: 'A website that gives the product story a clear place to convert.' },
+        { title: 'Campaign', body: 'Marketing work shaped for timely product moments.' },
+        { title: 'Image and film', body: 'Photography and founder video that add appetite and authorship.' },
+      ] },
     ],
-    credits: [
-      { role: 'Design direction', name: 'To be confirmed' },
-      { role: 'Engineering', name: 'To be confirmed' },
-    ],
-    outcomes: ['Outcomes to be supplied by the client.'],
-    nextProjectSlug: 'campaign-system',
+    credits: [{ role: 'Web, marketing, photography and production', name: 'Burgama' }], outcomes: ['A unified customer-facing system across web, marketing, photography and film.'], externalUrl: 'https://go2bites.com/', externalLabel: 'Visit Go2Bites', nextProjectSlug: 'wagner-wealth',
   },
   {
-    id: 'p-campaign-system',
-    slug: 'campaign-system',
-    title: 'Campaign system',
-    client: 'Client to be confirmed',
-    year: 'Year to be confirmed',
-    summary:
-      'A campaign built as a kit of parts so every placement stays recognisable.',
-    disciplines: ['Campaign', 'Motion'],
-    services: ['Concept', 'Art direction', 'Toolkit', 'Rollout'],
-    role: 'Creative studio',
-    collaborators: ['Collaborators to be confirmed'],
-    heroMedia: { label: 'Campaign hero frame', ratio: 'full', tone: 'surface-1' },
-    introCopy: ['A campaign is a system', 'that happens to run on a deadline.'],
+    id: 'wagner-wealth', slug: 'wagner-wealth', title: 'Wagner Wealth', client: 'Wagner Wealth Management', year: 'Selected work',
+    summary: 'A private wealth brand shaped through identity, digital experience and founder storytelling.',
+    disciplines: ['Brand', 'Web', 'Production'], services: ['Branding', 'Website', 'Founder video'], role: 'Brand and digital partner', collaborators: [],
+    heroMedia: { label: 'Wagner Wealth digital experience', ratio: 'full', src: '/work/wagner-wealth/cover.png', tone: 'surface-3' },
+    introCopy: ['A measured identity', 'for a deeply personal service.'],
     contentModules: [
-      {
-        type: 'text',
-        title: 'Overview',
-        body: ['Placeholder overview copy for the campaign and the surfaces it ran across.'],
-      },
-      {
-        type: 'mediaGrid',
-        items: [
-          { label: 'Out of home', ratio: 'square', tone: 'surface-2' },
-          { label: 'Social frame', ratio: 'square', tone: 'surface-1' },
-          { label: 'Print spread', ratio: 'square', tone: 'surface-3' },
-        ],
-      },
-      {
-        type: 'media',
-        item: { label: 'Motion sequence', ratio: 'video', tone: 'surface-2' },
-      },
-      {
-        type: 'text',
-        title: 'Outcome',
-        body: ['Outcomes to be supplied. No performance claims are published here yet.'],
-      },
-    ],
-    credits: [{ role: 'Art direction', name: 'To be confirmed' }],
-    outcomes: ['Outcomes to be supplied by the client.'],
-    nextProjectSlug: 'motion-language',
+      { type: 'text', title: 'The engagement', body: ['Burgama developed Wagner Wealth Management across branding, website and founder film, pairing a composed visual language with a more human introduction to the firm.'] },
+      { type: 'media', item: { label: 'Wagner Wealth website', ratio: 'wide', src: '/work/wagner-wealth/cover.png', tone: 'surface-3' } },
+      { type: 'process', title: 'The system', steps: [
+        { title: 'Identity', body: 'A brand foundation for a private wealth practice.' },
+        { title: 'Digital', body: 'A website carrying the identity into a clear client experience.' },
+        { title: 'Founder story', body: 'Film that gives the practice a face and point of view.' },
+      ] },
+    ], credits: [{ role: 'Brand, web and production', name: 'Burgama' }], outcomes: ['A consistent brand story across identity, website and founder film.'], externalUrl: 'https://www.wagnerwealthtx.com/', externalLabel: 'Visit Wagner Wealth', nextProjectSlug: 'avro',
   },
   {
-    id: 'p-motion-language',
-    slug: 'motion-language',
-    title: 'Motion language',
-    client: 'Client to be confirmed',
-    year: 'Year to be confirmed',
-    summary:
-      'A motion grammar where type unfolds out of a mask instead of fading into view.',
-    disciplines: ['Motion', 'Identity'],
-    services: ['Motion principles', 'Type in motion', 'Handover kit'],
-    role: 'Motion direction',
-    collaborators: ['Collaborators to be confirmed'],
-    heroMedia: { label: 'Motion language hero frame', ratio: 'full', tone: 'surface-2' },
-    introCopy: ['Movement as architecture:', 'one thought reorganising into the next.'],
+    id: 'avro', slug: 'avro', title: 'AVRO', client: 'AVRO', year: 'Selected work',
+    summary: 'A production partnership spanning commercial social, UGC and retailer collaboration content.',
+    disciplines: ['Content', 'Production', 'Marketing'], services: ['Commercial production', 'Social content', 'UGC content', 'Retailer collaborations'], role: 'Content and production partner', collaborators: [],
+    heroMedia: { label: 'AVRO content production', ratio: 'full', tone: 'surface-3' },
+    introCopy: ['A content system', 'made to meet the moment.'],
     contentModules: [
-      {
-        type: 'text',
-        title: 'Overview',
-        body: ['Placeholder overview copy for the motion system and where it is used.'],
-      },
-      {
-        type: 'media',
-        item: { label: 'Title sequence', ratio: 'video', tone: 'surface-3' },
-      },
-      {
-        type: 'process',
-        title: 'Principles',
-        steps: [
-          { title: 'Clip', body: 'Phrases begin masked rather than transparent.' },
-          { title: 'Unfold', body: 'Small vertical travel with slight compression.' },
-          { title: 'Settle', body: 'The next phrase inherits the same rhythm.' },
-        ],
-      },
-    ],
-    credits: [{ role: 'Motion design', name: 'To be confirmed' }],
-    outcomes: ['Outcomes to be supplied by the client.'],
-    nextProjectSlug: 'positioning-study',
+      { type: 'text', title: 'The engagement', body: ['Burgama produces AVRO content across commercial social work, UGC and retailer collaborations—building a varied stream of brand material without separating production from channel context.'] },
+      { type: 'process', title: 'Production range', steps: [
+        { title: 'Commercial social', body: 'Produced campaign content for AVRO’s social channels.' },
+        { title: 'UGC', body: 'Platform-native content with a more direct, lived-in voice.' },
+        { title: 'Retail', body: 'Collaborative content designed around retailer moments.' },
+      ] },
+    ], credits: [{ role: 'Content and production', name: 'Burgama' }], outcomes: ['A multidisciplinary content library spanning commercial, UGC and retail formats.'], externalUrl: 'https://www.instagram.com/reel/DW9Tvp7kYqJ/', externalLabel: 'View selected AVRO content', nextProjectSlug: 'wurqly',
   },
   {
-    id: 'p-positioning-study',
-    slug: 'positioning-study',
-    title: 'Positioning study',
-    client: 'Client to be confirmed',
-    year: 'Year to be confirmed',
-    summary:
-      'Language work first: what the company means before anything is drawn.',
-    disciplines: ['Strategy'],
-    services: ['Research', 'Positioning', 'Naming architecture', 'Messaging'],
-    role: 'Strategic partner',
-    collaborators: ['Collaborators to be confirmed'],
-    heroMedia: { label: 'Positioning study hero frame', ratio: 'full', tone: 'surface-3' },
-    introCopy: ['Before the system,', 'a sentence worth designing around.'],
+    id: 'wurqly', slug: 'wurqly', title: 'Wurqly', client: 'Wurqly', year: 'Selected work',
+    summary: 'A technology brand and website for a field-service platform built around people.',
+    disciplines: ['Brand', 'Web'], services: ['Branding', 'Website'], role: 'Brand and digital partner', collaborators: [],
+    heroMedia: { label: 'Wurqly website', ratio: 'full', src: '/work/wurqly/cover.png', tone: 'surface-2' },
+    introCopy: ['A digital-first identity', 'built to do real work.'],
     contentModules: [
-      {
-        type: 'text',
-        title: 'Overview',
-        body: ['Placeholder overview copy for the positioning engagement.'],
-      },
-      {
-        type: 'mediaSplit',
-        split: '60/40',
-        title: 'Point of view',
-        body: ['Placeholder copy stating the central strategic decision.'],
-        item: { label: 'Messaging map', ratio: 'tall', tone: 'surface-1' },
-      },
-    ],
-    credits: [{ role: 'Strategy', name: 'To be confirmed' }],
-    outcomes: ['Outcomes to be supplied by the client.'],
-    nextProjectSlug: 'identity-system',
+      { type: 'text', title: 'The engagement', body: ['Burgama worked across Wurqly’s branding and website, connecting a recognizable visual system to the product’s public-facing experience.'] },
+      { type: 'media', item: { label: 'Wurqly field-service platform website', ratio: 'wide', src: '/work/wurqly/cover.png', tone: 'surface-2' } },
+      { type: 'mediaSplit', split: '40/60', title: 'Brand into product', body: ['The identity and website operate as one system: a distinctive first impression supported by clear product communication.'], item: { label: 'Wurqly digital brand', ratio: 'tall', src: '/work/wurqly/cover.png', tone: 'surface-2' } },
+    ], credits: [{ role: 'Brand and web', name: 'Burgama' }], outcomes: ['A connected brand and website for Wurqly’s field-service platform.'], externalUrl: 'https://wurqly.com/', externalLabel: 'Visit Wurqly', nextProjectSlug: 'cellinkey',
+  },
+  {
+    id: 'cellinkey', slug: 'cellinkey', title: 'CellinKey', client: 'CellinKey', year: 'Selected work',
+    summary: 'A skincare ecommerce experience supported by product and brand photography.',
+    disciplines: ['Web', 'Content'], services: ['Website', 'Photography'], role: 'Digital and photography partner', collaborators: [],
+    heroMedia: { label: 'CellinKey ecommerce experience', ratio: 'full', src: '/work/cellinkey/cover.png', tone: 'surface-1' },
+    introCopy: ['A product experience', 'built around image and ritual.'],
+    contentModules: [
+      { type: 'text', title: 'The engagement', body: ['Burgama worked across CellinKey’s website and photography, placing product imagery at the center of the digital shopping experience.'] },
+      { type: 'media', item: { label: 'CellinKey skincare website', ratio: 'wide', src: '/work/cellinkey/cover.png', tone: 'surface-1' } },
+      { type: 'process', title: 'The pairing', steps: [
+        { title: 'Website', body: 'An ecommerce surface for product discovery and education.' },
+        { title: 'Photography', body: 'Brand and product imagery designed to carry the experience.' },
+        { title: 'Continuity', body: 'A consistent visual language from campaign image to product page.' },
+      ] },
+    ], credits: [{ role: 'Web and photography', name: 'Burgama' }], outcomes: ['A connected ecommerce and photography system for the skincare brand.'], externalUrl: 'https://cellinkeyskincare.com/', externalLabel: 'Visit CellinKey', nextProjectSlug: 'matchday',
   },
 ]
 
-export const disciplines: Discipline[] = [
-  'Identity',
-  'Digital',
-  'Campaign',
-  'Strategy',
-  'Motion',
-]
-
-export function getProject(slug: string) {
-  return projects.find((project) => project.slug === slug)
-}
-
-export const featuredProjects = projects.slice(0, 3)
-
+export const disciplines: Discipline[] = ['Brand', 'Web', 'Marketing', 'Content', 'Production', 'Growth']
+export function getProject(slug: string) { return projects.find((project) => project.slug === slug) }
+export const featuredProjects = [projects[0], projects[1], projects[2]]
 export const toneClass: Record<Tone, string> = {
-  'surface-1': 'bg-surface-1 text-foreground',
-  'surface-2': 'bg-surface-2 text-foreground',
-  'surface-3': 'bg-surface-3 text-foreground',
-  periwinkle: 'bg-periwinkle text-navy',
+  'surface-1': 'bg-surface-1 text-foreground', 'surface-2': 'bg-surface-2 text-foreground',
+  'surface-3': 'bg-surface-3 text-foreground', periwinkle: 'bg-periwinkle text-navy',
 }

@@ -24,8 +24,9 @@ export default function HomePage() {
             className="t-display"
           />
           <p className="t-body">
-            Burgama builds identities and experiences that can move, change and remain
-            recognizable. The work begins with a point of view, then becomes a system.
+            Burgama is a marketing and design studio building brands, digital experiences,
+            content and growth systems. The work begins with a point of view, then moves
+            across every place a brand meets its audience.
           </p>
           <ModularButtonGroup
             actions={[
@@ -43,8 +44,8 @@ export default function HomePage() {
         <div className="rail mx-auto mb-6 flex flex-col gap-4">
           <AnimatedText as="h2" id="work-title" lines={['Selected work']} className="t-title" />
           <p className="t-body">
-            Five working entries. Each one runs on the same template system, sized by what the
-            project needs.
+            Curated client stories spanning brand, web, marketing, content, production and
+            growth—presented as connected engagements, not isolated deliverables.
           </p>
         </div>
 

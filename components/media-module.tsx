@@ -23,11 +23,23 @@ export function MediaFrame({
           toneClass[item.tone ?? 'surface-1']
         }`}
       >
-        {item.src ? (
+        {item.src && item.mediaType === 'video' ? (
+          <video
+            src={item.src}
+            poster={item.poster}
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+            aria-label={item.label}
+            className="h-full w-full object-cover"
+          />
+        ) : item.src ? (
           <img src={item.src} alt={item.label} className="h-full w-full object-cover" />
         ) : (
-          <span className="t-ui absolute bottom-5 left-5" aria-hidden="true">
-            Image slot
+          <span className="t-title absolute inset-0 flex items-end p-6" aria-hidden="true">
+            {item.label}
           </span>
         )}
       </div>

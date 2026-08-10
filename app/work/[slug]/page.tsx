@@ -34,10 +34,12 @@ export default async function ProjectPage({
 
   const meta: { label: string; value: string; basis: string }[] = [
     { label: 'Client', value: project.client, basis: '58%' },
-    { label: 'Year', value: project.year, basis: '40%' },
-    { label: 'Scope', value: project.services.join(', '), basis: '42%' },
-    { label: 'Role', value: project.role, basis: '56%' },
-    { label: 'Collaborators', value: project.collaborators.join(', '), basis: '100%' },
+    { label: 'Period', value: project.year, basis: '40%' },
+    { label: 'Scope', value: project.services.join(', '), basis: '58%' },
+    { label: 'Role', value: project.role, basis: '40%' },
+    ...(project.collaborators.length
+      ? [{ label: 'Collaborators', value: project.collaborators.join(', '), basis: '100%' }]
+      : []),
   ]
 
   return (
@@ -87,9 +89,11 @@ export default async function ProjectPage({
             {project.externalUrl ? (
               <a
                 href={project.externalUrl}
+                target="_blank"
+                rel="noreferrer"
                 className="t-body mt-2 flex h-control items-center rounded-module bg-surface-3 px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
               >
-                Visit the live work
+                {project.externalLabel ?? 'Visit the live work'}
               </a>
             ) : null}
           </div>

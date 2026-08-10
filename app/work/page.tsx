@@ -7,7 +7,7 @@ import { projects } from '@/lib/projects'
 export const metadata: Metadata = {
   title: 'Work',
   description:
-    'Identities, digital platforms, campaigns, motion and positioning work from Burgama.',
+    'Selected brand, web, marketing, content, production and growth work from Burgama.',
 }
 
 export default function WorkPage() {
@@ -25,8 +25,8 @@ export default function WorkPage() {
             className="t-display"
           />
           <p className="t-body">
-            The archive runs on one project template. Size and placement carry the hierarchy,
-            not labels.
+            Selected multidisciplinary work from Burgama, a marketing and design studio.
+            Each story brings the full engagement together around one client.
           </p>
         </div>
 

@@ -32,15 +32,24 @@ export function ProjectCard({
     <Link
       href={`/work/${project.slug}`}
       style={style}
-      className={`group flex flex-col justify-between overflow-hidden rounded-module p-5 transition-colors duration-300 ease-module md:p-7 ${
+      className={`group relative flex flex-col justify-between overflow-hidden rounded-module p-5 transition-colors duration-300 ease-module md:p-7 ${
         toneClass[project.heroMedia.tone ?? 'surface-1']
-      } hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy ${
-        HEIGHT[size]
-      } ${className}`}
+      } focus-visible:ring-2 focus-visible:ring-periwinkle ${HEIGHT[size]} ${className}`}
     >
-      <span className="t-ui">{project.disciplines.join(' · ')}</span>
+      {project.heroMedia.src ? (
+        <img
+          src={project.heroMedia.src}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-module group-hover:scale-[1.025]"
+        />
+      ) : null}
+      {project.heroMedia.src ? (
+        <span className="absolute inset-0 bg-navy/65 transition-colors duration-500 group-hover:bg-navy/52" />
+      ) : null}
 
-      <span className="flex flex-col gap-3">
+      <span className="t-ui relative z-10">{project.disciplines.join(' · ')}</span>
+
+      <span className="relative z-10 flex flex-col gap-3">
         <span className={`${TITLE[size]} block`}>{project.title}</span>
         {size !== 'compact' ? (
           <span className="t-body block max-w-[40ch]">{project.summary}</span>
