@@ -33,7 +33,14 @@
   --color-input: var(--surface-2);
   --color-ring: var(--periwinkle);
 
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  /* Standard is the functional reading face for all UI, copy and titles. */
+  --font-sans:
+    var(--font-standard), 'Helvetica Neue', Arial, 'Noto Sans CJK JP', 'Hiragino Sans',
+    'Yu Gothic', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* Extended is reserved for the wordmark and rare brand display moments. */
+  --font-serif: var(--font-wordmark), var(--font-standard), sans-serif;
+  /* Present for completeness — the interface direction avoids mono. */
+  --font-mono: var(--font-mono-pressura), ui-monospace, monospace;
 
   --radius-module: 10px;
   --radius-sm: 8px;
@@ -116,8 +123,9 @@
 }
 
 @utility wordmark {
-  font-stretch: 125%;
-  letter-spacing: -0.045em;
+  font-family: var(--font-wordmark), var(--font-standard), sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 /* Sized to sit inside the 438px editorial rail without wrapping oddly. */

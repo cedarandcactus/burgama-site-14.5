@@ -1,14 +1,33 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Archivo } from 'next/font/google'
+import localFont from 'next/font/local'
 import { SiteNav } from '@/components/site-nav'
 import './globals.css'
 
-const archivo = Archivo({
-  subsets: ['latin'],
-  axes: ['wdth'],
+/* Licensed GT Pressura files, mapped to the roles in the Burgama font reference. */
+const pressuraStandard = localFont({
+  src: '../public/fonts/GT-Pressura-LCGV-Standard-Light.otf',
+  weight: '400',
+  style: 'normal',
   display: 'swap',
-  variable: '--font-archivo',
+  variable: '--font-standard',
+  fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
+})
+
+const pressuraExtended = localFont({
+  src: '../public/fonts/GT-Pressura-LCGV-Extended-Regular.otf',
+  weight: '400',
+  style: 'normal',
+  display: 'swap',
+  variable: '--font-wordmark',
+})
+
+const pressuraMono = localFont({
+  src: '../public/fonts/GT-Pressura-LCGV-Mono-Light.otf',
+  weight: '400',
+  style: 'normal',
+  display: 'swap',
+  variable: '--font-mono-pressura',
 })
 
 export const metadata: Metadata = {
@@ -38,7 +57,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${archivo.variable} bg-background`}>
+    <html
+      lang="en"
+      className={`${pressuraStandard.variable} ${pressuraExtended.variable} ${pressuraMono.variable} bg-background`}
+    >
       <body className="bg-background text-foreground font-sans antialiased">
         <a
           href="#main"
