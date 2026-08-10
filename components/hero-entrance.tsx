@@ -307,13 +307,18 @@ export function HeroEntrance({ videoSrc }: Props) {
       const videoZoom = smoother((progress - 0.1) / 0.52)
       const scrollSoften = smoother((progress - 0.14) / 0.46)
 
-      const introIn = smoother((progress - 0.398) / 0.225)
-      const introTravel = smoother((progress - 0.522) / 0.178)
-      const introOpacity = introIn * (1 - smoother((introTravel - 0.96) / 0.04))
+      /*
+        The founder title gets a slower, quieter entrance and a full dissolve
+        before the first thought begins. Keeping these as separate windows
+        prevents the intro and opening passage from visually competing.
+      */
+      const introIn = smoother((progress - 0.39) / 0.255)
+      const introTravel = smoother((progress - 0.53) / 0.22)
+      const introOpacity = introIn * (1 - smoother((progress - 0.55) / 0.075))
 
-      const sectionStart = 0.555
+      const sectionStart = 0.635
       const sectionRange = 0.884 - sectionStart
-      const sectionsIn = smoother((progress - 0.535) / 0.045)
+      const sectionsIn = smoother((progress - 0.625) / 0.06)
       const sectionsOut = smoother((progress - 0.886) / 0.045)
       const sectionsOpacity = sectionsIn * (1 - sectionsOut)
       const loaderProgress = clamp((progress - sectionStart) / sectionRange)
@@ -504,8 +509,8 @@ export function HeroEntrance({ videoSrc }: Props) {
           Let each thought fully clear before the next arrives. The final 16%
           of its span is intentional breathing room rather than a crossfade.
         */
-        const enter = smoother(local / 0.2)
-        const leave = smoother((local - 0.68) / 0.16)
+        const enter = smoother(local / 0.24)
+        const leave = smoother((local - 0.64) / 0.2)
         const active = clamp(enter * (1 - leave) * sectionsOpacity, 0, 1)
 
         section.style.setProperty('--section-opacity', active.toFixed(4))
@@ -526,8 +531,8 @@ export function HeroEntrance({ videoSrc }: Props) {
 
         updatePhraseGroup(
           phraseGroups[index + 1],
-          clamp(local / 0.48),
-          clamp((local - 0.64) / 0.18),
+          clamp(local / 0.56),
+          clamp((local - 0.6) / 0.24),
           clamp(0.72 + active * 0.28, 0, 1),
         )
         updateCharacterGroup(
