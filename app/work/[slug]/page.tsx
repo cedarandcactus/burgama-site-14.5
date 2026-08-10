@@ -52,7 +52,7 @@ export default async function ProjectPage({
     <>
       <article className={`rail mx-auto flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px] ${project.slug === 'wurqly' ? 'wurqly-case-study' : ''}`}>
         {project.slug === 'wurqly' ? (
-          <header className="wurqly-hero relative flex min-h-[78svh] items-end overflow-hidden rounded-module p-3 md:min-h-[680px] md:p-5">
+          <header className="wurqly-hero relative flex min-h-[78svh] items-center justify-center overflow-hidden rounded-module p-4 md:min-h-[680px] md:p-8">
             <video
               src={project.heroMedia.src}
               poster={project.heroMedia.poster}
@@ -72,10 +72,10 @@ export default async function ProjectPage({
               />
             ) : null}
             <div className="wurqly-hero-wash absolute inset-0" />
-            <div className="wurqly-hero-glass relative z-10 flex w-full max-w-3xl flex-col gap-6 rounded-module p-6 md:p-9">
+            <div className="wurqly-hero-glass relative z-10 flex w-full max-w-4xl flex-col items-center gap-7 rounded-module p-7 text-center md:p-12">
               <AnimatedText as="h1" lines={[project.title]} className="t-display" />
-              <AnimatedText lines={project.introCopy} className="t-section" delay={120} />
-              <p className="t-body max-w-[58ch]">{project.summary}</p>
+              <AnimatedText lines={project.introCopy} className="t-section max-w-[18ch]" delay={120} />
+              <p className="t-body max-w-[54ch] text-pretty">{project.summary}</p>
             </div>
           </header>
         ) : (
@@ -94,7 +94,7 @@ export default async function ProjectPage({
             <div
               key={row.label}
               style={{ flexBasis: row.basis, flexGrow: 1 }}
-              className="flex min-w-[220px] flex-col gap-2 rounded-module bg-surface-1 p-5"
+              className={`flex min-w-[220px] flex-col gap-2 rounded-module bg-surface-1 p-5 ${project.slug === 'wurqly' ? 'wurqly-bordered-module' : ''}`}
             >
               <span className="t-body">{row.label}</span>
               <span className="t-body">{row.value}</span>

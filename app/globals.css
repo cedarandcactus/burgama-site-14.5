@@ -911,29 +911,38 @@ html[data-entry-open='true'] body {
 
 .wurqly-hero {
   background: var(--wurqly-periwinkle);
+  border: 1px solid rgb(152 158 201 / 0.72);
 }
 
 .wurqly-hero > video,
 .wurqly-hero > img {
-  transform: scale(1.025);
-  filter: saturate(0.82) contrast(0.88);
+  transform: scale(1.06);
+  filter: blur(7px) saturate(0.62) contrast(0.78);
 }
 
 .wurqly-hero-wash {
-  background: linear-gradient(180deg, rgb(152 158 201 / 0.34), rgb(8 17 50 / 0.64));
+  background: rgb(152 158 201 / 0.38);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .wurqly-hero-glass {
   color: var(--navy);
-  background: rgb(152 158 201 / 0.76);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2);
-  backdrop-filter: blur(24px) saturate(118%);
-  -webkit-backdrop-filter: blur(24px) saturate(118%);
+  background: rgb(152 158 201 / 0.58);
+  border: 1px solid rgb(8 17 50 / 0.18);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28);
+  backdrop-filter: blur(30px) saturate(112%);
+  -webkit-backdrop-filter: blur(30px) saturate(112%);
 }
 
 .wurqly-media-frame {
   background: var(--wurqly-periwinkle);
   color: var(--navy);
+  border: 1px solid rgb(8 17 50 / 0.18);
+}
+
+.wurqly-bordered-module {
+  border: 1px solid rgb(8 17 50 / 0.18);
 }
 
 .wurqly-case-study .wurqly-media-frame img[src$='shaded-logo.png'] {
