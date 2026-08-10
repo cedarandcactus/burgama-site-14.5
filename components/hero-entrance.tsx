@@ -414,7 +414,7 @@ export function HeroEntrance({ videoSrc }: Props) {
         navbar brand will later hold. Only afterwards does it move to center.
       */
       const logoBoxWidth = viewportWidth < 760 ? 72 : 90
-      const logoTopY = 13 + 44 * 0.5 - viewportHeight * 0.5
+      const logoTopY = 13 + 46 * 0.5 - viewportHeight * 0.5
       const expandedLogoWidth = Math.min(viewportWidth < 760 ? 205 : 292, viewportWidth - 38)
       const logoDrawScale = lerp(1, expandedLogoWidth / logoBoxWidth, logoExpand)
 
@@ -443,7 +443,9 @@ export function HeroEntrance({ videoSrc }: Props) {
         const settle = Math.sin(partProgress * Math.PI) * 0.035
         const scale = 0.76 + 0.24 * partProgress + settle
 
-        path.style.opacity = clamp(partProgress * logoStageOpacity, 0, 1).toFixed(4)
+        const partOpacity = clamp(partProgress * logoStageOpacity, 0, 1).toFixed(4)
+        path.style.opacity = partOpacity
+        path.style.fillOpacity = partOpacity
         path.style.setProperty('--logo-part-blur', `${((1 - partProgress) * 5.8).toFixed(2)}px`)
         path.style.transform = `translate(${(offsetX * (1 - partProgress)).toFixed(2)}px, ${(
           offsetY * (1 - partProgress)

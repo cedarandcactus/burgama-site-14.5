@@ -541,12 +541,19 @@ html[data-entry-open='true'] body {
 }
 
 .founder-final-name {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
   color: rgb(190 196 238 / 0.99);
   font-family: var(--font-wordmark), var(--font-standard), sans-serif;
   font-size: clamp(58px, 9.4vw, 132px);
   line-height: 0.78;
-  letter-spacing: -0.075em;
+  /* The source resolves to zero tracking plus a negative per-character margin,
+     so the animated characters keep the wordmark's true fit. */
+  letter-spacing: 0;
   font-weight: 400;
+  font-synthesis: none;
 }
 
 .founder-final-character {
@@ -555,7 +562,12 @@ html[data-entry-open='true'] body {
   transform: translate3d(0, var(--final-character-y, 18px), 0)
     scale(var(--final-character-scale, 0.91));
   filter: blur(var(--final-character-blur, 8px));
+  transform-origin: center 72%;
   will-change: opacity, transform, filter;
+}
+
+.founder-final-character + .founder-final-character {
+  margin-left: -0.035em;
 }
 
 .founder-logo-stage {
@@ -586,6 +598,8 @@ html[data-entry-open='true'] body {
 
 .founder-end-logo path {
   fill: currentColor;
+  fill-opacity: 1;
+  stroke: none;
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
