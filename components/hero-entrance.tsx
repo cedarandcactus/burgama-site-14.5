@@ -138,6 +138,7 @@ export function HeroEntrance({ videoSrc }: Props) {
   const sectionsRef = useRef<HTMLDivElement>(null)
   const finalWordRef = useRef<HTMLDivElement>(null)
   const logoStageRef = useRef<HTMLDivElement>(null)
+  const skipRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const track = trackRef.current
@@ -381,6 +382,14 @@ export function HeroEntrance({ videoSrc }: Props) {
       style.setProperty('--sections-opacity', sectionsOpacity.toFixed(4))
       style.setProperty('--final-word-opacity', finalWordOpacity.toFixed(4))
       style.setProperty('--logo-stage-opacity', logoStageOpacity.toFixed(4))
+
+      const skipButton = skipRef.current
+      if (skipButton) {
+        const skipVisibility = 1 - smoother((progress - 0.955) / 0.025)
+        skipButton.style.opacity = skipVisibility.toFixed(4)
+        skipButton.style.pointerEvents = skipVisibility > 0.08 ? 'auto' : 'none'
+        skipButton.setAttribute('aria-hidden', String(skipVisibility <= 0.08))
+      }
 
       const introLocal = clamp((progress - 0.385) / 0.305)
       intro.style.setProperty(
@@ -661,11 +670,12 @@ export function HeroEntrance({ videoSrc }: Props) {
           </div>
 
           <button
+            ref={skipRef}
             type="button"
             onClick={skip}
-            className="absolute bottom-3 left-1/2 z-10 flex h-8 -translate-x-1/2 items-center rounded-module bg-surface-2 px-3 font-sans text-[11px] leading-none tracking-[0.08em] uppercase transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+            className="absolute bottom-3 left-1/2 z-10 flex h-8 -translate-x-1/2 items-center rounded-module bg-surface-2 px-3 font-sans text-[11px] leading-none transition-[color,background-color,opacity] duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
           >
-            Skip intro
+            Skip Intro
           </button>
         </div>
       </section>
