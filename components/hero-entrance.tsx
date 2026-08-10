@@ -575,7 +575,7 @@ export function HeroEntrance({ videoSrc }: Props) {
             {videoSrc ? (
               <video
                 className="hero-video"
-                src={videoSrc}
+                id="heroVideo"
                 autoPlay
                 muted
                 loop
@@ -583,7 +583,9 @@ export function HeroEntrance({ videoSrc }: Props) {
                 preload="auto"
                 aria-hidden="true"
                 disablePictureInPicture
-              />
+              >
+                <source src={videoSrc} type="video/mp4" />
+              </video>
             ) : null}
             <div className="hero-shadow" />
             <div className="hero-gauze" />
