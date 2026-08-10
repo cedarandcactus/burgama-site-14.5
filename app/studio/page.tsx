@@ -1,0 +1,133 @@
+import type { Metadata } from 'next'
+import { AnimatedText } from '@/components/animated-text'
+import { ModularButtonGroup } from '@/components/modular-buttons'
+import { SiteFooter } from '@/components/site-footer'
+
+export const metadata: Metadata = {
+  title: 'Studio',
+  description:
+    'Burgama is a design-led creative studio working on identities, digital experiences, campaigns and systems.',
+}
+
+const CAPABILITIES = [
+  {
+    title: 'Brand identity and direction',
+    body: 'Marks, type systems, colour, art direction and the guidelines that keep them coherent.',
+    basis: '58%',
+    tone: 'bg-surface-1',
+  },
+  {
+    title: 'Digital design and development',
+    body: 'Sites, product surfaces and design systems, built as reusable components.',
+    basis: '40%',
+    tone: 'bg-surface-2',
+  },
+  {
+    title: 'Campaigns and content systems',
+    body: 'A kit of parts rather than a one-off layout, so every placement holds.',
+    basis: '42%',
+    tone: 'bg-surface-2',
+  },
+  {
+    title: 'Positioning and creative strategy',
+    body: 'The sentence the work answers to, agreed before anything is drawn.',
+    basis: '56%',
+    tone: 'bg-surface-1',
+  },
+]
+
+const APPROACH = [
+  {
+    title: 'Discovery and positioning',
+    body: 'We start with a point of view. Placeholder copy describing how the studio arrives at it.',
+    basis: '38%',
+  },
+  {
+    title: 'Design and build',
+    body: 'The point of view becomes a system: modules, spacing, type and motion.',
+    basis: '32%',
+  },
+  {
+    title: 'Launch and support',
+    body: 'Handover, documentation and the ongoing work of keeping a system recognisable.',
+    basis: '28%',
+  },
+]
+
+export default function StudioPage() {
+  return (
+    <>
+      <section className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]">
+        <AnimatedText
+          as="h1"
+          lines={['An independent studio', 'built around close', 'collaboration']}
+          className="t-display max-w-[22ch]"
+        />
+        <div className="flex flex-col gap-module md:flex-row">
+          <p className="t-body rounded-module bg-surface-1 p-6 md:basis-[56%]">
+            Burgama shapes identities and digital experiences for people with something
+            meaningful to make, staying close from the first conversation through launch.
+          </p>
+          <p className="t-body rounded-module bg-surface-2 p-6 md:basis-[42%]">
+            Placeholder studio copy. Replace with the final approved language when it lands —
+            the structure will not need to change.
+          </p>
+        </div>
+        <ModularButtonGroup
+          className="rail"
+          actions={[
+            { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
+            { label: 'Start a project', href: '/contact', basis: '56%', tone: 'surface-2' },
+          ]}
+        />
+      </section>
+
+      <section
+        id="capabilities"
+        aria-labelledby="capabilities-title"
+        className="flex flex-col gap-module px-module pb-16 md:scroll-mt-24"
+      >
+        <AnimatedText
+          as="h2"
+          id="capabilities-title"
+          lines={['Capabilities']}
+          className="t-title"
+        />
+        <div className="flex flex-wrap gap-module">
+          {CAPABILITIES.map((item) => (
+            <div
+              key={item.title}
+              style={{ flexBasis: item.basis, flexGrow: 1 }}
+              className={`flex min-w-[260px] min-h-[34svh] flex-col justify-between gap-6 rounded-module p-6 ${item.tone}`}
+            >
+              <h3 className="t-section max-w-[18ch]">{item.title}</h3>
+              <p className="t-body max-w-[40ch]">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section
+        id="approach"
+        aria-labelledby="approach-title"
+        className="flex flex-col gap-module px-module pb-24 md:scroll-mt-24 md:pb-36"
+      >
+        <AnimatedText as="h2" id="approach-title" lines={['Approach']} className="t-title" />
+        <div className="flex flex-col gap-module md:flex-row">
+          {APPROACH.map((step) => (
+            <div
+              key={step.title}
+              style={{ flexBasis: step.basis }}
+              className="flex flex-col gap-4 rounded-module bg-surface-1 p-6"
+            >
+              <h3 className="t-section">{step.title}</h3>
+              <p className="t-body">{step.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <SiteFooter />
+    </>
+  )
+}
