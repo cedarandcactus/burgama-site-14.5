@@ -779,13 +779,7 @@ html[data-entry-open='true'] body {
 .premise-bridge {
   position: relative;
   isolation: isolate;
-  background: linear-gradient(
-    180deg,
-    var(--periwinkle) 0%,
-    color-mix(in srgb, var(--periwinkle) 78%, var(--navy)) 24%,
-    color-mix(in srgb, var(--periwinkle) 42%, var(--navy)) 54%,
-    var(--navy) 100%
-  );
+  background: var(--navy);
 }
 
 .premise-actions a {
