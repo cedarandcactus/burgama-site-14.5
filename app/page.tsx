@@ -20,10 +20,10 @@ export default function HomePage() {
         className="premise-bridge section-burgundy px-module py-32 md:py-44"
       >
         <div className="rail mx-auto grid gap-module min-[900px]:grid-cols-12">
-          <div className="pair-burgundy-invert flex min-h-[420px] flex-col justify-between rounded-module p-5 md:p-8 min-[900px]:col-span-8 min-[900px]:min-h-[600px]">
-            <div className="flex items-start justify-between gap-6">
-              <p className="t-ui max-w-32">Independent marketing + design studio</p>
-              <p className="font-mono text-xs uppercase leading-tight tracking-[0.16em] [writing-mode:vertical-rl]">
+          <div className="pair-burgundy-invert flex min-h-[380px] flex-col justify-between rounded-module p-5 md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[520px]">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <p className="text-base font-medium leading-snug md:text-lg">Independent marketing + design studio</p>
+              <p className="max-w-80 text-right text-sm font-medium uppercase leading-snug tracking-[0.08em] md:text-base">
                 Strategy / identity / experience / growth
               </p>
             </div>
@@ -31,10 +31,10 @@ export default function HomePage() {
               as="h1"
               id="premise-title"
               lines={['Made for', 'what comes next']}
-              className="w-full font-serif text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.78] tracking-[-0.075em] min-[900px]:text-left"
+              className="w-full font-serif text-[clamp(3.25rem,7vw,7.5rem)] leading-[0.84] tracking-[-0.06em] min-[900px]:text-left"
             />
           </div>
-          <div className="flex min-h-[420px] flex-col justify-between rounded-module bg-surface-1 p-5 md:p-8 min-[900px]:col-span-4 min-[900px]:min-h-[600px]">
+          <div className="flex min-h-[380px] flex-col justify-between rounded-module bg-surface-1 p-5 md:p-8 min-[900px]:col-span-5 min-[900px]:min-h-[520px]">
             <p className="font-serif text-5xl leading-[0.88] tracking-[-0.06em] min-[900px]:text-6xl">One point of view. Every touchpoint.</p>
             <div className="flex flex-col gap-8">
               <p className="t-body reading-measure max-w-[32ch] text-pretty">
