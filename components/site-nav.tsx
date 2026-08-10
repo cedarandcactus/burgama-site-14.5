@@ -68,7 +68,8 @@ export function SiteNav() {
         maxWidth: 'calc(100vw - 20px)',
       }}
     >
-      <div className="overflow-hidden rounded-module bg-surface-2">
+      <div className="nav-frost-shell overflow-hidden rounded-module">
+        <div className="nav-frost-content">
         {/* The bar keeps its full width and is clipped symmetrically while compact. */}
         <div className="flex justify-center">
           <div
@@ -89,7 +90,7 @@ export function SiteNav() {
             className="flex items-center justify-center rounded-sm"
             style={{ opacity: 'var(--nav-brand-opacity, 1)' }}
           >
-            <BrandMark className="h-auto w-[70px] min-[581px]:w-[86px]" />
+            <BrandMark className="h-auto w-[58px] min-[581px]:w-[68px]" />
           </Link>
 
           <button
@@ -219,6 +220,7 @@ export function SiteNav() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </nav>
