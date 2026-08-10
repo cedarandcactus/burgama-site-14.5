@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { AnimatedText } from '@/components/animated-text'
-import { HeroOrigin } from '@/components/hero-origin'
+import { EntryPreferences } from '@/components/entry-preferences'
+import { HeroEntrance } from '@/components/hero-entrance'
 import { ModularButtonGroup } from '@/components/modular-buttons'
 import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
@@ -11,7 +12,8 @@ export default function HomePage() {
 
   return (
     <>
-      <HeroOrigin />
+      <EntryPreferences />
+      <HeroEntrance />
 
       <section aria-labelledby="premise-title" className="px-module py-28 md:py-40">
         <div className="rail mx-auto flex flex-col gap-7">

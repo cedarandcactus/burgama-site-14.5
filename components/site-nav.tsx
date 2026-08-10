@@ -61,10 +61,20 @@ export function SiteNav() {
     <nav
       aria-label="Primary"
       data-open={open}
-      className="fixed top-3 left-1/2 z-50 w-[calc(100vw-20px)] max-w-rail -translate-x-1/2 transition-[max-width] duration-700 ease-module data-[open=true]:max-w-[640px]"
+      className="fixed top-3 left-1/2 z-50 -translate-x-1/2 transition-[max-width] duration-700 ease-module"
+      style={{
+        /* Withheld and compact through the entrance, then unwound to the rail. */
+        width: open ? 'min(640px, calc(100vw - 20px))' : 'var(--nav-current-width)',
+        maxWidth: 'calc(100vw - 20px)',
+      }}
     >
       <div className="overflow-hidden rounded-module bg-surface-2">
-        <div className="grid h-control grid-cols-[1fr_auto_1fr] items-center gap-3 px-3">
+        {/* The bar keeps its full width and is clipped symmetrically while compact. */}
+        <div className="flex justify-center">
+          <div
+            className="grid h-control w-full grid-cols-[1fr_auto_1fr] items-center gap-3 px-3"
+            style={{ minWidth: open ? undefined : 'min(438px, calc(100vw - 20px))' }}
+          >
           <Link
             href="/contact"
             className="t-ui justify-self-start rounded-sm px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
@@ -89,6 +99,7 @@ export function SiteNav() {
           >
             {open ? 'Close' : 'Menu'}
           </button>
+          </div>
         </div>
 
         <div

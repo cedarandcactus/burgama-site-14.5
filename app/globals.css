@@ -69,6 +69,13 @@
   --foreground: var(--periwinkle);
 
   --radius: 10px;
+
+  /*
+    The nav is fully unwound everywhere by default. Only the entrance overrides
+    this, driving it from a tiny compact state out to the 438px rail.
+  */
+  --nav-unwind: 1;
+  --nav-current-width: 438px;
 }
 
 @layer base {
@@ -168,6 +175,432 @@
     background-color 0.28s var(--ease-module),
     color 0.28s var(--ease-module),
     transform 0.42s var(--ease-module);
+}
+
+/* ==================================================================
+   Cinematic entrance.
+
+   One very tall scroll track, one sticky stage, exactly one video.
+   JavaScript writes the custom properties below every frame from a
+   single normalized 0–1 timeline; CSS never animates on its own here.
+   Everything in this block is the entrance only — the surrounding flat
+   modular interface rules do not apply inside it.
+================================================================== */
+
+/* The preference layer scroll-locks the document while it is open. */
+html[data-entry-open='true'],
+html[data-entry-open='true'] body {
+  overflow: hidden;
+  height: 100%;
+}
+
+.hero-scroll {
+  --experience-periwinkle: #9aa1d1;
+  --experience-navy: #081132;
+  --video-clip-x: calc((100vw - 438px) / 2);
+  --video-clip-y: calc((100vh - 270px) / 2);
+  --video-radius: 14px;
+  --video-opacity: 0;
+  --video-inner-scale: 1.04;
+  --glass-progress: 0;
+  --scroll-soften: 0;
+  --note-blend: 0;
+  --gradient-sweep: 0;
+  --note-width: 438px;
+  --note-size: 18.6px;
+  --intro-opacity: 0;
+  --sections-opacity: 0;
+  --final-word-opacity: 0;
+  --logo-stage-opacity: 0;
+  --film-tint: 0;
+  --film-solid: 0;
+  --film-veil-y: 0px;
+  --film-video-blur: 13.5px;
+  --film-video-brightness: 0.81;
+  --film-video-contrast: 1.13;
+  position: relative;
+  min-height: 3600vh;
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--experience-periwinkle);
+}
+
+/* Shared geometry for every treatment layer over the film. */
+.hero-sticky::before,
+.hero-shadow,
+.hero-gauze,
+.hero-frost,
+.hero-gradient,
+.hero-dither {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-sticky::before {
+  z-index: 7;
+  background:
+    radial-gradient(88% 76% at 52% 86%, rgb(226 92 150 / 0.34), transparent 64%),
+    linear-gradient(
+      180deg,
+      rgb(154 161 209 / 0.1) 0%,
+      rgb(214 86 132 / 0.44) 52%,
+      rgb(122 18 42 / 0.88) 100%
+    );
+  opacity: var(--gradient-sweep);
+  clip-path: inset(var(--video-clip-y) var(--video-clip-x) round var(--video-radius));
+  will-change: opacity, clip-path;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  opacity: var(--video-opacity);
+  clip-path: inset(var(--video-clip-y) var(--video-clip-x) round var(--video-radius));
+  overflow: hidden;
+  isolation: isolate;
+  contain: paint;
+  background: linear-gradient(180deg, rgb(214 86 132 / 0.3), rgb(122 18 42 / 0.7));
+  will-change: clip-path, opacity;
+}
+
+/* Exactly one media element. It never hands off to a second one. */
+.hero-video {
+  position: absolute;
+  inset: -6%;
+  display: block;
+  width: 112%;
+  height: 112%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: 50% 44%;
+  opacity: 0.88;
+  mix-blend-mode: luminosity;
+  transform: translate3d(0, 0, 0) scale(var(--video-inner-scale));
+  transform-origin: 50% 46%;
+  backface-visibility: hidden;
+  filter: grayscale(1) blur(var(--film-video-blur))
+    brightness(var(--film-video-brightness)) contrast(var(--film-video-contrast));
+  will-change: transform, filter;
+}
+
+.hero-shadow {
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgb(211 76 126 / 0.1),
+    rgb(138 24 54 / 0.22) 56%,
+    rgb(104 10 30 / 0.46) 100%
+  );
+  opacity: calc(0.24 + (var(--note-blend) * 0.28));
+  mix-blend-mode: multiply;
+}
+
+.hero-gauze {
+  z-index: 3;
+  opacity: calc(0.18 + (var(--note-blend) * 0.12) + (var(--scroll-soften) * 0.16));
+  background:
+    radial-gradient(82% 70% at 26% 24%, rgb(226 92 150 / 0.42), transparent 58%),
+    radial-gradient(72% 66% at 76% 72%, rgb(154 22 66 / 0.3), transparent 60%);
+  filter: blur(20px);
+  mix-blend-mode: screen;
+}
+
+.hero-frost {
+  z-index: 4;
+  opacity: calc(0.2 + (var(--glass-progress) * 0.44) + (var(--scroll-soften) * 0.24));
+  background: linear-gradient(
+    180deg,
+    rgb(255 214 232 / 0.16),
+    rgb(232 126 176 / 0.11) 36%,
+    rgb(134 30 72 / 0.14) 100%
+  );
+  backdrop-filter: blur(30px) saturate(1.24) brightness(1.06);
+  -webkit-backdrop-filter: blur(30px) saturate(1.24) brightness(1.06);
+  mix-blend-mode: screen;
+}
+
+.hero-gradient {
+  z-index: 5;
+  opacity: calc(0.22 + (var(--note-blend) * 0.46));
+  background: linear-gradient(160deg, rgb(232 96 156 / 0.42) 0%, rgb(129 18 52 / 0.8) 100%);
+  mix-blend-mode: color;
+}
+
+.hero-dither {
+  z-index: 6;
+  opacity: calc(0.04 + (var(--note-blend) * 0.018));
+  background-image:
+    radial-gradient(circle at 1px 1px, rgb(238 116 170 / 0.34) 0.9px, transparent 1px),
+    radial-gradient(circle at 1px 1px, rgb(126 18 52 / 0.28) 0.9px, transparent 1px);
+  background-size: 4px 4px, 4px 4px;
+  background-position: 0 0, 2px 2px;
+  mix-blend-mode: soft-light;
+  filter: contrast(1.18) saturate(1.02);
+  image-rendering: pixelated;
+}
+
+/*
+  The film-to-navy resolve. This sits above the SAME video: its ::before is the
+  closing film palette and its ::after is the exact solid site field, so there
+  is no second video and no visible seam into the page below.
+*/
+.hero-color-transition {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+}
+
+.hero-color-transition::before,
+.hero-color-transition::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.hero-color-transition::before {
+  opacity: var(--film-tint);
+  transform: translate3d(0, var(--film-veil-y), 0);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 28%,
+    rgb(110 29 66 / 0.045) 42%,
+    rgb(110 29 66 / 0.12) 52%,
+    rgb(122 83 113 / 0.19) 61%,
+    rgb(83 94 132 / 0.3) 72%,
+    rgb(23 35 77 / 0.61) 84%,
+    rgb(8 17 50 / 0.91) 94%,
+    var(--experience-navy) 100%
+  );
+}
+
+.hero-color-transition::after {
+  opacity: var(--film-solid);
+  background: var(--experience-navy);
+}
+
+.hero-copy-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-copy-shell {
+  position: relative;
+  width: var(--note-width);
+  max-width: calc(100vw - 20px);
+  height: min(62vh, 610px);
+  margin: 0 auto;
+}
+
+.founder-experience {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: var(--experience-periwinkle);
+}
+
+.founder-intro,
+.founder-sections,
+.founder-final-word,
+.founder-logo-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.founder-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  opacity: var(--intro-opacity);
+  transform: translate3d(0, var(--intro-y, 13px), 0) scale(var(--intro-scale, 0.992));
+  transform-origin: left center;
+  will-change: opacity, transform;
+}
+
+.founder-intro-dingbat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 25px;
+  border-radius: 10px;
+  background: rgb(154 161 209 / 0.14);
+  color: rgb(154 161 209 / 0.78);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.founder-intro-title {
+  margin: 0;
+  color: rgb(154 161 209 / 0.98);
+  font-size: calc(var(--note-size) * 1.42);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  font-weight: 400;
+}
+
+.founder-sections {
+  opacity: var(--sections-opacity);
+  will-change: opacity;
+}
+
+.founder-section {
+  --section-opacity: 0;
+  --section-y: 28px;
+  --section-scale: 0.985;
+  --section-blur: 4px;
+  --section-type-scale: 1;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  opacity: var(--section-opacity);
+  transform: translate3d(0, calc(-50% + var(--section-y)), 0) scale(var(--section-scale));
+  filter: blur(var(--section-blur));
+  transform-origin: left center;
+  will-change: opacity, transform, filter;
+}
+
+.founder-section:nth-child(2) {
+  --section-type-scale: 1.025;
+}
+.founder-section:nth-child(3) {
+  --section-type-scale: 1.05;
+}
+.founder-section:nth-child(4) {
+  --section-type-scale: 1.075;
+}
+
+.founder-section-text {
+  margin: 0;
+  color: rgb(154 161 209 / 1);
+  font-size: calc(var(--note-size) * var(--section-type-scale));
+  line-height: 1.015;
+  letter-spacing: -0.052em;
+}
+
+/* Phrase modules unfold from their leading edge and hand the sentence on. */
+.phrase-unit {
+  display: inline-flex;
+  align-items: baseline;
+  opacity: var(--phrase-opacity, 1);
+  transform: translate3d(var(--phrase-x, 0px), var(--phrase-y, 0px), 0)
+    scaleX(var(--phrase-scale-x, 1));
+  filter: blur(var(--phrase-blur, 0px));
+  clip-path: inset(-0.35em var(--phrase-clip-right, 0%) -0.35em var(--phrase-clip-left, 0%));
+  transform-origin: left center;
+  will-change: opacity, transform, filter, clip-path;
+}
+
+.char-unit {
+  display: inline-block;
+  transform: translate3d(0, var(--char-y, 0px), 0) scale(var(--char-scale, 1));
+  transform-origin: center 72%;
+  opacity: var(--char-opacity, 1);
+  color: var(--char-color, rgb(154 161 209 / 1));
+  filter: saturate(calc(1 + (var(--char-focus, 0) * 0.14)));
+  backface-visibility: hidden;
+  text-rendering: geometricPrecision;
+  will-change: transform, opacity, color;
+}
+
+.word-unit {
+  padding-inline: 0.015em;
+}
+
+.char-space {
+  width: 0.26em;
+}
+
+.founder-final-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: var(--final-word-opacity);
+  transform: translate3d(0, var(--final-word-y, 10px), 0) scale(var(--final-word-scale, 0.996));
+  will-change: opacity, transform;
+}
+
+.founder-final-name {
+  color: rgb(190 196 238 / 0.99);
+  font-family: var(--font-wordmark), var(--font-standard), sans-serif;
+  font-size: clamp(58px, 9.4vw, 132px);
+  line-height: 0.78;
+  letter-spacing: -0.075em;
+  font-weight: 400;
+}
+
+.founder-final-character {
+  display: inline-block;
+  opacity: var(--final-character-opacity, 0);
+  transform: translate3d(0, var(--final-character-y, 18px), 0)
+    scale(var(--final-character-scale, 0.91));
+  filter: blur(var(--final-character-blur, 8px));
+  will-change: opacity, transform, filter;
+}
+
+.founder-logo-stage {
+  display: grid;
+  place-items: center;
+  opacity: var(--logo-stage-opacity);
+  transform: translate3d(0, var(--logo-stage-y, 8px), 0) scale(var(--logo-stage-scale, 0.99));
+  will-change: opacity, transform;
+}
+
+.founder-logo-drawing {
+  display: grid;
+  place-items: center;
+  width: 90px;
+  transform: translate3d(var(--logo-draw-x, 0px), var(--logo-draw-y, 0px), 0)
+    scale(var(--logo-draw-scale, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.founder-end-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: rgb(181 188 232 / 0.98);
+  overflow: visible;
+}
+
+.founder-end-logo path {
+  fill: currentColor;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: blur(var(--logo-part-blur, 0px));
+  will-change: transform, opacity, filter;
+}
+
+@media (max-width: 759px) {
+  .hero-scroll {
+    min-height: 3280vh;
+  }
+
+  .founder-logo-drawing {
+    width: 72px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
