@@ -59,11 +59,11 @@
 :root {
   color-scheme: dark;
 
-  --navy: #081132;
-  --periwinkle: #a9addb;
-  --surface-1: #111d45;
-  --surface-2: #172653;
-  --surface-3: #203263;
+  --navy: #0e1225;
+  --periwinkle: #989ec9;
+  --surface-1: #4e0b28;
+  --surface-2: #25152f;
+  --surface-3: #3a1230;
 
   --background: var(--navy);
   --foreground: var(--periwinkle);
@@ -305,8 +305,8 @@ html[data-entry-open='true'] body {
 }
 
 .hero-scroll {
-  --experience-periwinkle: #9aa1d1;
-  --experience-navy: #081132;
+  --experience-periwinkle: #989ec9;
+  --experience-navy: #0e1225;
   --video-clip-x: calc((100vw - 438px) / 2);
   --video-clip-y: calc((100vh - 270px) / 2);
   --video-radius: 14px;
