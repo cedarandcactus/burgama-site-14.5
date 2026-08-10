@@ -49,8 +49,11 @@ export function SiteNav() {
       frame = 0
       const hero = document.querySelector<HTMLElement>('.hero-scroll')
       const heroDistance = hero ? Math.max(1, hero.offsetHeight - window.innerHeight) : 1
-      const heroActive = Boolean(hero && window.scrollY <= heroDistance)
-      const phase = heroActive ? Math.max(0, Math.min(1, window.scrollY / heroDistance)) : 1
+      const heroRect = hero?.getBoundingClientRect()
+      const heroActive = Boolean(heroRect && heroRect.top <= 13 && heroRect.bottom > 13)
+      const phase = heroRect
+        ? Math.max(0, Math.min(1, -heroRect.top / heroDistance))
+        : 0
       const middle = phase < 0.55 ? phase / 0.55 : (phase - 0.55) / 0.45
       const phasedMix = (start: number[], center: number[], end: number[]) =>
         phase < 0.55 ? mix(start, center, middle) : mix(center, end, middle)
@@ -58,11 +61,11 @@ export function SiteNav() {
       const setRgb = (name: string, values: number[]) =>
         nav.style.setProperty(name, values.join(' '))
 
-      setRgb('--nav-text', mix([154, 161, 209], [188, 194, 235], phase * 0.38))
-      setRgb('--nav-glass', phasedMix([24, 37, 88], [12, 24, 68], [7, 15, 44]))
-      setRgb('--nav-tone-a', phasedMix([39, 54, 118], [20, 33, 86], [10, 19, 54]))
-      setRgb('--nav-tone-b', phasedMix([104, 117, 188], [73, 88, 160], [48, 61, 126]))
-      setRgb('--nav-tone-c', phasedMix([14, 26, 68], [8, 18, 52], [4, 11, 33]))
+      setRgb('--text', mix([154, 161, 209], [188, 194, 235], phase * 0.38))
+      setRgb('--glass', phasedMix([24, 37, 88], [12, 24, 68], [7, 15, 44]))
+      setRgb('--tone-a', phasedMix([39, 54, 118], [20, 33, 86], [10, 19, 54]))
+      setRgb('--tone-b', phasedMix([104, 117, 188], [73, 88, 160], [48, 61, 126]))
+      setRgb('--tone-c', phasedMix([14, 26, 68], [8, 18, 52], [4, 11, 33]))
       nav.style.setProperty('--nav-glass-alpha', (0.72 + phase * 0.12).toFixed(3))
       nav.dataset.heroActive = String(heroActive)
     }
@@ -108,21 +111,16 @@ export function SiteNav() {
       aria-label="Primary"
       data-open={open}
       data-hero-active="false"
-      className="fixed top-3 left-1/2 z-50 -translate-x-1/2 transition-[max-width] duration-700 ease-module"
+      className="burgama-shell"
       style={{
-        /* Withheld and compact through the entrance, then unwound to the rail. */
-        width: open ? 'min(640px, calc(100vw - 20px))' : 'var(--nav-current-width)',
-        maxWidth: 'calc(100vw - 20px)',
+        backdropFilter: 'blur(16px) saturate(138%) brightness(1.035)',
+        WebkitBackdropFilter: 'blur(16px) saturate(138%) brightness(1.035)',
       }}
     >
-      <div className="nav-frost-shell overflow-hidden rounded-module">
-        <div className="nav-frost-content">
+      <div className="nav-frost-content">
         {/* The bar keeps its full width and is clipped symmetrically while compact. */}
         <div className="flex justify-center">
-          <div
-            className="grid h-control w-full grid-cols-[1fr_auto_1fr] items-center gap-3 px-3"
-            style={{ minWidth: open ? undefined : 'min(438px, calc(100vw - 20px))' }}
-          >
+          <div className="burgama-bar">
           <Link
             href="/contact"
             className="t-ui justify-self-start rounded-sm px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
@@ -267,7 +265,6 @@ export function SiteNav() {
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </nav>

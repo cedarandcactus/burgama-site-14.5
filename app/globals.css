@@ -180,48 +180,61 @@
 /* ------------------------------------------------------------------
    Navbar frosted film: tinted body, physical frost, color bloom, sheen.
 ------------------------------------------------------------------ */
-nav[data-open] {
-  --nav-text: 154 161 209;
-  --nav-glass: 176 181 226;
-  --nav-tone-a: 214 122 176;
-  --nav-tone-b: 168 176 230;
-  --nav-tone-c: 160 117 211;
+.burgama-shell {
+  --shell-width: 438px;
+  --nav-current-width: 438px;
+  --shell-height: 46px;
+  --shell-radius: 10px;
+  --text: 154 161 209;
+  --glass: 176 181 226;
+  --tone-a: 214 122 176;
+  --tone-b: 168 176 230;
+  --tone-c: 160 117 211;
   --nav-glass-alpha: 0.48;
-}
-
-.nav-frost-shell {
-  position: relative;
+  position: fixed;
+  z-index: 50;
+  top: 13px;
+  left: 50%;
+  width: min(var(--nav-current-width), calc(100vw - 20px));
+  min-height: var(--shell-height);
+  transform: translateX(-50%);
+  overflow: hidden;
   isolation: isolate;
-  color: rgb(var(--nav-text));
-  background: rgb(var(--nav-glass) / var(--nav-glass-alpha));
+  border: 0;
+  outline: 0;
+  border-radius: var(--shell-radius);
+  color: rgb(var(--text));
+  background: rgb(var(--glass) / var(--nav-glass-alpha));
   backdrop-filter: blur(16px) saturate(138%) brightness(1.035);
   -webkit-backdrop-filter: blur(16px) saturate(138%) brightness(1.035);
-  transform: translate3d(0, 0, 0);
   transition:
+    width 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.76s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.42s ease,
     background-color 0.42s ease;
 }
 
-.nav-frost-shell::before,
-.nav-frost-shell::after {
+.burgama-shell::before,
+.burgama-shell::after {
   content: '';
   position: absolute;
   pointer-events: none;
 }
 
-.nav-frost-shell::before {
+.burgama-shell::before {
   z-index: 0;
   inset: -22%;
   background:
-    radial-gradient(58% 70% at 17% 12%, rgb(var(--nav-tone-b) / 0.26), transparent 68%),
-    radial-gradient(58% 68% at 84% 82%, rgb(var(--nav-tone-c) / 0.22), transparent 68%),
-    radial-gradient(46% 58% at 56% 46%, rgb(var(--nav-tone-a) / 0.19), transparent 72%);
+    radial-gradient(58% 70% at 17% 12%, rgb(var(--tone-b) / 0.26), transparent 68%),
+    radial-gradient(58% 68% at 84% 82%, rgb(var(--tone-c) / 0.22), transparent 68%),
+    radial-gradient(46% 58% at 56% 46%, rgb(var(--tone-a) / 0.19), transparent 72%);
   filter: blur(28px) saturate(120%);
   transform: translate3d(0, 0, 0) scale(1.04);
   transition: background 0.44s ease;
 }
 
-.nav-frost-shell::after {
+.burgama-shell::after {
   z-index: 1;
   inset: 0;
   background: linear-gradient(
@@ -236,19 +249,42 @@ nav[data-open] {
     opacity 0.5s ease;
 }
 
-nav[data-hero-active='true'] .nav-frost-shell::after {
+.burgama-shell[data-hero-active='true']::after {
   background: linear-gradient(
     118deg,
-    rgb(var(--nav-tone-b) / 0.28),
-    rgb(var(--nav-tone-a) / 0.12) 42%,
-    rgb(var(--nav-tone-c) / 0.26)
+    rgb(168 176 230 / 0.28),
+    rgb(214 122 176 / 0.12) 42%,
+    rgb(160 117 211 / 0.26)
   );
   opacity: 0.92;
 }
 
-.nav-frost-content {
+.nav-frost-content,
+.burgama-bar {
   position: relative;
   z-index: 2;
+}
+
+.burgama-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  height: var(--shell-height);
+  padding: 0 14px;
+  gap: 11px;
+}
+
+@media (max-width: 580px) {
+  .burgama-shell {
+    --shell-height: 44px;
+  }
+
+  .burgama-bar {
+    height: 44px;
+    padding-inline: 12px;
+    gap: 9px;
+  }
 }
 
 /* ==================================================================
