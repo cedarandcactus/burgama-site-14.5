@@ -49,20 +49,18 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-module md:flex-row">
-          <ProjectCard project={feature} size="feature" className="md:basis-[58%]" />
-          <div className="flex flex-col gap-module md:basis-[42%]">
-            <ProjectCard project={second} size="medium" className="flex-1" />
-            <ProjectCard project={third} size="medium" className="flex-1" />
-          </div>
-        </div>
+        <div className="rail mx-auto flex w-full flex-col gap-module">
+          <ProjectCard project={feature} size="feature" />
+          <ProjectCard project={second} size="medium" />
+          <ProjectCard project={third} size="medium" />
 
-        <Link
-          href="/work"
-          className="t-section flex h-32 items-end rounded-module bg-surface-2 p-5 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:p-7"
-        >
-          All work
-        </Link>
+          <Link
+            href="/work"
+            className="t-section flex h-32 items-end rounded-module bg-surface-2 p-5 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:p-7"
+          >
+            All work
+          </Link>
+        </div>
       </section>
 
       <SiteFooter />
