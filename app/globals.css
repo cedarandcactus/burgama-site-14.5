@@ -906,12 +906,11 @@ html[data-entry-open='true'] body {
 }
 
 .wurqly-case-study {
-  --wurqly-cobalt: #124df5;
   --wurqly-periwinkle: var(--periwinkle);
 }
 
 .wurqly-hero {
-  background: var(--wurqly-cobalt);
+  background: var(--wurqly-periwinkle);
 }
 
 .wurqly-hero > video,
@@ -921,7 +920,7 @@ html[data-entry-open='true'] body {
 }
 
 .wurqly-hero-wash {
-  background: linear-gradient(180deg, rgb(152 158 201 / 0.18), rgb(18 77 245 / 0.5));
+  background: linear-gradient(180deg, rgb(152 158 201 / 0.34), rgb(8 17 50 / 0.64));
 }
 
 .wurqly-hero-glass {
@@ -942,11 +941,11 @@ html[data-entry-open='true'] body {
 }
 
 .wurqly-case-study .wurqly-media-frame img[src$='wordmark.svg'] {
-  background: var(--wurqly-cobalt);
+  background: var(--wurqly-periwinkle);
 }
 
 .wurqly-case-study blockquote {
-  background: var(--wurqly-cobalt);
+  background: var(--navy);
   color: var(--wurqly-periwinkle);
 }
 
@@ -957,7 +956,7 @@ html[data-entry-open='true'] body {
 }
 
 .wurqly-case-study .bg-surface-2 {
-  background: var(--wurqly-cobalt);
+  background: var(--navy);
   color: var(--wurqly-periwinkle);
 }
 
