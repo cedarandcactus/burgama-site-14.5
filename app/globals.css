@@ -469,11 +469,12 @@ html[data-entry-open='true'] body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
   opacity: var(--intro-opacity);
   transform: translate3d(0, var(--intro-y, 13px), 0) scale(var(--intro-scale, 0.992));
-  transform-origin: left center;
+  transform-origin: center;
   will-change: opacity, transform;
 }
 
@@ -491,11 +492,13 @@ html[data-entry-open='true'] body {
 }
 
 .founder-intro-title {
-  margin: 0;
+  max-width: 18ch;
+  margin: 0 auto;
   color: rgb(154 161 209 / 0.98);
-  font-size: calc(var(--note-size) * 1.42);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-size: calc(var(--note-size) * 1.38);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
   font-weight: 400;
 }
 
@@ -514,10 +517,11 @@ html[data-entry-open='true'] body {
   left: 0;
   top: 50%;
   width: 100%;
+  text-align: center;
   opacity: var(--section-opacity);
   transform: translate3d(0, calc(-50% + var(--section-y)), 0) scale(var(--section-scale));
   filter: blur(var(--section-blur));
-  transform-origin: left center;
+  transform-origin: center;
   will-change: opacity, transform, filter;
 }
 
@@ -532,11 +536,13 @@ html[data-entry-open='true'] body {
 }
 
 .founder-section-text {
-  margin: 0;
+  max-width: 34ch;
+  margin: 0 auto;
   color: rgb(154 161 209 / 1);
   font-size: calc(var(--note-size) * var(--section-type-scale));
-  line-height: 1.015;
-  letter-spacing: -0.052em;
+  line-height: 1.18;
+  letter-spacing: -0.026em;
+  text-wrap: balance;
 }
 
 /* Phrase modules unfold from their leading edge and hand the sentence on. */
