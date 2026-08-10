@@ -27,9 +27,9 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
   const options: (Discipline | 'All')[] = ['All', ...disciplines]
 
   return (
-    <div className="flex flex-col gap-module">
+    <div className="rail mx-auto flex flex-col gap-module">
       <div
-        className="rail mx-auto mb-6 flex flex-wrap gap-module"
+        className="mb-6 flex flex-wrap gap-module"
         role="group"
         aria-label="Filter by discipline"
       >

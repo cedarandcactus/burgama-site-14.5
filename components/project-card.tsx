@@ -4,10 +4,10 @@ import { type Project, toneClass } from '@/lib/projects'
 type Size = 'feature' | 'medium' | 'wide' | 'compact'
 
 const HEIGHT: Record<Size, string> = {
-  feature: 'min-h-[62svh] md:min-h-[76svh]',
-  medium: 'min-h-[40svh] md:min-h-[46svh]',
-  wide: 'min-h-[34svh] md:min-h-[40svh]',
-  compact: 'min-h-[26svh] md:min-h-[30svh]',
+  feature: 'min-h-[62svh] md:min-h-[560px]',
+  medium: 'min-h-[40svh] md:min-h-[420px]',
+  wide: 'min-h-[34svh] md:min-h-[360px]',
+  compact: 'min-h-[26svh] md:min-h-[300px]',
 }
 
 const TITLE: Record<Size, string> = {

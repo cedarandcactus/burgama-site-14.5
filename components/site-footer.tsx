@@ -3,53 +3,52 @@ import { AnimatedText } from '@/components/animated-text'
 import { BrandMark } from '@/components/brand-mark'
 
 const LINKS = [
-  { label: 'Selected work', href: '/work', basis: '44%' },
-  { label: 'Studio', href: '/studio', basis: '54%' },
+  { label: 'Selected work', href: '/work' },
+  { label: 'Studio', href: '/studio' },
+  { label: 'Capabilities', href: '/#capabilities' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export function SiteFooter() {
   return (
-    <footer className="px-module py-12 md:py-20">
-      <div className="rail mx-auto flex flex-col gap-module">
-        <div className="rounded-module bg-surface-1 p-5 text-center md:p-7">
+    <footer className="section-navy px-module py-12 md:py-20">
+      <div className="rail mx-auto grid gap-module min-[900px]:grid-cols-12">
+        <div className="pair-invert rounded-module p-5 md:p-8 min-[900px]:col-span-7 min-[900px]:row-span-2 min-[900px]:min-h-[320px]">
           <AnimatedText
             as="h2"
             lines={['Start a project', 'with the studio']}
-            className="t-title mx-auto max-w-[18ch]"
+            className="t-title max-w-[18ch] min-[900px]:text-6xl"
           />
         </div>
 
-        <div className="flex gap-module">
-          <a
-            href="mailto:hello@burgama.com"
-            className="flex min-h-24 basis-[58%] flex-col items-center justify-center rounded-module bg-surface-2 p-4 text-center font-sans text-sm leading-relaxed transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
-          >
-            hello@burgama.com
-          </a>
-          <p className="flex min-h-24 basis-[42%] flex-col items-center justify-center rounded-module bg-surface-3 p-4 text-center font-sans text-sm leading-relaxed">
-            Austin, Texas
-            <span className="mt-1 block text-xs leading-snug text-muted-foreground">
-              Working wherever the project leads
-            </span>
-          </p>
-        </div>
+        <a
+          href="mailto:hello@burgama.com"
+          className="flex min-h-24 flex-col justify-between rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy min-[900px]:col-span-5"
+        >
+          <span className="t-ui">Direct line</span>
+          <span className="t-section">hello@burgama.com</span>
+        </a>
 
-        <div className="flex gap-module">
+        <p className="flex min-h-24 flex-col justify-between rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 min-[900px]:col-span-5">
+          <span className="t-ui">Based in</span>
+          <span className="t-section">Austin, Texas</span>
+        </p>
+
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-module min-[900px]:col-span-8 min-[900px]:grid-cols-4">
           {LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              style={{ flexBasis: link.basis }}
-              className="flex h-control items-center justify-center rounded-module bg-surface-1 px-4 text-center font-sans text-sm leading-none transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+              className="t-ui flex h-control items-center justify-center rounded-module bg-navy px-4 text-center ring-1 ring-inset ring-periwinkle/30 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
             >
               {link.label}
             </Link>
           ))}
-        </div>
+        </nav>
 
-        <div className="flex items-end justify-between gap-module rounded-module bg-surface-2 p-4">
+        <div className="flex items-end justify-between gap-module rounded-module bg-navy p-4 ring-1 ring-inset ring-periwinkle/30 min-[900px]:col-span-4">
           <BrandMark className="h-4 w-auto" />
-          <p className="t-ui text-right">Independent design studio</p>
+          <p className="t-ui text-right">Independent studio</p>
         </div>
       </div>
     </footer>

@@ -44,7 +44,7 @@ export default async function ProjectPage({
 
   return (
     <>
-      <article className="flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px]">
+      <article className="rail mx-auto flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px]">
         <header className="flex flex-col gap-module">
           <div className="rail mx-auto mb-6 flex flex-col gap-6">
             <AnimatedText as="h1" lines={[project.title]} className="t-display" />

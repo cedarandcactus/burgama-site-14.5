@@ -127,6 +127,30 @@
 @utility rail {
   width: 100%;
   max-width: 438px;
+
+  @media (min-width: 700px) {
+    max-width: min(1440px, calc(100vw - 28px));
+  }
+}
+
+@utility reading-measure {
+  width: 100%;
+  max-width: 44rem;
+}
+
+@utility section-burgundy {
+  background-color: var(--surface-1);
+  color: var(--periwinkle);
+}
+
+@utility section-navy {
+  background-color: var(--navy);
+  color: var(--periwinkle);
+}
+
+@utility pair-invert {
+  background-color: var(--periwinkle);
+  color: var(--navy);
 }
 
 @utility wordmark {
@@ -273,6 +297,23 @@
   height: var(--shell-height);
   padding: 0 14px;
   gap: 11px;
+}
+
+@media (min-width: 700px) {
+  .burgama-shell {
+    width: min(1440px, calc(100vw - 28px)) !important;
+    background: rgb(14 18 37 / 0.94);
+  }
+
+  .burgama-shell::before,
+  .burgama-shell::after {
+    display: none;
+  }
+
+  .burgama-bar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding-inline: 18px;
+  }
 }
 
 @media (max-width: 580px) {

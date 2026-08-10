@@ -58,22 +58,24 @@ export default function StudioPage() {
   return (
     <>
       <section className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]">
-        <div className="rail mx-auto mb-6 flex flex-col gap-7">
+        <div className="rail mx-auto mb-6 grid gap-7 min-[900px]:grid-cols-12 min-[900px]:items-end">
           <AnimatedText
             as="h1"
             lines={['An independent studio', 'built around close', 'collaboration']}
-            className="t-display"
+            className="t-display min-[900px]:col-span-7 min-[900px]:text-7xl"
           />
-          <p className="t-body">
-            Burgama shapes identities and digital experiences for people with something
-            meaningful to make, staying close from the first conversation through launch.
-          </p>
-          <ModularButtonGroup
-            actions={[
-              { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
-              { label: 'Start a project', href: '/contact', basis: '56%', tone: 'surface-2' },
-            ]}
-          />
+          <div className="flex flex-col gap-7 min-[900px]:col-span-5">
+            <p className="t-body reading-measure">
+              Burgama shapes identities and digital experiences for people with something
+              meaningful to make, staying close from the first conversation through launch.
+            </p>
+            <ModularButtonGroup
+              actions={[
+                { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
+                { label: 'Start a project', href: '/contact', basis: '56%', tone: 'periwinkle' },
+              ]}
+            />
+          </div>
         </div>
       </section>
 
@@ -88,7 +90,7 @@ export default function StudioPage() {
           lines={['Capabilities']}
           className="t-title rail mx-auto mb-6"
         />
-        <div className="flex flex-wrap gap-module">
+        <div className="rail mx-auto flex flex-wrap gap-module">
           {CAPABILITIES.map((item) => (
             <div
               key={item.title}
@@ -113,7 +115,7 @@ export default function StudioPage() {
           lines={['Approach']}
           className="t-title rail mx-auto mb-6"
         />
-        <div className="flex flex-col gap-module md:flex-row">
+        <div className="rail mx-auto flex flex-col gap-module md:flex-row">
           {APPROACH.map((step) => (
             <div
               key={step.title}

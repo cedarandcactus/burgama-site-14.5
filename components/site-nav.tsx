@@ -123,7 +123,7 @@ export function SiteNav() {
           <div className="burgama-bar">
           <Link
             href="/contact"
-            className="t-ui justify-self-start rounded-sm px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
+            className="t-ui justify-self-start rounded-sm px-1 py-2 transition-colors duration-200 hover:text-periwinkle focus-visible:text-navy min-[700px]:hidden"
           >
             Start a project
           </Link>
@@ -143,10 +143,30 @@ export function SiteNav() {
             aria-expanded={open}
             aria-controls="site-menu"
             onClick={() => setOpen((value) => !value)}
-            className="t-ui justify-self-end rounded-sm px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
+            className="t-ui justify-self-end rounded-sm px-1 py-2 transition-colors duration-200 hover:text-periwinkle focus-visible:text-navy min-[700px]:hidden"
           >
             {open ? 'Close' : 'Menu'}
           </button>
+
+          <div className="hidden items-center justify-end gap-1 min-[700px]:flex">
+            {[
+              { label: 'Work', href: '/work' },
+              { label: 'Studio', href: '/studio' },
+              { label: 'Capabilities', href: '/#capabilities' },
+              { label: 'Contact', href: '/contact' },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                className={`t-ui rounded-sm px-3 py-2 transition-colors duration-200 hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy ${
+                  isActive(item.href) ? 'bg-periwinkle text-navy' : 'text-periwinkle'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
           </div>
         </div>
 
@@ -154,7 +174,7 @@ export function SiteNav() {
           id="site-menu"
           ref={panelRef}
           aria-hidden={!open}
-          className="grid w-full max-w-full transition-[grid-template-rows] duration-700 ease-module"
+          className="grid w-full max-w-full transition-[grid-template-rows] duration-700 ease-module min-[700px]:hidden"
           style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
         >
           <div className="overflow-hidden">

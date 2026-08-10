@@ -18,27 +18,29 @@ export default function HomePage() {
 
       <section
         aria-labelledby="premise-title"
-        className="premise-bridge px-module py-32 md:py-44"
+        className="premise-bridge section-burgundy px-module py-32 md:py-44"
       >
-        <div className="rail mx-auto flex flex-col items-center gap-7 text-center">
+        <div className="rail mx-auto grid items-end gap-10 min-[900px]:grid-cols-12 min-[900px]:gap-module">
           <AnimatedText
             as="h1"
             id="premise-title"
             lines={['Made for', 'what comes next']}
-            className="t-display w-full"
+            className="t-display w-full min-[900px]:col-span-7 min-[900px]:text-left min-[900px]:text-7xl"
           />
-          <p className="t-body text-pretty">
-            Burgama is a marketing and design studio building brands, digital experiences,
-            content and growth systems. The work begins with a point of view, then moves
-            across every place a brand meets its audience.
-          </p>
-          <ModularButtonGroup
-            className="premise-actions w-full"
-            actions={[
-              { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
-              { label: 'Start a project', href: '/contact', basis: '56%', tone: 'surface-2' },
-            ]}
-          />
+          <div className="flex flex-col gap-7 min-[900px]:col-span-5">
+            <p className="t-body reading-measure text-pretty">
+              Burgama is a marketing and design studio building brands, digital experiences,
+              content and growth systems. The work begins with a point of view, then moves
+              across every place a brand meets its audience.
+            </p>
+            <ModularButtonGroup
+              className="premise-actions w-full"
+              actions={[
+                { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
+                { label: 'Start a project', href: '/contact', basis: '56%', tone: 'periwinkle' },
+              ]}
+            />
+          </div>
         </div>
       </section>
 
@@ -46,25 +48,25 @@ export default function HomePage() {
 
       <section
         aria-labelledby="work-title"
-        className="flex flex-col gap-module px-module pb-28 md:pb-40"
+        className="section-burgundy flex flex-col gap-module px-module py-28 md:py-40"
       >
-        <div className="rail mx-auto mb-6 flex flex-col gap-4">
-          <AnimatedText as="h2" id="work-title" lines={['Selected work']} className="t-title" />
-          <p className="t-body">
+        <div className="rail mx-auto mb-6 grid gap-4 min-[900px]:grid-cols-12 min-[900px]:items-end">
+          <AnimatedText as="h2" id="work-title" lines={['Selected work']} className="t-title min-[900px]:col-span-7 min-[900px]:text-6xl" />
+          <p className="t-body reading-measure min-[900px]:col-span-5">
             Curated client stories spanning brand, web, marketing, content, production and
             growth—presented as connected engagements, not isolated deliverables.
           </p>
         </div>
 
-        <div className="rail mx-auto flex w-full flex-col gap-module">
-          <ProjectCard project={feature} size="feature" />
-          <ProjectCard project={second} size="feature" />
-          <ProjectCard project={third} size="feature" />
-          <ProjectCard project={fourth} size="feature" />
+        <div className="rail mx-auto grid w-full gap-module min-[900px]:grid-cols-12">
+          <ProjectCard project={feature} size="feature" className="min-[900px]:col-span-7" />
+          <ProjectCard project={second} size="feature" className="min-[900px]:col-span-5" />
+          <ProjectCard project={third} size="medium" className="min-[900px]:col-span-5" />
+          <ProjectCard project={fourth} size="medium" className="min-[900px]:col-span-7" />
 
           <Link
             href="/work"
-            className="t-section flex h-32 items-end rounded-module bg-surface-2 p-5 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:p-7"
+            className="t-section pair-invert flex h-32 items-end rounded-module p-5 transition-colors duration-300 ease-module hover:bg-surface-1 hover:text-periwinkle focus-visible:bg-surface-1 focus-visible:text-periwinkle md:p-7 min-[900px]:col-span-12"
           >
             All work
           </Link>

@@ -25,7 +25,7 @@ export default function ContactPage() {
           className="t-display rail mx-auto mb-6"
         />
 
-        <div className="flex flex-col gap-module md:flex-row">
+        <div className="rail mx-auto flex flex-col gap-module md:flex-row">
           <a
             href="mailto:hello@burgama.com"
             className="flex min-h-[36svh] flex-col justify-between gap-8 rounded-module bg-surface-1 p-6 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:basis-[58%] md:p-10"
@@ -57,7 +57,7 @@ export default function ContactPage() {
           lines={['Useful to include']}
           className="t-title rail mx-auto mb-6"
         />
-        <div className="flex flex-wrap gap-module">
+        <div className="rail mx-auto flex flex-wrap gap-module">
           {INCLUDE.map((item) => (
             <p
               key={item.label}
