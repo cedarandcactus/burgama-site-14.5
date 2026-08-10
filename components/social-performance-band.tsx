@@ -2,20 +2,32 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-const stats = [
-  { value: 286, suffix: 'K+', label: 'total views', tone: 'bg-surface-1', size: 'large' },
-  { value: 3.85, suffix: 'K', label: 'content sends', tone: 'bg-surface-2', size: 'medium' },
-  { value: 71.5, suffix: 'K', label: 'average views', tone: 'bg-surface-2', size: 'medium' },
-  { value: 963, suffix: '', label: 'average sends', tone: 'bg-surface-1', size: 'small' },
-  { value: 1.35, suffix: '%', label: 'view-to-send rate', tone: 'bg-periwinkle text-navy', size: 'small' },
+const socialStats = [
+  { value: 286, suffix: 'K+', label: 'views' },
+  { value: 3.85, suffix: 'K', label: 'sends' },
+  { value: 71.5, suffix: 'K', label: 'average views' },
+  { value: 1.35, suffix: '%', label: 'view-to-send rate' },
 ]
 
-const capabilities = [
-  ['Social strategy', 'Channel direction, campaign thinking and a clear plan for what gets made.'],
-  ['Content creation', 'Platform-native concepts, production and edits built to earn attention.'],
-  ['UGC', 'Creator-led content that feels natural in-feed while staying true to the brand.'],
-  ['Retailer collaborations', 'Coordinated content that connects brands with their retail partners.'],
-  ['Channel management', 'Publishing, iteration and ongoing stewardship across social channels.'],
+const studioCapabilities = [
+  {
+    eyebrow: 'Web',
+    title: 'Digital experiences with a job to do.',
+    body: 'Strategy, UX, visual design and development brought together as one connected customer experience.',
+    tone: 'bg-surface-1',
+  },
+  {
+    eyebrow: 'Brand',
+    title: 'Identity built for every place it needs to live.',
+    body: 'Positioning, visual systems and product thinking that give brands a clear and usable point of view.',
+    tone: 'bg-surface-2',
+  },
+  {
+    eyebrow: 'Content',
+    title: 'Stories shaped for the channel and the moment.',
+    body: 'Campaign concepts, photography, film, UGC and retailer collaborations made as one flexible content system.',
+    tone: 'bg-surface-1',
+  },
 ]
 
 function CountUp({ value, suffix }: { value: number; suffix: string }) {
@@ -26,8 +38,7 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
     const node = ref.current
     if (!node) return
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reducedMotion) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setDisplay(value)
       return
     }
@@ -36,16 +47,12 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
-
         const startedAt = performance.now()
-        const duration = 1200
         const animate = (now: number) => {
-          const progress = Math.min((now - startedAt) / duration, 1)
-          const eased = 1 - Math.pow(1 - progress, 4)
-          setDisplay(value * eased)
+          const progress = Math.min((now - startedAt) / 1200, 1)
+          setDisplay(value * (1 - Math.pow(1 - progress, 4)))
           if (progress < 1) frame = requestAnimationFrame(animate)
         }
-
         frame = requestAnimationFrame(animate)
         observer.disconnect()
       },
@@ -89,7 +96,7 @@ export function SocialPerformanceBand() {
         setVisible(true)
         observer.disconnect()
       },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
     )
 
     observer.observe(node)
@@ -97,74 +104,81 @@ export function SocialPerformanceBand() {
   }, [])
 
   return (
-    <section ref={ref} aria-labelledby="social-proof-title" className="px-module pb-28 md:pb-40">
+    <section ref={ref} aria-labelledby="studio-proof-title" className="px-module pb-28 md:pb-40">
       <div className="rail mx-auto flex flex-col gap-module overflow-hidden">
         <div className="overflow-hidden rounded-module bg-periwinkle p-5 text-navy md:p-7">
-          <p className="t-ui mb-12">Social media content creation</p>
-          <h2 id="social-proof-title" className="t-title text-balance">
-            <span className="block overflow-hidden">
-              <span
-                className="block transition-transform duration-700 ease-module motion-reduce:transform-none"
-                style={{ transform: visible ? 'translateY(0)' : 'translateY(110%)' }}
-              >
-                Performance,
+          <p className="t-ui mb-12">Burgama, broadly speaking</p>
+          <h2 id="studio-proof-title" className="t-title text-balance">
+            {['One studio.', 'Four connected practices.'].map((line, index) => (
+              <span key={line} className="block overflow-hidden">
+                <span
+                  className="block transition-transform duration-700 ease-module motion-reduce:transform-none"
+                  style={{
+                    transform: visible ? 'translateY(0)' : 'translateY(110%)',
+                    transitionDelay: `${index * 75}ms`,
+                  }}
+                >
+                  {line}
+                </span>
               </span>
-            </span>
-            <span className="block overflow-hidden">
-              <span
-                className="block transition-transform delay-75 duration-700 ease-module motion-reduce:transform-none"
-                style={{ transform: visible ? 'translateY(0)' : 'translateY(110%)' }}
-              >
-                in numbers.
-              </span>
-            </span>
+            ))}
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 gap-module">
-          {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className={`flex min-h-36 flex-col justify-between rounded-module p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-7 ${stat.tone} ${index === 0 ? 'col-span-2 min-h-52' : ''} ${index === 3 ? 'col-span-1' : ''}`}
-              style={{
-                transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,24%,0)',
-                transitionDelay: `${100 + index * 80}ms`,
-              }}
-            >
-              <strong
-                className={`font-serif leading-none tracking-[-0.06em] ${stat.size === 'large' ? 'text-7xl md:text-8xl' : stat.size === 'medium' ? 'text-5xl md:text-6xl' : 'text-4xl md:text-5xl'}`}
-              >
-                <CountUp value={stat.value} suffix={stat.suffix} />
-              </strong>
-              <span className="t-ui">{stat.label}</span>
+        {studioCapabilities.slice(0, 2).map((capability, index) => (
+          <article
+            key={capability.eyebrow}
+            className={`flex min-h-64 flex-col justify-between rounded-module p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-7 ${capability.tone}`}
+            style={{
+              transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)',
+              transitionDelay: `${120 + index * 90}ms`,
+            }}
+          >
+            <p className="t-ui">{capability.eyebrow}</p>
+            <div className="flex flex-col gap-4">
+              <h3 className="t-section text-balance">{capability.title}</h3>
+              <p className="t-body text-pretty">{capability.body}</p>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
 
-        <div className="mt-20 flex flex-col gap-module md:mt-28" aria-labelledby="social-capabilities-title">
-          <div className="rounded-module bg-surface-1 p-5 md:p-7">
-            <p className="t-ui mb-12">What we make</p>
-            <h3 id="social-capabilities-title" className="t-title text-balance">
-              Social systems built to move.
-            </h3>
-          </div>
-
-          <div className="flex flex-col gap-module">
-            {capabilities.map(([title, body], index) => (
-              <article
-                key={title}
-                className={`flex min-h-40 flex-col justify-between rounded-module p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-7 ${index % 2 === 0 ? 'bg-surface-2' : 'bg-surface-1'}`}
-                style={{
-                  transform: visible ? 'translate3d(0,0,0)' : 'translate3d(12%,0,0)',
-                  transitionDelay: `${400 + index * 70}ms`,
-                }}
+        <article
+          className="rounded-module bg-surface-2 p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-7"
+          style={{
+            transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)',
+            transitionDelay: '300ms',
+          }}
+        >
+          <p className="t-ui mb-12">Social</p>
+          <h3 className="t-section mb-7 text-balance">Content made to travel.</h3>
+          <div className="grid grid-cols-2 gap-module">
+            {socialStats.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={`flex min-h-32 flex-col justify-between rounded-module p-4 ${index === 0 ? 'col-span-2 bg-periwinkle text-navy' : 'bg-surface-1'}`}
               >
-                <h4 className="t-section text-balance">{title}</h4>
-                <p className="t-body text-pretty">{body}</p>
-              </article>
+                <strong className={`${index === 0 ? 'text-6xl md:text-7xl' : 'text-4xl md:text-5xl'} font-serif leading-none tracking-[-0.06em]`}>
+                  <CountUp value={stat.value} suffix={stat.suffix} />
+                </strong>
+                <span className="t-ui">{stat.label}</span>
+              </div>
             ))}
           </div>
-        </div>
+        </article>
+
+        {studioCapabilities.slice(2).map((capability) => (
+          <article
+            key={capability.eyebrow}
+            className={`flex min-h-64 flex-col justify-between rounded-module p-5 transition-transform delay-500 duration-700 ease-module motion-reduce:transform-none md:p-7 ${capability.tone}`}
+            style={{ transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)' }}
+          >
+            <p className="t-ui">{capability.eyebrow}</p>
+            <div className="flex flex-col gap-4">
+              <h3 className="t-section text-balance">{capability.title}</h3>
+              <p className="t-body text-pretty">{capability.body}</p>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   )
