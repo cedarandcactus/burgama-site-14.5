@@ -23,7 +23,7 @@ export default function HomePage() {
           <div className="pair-burgundy-invert flex min-h-[380px] flex-col justify-between rounded-module p-5 md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[520px]">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <p className="text-base font-medium leading-snug md:text-lg">Independent marketing + design studio</p>
-              <p className="max-w-80 text-right text-sm font-medium uppercase leading-snug tracking-[0.08em] md:text-base">
+              <p className="max-w-80 text-right text-sm font-medium leading-snug md:text-base">
                 Strategy / identity / experience / growth
               </p>
             </div>
