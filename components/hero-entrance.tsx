@@ -663,7 +663,7 @@ export function HeroEntrance({ videoSrc }: Props) {
           <button
             type="button"
             onClick={skip}
-            className="t-ui absolute right-3 bottom-3 z-10 h-control rounded-module bg-surface-2 px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+            className="absolute bottom-3 left-1/2 z-10 flex h-8 -translate-x-1/2 items-center rounded-module bg-surface-2 px-3 font-sans text-[11px] leading-none tracking-[0.08em] uppercase transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
           >
             Skip intro
           </button>
