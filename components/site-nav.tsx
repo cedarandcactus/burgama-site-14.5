@@ -123,7 +123,7 @@ export function SiteNav() {
           <div className="burgama-bar">
           <Link
             href="/contact"
-            className="t-ui justify-self-start rounded-module px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
+            className="t-ui justify-self-start rounded-sm px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
           >
             Start a project
           </Link>
@@ -132,7 +132,7 @@ export function SiteNav() {
             href="/"
             aria-label="Burgama, home"
             data-nav-brand
-            className="flex items-center justify-center rounded-module"
+            className="flex items-center justify-center rounded-sm"
             style={{ opacity: 'var(--nav-brand-opacity, 1)' }}
           >
             <BrandMark className="h-auto w-[58px] min-[581px]:w-[68px]" />
@@ -143,7 +143,7 @@ export function SiteNav() {
             aria-expanded={open}
             aria-controls="site-menu"
             onClick={() => setOpen((value) => !value)}
-            className="t-ui justify-self-end rounded-module px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
+            className="t-ui justify-self-end rounded-sm px-1 py-2 transition-colors duration-200 hover:text-surface-3 focus-visible:text-navy"
           >
             {open ? 'Close' : 'Menu'}
           </button>
@@ -154,7 +154,7 @@ export function SiteNav() {
           id="site-menu"
           ref={panelRef}
           aria-hidden={!open}
-          className="grid transition-[grid-template-rows] duration-700 ease-module"
+          className="grid w-full max-w-full transition-[grid-template-rows] duration-700 ease-module"
           style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
         >
           <div className="overflow-hidden">
