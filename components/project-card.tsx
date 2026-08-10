@@ -40,7 +40,7 @@ export function ProjectCard({
         <img
           src={project.heroMedia.src}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-module group-hover:scale-[1.025]"
+          className="project-card-parallax absolute inset-x-0 -top-[8%] h-[116%] w-full object-cover grayscale transition-[filter] duration-700 ease-module"
         />
       ) : null}
       {project.heroMedia.src ? (

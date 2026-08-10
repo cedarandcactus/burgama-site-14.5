@@ -776,6 +776,22 @@ html[data-entry-open='true'] body {
   }
 }
 
+@keyframes project-image-parallax {
+  from {
+    transform: translate3d(0, -5%, 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(0, 5%, 0) scale(1.02);
+  }
+}
+
+.project-card-parallax {
+  animation: project-image-parallax linear both;
+  animation-timeline: view();
+  animation-range: entry 0% exit 100%;
+  will-change: transform;
+}
+
 /* The mark's small breakpoint follows the closed nav shell, not the 760 split. */
 @media (max-width: 580px) {
   .founder-logo-drawing {
@@ -784,6 +800,11 @@ html[data-entry-open='true'] body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .project-card-parallax {
+    animation: none;
+    transform: none;
+  }
+
   *,
   *::before,
   *::after {
