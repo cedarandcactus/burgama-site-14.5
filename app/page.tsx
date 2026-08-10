@@ -15,20 +15,24 @@ export default function HomePage() {
       <EntryPreferences />
       <HeroEntrance videoSrc="/video/backlit-prickly-pear.mov" />
 
-      <section aria-labelledby="premise-title" className="px-module py-28 md:py-40">
-        <div className="rail mx-auto flex flex-col gap-7">
+      <section
+        aria-labelledby="premise-title"
+        className="premise-bridge px-module py-32 md:py-44"
+      >
+        <div className="rail mx-auto flex flex-col items-center gap-7 text-center">
           <AnimatedText
             as="h1"
             id="premise-title"
             lines={['Made for', 'what comes next']}
-            className="t-display"
+            className="t-display w-full"
           />
-          <p className="t-body">
+          <p className="t-body text-pretty">
             Burgama is a marketing and design studio building brands, digital experiences,
             content and growth systems. The work begins with a point of view, then moves
             across every place a brand meets its audience.
           </p>
           <ModularButtonGroup
+            className="premise-actions w-full"
             actions={[
               { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
               { label: 'Start a project', href: '/contact', basis: '56%', tone: 'surface-2' },
