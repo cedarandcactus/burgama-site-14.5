@@ -788,6 +788,24 @@ html[data-entry-open='true'] body {
   line-height: 1;
 }
 
+@keyframes social-data-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(7px, 0, 0);
+  }
+}
+
+.social-data-row:nth-child(odd) {
+  animation: social-data-drift 7s ease-in-out infinite;
+}
+
+.social-data-row:nth-child(even) {
+  animation: social-data-drift 8s ease-in-out infinite reverse;
+}
+
 @keyframes project-image-parallax {
   from {
     transform: translate3d(0, -8%, 0) scale(1.02);

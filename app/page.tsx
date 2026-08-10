@@ -5,6 +5,7 @@ import { HeroEntrance } from '@/components/hero-entrance'
 import { ModularButtonGroup } from '@/components/modular-buttons'
 import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
+import { SocialPerformanceBand } from '@/components/social-performance-band'
 import { featuredProjects } from '@/lib/projects'
 
 export default function HomePage() {
@@ -40,6 +41,8 @@ export default function HomePage() {
           />
         </div>
       </section>
+
+      <SocialPerformanceBand />
 
       <section
         aria-labelledby="work-title"
