@@ -225,6 +225,7 @@ html[data-entry-open='true'] body {
 .hero-sticky {
   position: sticky;
   top: 0;
+  z-index: 55;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
@@ -393,7 +394,9 @@ html[data-entry-open='true'] body {
 .hero-copy-layer {
   position: absolute;
   inset: 0;
-  z-index: 8;
+  /* The assembling mark is the navbar logo, so it sits above the nav shell
+     while the static copy is withheld. */
+  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;

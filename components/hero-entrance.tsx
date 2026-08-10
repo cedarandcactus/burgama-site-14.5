@@ -284,6 +284,9 @@ export function HeroEntrance({ videoSrc }: Props) {
       /* The nav only unwinds in the last one percent of the timeline. */
       const navUnwind = smoother((progress - 0.989) / 0.009)
       root.style.setProperty('--nav-unwind', navUnwind.toFixed(4))
+      /* The assembled overlay is the nav logo during the entrance. The static
+         copy only returns at the final unwind, making the handoff invisible. */
+      root.style.setProperty('--nav-brand-opacity', navUnwind >= 0.985 ? '1' : '0')
       root.style.setProperty(
         '--nav-current-width',
         `${lerp(compactNavWidth, navWidth, navUnwind).toFixed(2)}px`,
@@ -413,22 +416,43 @@ export function HeroEntrance({ videoSrc }: Props) {
         Through the note, the assembling mark occupies the exact position the
         navbar brand will later hold. Only afterwards does it move to center.
       */
-      const logoBoxWidth = viewportWidth < 760 ? 72 : 90
-      const closedShellHeight = viewportWidth <= 580 ? 44 : 46
-      const logoTopY = 13 + closedShellHeight * 0.5 - viewportHeight * 0.5
+      /*
+        This is the navbar logo itself continuing into the film. Read its real
+        rendered box instead of approximating from the navbar shell: that keeps
+        the assembled overlay pixel-aligned with the actual brand mark at every
+        viewport and breakpoint.
+      */
+      const navBrand = document.querySelector<HTMLElement>('[data-nav-brand]')
+      const navBrandMark = navBrand?.querySelector<SVGSVGElement>('svg')
+      const navBrandRect = navBrandMark?.getBoundingClientRect()
+      const logoBoxWidth = viewportWidth <= 580 ? 70 : 86
+      const navLogoWidth = navBrandRect?.width || logoBoxWidth
+      const navLogoCenterX = navBrandRect
+        ? navBrandRect.left + navBrandRect.width * 0.5 - viewportWidth * 0.5
+        : 0
+      const navLogoCenterY = navBrandRect
+        ? navBrandRect.top + navBrandRect.height * 0.5 - viewportHeight * 0.5
+        : 13 + (viewportWidth <= 580 ? 44 : 46) * 0.5 - viewportHeight * 0.5
       const expandedLogoWidth = Math.min(viewportWidth < 760 ? 205 : 292, viewportWidth - 38)
-      const logoDrawScale = lerp(1, expandedLogoWidth / logoBoxWidth, logoExpand)
+      const logoDrawScale = lerp(
+        navLogoWidth / logoBoxWidth,
+        expandedLogoWidth / logoBoxWidth,
+        logoExpand,
+      )
 
       logoStage.style.setProperty(
         '--logo-stage-y',
         `${(lerp(8, 0, logoIn) - logoOut * 2).toFixed(2)}px`,
       )
       logoStage.style.setProperty('--logo-stage-scale', lerp(0.99, 1, logoIn).toFixed(4))
-      logoStage.style.setProperty('--logo-draw-x', '0px')
+      logoStage.style.setProperty(
+        '--logo-draw-x',
+        `${lerp(navLogoCenterX, 0, logoCenterMove).toFixed(2)}px`,
+      )
       logoStage.style.setProperty(
         '--logo-draw-y',
         `${lerp(
-          lerp(logoTopY, 0, logoCenterMove),
+          lerp(navLogoCenterY, 0, logoCenterMove),
           -Math.min(10, viewportHeight * 0.012),
           logoExpand,
         ).toFixed(2)}px`,
@@ -530,6 +554,7 @@ export function HeroEntrance({ videoSrc }: Props) {
       if (raf) window.cancelAnimationFrame(raf)
       root.style.removeProperty('--nav-unwind')
       root.style.removeProperty('--nav-current-width')
+      root.style.removeProperty('--nav-brand-opacity')
     }
   }, [])
 

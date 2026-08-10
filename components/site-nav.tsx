@@ -85,9 +85,11 @@ export function SiteNav() {
           <Link
             href="/"
             aria-label="Burgama, home"
-            className="flex items-center justify-center rounded-sm px-2 py-2"
+            data-nav-brand
+            className="flex items-center justify-center rounded-sm"
+            style={{ opacity: 'var(--nav-brand-opacity, 1)' }}
           >
-            <BrandMark className="h-[18px] w-auto" />
+            <BrandMark className="h-auto w-[70px] min-[581px]:w-[86px]" />
           </Link>
 
           <button
