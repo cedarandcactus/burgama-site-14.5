@@ -44,19 +44,10 @@ export default async function ProjectPage({
     <>
       <article className="flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px]">
         <header className="flex flex-col gap-module">
-          <AnimatedText
-            as="h1"
-            lines={[project.title]}
-            className="t-display max-w-[16ch]"
-          />
-
-          <div className="flex flex-col gap-module md:flex-row md:items-end">
-            <AnimatedText
-              lines={project.introCopy}
-              className="t-section md:basis-[58%]"
-              delay={120}
-            />
-            <p className="t-body md:basis-[40%]">{project.summary}</p>
+          <div className="rail mx-auto mb-6 flex flex-col gap-6">
+            <AnimatedText as="h1" lines={[project.title]} className="t-display" />
+            <AnimatedText lines={project.introCopy} className="t-section" delay={120} />
+            <p className="t-body">{project.summary}</p>
           </div>
 
           <MediaFrame item={project.heroMedia} />

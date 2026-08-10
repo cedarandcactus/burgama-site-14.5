@@ -10,7 +10,8 @@ const LINKS = [
 export function SiteFooter() {
   return (
     <footer className="px-module pb-module">
-      <div className="flex flex-col gap-module rounded-module bg-surface-1 p-6 md:p-10">
+      <div className="rounded-module bg-surface-1 px-module py-12 md:py-16">
+        <div className="rail mx-auto flex flex-col gap-module">
         <AnimatedText
           as="h2"
           lines={['Start a project', 'with the studio']}
@@ -43,9 +44,10 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="flex items-end justify-between gap-module pt-6">
-          <BrandMark className="h-4 w-auto" />
-          <p className="t-ui">Burgama, independent design studio</p>
+          <div className="flex items-end justify-between gap-module pt-6">
+            <BrandMark className="h-4 w-auto" />
+            <p className="t-ui">Independent design studio</p>
+          </div>
         </div>
       </div>
     </footer>

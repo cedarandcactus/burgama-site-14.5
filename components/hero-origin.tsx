@@ -6,22 +6,24 @@ import { BrandMark } from '@/components/brand-mark'
 /** Placeholder origin copy. Swap freely — structure does not depend on it. */
 const PHRASES: string[][] = [
   [
-    'The studio has become clearer.',
-    'More selective in what we take on,',
-    'and more deliberate in what we make.',
+    'The studio has',
+    'become clearer.',
+    'More selective in',
+    'what we take on.',
   ],
   [
     'Closer collaboration.',
-    'Fewer assumptions. A direct line',
-    'between the people with the idea',
-    'and the people shaping it.',
+    'Fewer assumptions.',
+    'A direct line between',
+    'idea and outcome.',
   ],
   [
-    'Sharper ideas. Stronger identities.',
-    'Digital experiences and campaigns',
-    'made to last beyond the moment.',
+    'Sharper ideas.',
+    'Stronger identities.',
+    'Work made to last',
+    'beyond the moment.',
   ],
-  ['Less noise. More conviction.', 'That standard now has a name.'],
+  ['Less noise.', 'More conviction.', 'That standard', 'now has a name.'],
 ]
 
 const STAGES = PHRASES.length + 1
@@ -102,10 +104,10 @@ export function HeroOrigin({ videoSrc }: Props) {
             />
           ) : null}
 
-          <div className="relative flex w-full flex-col justify-between gap-8 p-6 md:p-10">
+          <div className="relative mx-auto flex w-full max-w-[452px] flex-col justify-between gap-8 px-module py-6 md:py-10">
             <p className="t-ui">A note from the founder</p>
 
-            <div className="relative rail h-[42svh] md:h-[38svh]">
+            <div className="relative rail h-[34svh]">
               {PHRASES.map((lines, index) => {
                 const state =
                   index === stage ? 'active' : index > stage ? 'future' : 'past'
@@ -166,7 +168,7 @@ export function HeroOrigin({ videoSrc }: Props) {
                       transitionDelay: stage === STAGES - 1 ? '120ms' : '0ms',
                     }}
                   >
-                    <BrandMark className="h-6 w-auto md:h-8" />
+                    <BrandMark className="h-11 w-auto md:h-14" />
                   </span>
                 </span>
               </div>

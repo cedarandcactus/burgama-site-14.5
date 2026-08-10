@@ -77,7 +77,7 @@ export function SiteNav() {
             aria-label="Burgama, home"
             className="flex items-center justify-center rounded-sm px-2 py-2"
           >
-            <BrandMark className="h-[15px] w-auto" />
+            <BrandMark className="h-[18px] w-auto" />
           </Link>
 
           <button

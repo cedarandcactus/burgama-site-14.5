@@ -17,14 +17,14 @@ export default function WorkPage() {
         aria-labelledby="work-index-title"
         className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]"
       >
-        <div className="flex flex-col gap-module md:flex-row md:items-end">
+        <div className="rail mx-auto mb-6 flex flex-col gap-4">
           <AnimatedText
             as="h1"
             id="work-index-title"
             lines={['Work']}
-            className="t-display md:basis-[56%]"
+            className="t-display"
           />
-          <p className="t-body md:basis-[44%]">
+          <p className="t-body">
             The archive runs on one project template. Size and placement carry the hierarchy,
             not labels.
           </p>

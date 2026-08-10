@@ -28,7 +28,11 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
 
   return (
     <div className="flex flex-col gap-module">
-      <div className="flex flex-wrap gap-module" role="group" aria-label="Filter by discipline">
+      <div
+        className="rail mx-auto mb-6 flex flex-wrap gap-module"
+        role="group"
+        aria-label="Filter by discipline"
+      >
         {options.map((option) => {
           const active = option === filter
           return (

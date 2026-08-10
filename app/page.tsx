@@ -13,8 +13,8 @@ export default function HomePage() {
     <>
       <HeroOrigin />
 
-      <section aria-labelledby="premise-title" className="px-module py-24 md:py-36">
-        <div className="rail mx-auto flex flex-col gap-8 md:mx-0 md:ml-[max(0px,calc(50vw-540px))]">
+      <section aria-labelledby="premise-title" className="px-module py-28 md:py-40">
+        <div className="rail mx-auto flex flex-col gap-7">
           <AnimatedText
             as="h1"
             id="premise-title"
@@ -36,16 +36,11 @@ export default function HomePage() {
 
       <section
         aria-labelledby="work-title"
-        className="flex flex-col gap-module px-module pb-24 md:pb-36"
+        className="flex flex-col gap-module px-module pb-28 md:pb-40"
       >
-        <div className="flex flex-col gap-module md:flex-row md:items-end">
-          <AnimatedText
-            as="h2"
-            id="work-title"
-            lines={['Selected work']}
-            className="t-title md:basis-[58%]"
-          />
-          <p className="t-body md:basis-[42%]">
+        <div className="rail mx-auto mb-6 flex flex-col gap-4">
+          <AnimatedText as="h2" id="work-title" lines={['Selected work']} className="t-title" />
+          <p className="t-body">
             Five working entries. Each one runs on the same template system, sized by what the
             project needs.
           </p>

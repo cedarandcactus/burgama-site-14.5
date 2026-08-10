@@ -58,28 +58,23 @@ export default function StudioPage() {
   return (
     <>
       <section className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]">
-        <AnimatedText
-          as="h1"
-          lines={['An independent studio', 'built around close', 'collaboration']}
-          className="t-display max-w-[22ch]"
-        />
-        <div className="flex flex-col gap-module md:flex-row">
-          <p className="t-body rounded-module bg-surface-1 p-6 md:basis-[56%]">
+        <div className="rail mx-auto mb-6 flex flex-col gap-7">
+          <AnimatedText
+            as="h1"
+            lines={['An independent studio', 'built around close', 'collaboration']}
+            className="t-display"
+          />
+          <p className="t-body">
             Burgama shapes identities and digital experiences for people with something
             meaningful to make, staying close from the first conversation through launch.
           </p>
-          <p className="t-body rounded-module bg-surface-2 p-6 md:basis-[42%]">
-            Placeholder studio copy. Replace with the final approved language when it lands —
-            the structure will not need to change.
-          </p>
+          <ModularButtonGroup
+            actions={[
+              { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
+              { label: 'Start a project', href: '/contact', basis: '56%', tone: 'surface-2' },
+            ]}
+          />
         </div>
-        <ModularButtonGroup
-          className="rail"
-          actions={[
-            { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
-            { label: 'Start a project', href: '/contact', basis: '56%', tone: 'surface-2' },
-          ]}
-        />
       </section>
 
       <section
@@ -91,14 +86,14 @@ export default function StudioPage() {
           as="h2"
           id="capabilities-title"
           lines={['Capabilities']}
-          className="t-title"
+          className="t-title rail mx-auto mb-6"
         />
         <div className="flex flex-wrap gap-module">
           {CAPABILITIES.map((item) => (
             <div
               key={item.title}
               style={{ flexBasis: item.basis, flexGrow: 1 }}
-              className={`flex min-w-[260px] min-h-[34svh] flex-col justify-between gap-6 rounded-module p-6 ${item.tone}`}
+              className={`flex min-h-[220px] min-w-[260px] flex-col justify-between gap-8 rounded-module p-6 ${item.tone}`}
             >
               <h3 className="t-section max-w-[18ch]">{item.title}</h3>
               <p className="t-body max-w-[40ch]">{item.body}</p>
@@ -112,7 +107,12 @@ export default function StudioPage() {
         aria-labelledby="approach-title"
         className="flex flex-col gap-module px-module pb-24 md:scroll-mt-24 md:pb-36"
       >
-        <AnimatedText as="h2" id="approach-title" lines={['Approach']} className="t-title" />
+        <AnimatedText
+          as="h2"
+          id="approach-title"
+          lines={['Approach']}
+          className="t-title rail mx-auto mb-6"
+        />
         <div className="flex flex-col gap-module md:flex-row">
           {APPROACH.map((step) => (
             <div

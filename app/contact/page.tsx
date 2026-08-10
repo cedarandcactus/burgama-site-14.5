@@ -22,7 +22,7 @@ export default function ContactPage() {
         <AnimatedText
           as="h1"
           lines={['Start a project']}
-          className="t-display"
+          className="t-display rail mx-auto mb-6"
         />
 
         <div className="flex flex-col gap-module md:flex-row">
@@ -55,7 +55,7 @@ export default function ContactPage() {
           as="h2"
           id="include-title"
           lines={['Useful to include']}
-          className="t-title"
+          className="t-title rail mx-auto mb-6"
         />
         <div className="flex flex-wrap gap-module">
           {INCLUDE.map((item) => (

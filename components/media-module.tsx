@@ -24,12 +24,12 @@ export function MediaFrame({
         }`}
       >
         {item.src ? (
-          <img
-            src={item.src || '/placeholder.svg'}
-            alt={item.label}
-            className="h-full w-full object-cover"
-          />
-        ) : null}
+          <img src={item.src} alt={item.label} className="h-full w-full object-cover" />
+        ) : (
+          <span className="t-ui absolute bottom-5 left-5" aria-hidden="true">
+            Image slot
+          </span>
+        )}
       </div>
       <figcaption className="t-ui">{item.label}</figcaption>
     </figure>
