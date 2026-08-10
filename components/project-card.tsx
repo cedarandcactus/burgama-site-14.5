@@ -47,7 +47,16 @@ export function ProjectCard({
         <span className="absolute inset-0 bg-navy/65 transition-colors duration-500 group-hover:bg-navy/52" />
       ) : null}
 
-      <span className="t-ui relative z-10">{project.disciplines.join(' · ')}</span>
+      <span className="relative z-10 flex flex-wrap gap-1.5">
+        {project.disciplines.slice(0, 3).map((discipline) => (
+          <span
+            key={discipline}
+            className="rounded-sm bg-periwinkle px-2 py-1 font-sans text-[11px] leading-none text-navy"
+          >
+            {discipline}
+          </span>
+        ))}
+      </span>
 
       <span className="relative z-10 flex flex-col gap-3">
         <span className={`${TITLE[size]} block`}>{project.title}</span>
