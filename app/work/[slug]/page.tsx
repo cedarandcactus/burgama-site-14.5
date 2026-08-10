@@ -52,7 +52,7 @@ export default async function ProjectPage({
     <>
       <article className={`rail mx-auto flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px] ${project.slug === 'wurqly' ? 'wurqly-case-study' : ''}`}>
         {project.slug === 'wurqly' ? (
-          <header className="wurqly-hero relative flex min-h-[78svh] items-center justify-center overflow-hidden rounded-module p-4 md:min-h-[680px] md:p-8">
+          <header className="wurqly-hero relative flex min-h-[86svh] items-end overflow-hidden px-module pb-14 pt-28 md:min-h-[760px] md:pb-20">
             <video
               src={project.heroMedia.src}
               poster={project.heroMedia.poster}
@@ -72,10 +72,10 @@ export default async function ProjectPage({
               />
             ) : null}
             <div className="wurqly-hero-wash absolute inset-0" />
-            <div className="wurqly-hero-glass relative z-10 flex w-full max-w-4xl flex-col items-center gap-7 rounded-module p-7 text-center md:p-12">
+            <div className="wurqly-hero-copy relative z-10 flex w-full max-w-2xl flex-col gap-6 md:ml-auto md:items-end md:text-right">
               <AnimatedText as="h1" lines={[project.title]} className="t-display" />
               <AnimatedText lines={project.introCopy} className="t-section max-w-[18ch]" delay={120} />
-              <p className="t-body max-w-[54ch] text-pretty">{project.summary}</p>
+              <p className="t-body max-w-[48ch] text-pretty">{project.summary}</p>
             </div>
           </header>
         ) : (
@@ -89,12 +89,12 @@ export default async function ProjectPage({
           </header>
         )}
 
-        <section aria-label="Project information" className="flex flex-wrap gap-module">
+        <section aria-label="Project information" className={`flex flex-wrap gap-module ${project.slug === 'wurqly' ? 'wurqly-project-info' : ''}`}>
           {meta.map((row) => (
             <div
               key={row.label}
               style={{ flexBasis: row.basis, flexGrow: 1 }}
-              className={`flex min-w-[220px] flex-col gap-2 rounded-module bg-surface-1 p-5 ${project.slug === 'wurqly' ? 'wurqly-bordered-module' : ''}`}
+              className="flex min-w-[220px] flex-col gap-2 rounded-module bg-surface-1 p-5"
             >
               <span className="t-body">{row.label}</span>
               <span className="t-body">{row.value}</span>
