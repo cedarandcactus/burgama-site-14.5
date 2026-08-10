@@ -168,11 +168,9 @@ export const projects: Project[] = [
       {
         type: 'media',
         item: {
-          label: 'The Wurqly identity in motion',
-          ratio: 'video',
-          src: '/work/wurqly/brand-motion.mp4',
-          poster: '/work/wurqly/shaded-logo.png',
-          mediaType: 'video',
+          label: 'The Wurqly identity system',
+          ratio: 'wide',
+          src: '/work/wurqly/shaded-logo.png',
           tone: 'surface-2',
         },
       },
@@ -195,7 +193,7 @@ export const projects: Project[] = [
         type: 'text',
         title: 'Identity',
         body: [
-          'The identity pairs a vivid cobalt signal with a near-black foundation. Its continuous, dimensional lettering suggests workflow, connection and forward movement without falling into familiar software symbolism.',
+          'The identity pairs a vivid cobalt signal with a calm periwinkle field. Its continuous, dimensional lettering suggests workflow, connection and forward movement without falling into familiar software symbolism.',
           'The system was designed to remain recognizable from a full-screen launch moment down to practical sales, product and recruiting applications.',
         ],
       },

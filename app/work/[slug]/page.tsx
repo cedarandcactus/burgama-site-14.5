@@ -51,15 +51,43 @@ export default async function ProjectPage({
   return (
     <>
       <article className={`rail mx-auto flex flex-col gap-16 px-module pt-[92px] md:gap-24 md:pt-[140px] ${project.slug === 'wurqly' ? 'wurqly-case-study' : ''}`}>
-        <header className="flex flex-col gap-module">
-          <div className="rail mx-auto mb-6 flex flex-col gap-6">
-            <AnimatedText as="h1" lines={[project.title]} className="t-display" />
-            <AnimatedText lines={project.introCopy} className="t-section" delay={120} />
-            <p className="t-body">{project.summary}</p>
-          </div>
-
-          <MediaFrame item={project.heroMedia} />
-        </header>
+        {project.slug === 'wurqly' ? (
+          <header className="wurqly-hero relative flex min-h-[78svh] items-end overflow-hidden rounded-module p-3 md:min-h-[680px] md:p-5">
+            <video
+              src={project.heroMedia.src}
+              poster={project.heroMedia.poster}
+              muted
+              loop
+              autoPlay
+              playsInline
+              preload="metadata"
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+            />
+            {project.heroMedia.poster ? (
+              <img
+                src={project.heroMedia.poster}
+                alt=""
+                className="absolute inset-0 hidden h-full w-full object-cover motion-reduce:block"
+              />
+            ) : null}
+            <div className="wurqly-hero-wash absolute inset-0" />
+            <div className="wurqly-hero-glass relative z-10 flex w-full max-w-3xl flex-col gap-6 rounded-module p-6 md:p-9">
+              <AnimatedText as="h1" lines={[project.title]} className="t-display" />
+              <AnimatedText lines={project.introCopy} className="t-section" delay={120} />
+              <p className="t-body max-w-[58ch]">{project.summary}</p>
+            </div>
+          </header>
+        ) : (
+          <header className="flex flex-col gap-module">
+            <div className="rail mx-auto mb-6 flex flex-col gap-6">
+              <AnimatedText as="h1" lines={[project.title]} className="t-display" />
+              <AnimatedText lines={project.introCopy} className="t-section" delay={120} />
+              <p className="t-body">{project.summary}</p>
+            </div>
+            <MediaFrame item={project.heroMedia} />
+          </header>
+        )}
 
         <section aria-label="Project information" className="flex flex-wrap gap-module">
           {meta.map((row) => (
