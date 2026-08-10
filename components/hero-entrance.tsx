@@ -414,7 +414,8 @@ export function HeroEntrance({ videoSrc }: Props) {
         navbar brand will later hold. Only afterwards does it move to center.
       */
       const logoBoxWidth = viewportWidth < 760 ? 72 : 90
-      const logoTopY = 13 + 46 * 0.5 - viewportHeight * 0.5
+      const closedShellHeight = viewportWidth <= 580 ? 44 : 46
+      const logoTopY = 13 + closedShellHeight * 0.5 - viewportHeight * 0.5
       const expandedLogoWidth = Math.min(viewportWidth < 760 ? 205 : 292, viewportWidth - 38)
       const logoDrawScale = lerp(1, expandedLogoWidth / logoBoxWidth, logoExpand)
 

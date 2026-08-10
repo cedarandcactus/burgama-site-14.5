@@ -581,7 +581,12 @@ html[data-entry-open='true'] body {
 .founder-logo-drawing {
   display: grid;
   place-items: center;
-  width: 90px;
+  /*
+    The source's CSS base (86px) is deliberately slightly smaller than the
+    JS logical box (90px), which keeps the expanded mark restrained at
+    ~279px rather than the logical 292px. Do not "correct" this mismatch.
+  */
+  width: 86px;
   transform: translate3d(var(--logo-draw-x, 0px), var(--logo-draw-y, 0px), 0)
     scale(var(--logo-draw-scale, 1));
   transform-origin: center;
@@ -611,9 +616,12 @@ html[data-entry-open='true'] body {
   .hero-scroll {
     min-height: 3280vh;
   }
+}
 
+/* The mark's small breakpoint follows the closed nav shell, not the 760 split. */
+@media (max-width: 580px) {
   .founder-logo-drawing {
-    width: 72px;
+    width: 70px;
   }
 }
 
