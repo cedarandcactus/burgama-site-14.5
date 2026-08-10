@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <>
       <EntryPreferences />
-      <HeroEntrance />
+      <HeroEntrance videoSrc="/video/backlit-prickly-pear.mov" />
 
       <section aria-labelledby="premise-title" className="px-module py-28 md:py-40">
         <div className="rail mx-auto flex flex-col gap-7">

@@ -584,7 +584,10 @@ export function HeroEntrance({ videoSrc }: Props) {
                 aria-hidden="true"
                 disablePictureInPicture
               >
-                <source src={videoSrc} type="video/mp4" />
+                <source
+                  src={videoSrc}
+                  {...(!videoSrc.toLowerCase().endsWith('.mov') ? { type: 'video/mp4' } : {})}
+                />
               </video>
             ) : null}
             <div className="hero-shadow" />
