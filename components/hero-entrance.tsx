@@ -425,8 +425,7 @@ export function HeroEntrance({ videoSrc }: Props) {
       const navBrand = document.querySelector<HTMLElement>('[data-nav-brand]')
       const navBrandMark = navBrand?.querySelector<SVGSVGElement>('svg')
       const navBrandRect = navBrandMark?.getBoundingClientRect()
-      const logoBoxWidth = viewportWidth <= 580 ? 70 : 86
-      const navLogoWidth = navBrandRect?.width || logoBoxWidth
+      const navLogoWidth = navBrandRect?.width || (viewportWidth <= 580 ? 70 : 86)
       const navLogoCenterX = navBrandRect
         ? navBrandRect.left + navBrandRect.width * 0.5 - viewportWidth * 0.5
         : 0
@@ -434,11 +433,7 @@ export function HeroEntrance({ videoSrc }: Props) {
         ? navBrandRect.top + navBrandRect.height * 0.5 - viewportHeight * 0.5
         : 13 + (viewportWidth <= 580 ? 44 : 46) * 0.5 - viewportHeight * 0.5
       const expandedLogoWidth = Math.min(viewportWidth < 760 ? 205 : 292, viewportWidth - 38)
-      const logoDrawScale = lerp(
-        navLogoWidth / logoBoxWidth,
-        expandedLogoWidth / logoBoxWidth,
-        logoExpand,
-      )
+      const logoDrawWidth = lerp(navLogoWidth, expandedLogoWidth, logoExpand)
 
       logoStage.style.setProperty(
         '--logo-stage-y',
@@ -457,7 +452,7 @@ export function HeroEntrance({ videoSrc }: Props) {
           logoExpand,
         ).toFixed(2)}px`,
       )
-      logoStage.style.setProperty('--logo-draw-scale', logoDrawScale.toFixed(4))
+      logoStage.style.setProperty('--logo-draw-width', `${logoDrawWidth.toFixed(2)}px`)
       logoStage.setAttribute('aria-hidden', String(logoStageOpacity < 0.08))
 
       logoPaths.forEach((path, index) => {
@@ -632,9 +627,11 @@ export function HeroEntrance({ videoSrc }: Props) {
                   <div className="founder-logo-drawing">
                     <svg
                       className="founder-end-logo"
-                      viewBox="0 0 2142 1195"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
+              viewBox="0 0 2142 1195"
+              preserveAspectRatio="xMidYMid meet"
+              shapeRendering="geometricPrecision"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
                       focusable="false"
                     >
                       {BURGAMA_PATHS.map((d) => (

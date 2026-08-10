@@ -589,11 +589,12 @@ html[data-entry-open='true'] body {
     JS logical box (90px), which keeps the expanded mark restrained at
     ~279px rather than the logical 292px. Do not "correct" this mismatch.
   */
-  width: 86px;
-  transform: translate3d(var(--logo-draw-x, 0px), var(--logo-draw-y, 0px), 0)
-    scale(var(--logo-draw-scale, 1));
+  width: var(--logo-draw-width, 86px);
+  transform: translate3d(var(--logo-draw-x, 0px), var(--logo-draw-y, 0px), 0);
   transform-origin: center;
-  will-change: transform;
+  /* Width is animated instead of transform-scale so Chromium rerasterizes the
+     SVG at its current dimensions rather than magnifying a small cached layer. */
+  will-change: width, transform;
 }
 
 .founder-end-logo {
@@ -624,7 +625,7 @@ html[data-entry-open='true'] body {
 /* The mark's small breakpoint follows the closed nav shell, not the 760 split. */
 @media (max-width: 580px) {
   .founder-logo-drawing {
-    width: 70px;
+    width: var(--logo-draw-width, 70px);
   }
 }
 
