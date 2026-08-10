@@ -8,7 +8,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { featuredProjects } from '@/lib/projects'
 
 export default function HomePage() {
-  const [feature, second, third] = featuredProjects
+  const [feature, second, third, fourth] = featuredProjects
 
   return (
     <>
@@ -57,6 +57,7 @@ export default function HomePage() {
           <ProjectCard project={feature} size="feature" />
           <ProjectCard project={second} size="feature" />
           <ProjectCard project={third} size="feature" />
+          <ProjectCard project={fourth} size="feature" />
 
           <Link
             href="/work"

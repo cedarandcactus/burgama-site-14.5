@@ -121,6 +121,22 @@ export const projects: Project[] = [
     ], credits: [{ role: 'Content and production', name: 'Burgama' }], outcomes: ['A multidisciplinary content library spanning commercial, UGC and retail formats.'], externalUrl: 'https://www.instagram.com/reel/DW9Tvp7kYqJ/', externalLabel: 'View selected AVRO content', nextProjectSlug: 'wurqly',
   },
   {
+    id: 'hiking-pony', slug: 'hiking-pony', title: 'Hiking Pony', client: 'Hiking Pony', year: 'Selected work',
+    summary: 'A connected website, product design and social presence for an outdoor-minded brand.',
+    disciplines: ['Web', 'Content', 'Marketing'], services: ['Website', 'Product design', 'Social'], role: 'Digital, product and social partner', collaborators: [],
+    heroMedia: { label: 'Hiking Pony digital and product experience', ratio: 'full', src: '/work/hiking-pony/cover.png', tone: 'surface-1' },
+    introCopy: ['One product world,', 'from interface to feed.'],
+    contentModules: [
+      { type: 'text', title: 'The engagement', body: ['Burgama worked with Hiking Pony across website, product design and social—building a consistent experience from the product itself to the places audiences meet it.'] },
+      { type: 'media', item: { label: 'Hiking Pony website and product design', ratio: 'wide', src: '/work/hiking-pony/cover.png', tone: 'surface-1' } },
+      { type: 'process', title: 'Connected touchpoints', steps: [
+        { title: 'Website', body: 'A focused digital home for the brand and its product story.' },
+        { title: 'Product', body: 'Product design shaped around a clear, useful customer experience.' },
+        { title: 'Social', body: 'A channel presence that carries the same visual and verbal system.' },
+      ] },
+    ], credits: [{ role: 'Website, product design and social', name: 'Burgama' }], outcomes: ['A consistent brand experience across website, product and social.'], nextProjectSlug: 'matchday',
+  },
+  {
     id: 'wurqly', slug: 'wurqly', title: 'Wurqly', client: 'Wurqly', year: 'Selected work',
     summary: 'A technology brand and website for a field-service platform built around people.',
     disciplines: ['Brand', 'Web'], services: ['Branding', 'Website'], role: 'Brand and digital partner', collaborators: [],
@@ -152,7 +168,9 @@ export const projects: Project[] = [
 
 export const disciplines: Discipline[] = ['Brand', 'Web', 'Marketing', 'Content', 'Production', 'Growth']
 export function getProject(slug: string) { return projects.find((project) => project.slug === slug) }
-export const featuredProjects = [projects[0], projects[1], projects[2]]
+export const featuredProjects = ['wurqly', 'avro', 'hiking-pony', 'matchday'].map(
+  (slug) => projects.find((project) => project.slug === slug)!,
+)
 export const toneClass: Record<Tone, string> = {
   'surface-1': 'bg-surface-1 text-foreground', 'surface-2': 'bg-surface-2 text-foreground',
   'surface-3': 'bg-surface-3 text-foreground', periwinkle: 'bg-periwinkle text-navy',
