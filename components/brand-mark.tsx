@@ -20,8 +20,6 @@ export function BrandMark({ className }: { className?: string }) {
     <svg
       className={className}
       viewBox="0 0 2142 1195"
-      preserveAspectRatio="xMidYMid meet"
-      shapeRendering="geometricPrecision"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
