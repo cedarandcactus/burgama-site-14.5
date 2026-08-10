@@ -165,7 +165,9 @@
 }
 
 .premise-bridge {
+  position: relative;
   overflow: hidden;
+  color: var(--periwinkle);
   background: var(--surface-1);
 }
 
@@ -174,47 +176,34 @@
   isolation: isolate;
   overflow: hidden;
   background:
-    radial-gradient(92% 120% at 2% 8%, rgb(152 158 201 / 0.96) 0%, rgb(152 158 201 / 0.2) 52%, transparent 72%),
-    radial-gradient(82% 110% at 94% 92%, rgb(78 11 40 / 0.98) 0%, rgb(78 11 40 / 0.3) 54%, transparent 76%),
-    linear-gradient(132deg, var(--surface-1), var(--periwinkle));
-  background-size: 135% 135%, 145% 145%, 100% 100%;
-  animation: premise-drift 16s ease-in-out infinite alternate;
+    radial-gradient(92% 84% at 52% 0%, rgb(152 158 201 / 0.72) 0%, rgb(152 158 201 / 0.22) 50%, transparent 72%),
+    radial-gradient(88% 96% at 8% 38%, rgb(152 158 201 / 0.64) 0%, transparent 68%),
+    radial-gradient(94% 106% at 96% 66%, rgb(78 11 40 / 0.98) 0%, rgb(78 11 40 / 0.44) 58%, transparent 80%),
+    linear-gradient(156deg, var(--periwinkle) 0%, var(--surface-1) 72%, var(--surface-1) 100%);
+  background-size: 132% 132%, 140% 140%, 138% 138%, 100% 100%;
+  animation: premise-drift 18s ease-in-out infinite alternate;
 }
 
 .premise-atmosphere::before {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -22%;
+  inset: -20%;
   background:
-    radial-gradient(circle at 38% 35%, rgb(152 158 201 / 0.76), transparent 32%),
-    radial-gradient(circle at 68% 62%, rgb(78 11 40 / 0.88), transparent 38%);
-  filter: blur(44px) saturate(118%);
-  animation: premise-bloom 20s ease-in-out infinite alternate;
+    radial-gradient(circle at 30% 28%, rgb(152 158 201 / 0.72), transparent 34%),
+    radial-gradient(circle at 72% 64%, rgb(78 11 40 / 0.92), transparent 42%);
+  filter: blur(56px) saturate(120%);
+  animation: premise-bloom 22s ease-in-out infinite alternate;
 }
 
-.premise-glass {
-  position: relative;
-  color: var(--periwinkle);
-  background: rgb(78 11 40 / 0.52);
-  border: 0;
-  outline: 0;
-  backdrop-filter: blur(28px) saturate(145%);
-  -webkit-backdrop-filter: blur(28px) saturate(145%);
-}
-
-.premise-glass::after {
+.premise-atmosphere::after {
   content: '';
   position: absolute;
+  z-index: -1;
+  inset: auto 0 0;
+  height: 24%;
+  background: linear-gradient(180deg, transparent, var(--navy));
   pointer-events: none;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(118deg, rgb(152 158 201 / 0.16), transparent 36%, rgb(78 11 40 / 0.18));
-}
-
-.premise-glass > * {
-  position: relative;
-  z-index: 1;
 }
 
 .premise-link {
@@ -245,10 +234,6 @@
 @keyframes premise-bloom {
   from { transform: translate3d(-3%, -2%, 0) scale(1); }
   to { transform: translate3d(4%, 3%, 0) scale(1.1); }
-}
-
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .premise-glass { background: rgb(78 11 40 / 0.9); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -638,10 +623,9 @@ html[data-entry-open='true'] body {
 }
 
 /*
-  The film-to-navy resolve. This sits above the SAME video: its ::before is the
-  closing film palette and its ::after is the exact solid site field, so there
-  is no second video and no visible seam into the page below.
-*/
+  The film resolves into the same gradient that begins the premise scene below,
+  keeping the final sticky frame and the next full-width section continuous.
+  */
 .hero-color-transition {
   position: absolute;
   inset: 0;
@@ -659,23 +643,18 @@ html[data-entry-open='true'] body {
 .hero-color-transition::before {
   opacity: var(--film-tint);
   transform: translate3d(0, var(--film-veil-y), 0);
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 28%,
-    rgb(110 29 66 / 0.045) 42%,
-    rgb(110 29 66 / 0.12) 52%,
-    rgb(122 83 113 / 0.19) 61%,
-    rgb(83 94 132 / 0.3) 72%,
-    rgb(23 35 77 / 0.61) 84%,
-    rgb(8 17 50 / 0.91) 94%,
-    var(--experience-navy) 100%
-  );
+  background:
+    radial-gradient(92% 84% at 52% 100%, rgb(152 158 201 / 0.72) 0%, rgb(152 158 201 / 0.22) 50%, transparent 72%),
+    linear-gradient(180deg, transparent 0%, rgb(110 29 66 / 0.08) 42%, rgb(152 158 201 / 0.62) 100%);
 }
 
 .hero-color-transition::after {
   opacity: var(--film-solid);
-  background: var(--experience-navy);
+  background:
+    radial-gradient(92% 84% at 52% 100%, rgb(152 158 201 / 0.72) 0%, rgb(152 158 201 / 0.22) 50%, transparent 72%),
+    radial-gradient(88% 96% at 8% 62%, rgb(152 158 201 / 0.64) 0%, transparent 68%),
+    radial-gradient(94% 106% at 96% 34%, rgb(78 11 40 / 0.98) 0%, rgb(78 11 40 / 0.44) 58%, transparent 80%),
+    linear-gradient(24deg, var(--periwinkle) 0%, var(--surface-1) 72%, var(--surface-1) 100%);
 }
 
 .hero-copy-layer {

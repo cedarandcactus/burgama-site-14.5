@@ -15,19 +15,16 @@ export default function HomePage() {
       <EntryPreferences />
       <HeroEntrance videoSrc="/video/backlit-prickly-pear.mov" />
 
-      <section
-        aria-labelledby="premise-title"
-        className="premise-bridge section-burgundy px-module py-32 md:py-44"
-      >
-        <div className="premise-atmosphere rail mx-auto rounded-module p-module">
-          <div className="premise-glass flex min-h-[440px] flex-col justify-between gap-16 rounded-module p-6 md:min-h-[520px] md:p-10 min-[900px]:p-14">
+      <section aria-labelledby="premise-title" className="premise-bridge">
+        <div className="premise-atmosphere">
+          <div className="rail mx-auto flex min-h-[100svh] flex-col justify-between gap-16 px-5 pb-16 pt-28 md:px-10 md:pb-20 md:pt-36 min-[900px]:px-14 min-[900px]:pb-24">
             <AnimatedText
               as="h1"
               id="premise-title"
               lines={['Made for', 'what comes next']}
               className="max-w-5xl font-serif text-[clamp(3.25rem,8.5vw,8rem)] leading-[0.84] tracking-[-0.065em]"
             />
-            <div className="flex flex-col gap-7 min-[760px]:flex-row min-[760px]:items-end min-[760px]:justify-between">
+            <div className="flex flex-col gap-8 min-[760px]:flex-row min-[760px]:items-end min-[760px]:justify-between">
               <p className="max-w-xl text-base leading-relaxed text-pretty md:text-lg">
                 Burgama builds brands, digital experiences, content and growth systems as one connected practice—from the first point of view to every place an audience meets it.
               </p>
