@@ -20,23 +20,25 @@ export default function HomePage() {
         aria-labelledby="premise-title"
         className="premise-bridge section-burgundy px-module py-32 md:py-44"
       >
-        <div className="rail mx-auto grid items-end gap-10 min-[900px]:grid-cols-12 min-[900px]:gap-module">
-          <AnimatedText
-            as="h1"
-            id="premise-title"
-            lines={['Made for', 'what comes next']}
-            className="t-display w-full min-[900px]:col-span-7 min-[900px]:text-left min-[900px]:text-7xl"
-          />
-          <div className="flex flex-col gap-7 min-[900px]:col-span-5">
-            <p className="t-body reading-measure text-pretty">
-              Burgama is a marketing and design studio building brands, digital experiences,
-              content and growth systems. The work begins with a point of view, then moves
-              across every place a brand meets its audience.
+        <div className="rail mx-auto grid gap-module min-[900px]:grid-cols-12">
+          <div className="pair-burgundy-invert flex min-h-80 flex-col justify-between rounded-module p-5 md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[520px]">
+            <p className="t-ui">Independent marketing + design studio</p>
+            <AnimatedText
+              as="h1"
+              id="premise-title"
+              lines={['Made for', 'what comes next']}
+              className="t-display w-full min-[900px]:text-left min-[900px]:text-7xl"
+            />
+          </div>
+          <div className="flex min-h-80 flex-col justify-between rounded-module bg-surface-1 p-5 md:p-8 min-[900px]:col-span-5 min-[900px]:min-h-[520px]">
+            <p className="t-body reading-measure max-w-[36ch] text-pretty">
+              Burgama builds brands, digital experiences, content and growth systems as one
+              connected practice—from the first point of view to every place an audience meets it.
             </p>
             <ModularButtonGroup
               className="premise-actions w-full"
               actions={[
-                { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
+                { label: 'Selected work', href: '/work', basis: '44%', tone: 'periwinkle' },
                 { label: 'Start a project', href: '/contact', basis: '56%', tone: 'periwinkle' },
               ]}
             />
@@ -66,7 +68,7 @@ export default function HomePage() {
 
           <Link
             href="/work"
-            className="t-section pair-invert flex h-32 items-end rounded-module p-5 transition-colors duration-300 ease-module hover:bg-surface-1 hover:text-periwinkle focus-visible:bg-surface-1 focus-visible:text-periwinkle md:p-7 min-[900px]:col-span-12"
+            className="t-section pair-burgundy-invert flex h-32 items-end rounded-module p-5 transition-colors duration-300 ease-module hover:bg-surface-1 hover:text-periwinkle focus-visible:bg-surface-1 focus-visible:text-periwinkle md:p-7 min-[900px]:col-span-12"
           >
             All work
           </Link>

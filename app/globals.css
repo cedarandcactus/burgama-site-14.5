@@ -153,6 +153,11 @@
   color: var(--navy);
 }
 
+@utility pair-burgundy-invert {
+  background-color: var(--periwinkle);
+  color: var(--surface-1);
+}
+
 @utility wordmark {
   font-family: var(--font-wordmark), var(--font-standard), sans-serif;
   font-weight: 400;
