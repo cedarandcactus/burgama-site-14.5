@@ -164,6 +164,98 @@
   letter-spacing: -0.01em;
 }
 
+.premise-bridge {
+  overflow: hidden;
+  background: var(--surface-1);
+}
+
+.premise-atmosphere {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(92% 120% at 2% 8%, rgb(152 158 201 / 0.96) 0%, rgb(152 158 201 / 0.2) 52%, transparent 72%),
+    radial-gradient(82% 110% at 94% 92%, rgb(78 11 40 / 0.98) 0%, rgb(78 11 40 / 0.3) 54%, transparent 76%),
+    linear-gradient(132deg, var(--surface-1), var(--periwinkle));
+  background-size: 135% 135%, 145% 145%, 100% 100%;
+  animation: premise-drift 16s ease-in-out infinite alternate;
+}
+
+.premise-atmosphere::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -22%;
+  background:
+    radial-gradient(circle at 38% 35%, rgb(152 158 201 / 0.76), transparent 32%),
+    radial-gradient(circle at 68% 62%, rgb(78 11 40 / 0.88), transparent 38%);
+  filter: blur(44px) saturate(118%);
+  animation: premise-bloom 20s ease-in-out infinite alternate;
+}
+
+.premise-glass {
+  position: relative;
+  color: var(--periwinkle);
+  background: rgb(78 11 40 / 0.52);
+  border: 0;
+  outline: 0;
+  backdrop-filter: blur(28px) saturate(145%);
+  -webkit-backdrop-filter: blur(28px) saturate(145%);
+}
+
+.premise-glass::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(118deg, rgb(152 158 201 / 0.16), transparent 36%, rgb(78 11 40 / 0.18));
+}
+
+.premise-glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+.premise-link {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-module);
+  padding: 0.875rem 1.125rem;
+  background: var(--periwinkle);
+  color: var(--surface-1);
+  font-size: 1rem;
+  line-height: 1.25;
+  transition: transform 0.32s var(--ease-module), background-color 0.32s var(--ease-module);
+}
+
+.premise-link:hover,
+.premise-link:focus-visible {
+  transform: translateY(-3px);
+  background: rgb(152 158 201 / 0.88);
+}
+
+@keyframes premise-drift {
+  from { background-position: 0% 0%, 100% 100%, 0 0; }
+  to { background-position: 18% 12%, 78% 70%, 0 0; }
+}
+
+@keyframes premise-bloom {
+  from { transform: translate3d(-3%, -2%, 0) scale(1); }
+  to { transform: translate3d(4%, 3%, 0) scale(1.1); }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .premise-glass { background: rgb(78 11 40 / 0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .premise-atmosphere,
+  .premise-atmosphere::before { animation: none; }
+}
+
 /* Sized to sit inside the 438px editorial rail without wrapping oddly. */
 @utility t-display {
   font-size: clamp(2.25rem, 5.6vw, 3rem);
