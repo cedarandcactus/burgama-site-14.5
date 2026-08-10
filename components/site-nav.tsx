@@ -29,11 +29,56 @@ export function SiteNav() {
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [language, setLanguage] = useState('en')
+  const navRef = useRef<HTMLElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setOpen(false)
     setLangOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+
+    const mix = (from: number[], to: number[], amount: number) =>
+      from.map((value, index) => Math.round(value + (to[index] - value) * amount))
+
+    let frame = 0
+    const updateFrost = () => {
+      frame = 0
+      const hero = document.querySelector<HTMLElement>('.hero-scroll')
+      const heroDistance = hero ? Math.max(1, hero.offsetHeight - window.innerHeight) : 1
+      const heroActive = Boolean(hero && window.scrollY <= heroDistance)
+      const phase = heroActive ? Math.max(0, Math.min(1, window.scrollY / heroDistance)) : 1
+      const middle = phase < 0.55 ? phase / 0.55 : (phase - 0.55) / 0.45
+      const phasedMix = (start: number[], center: number[], end: number[]) =>
+        phase < 0.55 ? mix(start, center, middle) : mix(center, end, middle)
+
+      const setRgb = (name: string, values: number[]) =>
+        nav.style.setProperty(name, values.join(' '))
+
+      setRgb('--nav-text', mix([154, 161, 209], [188, 194, 235], phase * 0.38))
+      setRgb('--nav-glass', phasedMix([24, 37, 88], [12, 24, 68], [7, 15, 44]))
+      setRgb('--nav-tone-a', phasedMix([39, 54, 118], [20, 33, 86], [10, 19, 54]))
+      setRgb('--nav-tone-b', phasedMix([104, 117, 188], [73, 88, 160], [48, 61, 126]))
+      setRgb('--nav-tone-c', phasedMix([14, 26, 68], [8, 18, 52], [4, 11, 33]))
+      nav.style.setProperty('--nav-glass-alpha', (0.72 + phase * 0.12).toFixed(3))
+      nav.dataset.heroActive = String(heroActive)
+    }
+
+    const requestUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateFrost)
+    }
+
+    updateFrost()
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', requestUpdate)
+    return () => {
+      window.removeEventListener('scroll', requestUpdate)
+      window.removeEventListener('resize', requestUpdate)
+      if (frame) window.cancelAnimationFrame(frame)
+    }
   }, [pathname])
 
   useEffect(() => {
@@ -59,8 +104,10 @@ export function SiteNav() {
 
   return (
     <nav
+      ref={navRef}
       aria-label="Primary"
       data-open={open}
+      data-hero-active="false"
       className="fixed top-3 left-1/2 z-50 -translate-x-1/2 transition-[max-width] duration-700 ease-module"
       style={{
         /* Withheld and compact through the entrance, then unwound to the rail. */
