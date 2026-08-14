@@ -108,7 +108,7 @@ export function SocialPerformanceBand() {
       className="section-navy scroll-mt-24 px-module py-28 md:py-40"
     >
       <div className="rail mx-auto grid gap-module overflow-hidden min-[900px]:grid-cols-12">
-        <div className="pair-invert overflow-hidden rounded-module p-5 md:p-8 min-[900px]:col-span-5 min-[900px]:min-h-[420px]">
+        <div className="sculptural-module shape-arch pair-invert overflow-hidden p-5 md:p-8 min-[900px]:col-span-5 min-[900px]:min-h-[420px]">
           <h2 id="studio-proof-title" className="t-title text-balance min-[900px]:text-5xl">
             {['One studio.', 'Four connected practices.'].map((line, index) => (
               <span key={line} className="block overflow-hidden">
@@ -129,7 +129,7 @@ export function SocialPerformanceBand() {
         {studioCapabilities.slice(0, 2).map((capability, index) => (
           <article
             key={capability.eyebrow}
-            className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[206px]"
+            className={`sculptural-module ${index === 0 ? 'shape-leaf-right' : 'shape-quarter'} flex min-h-64 flex-col justify-between bg-surface-1 p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-7 min-[900px]:min-h-[206px]`}
             style={{
               transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)',
               transitionDelay: `${120 + index * 90}ms`,
@@ -143,7 +143,7 @@ export function SocialPerformanceBand() {
         ))}
 
         <article
-          className="pair-invert rounded-module p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-8"
+          className="sculptural-module shape-leaf-left pair-invert p-5 transition-transform duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-8"
           style={{
             transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)',
             transitionDelay: '300ms',
@@ -170,7 +170,7 @@ export function SocialPerformanceBand() {
         {studioCapabilities.slice(2).map((capability) => (
           <article
             key={capability.eyebrow}
-            className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 transition-transform delay-500 duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-4"
+            className="sculptural-module shape-bulb flex min-h-64 flex-col justify-between bg-surface-1 p-5 transition-transform delay-500 duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-4"
             style={{ transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)' }}
           >
             <div className="flex flex-col gap-4">

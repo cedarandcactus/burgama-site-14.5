@@ -2,6 +2,15 @@ import Link from 'next/link'
 import { type Project, toneClass } from '@/lib/projects'
 
 type Size = 'feature' | 'medium' | 'wide' | 'compact'
+export type ModuleShape =
+  | 'arch'
+  | 'leaf-right'
+  | 'leaf-left'
+  | 'quarter'
+  | 'bulb'
+  | 'capsule'
+  | 'terminal'
+  | 'opposed'
 
 const HEIGHT: Record<Size, string> = {
   feature: 'min-h-[62svh] md:min-h-[560px]',
@@ -20,11 +29,13 @@ const TITLE: Record<Size, string> = {
 export function ProjectCard({
   project,
   size = 'medium',
+  shape = 'opposed',
   className = '',
   style,
 }: {
   project: Project
   size?: Size
+  shape?: ModuleShape
   className?: string
   style?: React.CSSProperties
 }) {
@@ -32,7 +43,7 @@ export function ProjectCard({
     <Link
       href={`/work/${project.slug}`}
       style={style}
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-module p-5 transition-colors duration-300 ease-module md:p-7 ${
+      className={`sculptural-module shape-${shape} group relative flex flex-col justify-between overflow-hidden p-5 transition-colors duration-300 ease-module md:p-7 ${
         toneClass[project.heroMedia.tone ?? 'surface-1']
       } focus-visible:ring-2 focus-visible:ring-periwinkle ${HEIGHT[size]} ${className}`}
     >

@@ -17,7 +17,7 @@ export default function HomePage() {
 
       <section aria-labelledby="premise-title" className="premise-bridge">
         <div className="premise-atmosphere px-module py-28 md:py-40">
-          <div className="rail mx-auto rounded-module bg-navy p-6 md:p-10">
+          <div className="sculptural-module shape-terminal rail mx-auto bg-navy p-6 md:p-10">
             <h1 id="premise-title" className="sr-only">Made for what comes next</h1>
             <p className="t-body max-w-3xl text-pretty">
               Burgama builds brands, digital experiences, content and growth systems as one connected practice—from the first point of view to every place an audience meets it.{' '}
@@ -43,10 +43,10 @@ export default function HomePage() {
         </div>
 
         <div className="rail mx-auto grid w-full gap-module min-[900px]:grid-cols-12">
-          <ProjectCard project={feature} size="feature" className="min-[900px]:col-span-7" />
-          <ProjectCard project={second} size="feature" className="min-[900px]:col-span-5" />
-          <ProjectCard project={third} size="medium" className="min-[900px]:col-span-5" />
-          <ProjectCard project={fourth} size="medium" className="min-[900px]:col-span-7" />
+          <ProjectCard project={feature} size="feature" shape="leaf-left" className="min-[900px]:col-span-7" />
+          <ProjectCard project={second} size="feature" shape="arch" className="min-[900px]:col-span-5" />
+          <ProjectCard project={third} size="medium" shape="bulb" className="min-[900px]:col-span-5" />
+          <ProjectCard project={fourth} size="medium" shape="terminal" className="min-[900px]:col-span-7" />
 
           <Link
             href="/work"

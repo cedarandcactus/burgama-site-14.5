@@ -1,5 +1,16 @@
-import { ProjectCard } from '@/components/project-card'
+import { ProjectCard, type ModuleShape } from '@/components/project-card'
 import { type Project } from '@/lib/projects'
+
+const SHAPES: ModuleShape[] = [
+  'arch',
+  'leaf-right',
+  'leaf-left',
+  'quarter',
+  'bulb',
+  'capsule',
+  'terminal',
+  'opposed',
+]
 
 const RHYTHM = [
   { size: 'feature', basis: '100%' },
@@ -21,6 +32,7 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
               key={project.id}
               project={project}
               size={rhythm.size}
+              shape={SHAPES[index % SHAPES.length]}
               className="min-w-[260px]"
               style={{ flexBasis: rhythm.basis, flexGrow: 1 }}
             />

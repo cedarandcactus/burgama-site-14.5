@@ -175,6 +175,60 @@
   background: var(--surface-1);
 }
 
+/* A composed family of high-contrast silhouettes inspired by modular print tiles. */
+.sculptural-module {
+  --shape-depth: clamp(4.5rem, 18vw, 13rem);
+  min-width: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shape-arch {
+  border-radius: var(--shape-depth) var(--shape-depth) var(--radius-module) var(--radius-module) /
+    calc(var(--shape-depth) * 0.78) calc(var(--shape-depth) * 0.78) var(--radius-module) var(--radius-module);
+}
+
+.shape-leaf-right {
+  border-radius: var(--radius-module) var(--shape-depth) var(--shape-depth) var(--radius-module) /
+    var(--radius-module) 46% 54% var(--radius-module);
+}
+
+.shape-leaf-left {
+  border-radius: var(--shape-depth) var(--radius-module) var(--radius-module) var(--shape-depth) /
+    52% var(--radius-module) var(--radius-module) 48%;
+}
+
+.shape-quarter {
+  border-radius: var(--shape-depth) var(--radius-module) var(--shape-depth) var(--radius-module) /
+    var(--shape-depth) var(--radius-module) var(--shape-depth) var(--radius-module);
+}
+
+.shape-bulb {
+  border-radius: var(--radius-module) var(--radius-module) var(--shape-depth) var(--shape-depth) /
+    var(--radius-module) var(--radius-module) 55% 45%;
+}
+
+.shape-capsule {
+  border-radius: var(--shape-depth);
+}
+
+.shape-terminal {
+  border-radius: var(--radius-module) calc(var(--shape-depth) * 0.82)
+    calc(var(--shape-depth) * 0.82) var(--radius-module) /
+    var(--radius-module) 35% 65% var(--radius-module);
+}
+
+.shape-opposed {
+  border-radius: var(--shape-depth) var(--radius-module) var(--shape-depth) var(--radius-module) /
+    42% var(--radius-module) 58% var(--radius-module);
+}
+
+@media (max-width: 480px) {
+  .sculptural-module {
+    --shape-depth: clamp(3.25rem, 22vw, 5rem);
+  }
+}
+
 .premise-link {
   display: flex;
   min-height: 52px;
