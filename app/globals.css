@@ -1216,6 +1216,9 @@ body:has(.fused-shell) > .burgama-shell {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* The threshold filter erodes each bar's edge, so hold type inside that margin. */
+  box-sizing: border-box;
+  padding-inline: calc(var(--stack-w) * 0.035);
   overflow: hidden;
   animation: fused-type-in 700ms ease-out backwards;
   animation-delay: calc(var(--i) * 65ms + 160ms);
@@ -1250,8 +1253,8 @@ body:has(.fused-shell) > .burgama-shell {
   mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    var(--navy) 12%,
-    var(--navy) 88%,
+    var(--navy) 26%,
+    var(--navy) 74%,
     transparent 100%
   );
 }
@@ -1320,8 +1323,25 @@ body:has(.fused-shell) > .burgama-shell {
 
 @media (max-width: 640px) {
   .fused-shell {
-    --stack-w: 84vw;
-    padding-inline: 1rem;
+    --stack-w: 88vw;
+    padding-inline: 0.75rem;
+  }
+
+  /* Widen every bar so the column reads as one trunk rather than an hourglass. */
+  .fused-shape,
+  .fused-line {
+    min-width: calc(var(--stack-w) * 0.42);
+  }
+
+  /* Narrow bars need a deeper fade before the eroded edge cuts the glyphs. */
+  .fused-line-reel {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--navy) 32%,
+      var(--navy) 68%,
+      transparent 100%
+    );
   }
 }
 
