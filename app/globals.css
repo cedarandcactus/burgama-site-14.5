@@ -172,38 +172,7 @@
 }
 
 .premise-atmosphere {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background:
-    radial-gradient(92% 84% at 52% 0%, rgb(174 181 220 / 0.34) 0%, rgb(174 181 220 / 0.1) 50%, transparent 72%),
-    radial-gradient(88% 96% at 8% 38%, rgb(32 43 74 / 0.78) 0%, transparent 68%),
-    radial-gradient(94% 106% at 96% 66%, rgb(17 26 49 / 0.96) 0%, rgb(17 26 49 / 0.42) 58%, transparent 80%),
-    linear-gradient(156deg, var(--surface-3) 0%, var(--surface-1) 72%, var(--navy) 100%);
-  background-size: 132% 132%, 140% 140%, 138% 138%, 100% 100%;
-  animation: premise-drift 18s ease-in-out infinite alternate;
-}
-
-.premise-atmosphere::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  inset: -20%;
-  background:
-    radial-gradient(circle at 30% 28%, rgb(174 181 220 / 0.28), transparent 34%),
-    radial-gradient(circle at 72% 64%, rgb(32 43 74 / 0.76), transparent 42%);
-  filter: blur(56px) saturate(105%);
-  animation: premise-bloom 22s ease-in-out infinite alternate;
-}
-
-.premise-atmosphere::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  inset: auto 0 0;
-  height: 24%;
-  background: linear-gradient(180deg, transparent, var(--navy));
-  pointer-events: none;
+  background: var(--surface-1);
 }
 
 .premise-link {

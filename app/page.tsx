@@ -16,23 +16,14 @@ export default function HomePage() {
       <HeroEntrance videoSrc="/video/backlit-prickly-pear.mov" />
 
       <section aria-labelledby="premise-title" className="premise-bridge">
-        <div className="premise-atmosphere">
-          <div className="rail mx-auto flex min-h-[100svh] flex-col justify-between gap-16 px-5 pb-16 pt-28 md:px-10 md:pb-20 md:pt-36 min-[900px]:px-14 min-[900px]:pb-24">
-            <AnimatedText
-              as="h1"
-              id="premise-title"
-              lines={['Made for', 'what comes next']}
-              className="max-w-5xl font-serif text-[clamp(3.25rem,8.5vw,8rem)] leading-[0.84] tracking-[-0.065em]"
-            />
-            <div className="flex flex-col gap-8 min-[760px]:flex-row min-[760px]:items-end min-[760px]:justify-between">
-              <p className="max-w-xl text-base leading-relaxed text-pretty md:text-lg">
-                Burgama builds brands, digital experiences, content and growth systems as one connected practice—from the first point of view to every place an audience meets it.
-              </p>
-              <div className="flex flex-wrap gap-module">
-                <Link href="/work" className="premise-link">Selected work</Link>
-                <Link href="/contact" className="premise-link">Start a project</Link>
-              </div>
-            </div>
+        <div className="premise-atmosphere px-module py-28 md:py-40">
+          <div className="rail mx-auto rounded-module bg-navy p-6 md:p-10">
+            <h1 id="premise-title" className="sr-only">Made for what comes next</h1>
+            <p className="t-body max-w-3xl text-pretty">
+              Burgama builds brands, digital experiences, content and growth systems as one connected practice—from the first point of view to every place an audience meets it.{' '}
+              <Link href="/work" className="inline-action">Selected work</Link>{' '}
+              <Link href="/contact" className="inline-action">Start a project</Link>
+            </p>
           </div>
         </div>
       </section>
