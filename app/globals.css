@@ -346,7 +346,7 @@
   min-height: 1.75rem;
   align-items: center;
   vertical-align: baseline;
-  border-radius: 999px;
+  border-radius: var(--radius-module);
   background: var(--periwinkle);
   color: var(--navy);
   padding-inline: 0.625rem;
