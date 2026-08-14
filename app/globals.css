@@ -267,9 +267,9 @@
 }
 
 @utility t-ui {
-  font-size: 0.8125rem;
-  line-height: 1;
-  letter-spacing: 0.002em;
+  font-size: 1rem;
+  line-height: 1.25;
+  letter-spacing: -0.004em;
 }
 
 /* Liquid controls keep crisp semantic content above the merged periwinkle silhouette. */

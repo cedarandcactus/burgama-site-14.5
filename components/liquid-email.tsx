@@ -21,10 +21,7 @@ export function LiquidEmail() {
 
   return (
     <div className="liquid-email flex min-h-[36svh] flex-col justify-between gap-8 rounded-module bg-surface-1 p-6 md:p-10">
-      <div className="flex items-center justify-between gap-4">
-        <span className="t-ui">Direct line</span>
-        <span className="sr-only" aria-live="polite">{copied ? 'Email address copied' : ''}</span>
-      </div>
+      <span className="sr-only" aria-live="polite">{copied ? 'Email address copied' : ''}</span>
       <p className="t-title break-words">{ADDRESS}</p>
       <LiquidGroup className="flex flex-wrap items-center justify-end gap-2">
         <LiquidControl>
