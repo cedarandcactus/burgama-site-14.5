@@ -1139,270 +1139,198 @@ html[data-entry-open='true'] body {
   }
 }
 
-/* The rail owns homepage navigation; other routes retain the global shell. */
-body:has(.home-rail-shell) > .burgama-shell {
+/* Homepage: one fused column of modular bars, periwinkle ink on navy. */
+body:has(.fused-shell) > .burgama-shell {
   display: none;
 }
 
-/* Homepage rail composition: proportions follow the supplied 1902 × 1074 layout. */
-.home-rail-shell {
-  min-height: 100svh;
-  background: var(--background);
-  padding: clamp(2rem, 5.9vh, 4rem) clamp(1rem, 3.3vw, 4rem) clamp(1.5rem, 4vh, 3rem);
-}
-
-.home-rail-layout {
-  display: grid;
-  grid-template-columns: minmax(9rem, 11fr) minmax(17rem, 23fr) minmax(26rem, 39fr) minmax(15rem, 19fr);
-  gap: clamp(1rem, 1.55vw, 1.9rem);
-  min-height: min(90svh, 970px);
-  max-width: 1776px;
-  margin-inline: auto;
-}
-
-.home-rail-utility,
-.home-rail-actions {
+.fused-shell {
+  --stack-w: min(740px, 84vw);
+  --stack-overlap: calc(var(--stack-w) * -0.026);
+  --stack-radius: calc(var(--stack-w) * 0.048);
   display: flex;
-  min-width: 0;
+  justify-content: center;
+  background: var(--navy);
+  padding: clamp(3rem, 9vh, 7rem) clamp(1.5rem, 6vw, 5rem) clamp(4rem, 12vh, 9rem);
+}
+
+.fused-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.fused-body {
+  position: relative;
+  width: var(--stack-w);
+}
+
+.fused-shapes,
+.fused-type {
+  display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-.home-rail-action,
-.home-rail-contact {
-  border-radius: clamp(0.65rem, 0.85vw, 1rem);
-  background: var(--periwinkle);
+.fused-shapes {
+  filter: url(#fused-goo);
+}
+
+.fused-type {
+  position: absolute;
+  inset: 0;
   color: var(--navy);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-.home-rail-action {
+.fused-shape,
+.fused-line {
+  flex: none;
+}
+
+.fused-shape {
+  border-radius: var(--stack-radius);
+  background: var(--periwinkle);
+  transform-origin: center;
+  animation:
+    fused-in 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards,
+    fused-breathe 9s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 65ms), calc(var(--i) * 320ms);
+}
+
+/* Hovering a link swells its bar, so the fillets around it re-melt. */
+.fused-shape.is-hot {
+  animation: none;
+  transform: scaleX(1.035) scaleY(1.06);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fused-shape + .fused-shape,
+.fused-line + .fused-line {
+  margin-top: var(--stack-overlap);
+}
+
+.fused-line {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 7.25rem;
-  padding: 1rem;
-}
-
-.home-rail-action:focus-visible,
-.home-rail-contact :is(input, textarea, button):focus-visible,
-.home-rail-links a:focus-visible,
-.home-rail-project:focus-visible {
-  outline: 2px solid var(--foreground);
-  outline-offset: 3px;
-}
-
-.home-rail-logo {
-  align-self: stretch;
-}
-
-.home-rail-logo svg {
-  max-width: 9rem;
-}
-
-.home-rail-links {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  margin-top: auto;
-  padding-block: 2rem;
-}
-
-.home-rail-links a {
-  color: var(--periwinkle);
-}
-
-.home-rail-work-button {
-  min-height: 6.75rem;
-  align-items: flex-end;
-}
-
-.home-rail-panel {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  border-radius: clamp(1.2rem, 1.65vw, 2rem);
-  background: var(--surface-2);
-  color: var(--periwinkle);
-  padding: clamp(1.15rem, 1.5vw, 1.75rem);
   overflow: hidden;
+  animation: fused-type-in 700ms ease-out backwards;
+  animation-delay: calc(var(--i) * 65ms + 160ms);
 }
 
-.home-rail-panel-heading {
+.fused-label {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  text-wrap: nowrap;
+}
+
+.fused-link {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.home-rail-projects {
-  display: flex;
-  min-height: 0;
-  flex: 1;
-  flex-direction: column;
-  gap: var(--module-gap);
-  padding-top: 1rem;
-}
-
-.home-rail-project {
-  position: relative;
-  display: flex;
-  min-height: 0;
-  flex: 1;
-  flex-direction: column;
-  justify-content: flex-end;
-  border-radius: var(--radius-module);
-  background: var(--surface-1);
-  color: var(--periwinkle);
-  padding: 1rem;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.home-rail-project-image {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0.34;
-  filter: saturate(0.35) brightness(0.65);
+  color: inherit;
+  text-decoration: none;
 }
 
-.home-rail-project span:last-child {
-  color: color-mix(in srgb, var(--periwinkle) 72%, transparent);
+.fused-link:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: calc(var(--stack-w) * -0.02);
+  border-radius: var(--stack-radius);
 }
 
-.home-rail-studio {
-  justify-content: space-between;
-  gap: 2rem;
+/* Names dissolve at the bar edges instead of ending on a hard cut. */
+.fused-line-reel {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--navy) 12%,
+    var(--navy) 88%,
+    transparent 100%
+  );
 }
 
-.home-rail-studio > div,
-.home-rail-studio ul {
+/* Client names ride through the two middle bars in opposite directions. */
+.fused-reel {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.home-rail-studio li {
-  border-bottom: 1px solid color-mix(in srgb, var(--periwinkle) 25%, transparent);
-  padding-block: 0.75rem;
-}
-
-.home-rail-actions {
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.home-rail-menu {
-  min-height: 7.25rem;
-}
-
-.home-rail-contact {
-  display: flex;
-  min-height: 49%;
-  flex-direction: column;
-  gap: 0.8rem;
-  padding: clamp(1rem, 1.4vw, 1.6rem);
-}
-
-.home-rail-contact label,
-.home-rail-contact .home-rail-message {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.home-rail-contact .home-rail-message {
-  min-height: 0;
-  flex: 1;
-}
-
-.home-rail-contact :is(input, textarea) {
   width: 100%;
-  border: 1px solid color-mix(in srgb, var(--navy) 32%, transparent);
-  border-radius: var(--radius-module);
-  background: color-mix(in srgb, var(--periwinkle) 78%, var(--surface-3));
-  color: var(--navy);
-  padding: 0.65rem;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
 }
 
-.home-rail-contact textarea {
-  min-height: 5rem;
-  flex: 1;
-  resize: vertical;
+.fused-reel-group {
+  display: flex;
+  flex: none;
+  align-items: center;
 }
 
-.home-rail-contact button {
-  min-height: 2.75rem;
-  border-radius: var(--radius-module);
-  background: var(--navy);
-  color: var(--periwinkle);
-  padding-inline: 0.8rem;
+.fused-reel-item {
+  padding-inline: calc(var(--stack-w) * 0.028);
 }
 
-@media (max-width: 980px) and (min-width: 701px) {
-  .home-rail-shell {
-    padding-inline: var(--module-gap);
-  }
+.fused-reel-item::after {
+  padding-left: calc(var(--stack-w) * 0.028);
+  content: '·';
+}
 
-  .home-rail-layout {
-    grid-template-columns: minmax(5.5rem, 0.7fr) minmax(11rem, 1.35fr) minmax(17rem, 2.35fr) minmax(10rem, 1.15fr);
-    gap: var(--module-gap);
+.fused-reel-left {
+  animation: fused-reel-left 26s linear infinite;
+}
+
+.fused-reel-right {
+  animation: fused-reel-right 22s linear infinite;
+}
+
+@keyframes fused-in {
+  from {
+    transform: scaleX(0.08) scaleY(0.45);
   }
 }
 
-@media (max-width: 700px) {
-  .home-rail-shell {
-    padding: var(--module-gap);
+@keyframes fused-type-in {
+  from {
+    opacity: 0;
   }
+}
 
-  .home-rail-layout {
-    grid-template-columns: 1fr 1fr;
-    min-height: auto;
-    gap: var(--module-gap);
+@keyframes fused-breathe {
+  50% {
+    transform: scaleX(1.012) scaleY(1.02);
   }
+}
 
-  .home-rail-utility,
-  .home-rail-actions {
-    display: contents;
+@keyframes fused-reel-left {
+  to {
+    transform: translateX(-50%);
   }
+}
 
-  .home-rail-logo,
-  .home-rail-menu {
-    min-height: 5rem;
+@keyframes fused-reel-right {
+  from {
+    transform: translateX(-50%);
   }
+}
 
-  .home-rail-logo { order: 1; }
-  .home-rail-menu { order: 2; }
-  .home-rail-work { order: 3; }
-  .home-rail-studio { order: 4; }
-  .home-rail-links { order: 5; }
-  .home-rail-work-button { order: 6; }
-  .home-rail-contact { order: 7; }
-
-  .home-rail-links,
-  .home-rail-work-button,
-  .home-rail-work,
-  .home-rail-studio,
-  .home-rail-contact {
-    grid-column: 1 / -1;
+@media (max-width: 640px) {
+  .fused-shell {
+    --stack-w: 84vw;
+    padding-inline: 1rem;
   }
+}
 
-  .home-rail-work,
-  .home-rail-studio {
-    min-height: 75svh;
-  }
-
-  .home-rail-links {
-    margin: 0;
-    border-radius: var(--radius-module);
-    background: var(--surface-1);
-    padding: 1.25rem;
-  }
-
-  .home-rail-contact {
-    min-height: 70svh;
+@media (prefers-reduced-motion: reduce) {
+  .fused-shape,
+  .fused-line,
+  .fused-reel-left,
+  .fused-reel-right {
+    animation: none;
   }
 }
 

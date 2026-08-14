@@ -1,6 +1,6 @@
 import { EntryPreferences } from '@/components/entry-preferences'
 import { HeroEntrance } from '@/components/hero-entrance'
-import { HomepageRailLayout } from '@/components/homepage-rail-layout'
+import { HomepageFusedStack } from '@/components/homepage-fused-stack'
 import { featuredProjects } from '@/lib/projects'
 
 export default function HomePage() {
@@ -9,7 +9,7 @@ export default function HomePage() {
       <EntryPreferences />
       <HeroEntrance videoSrc="/video/backlit-prickly-pear.mov" />
 
-      <HomepageRailLayout projects={featuredProjects} />
+      <HomepageFusedStack projects={featuredProjects} />
     </>
   )
 }
