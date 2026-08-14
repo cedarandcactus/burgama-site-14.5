@@ -73,7 +73,7 @@ export default async function ProjectPage({
             ) : null}
             <div className="wurqly-hero-wash absolute inset-0" />
             <div className="wurqly-hero-copy relative z-10 flex w-full max-w-2xl flex-col gap-6 md:ml-auto md:items-end md:text-right">
-              <AnimatedText as="h1" lines={[project.title]} className="t-display" />
+              <AnimatedText as="h1" lines={[project.title]} className="wurqly-title" />
               <AnimatedText lines={project.introCopy} className="t-section max-w-[18ch]" delay={120} />
               <p className="t-body max-w-[48ch] text-pretty">{project.summary}</p>
             </div>

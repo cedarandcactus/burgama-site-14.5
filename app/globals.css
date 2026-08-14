@@ -59,11 +59,11 @@
 :root {
   color-scheme: dark;
 
-  --navy: #0e1225;
-  --periwinkle: #989ec9;
-  --surface-1: #4e0b28;
-  --surface-2: #25152f;
-  --surface-3: #3a1230;
+  --navy: #080d1b;
+  --periwinkle: #aeb5dc;
+  --surface-1: #111a31;
+  --surface-2: #17213d;
+  --surface-3: #202b4a;
 
   --background: var(--navy);
   --foreground: var(--periwinkle);
@@ -176,10 +176,10 @@
   isolation: isolate;
   overflow: hidden;
   background:
-    radial-gradient(92% 84% at 52% 0%, rgb(152 158 201 / 0.72) 0%, rgb(152 158 201 / 0.22) 50%, transparent 72%),
-    radial-gradient(88% 96% at 8% 38%, rgb(152 158 201 / 0.64) 0%, transparent 68%),
-    radial-gradient(94% 106% at 96% 66%, rgb(78 11 40 / 0.98) 0%, rgb(78 11 40 / 0.44) 58%, transparent 80%),
-    linear-gradient(156deg, var(--periwinkle) 0%, var(--surface-1) 72%, var(--surface-1) 100%);
+    radial-gradient(92% 84% at 52% 0%, rgb(174 181 220 / 0.34) 0%, rgb(174 181 220 / 0.1) 50%, transparent 72%),
+    radial-gradient(88% 96% at 8% 38%, rgb(32 43 74 / 0.78) 0%, transparent 68%),
+    radial-gradient(94% 106% at 96% 66%, rgb(17 26 49 / 0.96) 0%, rgb(17 26 49 / 0.42) 58%, transparent 80%),
+    linear-gradient(156deg, var(--surface-3) 0%, var(--surface-1) 72%, var(--navy) 100%);
   background-size: 132% 132%, 140% 140%, 138% 138%, 100% 100%;
   animation: premise-drift 18s ease-in-out infinite alternate;
 }
@@ -190,9 +190,9 @@
   z-index: -1;
   inset: -20%;
   background:
-    radial-gradient(circle at 30% 28%, rgb(152 158 201 / 0.72), transparent 34%),
-    radial-gradient(circle at 72% 64%, rgb(78 11 40 / 0.92), transparent 42%);
-  filter: blur(56px) saturate(120%);
+    radial-gradient(circle at 30% 28%, rgb(174 181 220 / 0.28), transparent 34%),
+    radial-gradient(circle at 72% 64%, rgb(32 43 74 / 0.76), transparent 42%);
+  filter: blur(56px) saturate(105%);
   animation: premise-bloom 22s ease-in-out infinite alternate;
 }
 
@@ -644,17 +644,17 @@ html[data-entry-open='true'] body {
   opacity: var(--film-tint);
   transform: translate3d(0, var(--film-veil-y), 0);
   background:
-    radial-gradient(92% 84% at 52% 100%, rgb(152 158 201 / 0.72) 0%, rgb(152 158 201 / 0.22) 50%, transparent 72%),
-    linear-gradient(180deg, transparent 0%, rgb(110 29 66 / 0.08) 42%, rgb(152 158 201 / 0.62) 100%);
+    radial-gradient(92% 84% at 52% 100%, rgb(174 181 220 / 0.4) 0%, rgb(174 181 220 / 0.12) 50%, transparent 72%),
+    linear-gradient(180deg, transparent 0%, rgb(17 26 49 / 0.16) 42%, rgb(32 43 74 / 0.72) 100%);
 }
 
 .hero-color-transition::after {
   opacity: var(--film-solid);
   background:
-    radial-gradient(92% 84% at 52% 100%, rgb(152 158 201 / 0.72) 0%, rgb(152 158 201 / 0.22) 50%, transparent 72%),
-    radial-gradient(88% 96% at 8% 62%, rgb(152 158 201 / 0.64) 0%, transparent 68%),
-    radial-gradient(94% 106% at 96% 34%, rgb(78 11 40 / 0.98) 0%, rgb(78 11 40 / 0.44) 58%, transparent 80%),
-    linear-gradient(24deg, var(--periwinkle) 0%, var(--surface-1) 72%, var(--surface-1) 100%);
+    radial-gradient(92% 84% at 52% 100%, rgb(174 181 220 / 0.4) 0%, rgb(174 181 220 / 0.12) 50%, transparent 72%),
+    radial-gradient(88% 96% at 8% 62%, rgb(32 43 74 / 0.74) 0%, transparent 68%),
+    radial-gradient(94% 106% at 96% 34%, rgb(17 26 49 / 0.96) 0%, rgb(17 26 49 / 0.42) 58%, transparent 80%),
+    linear-gradient(24deg, var(--surface-3) 0%, var(--surface-1) 72%, var(--navy) 100%);
 }
 
 .hero-copy-layer {
@@ -905,27 +905,23 @@ html[data-entry-open='true'] body {
   line-height: 1;
 }
 
-.wurqly-case-study {
-  --wurqly-periwinkle: var(--periwinkle);
-}
-
 .wurqly-hero {
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  background: var(--wurqly-periwinkle);
+  background: var(--navy);
 }
 
 .wurqly-hero > video,
 .wurqly-hero > img {
   transform: scale(1.08);
-  filter: blur(10px) saturate(0.58) contrast(0.76);
+  filter: blur(11px) saturate(0.42) contrast(0.72) brightness(0.72);
 }
 
 .wurqly-hero-wash {
   background: linear-gradient(
     180deg,
-    rgb(152 158 201 / 0.34) 0%,
-    rgb(152 158 201 / 0.52) 58%,
+    rgb(8 13 27 / 0.2) 0%,
+    rgb(17 26 49 / 0.56) 58%,
     var(--navy) 100%
   );
   backdrop-filter: blur(7px);
@@ -934,47 +930,42 @@ html[data-entry-open='true'] body {
 
 .wurqly-hero-copy {
   color: var(--periwinkle);
-  text-shadow: 0 1px 18px rgb(8 17 50 / 0.2);
+}
+
+.wurqly-title {
+  font-family: var(--font-wordmark), var(--font-standard), sans-serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.055em;
 }
 
 .wurqly-project-info {
-  margin-top: -6rem;
   position: relative;
   z-index: 2;
+  margin-top: -4rem;
+  overflow: hidden;
+  border-radius: var(--radius-module);
+  background: var(--surface-1);
+}
+
+.wurqly-project-info > div {
+  min-width: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .wurqly-media-frame {
-  background: var(--wurqly-periwinkle);
-  color: var(--navy);
+  background: var(--surface-2);
+  color: var(--periwinkle);
 }
 
 .wurqly-case-study .wurqly-media-frame img[src$='shaded-logo.png'] {
-  filter: saturate(0.94);
-}
-
-.wurqly-case-study .wurqly-media-frame img[src$='wordmark.svg'] {
-  background: var(--wurqly-periwinkle);
-}
-
-.wurqly-case-study blockquote {
-  background: var(--navy);
-  color: var(--wurqly-periwinkle);
-}
-
-.wurqly-case-study .bg-surface-1,
-.wurqly-case-study .bg-surface-3 {
-  background: var(--wurqly-periwinkle);
-  color: var(--navy);
-}
-
-.wurqly-case-study .bg-surface-2 {
-  background: var(--navy);
-  color: var(--wurqly-periwinkle);
+  filter: saturate(0.72) contrast(0.94);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .wurqly-hero-wash {
-    background: linear-gradient(180deg, rgb(152 158 201 / 0.68), var(--navy));
+    background: linear-gradient(180deg, rgb(17 26 49 / 0.72), var(--navy));
   }
 }
 
