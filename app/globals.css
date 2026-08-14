@@ -1405,3 +1405,128 @@ body:has(.home-rail-shell) > .burgama-shell {
     min-height: 70svh;
   }
 }
+
+/* LOT_2046 flyer: fused rounded bars, black ink on paper white. */
+.lot-poster {
+  --poster-ink: #000000;
+  --poster-paper: #ffffff;
+  --poster-w: min(440px, 88vw);
+  --poster-overlap: calc(var(--poster-w) * -0.03);
+  --poster-radius: calc(var(--poster-w) * 0.062);
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  background: var(--poster-paper);
+  padding: calc(var(--poster-w) * 0.1) 1rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* The nav lives on every other route; the flyer is a full-bleed artifact. */
+body:has(.lot-poster) > .burgama-shell {
+  display: none;
+}
+
+.lot-poster-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.lot-poster-figure {
+  margin: 0;
+}
+
+.lot-poster-body {
+  position: relative;
+  width: var(--poster-w);
+}
+
+.lot-poster-shapes,
+.lot-poster-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lot-poster-shapes {
+  filter: url(#lot-goo);
+}
+
+.lot-poster-type {
+  position: absolute;
+  inset: 0;
+  color: var(--poster-paper);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.lot-poster-shape,
+.lot-poster-line {
+  flex: none;
+}
+
+.lot-poster-shape {
+  border-radius: var(--poster-radius);
+  background: var(--poster-ink);
+}
+
+.lot-poster-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lot-poster-shape + .lot-poster-shape,
+.lot-poster-line + .lot-poster-line {
+  margin-top: var(--poster-overlap);
+}
+
+.lot-poster-wordmark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* The flattened oval that rides across the wordmark's centre. */
+.lot-poster-wordmark::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--poster-w) * 0.46);
+  height: calc(var(--poster-w) * 0.098);
+  border: calc(var(--poster-w) * 0.017) solid var(--poster-paper);
+  border-radius: 50%;
+  content: '';
+  /* Offset by half the tracking so the oval centres on the glyphs, not the text box. */
+  transform: translate(calc(-50% - var(--poster-w) * 0.072), -50%);
+}
+
+.lot-poster-qr {
+  display: block;
+  width: calc(var(--poster-w) * 0.22);
+}
+
+.lot-poster-qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lot-poster-ear {
+  position: absolute;
+  top: calc(var(--poster-w) * 1.05);
+  width: calc(var(--poster-w) * 0.12);
+  height: calc(var(--poster-w) * 0.078);
+  border-radius: calc(var(--poster-w) * 0.039);
+  background: var(--poster-ink);
+}
+
+.lot-poster-ear-left {
+  left: 0;
+}
+
+.lot-poster-ear-right {
+  right: 0;
+}
