@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { AnimatedText } from '@/components/animated-text'
 import { SiteFooter } from '@/components/site-footer'
+import { LiquidEmail } from '@/components/liquid-email'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -26,13 +27,9 @@ export default function ContactPage() {
         />
 
         <div className="rail mx-auto flex flex-col gap-module md:flex-row">
-          <a
-            href="mailto:hello@burgama.com"
-            className="flex min-h-[36svh] flex-col justify-between gap-8 rounded-module bg-surface-1 p-6 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:basis-[58%] md:p-10"
-          >
-            <span className="t-ui">Direct line</span>
-            <span className="t-title block">hello@burgama.com</span>
-          </a>
+          <div className="md:basis-[58%]">
+            <LiquidEmail />
+          </div>
 
           <div className="flex flex-col gap-module md:basis-[40%]">
             <p className="t-body flex-1 rounded-module bg-surface-2 p-6">

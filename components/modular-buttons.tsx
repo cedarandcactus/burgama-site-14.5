@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { LiquidControl, LiquidGroup } from '@/components/liquid-controls'
 
 type Action = {
   label: string
@@ -23,37 +26,22 @@ export function ModularButtonGroup({
   className?: string
 }) {
   return (
-    <div className={`flex gap-module ${className}`}>
-      {actions.map((action) => {
+    <LiquidGroup className={`flex gap-module ${className}`}>
+      {actions.map((action, index) => {
         const external = action.href.startsWith('mailto:') || action.href.startsWith('http')
-        const classes = `t-ui flex h-control items-center rounded-module px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy ${
-          TONES[action.tone ?? 'surface-1']
-        }`
-
-        if (external) {
-          return (
-            <a
-              key={action.label}
-              href={action.href}
-              className={classes}
-              style={{ flexBasis: action.basis }}
-            >
-              {action.label}
-            </a>
-          )
-        }
+        const classes = `liquid-button t-ui flex h-control items-center px-4 ${TONES[action.tone ?? 'surface-1']}`
+        const control = external ? (
+          <a href={action.href} className={classes}>{action.label}</a>
+        ) : (
+          <Link href={action.href} className={classes}>{action.label}</Link>
+        )
 
         return (
-          <Link
-            key={action.label}
-            href={action.href}
-            className={classes}
-            style={{ flexBasis: action.basis }}
-          >
-            {action.label}
-          </Link>
+          <LiquidControl key={action.label} delay={index * 40} className="flex" >
+            <span className="flex" style={{ flexBasis: action.basis }}>{control}</span>
+          </LiquidControl>
         )
       })}
-    </div>
+    </LiquidGroup>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { ProjectCard } from '@/components/project-card'
+import { LiquidControl, LiquidGroup } from '@/components/liquid-controls'
 import { type Discipline, disciplines, type Project } from '@/lib/projects'
 
 const RHYTHM = [
@@ -28,28 +29,27 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
 
   return (
     <div className="rail mx-auto flex flex-col gap-module">
-      <div
+      <LiquidGroup
         className="mb-6 flex flex-wrap gap-module"
         role="group"
         aria-label="Filter by discipline"
       >
-        {options.map((option) => {
+        {options.map((option, index) => {
           const active = option === filter
           return (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={active}
-              onClick={() => setFilter(option)}
-              className={`t-ui h-control rounded-module px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy ${
-                active ? 'bg-periwinkle text-navy' : 'bg-surface-1 text-foreground'
-              }`}
-            >
-              {option}
-            </button>
+            <LiquidControl key={option} delay={index * 24}>
+              <button
+                type="button"
+                aria-pressed={active}
+                onClick={() => setFilter(option)}
+                className={`liquid-button t-ui h-control px-4 ${active ? 'is-active' : ''}`}
+              >
+                {option}
+              </button>
+            </LiquidControl>
           )
         })}
-      </div>
+      </LiquidGroup>
 
       <div className="flex flex-wrap gap-module">
         {visible.map((project, index) => {
