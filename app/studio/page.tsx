@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { AnimatedText } from '@/components/animated-text'
-import { ModularButtonGroup } from '@/components/modular-buttons'
 import { SiteFooter } from '@/components/site-footer'
 
 export const metadata: Metadata = {

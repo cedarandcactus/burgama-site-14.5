@@ -121,14 +121,17 @@ export default async function ProjectPage({
               </p>
             ))}
             {project.externalUrl ? (
-              <a
-                href={project.externalUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="t-body mt-2 flex h-control items-center rounded-module bg-surface-3 px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
-              >
-                {project.externalLabel ?? 'Visit the live work'}
-              </a>
+              <p className="t-body">
+                See the finished work.{' '}
+                <a
+                  href={project.externalUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-action"
+                >
+                  {project.externalLabel ?? 'Visit the live work'}
+                </a>
+              </p>
             ) : null}
           </div>
         </section>

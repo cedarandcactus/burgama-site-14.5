@@ -341,6 +341,36 @@
   overflow: visible;
 }
 
+.inline-action {
+  display: inline-flex;
+  min-height: 1.75rem;
+  align-items: center;
+  vertical-align: baseline;
+  border-radius: 999px;
+  background: var(--periwinkle);
+  color: var(--navy);
+  padding-inline: 0.625rem;
+  font: inherit;
+  line-height: inherit;
+  white-space: normal;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition:
+    background-color 180ms var(--ease-module),
+    color 180ms var(--ease-module);
+}
+
+.inline-action:hover,
+.inline-action:focus-visible {
+  background: var(--surface-3);
+  color: var(--periwinkle);
+}
+
+.inline-action:focus-visible {
+  outline: 2px solid var(--periwinkle);
+  outline-offset: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .liquid-button {
     transition: none;

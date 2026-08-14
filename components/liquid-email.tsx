@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { LiquidControl, LiquidGroup } from '@/components/liquid-controls'
 
 const ADDRESS = 'hello@burgama.com'
 
@@ -20,33 +19,27 @@ export function LiquidEmail() {
   }
 
   return (
-    <div className="liquid-email flex min-h-[36svh] flex-col justify-between gap-8 rounded-module bg-surface-1 p-6 md:p-10">
+    <div className="liquid-email rounded-module bg-surface-1 p-6 md:p-10">
       <span className="sr-only" aria-live="polite">{copied ? 'Email address copied' : ''}</span>
-      <p className="t-title break-words">{ADDRESS}</p>
-      <LiquidGroup className="flex flex-wrap items-center justify-end gap-2">
-        <LiquidControl>
-          <button
-            type="button"
-            aria-expanded={open}
-            onClick={() => setOpen((value) => !value)}
-            className="liquid-button"
-          >
-            {open ? 'Close' : 'Email'}
-          </button>
-        </LiquidControl>
+      <p className="t-body">
+        Write to {ADDRESS}.{' '}
+        <button
+          type="button"
+          aria-expanded={open}
+          onClick={() => setOpen((value) => !value)}
+          className="inline-action"
+        >
+          {open ? 'Close actions' : 'Email us'}
+        </button>{' '}
         {open ? (
           <>
-            <LiquidControl delay={40}>
-              <a href={`mailto:${ADDRESS}`} className="liquid-button">Compose</a>
-            </LiquidControl>
-            <LiquidControl delay={80}>
-              <button type="button" onClick={copyAddress} className="liquid-button">
-                {copied ? 'Copied' : 'Copy address'}
-              </button>
-            </LiquidControl>
+            <a href={`mailto:${ADDRESS}`} className="inline-action">Compose email</a>{' '}
+            <button type="button" onClick={copyAddress} className="inline-action">
+              {copied ? 'Copied' : 'Copy address'}
+            </button>
           </>
         ) : null}
-      </LiquidGroup>
+      </p>
     </div>
   )
 }
