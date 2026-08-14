@@ -67,14 +67,10 @@ export default function StudioPage() {
           <div className="flex flex-col gap-7 min-[900px]:col-span-5">
             <p className="t-body reading-measure">
               Burgama shapes identities and digital experiences for people with something
-              meaningful to make, staying close from the first conversation through launch.
+              meaningful to make, staying close from the first conversation through launch.{' '}
+              <Link href="/work" className="inline-action">Selected work</Link>{' '}
+              <Link href="/contact" className="inline-action">Start a project</Link>
             </p>
-            <ModularButtonGroup
-              actions={[
-                { label: 'Selected work', href: '/work', basis: '44%', tone: 'surface-1' },
-                { label: 'Start a project', href: '/contact', basis: '56%', tone: 'periwinkle' },
-              ]}
-            />
           </div>
         </div>
       </section>
