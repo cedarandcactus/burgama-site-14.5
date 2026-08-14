@@ -23,14 +23,12 @@ export function SiteFooter() {
 
         <a
           href="mailto:hello@burgama.com"
-          className="flex min-h-24 flex-col justify-between rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy min-[900px]:col-span-5"
+          className="flex min-h-24 items-end rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy min-[900px]:col-span-5"
         >
-          <span className="t-ui">Direct line</span>
           <span className="t-section">hello@burgama.com</span>
         </a>
 
-        <p className="flex min-h-24 flex-col justify-between rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 min-[900px]:col-span-5">
-          <span className="t-ui">Based in</span>
+        <p className="flex min-h-24 items-end rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 min-[900px]:col-span-5">
           <span className="t-section">Austin, Texas</span>
         </p>
 

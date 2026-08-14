@@ -109,7 +109,6 @@ export function SocialPerformanceBand() {
     >
       <div className="rail mx-auto grid gap-module overflow-hidden min-[900px]:grid-cols-12">
         <div className="pair-invert overflow-hidden rounded-module p-5 md:p-8 min-[900px]:col-span-5 min-[900px]:min-h-[420px]">
-          <p className="t-ui mb-12">Burgama, broadly speaking</p>
           <h2 id="studio-proof-title" className="t-title text-balance min-[900px]:text-5xl">
             {['One studio.', 'Four connected practices.'].map((line, index) => (
               <span key={line} className="block overflow-hidden">
@@ -136,7 +135,6 @@ export function SocialPerformanceBand() {
               transitionDelay: `${120 + index * 90}ms`,
             }}
           >
-            <p className="t-ui">{capability.eyebrow}</p>
             <div className="flex flex-col gap-4 min-[900px]:flex-row min-[900px]:items-end min-[900px]:justify-between">
               <h3 className="t-section max-w-[18ch] text-balance">{capability.title}</h3>
               <p className="t-body max-w-[38ch] text-pretty">{capability.body}</p>
@@ -151,7 +149,6 @@ export function SocialPerformanceBand() {
             transitionDelay: '300ms',
           }}
         >
-          <p className="t-ui mb-12">Social</p>
           <h3 className="t-section mb-7 text-balance">Content made to travel.</h3>
           <div className="grid grid-cols-2 gap-module min-[1100px]:grid-cols-4">
             {socialStats.map((stat, index) => (
@@ -176,7 +173,6 @@ export function SocialPerformanceBand() {
             className="flex min-h-64 flex-col justify-between rounded-module bg-navy p-5 transition-transform delay-500 duration-700 ease-module motion-reduce:transform-none md:p-8 min-[900px]:col-span-4"
             style={{ transform: visible ? 'translate3d(0,0,0)' : 'translate3d(0,18%,0)' }}
           >
-            <p className="t-ui">{capability.eyebrow}</p>
             <div className="flex flex-col gap-4">
               <h3 className="t-section text-balance">{capability.title}</h3>
               <p className="t-body text-pretty">{capability.body}</p>

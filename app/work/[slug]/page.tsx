@@ -136,9 +136,8 @@ export default async function ProjectPage({
         <Link
           href={`/work/${next.slug}`}
           aria-label={`Next project: ${next.title}`}
-          className="flex min-h-[46svh] flex-col justify-between gap-8 rounded-module bg-surface-2 p-6 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:p-10"
+          className="flex min-h-[46svh] flex-col justify-end gap-8 rounded-module bg-surface-2 p-6 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy md:p-10"
         >
-          <span className="t-ui">Next project</span>
           <span className="flex flex-col gap-4">
             <span className="t-display block">{next.title}</span>
             <span className="t-body block max-w-[42ch]">{next.summary}</span>
