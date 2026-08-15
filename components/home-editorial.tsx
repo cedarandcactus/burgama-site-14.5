@@ -13,7 +13,7 @@ export function HomeEditorial({ projects }: { projects: Project[] }) {
 
         <p className="ed-lede">
           Burgama is a design-led studio in Austin, Texas. We build identities, sites and
-          campaigns that can move, change and stay recognizable — a point of view first, then
+          campaigns that can move, change and stay recognizable. A point of view first, then
           the system that carries it.
         </p>
 
