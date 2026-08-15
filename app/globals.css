@@ -1204,7 +1204,7 @@ html[data-entry-open='true'] body {
   flex-direction: column;
   align-items: center;
   /* Clears the fixed nav pill floating over the top of the page. */
-  padding: clamp(7rem, 20vh, 13rem) var(--ed-gutter) clamp(4rem, 12vh, 8rem);
+  padding: clamp(6rem, 16vh, 10rem) var(--ed-gutter) clamp(3rem, 8vh, 5rem);
   text-align: center;
 }
 
@@ -1212,9 +1212,9 @@ html[data-entry-open='true'] body {
   max-width: 24ch;
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2.75rem, 8.6vw, 7.25rem) !important;
-  line-height: 0.92 !important;
-  letter-spacing: -0.045em !important;
+  font-size: clamp(1.9rem, 5vw, 4rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
   text-wrap: balance;
   animation: ed-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
@@ -1297,8 +1297,8 @@ html[data-entry-open='true'] body {
   max-width: 26ch;
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 4.2vw, 3.25rem) !important;
-  line-height: 1 !important;
+  font-size: clamp(1.4rem, 3vw, 2.25rem) !important;
+  line-height: 1.05 !important;
   letter-spacing: -0.035em !important;
 }
 
@@ -1334,9 +1334,9 @@ html[data-entry-open='true'] body {
 
 .ed-row-name {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
-  line-height: 1;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
 
 .ed-row-meta {
