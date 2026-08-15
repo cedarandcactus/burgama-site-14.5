@@ -148,25 +148,34 @@ export function SiteNav() {
             {open ? 'Close' : 'Menu'}
           </button>
 
-          <div className="hidden items-center justify-end gap-1 min-[700px]:flex">
+          <div className="hidden items-center justify-center gap-1 min-[700px]:flex">
             {[
               { label: 'Work', href: '/work' },
               { label: 'Studio', href: '/studio' },
-              { label: 'Capabilities', href: '/#capabilities' },
-              { label: 'Contact', href: '/contact' },
+              { label: 'Capabilities', href: '/studio#capabilities' },
+              { label: 'Approach', href: '/studio#approach' },
             ].map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
                 aria-current={isActive(item.href) ? 'page' : undefined}
-                className={`t-ui rounded-sm px-3 py-2 transition-colors duration-200 hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy ${
-                  isActive(item.href) ? 'bg-periwinkle text-navy' : 'text-periwinkle'
+                className={`t-ui nav-link rounded-sm px-3 py-2 ${
+                  isActive(item.href) ? 'nav-link-active' : ''
                 }`}
               >
                 {item.label}
               </Link>
             ))}
           </div>
+
+          {/* Solid control pinned inside the right end of the pill. */}
+          <Link
+            href="/contact"
+            aria-current={isActive('/contact') ? 'page' : undefined}
+            className="nav-cta t-ui hidden min-[700px]:inline-flex"
+          >
+            Start a project
+          </Link>
           </div>
         </div>
 

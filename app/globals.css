@@ -514,8 +514,12 @@
 }
 
 @media (min-width: 700px) {
+  /* The pill hugs its own contents rather than spanning the page. */
   .burgama-shell {
-    width: min(1440px, calc(100vw - 28px)) !important;
+    --shell-height: 58px;
+    --shell-radius: 12px;
+    width: max-content !important;
+    max-width: calc(100vw - 28px);
     background: rgb(14 18 37 / 0.94);
   }
 
@@ -525,9 +529,47 @@
   }
 
   .burgama-bar {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    padding-inline: 18px;
+    grid-template-columns: auto auto auto;
+    /* Brand sits inset from the left; the CTA nearly touches the right end. */
+    padding-inline: 24px 8px;
+    gap: 34px;
   }
+
+  .burgama-bar > div:not([id]) {
+    gap: 4px;
+  }
+}
+
+/* Plain text links, so the CTA is the only filled element in the pill. */
+.nav-link {
+  color: color-mix(in srgb, var(--periwinkle) 82%, transparent);
+  transition: color 220ms var(--ease-module);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible,
+.nav-link-active {
+  color: var(--periwinkle);
+}
+
+/* Solid control at the right end of the nav pill. */
+.nav-cta {
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--shell-height) - 16px);
+  padding-inline: 20px;
+  border-radius: 8px;
+  background: var(--periwinkle);
+  color: var(--navy) !important;
+  white-space: nowrap;
+  transition:
+    background-color 300ms var(--ease-module),
+    color 300ms var(--ease-module);
+}
+
+.nav-cta:hover,
+.nav-cta:focus-visible {
+  background: color-mix(in srgb, var(--periwinkle) 78%, #ffffff);
 }
 
 @media (max-width: 580px) {
@@ -1149,6 +1191,8 @@ html[data-entry-open='true'] body {
 
 .ed-page {
   --ed-gutter: clamp(1.25rem, 5vw, 5rem);
+  /* Opens a navy gap for the floating nav pill so the strip starts below it. */
+  padding-top: 84px;
   padding-bottom: clamp(3rem, 8vh, 6rem);
   background: var(--navy);
 }
@@ -1179,8 +1223,7 @@ html[data-entry-open='true'] body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Clears the fixed nav pill that floats over the top of the page. */
-  padding: clamp(6rem, 17vh, 12rem) var(--ed-gutter) clamp(3rem, 8vh, 6rem);
+  padding: clamp(3.5rem, 11vh, 8rem) var(--ed-gutter) clamp(3rem, 8vh, 6rem);
   text-align: center;
 }
 
