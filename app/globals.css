@@ -557,7 +557,7 @@
   align-items: center;
   justify-content: center;
   height: calc(var(--shell-height) - 16px);
-  padding-inline: 20px;
+  padding-inline: 34px;
   border-radius: 8px;
   background: var(--periwinkle);
   color: var(--navy) !important;
@@ -1237,13 +1237,15 @@ html[data-entry-open='true'] body {
   animation: ed-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) 300ms backwards;
 }
 
-/* Chunky mono-uppercase controls, sized off the label rather than a grid. */
+/* Wide, low controls: the label sits in a broad field rather than hugging it. */
 .ed-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 42px;
-  padding-inline: 1.125rem;
+  /* Width comes from the min-width floor, so short and long labels match. */
+  min-width: clamp(13rem, 34vw, 19rem);
+  padding-inline: 2.5rem;
   border-radius: 8px;
   font-size: 0.9rem;
   letter-spacing: 0;
