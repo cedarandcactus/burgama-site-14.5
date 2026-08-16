@@ -516,11 +516,12 @@
 @media (min-width: 700px) {
   /* The pill hugs its own contents rather than spanning the page. */
   .burgama-shell {
-    --shell-height: 58px;
-    --shell-radius: 12px;
+    /* 44px control inside one module of padding top and bottom. */
+    --shell-height: calc(var(--spacing-control) + var(--spacing-module) * 2);
+    --shell-radius: var(--radius-xl);
     width: max-content !important;
     max-width: calc(100vw - 28px);
-    background: rgb(14 18 37 / 0.94);
+    background: var(--navy);
   }
 
   .burgama-shell::before,
@@ -530,35 +531,36 @@
 
   .burgama-bar {
     grid-template-columns: auto auto auto;
-    /* Brand sits inset from the left; the CTA nearly touches the right end. */
-    padding-inline: 24px 8px;
-    gap: 34px;
+    /* Brand sits inset from the left; the CTA sits one module off the right. */
+    padding-inline: calc(var(--spacing-module) * 3) var(--spacing-module);
+    gap: calc(var(--spacing-module) * 5);
   }
 
   .burgama-bar > div:not([id]) {
-    gap: 4px;
+    gap: var(--spacing-module);
   }
 }
 
 /* Plain text links, so the CTA is the only filled element in the pill. */
 .nav-link {
-  color: color-mix(in srgb, var(--periwinkle) 82%, transparent);
-  transition: color 220ms var(--ease-module);
+  color: var(--periwinkle);
+  transition: color 300ms var(--ease-module);
 }
 
 .nav-link:hover,
 .nav-link:focus-visible,
 .nav-link-active {
-  color: var(--periwinkle);
+  color: var(--navy);
+  background: var(--periwinkle);
 }
 
 /* Solid control at the right end of the nav pill. */
 .nav-cta {
   align-items: center;
   justify-content: center;
-  height: calc(var(--shell-height) - 16px);
-  padding-inline: 34px;
-  border-radius: 8px;
+  height: var(--spacing-control);
+  padding-inline: 1.5rem;
+  border-radius: var(--radius-sm);
   background: var(--periwinkle);
   color: var(--navy) !important;
   white-space: nowrap;
@@ -569,7 +571,8 @@
 
 .nav-cta:hover,
 .nav-cta:focus-visible {
-  background: color-mix(in srgb, var(--periwinkle) 78%, #ffffff);
+  background: var(--surface-3);
+  color: var(--periwinkle) !important;
 }
 
 @media (max-width: 580px) {
@@ -1178,289 +1181,6 @@ html[data-entry-open='true'] body {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* ==================================================================
-   Homepage, editorial format.
-
-   The flat 1rem type system holds everywhere else in the site; this
-   page is the one place with a true display scale, so the rules below
-   deliberately out-specify it inside .ed-page only.
-================================================================== */
-
-.ed-page {
-  --ed-gutter: clamp(1.25rem, 5vw, 5rem);
-  padding-bottom: clamp(3rem, 8vh, 6rem);
-  background: var(--navy);
-}
-
-.ed-page :where(h1, h2, p, span, a, li) {
-  overflow-wrap: normal;
-}
-
-.ed-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Clears the fixed nav pill floating over the top of the page. */
-  padding: clamp(6rem, 16vh, 10rem) var(--ed-gutter) clamp(3rem, 8vh, 5rem);
-  text-align: center;
-}
-
-.ed-display {
-  max-width: 24ch;
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(1.9rem, 5vw, 4rem) !important;
-  line-height: 0.98 !important;
-  letter-spacing: -0.035em !important;
-  text-wrap: balance;
-  animation: ed-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
-}
-
-.ed-lede {
-  max-width: 52ch;
-  margin: clamp(1.75rem, 4vh, 2.75rem) 0 0;
-  font-size: clamp(1rem, 1.6vw, 1.2rem) !important;
-  line-height: 1.55 !important;
-  text-wrap: pretty;
-  animation: ed-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) 160ms backwards;
-}
-
-.ed-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: clamp(2rem, 5vh, 3rem);
-  animation: ed-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) 300ms backwards;
-}
-
-/* Wide, low controls: the label sits in a broad field rather than hugging it. */
-.ed-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  /* Width comes from the min-width floor, so short and long labels match. */
-  min-width: clamp(13rem, 34vw, 19rem);
-  padding-inline: 2.5rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  letter-spacing: 0;
-  transition:
-    background-color 300ms var(--ease-module),
-    color 300ms var(--ease-module),
-    transform 300ms var(--ease-module);
-}
-
-.ed-button:hover {
-  transform: translateY(-2px);
-}
-
-.ed-button-solid {
-  background: var(--periwinkle);
-  color: var(--navy);
-}
-
-.ed-button-quiet {
-  background: var(--surface-3);
-  color: var(--periwinkle);
-}
-
-.ed-button-quiet:hover {
-  background: var(--periwinkle);
-  color: var(--navy);
-}
-
-.ed-work {
-  padding: clamp(3.5rem, 10vh, 7rem) var(--ed-gutter) 0;
-}
-
-.ed-work-head {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 1440px;
-  margin: 0 auto clamp(2rem, 6vh, 3.5rem);
-}
-
-.ed-label {
-  margin: 0;
-  font-size: 0.9rem !important;
-  letter-spacing: 0 !important;
-  opacity: 0.62;
-}
-
-.ed-work-title {
-  max-width: 26ch;
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(1.4rem, 3vw, 2.25rem) !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.035em !important;
-}
-
-.ed-list {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-}
-
-.ed-row + .ed-row {
-  margin-top: 7px;
-}
-
-.ed-row-link {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-  padding: clamp(1.1rem, 2.6vh, 1.75rem) clamp(1rem, 2.4vw, 1.75rem);
-  border-radius: var(--radius-module);
-  background: var(--surface-1);
-  transition:
-    background-color 300ms var(--ease-module),
-    color 300ms var(--ease-module);
-}
-
-.ed-row-link:hover {
-  background: var(--periwinkle);
-  color: var(--navy);
-}
-
-.ed-row-name {
-  font-family: var(--font-serif);
-  font-size: clamp(1.15rem, 2.2vw, 1.65rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-}
-
-.ed-row-meta {
-  font-size: 0.9rem;
-  opacity: 0.72;
-}
-
-.ed-row-link:hover .ed-row-meta {
-  opacity: 1;
-}
-
-.ed-work-cta {
-  margin-top: clamp(1.75rem, 5vh, 2.75rem);
-}
-
-/* Footer: one large inset card, inverted out of the navy page. */
-.ed-footer {
-  padding: clamp(2.5rem, 7vh, 5rem) clamp(1rem, 3vw, 2.5rem);
-  background: var(--navy);
-}
-
-.ed-footer-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(3rem, 12vh, 8rem);
-  max-width: 1560px;
-  min-height: clamp(420px, 56vh, 640px);
-  margin: 0 auto;
-  padding: clamp(1.75rem, 4vw, 3.5rem);
-  border-radius: 16px;
-  background: var(--periwinkle);
-  color: var(--navy);
-}
-
-.ed-footer-top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: clamp(2rem, 6vw, 5rem);
-}
-
-.ed-footer-brand {
-  display: inline-flex;
-  align-self: flex-start;
-  color: var(--navy);
-}
-
-.ed-footer-columns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(2rem, 5vw, 4.5rem);
-}
-
-.ed-footer-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  min-width: 8rem;
-}
-
-.ed-footer-label {
-  margin: 0;
-  color: color-mix(in srgb, var(--navy) 58%, var(--periwinkle)) !important;
-  font-size: 0.9rem !important;
-  letter-spacing: 0 !important;
-}
-
-.ed-footer-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ed-footer-link {
-  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-  transition: opacity 240ms var(--ease-module);
-}
-
-.ed-footer-link:hover {
-  opacity: 0.6;
-}
-
-.ed-footer-base {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem 2rem;
-}
-
-.ed-footer-fine {
-  margin: 0;
-  color: color-mix(in srgb, var(--navy) 62%, var(--periwinkle)) !important;
-  font-size: 0.9rem !important;
-}
-
-@keyframes ed-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-}
-
-@media (max-width: 560px) {
-  /* Stacked controls read as one block rather than two ragged pills. */
-  .ed-actions {
-    align-self: stretch;
-    flex-direction: column;
-  }
-
-  .ed-button {
-    width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ed-display,
-  .ed-lede,
-  .ed-actions {
-    animation: none;
   }
 }
 

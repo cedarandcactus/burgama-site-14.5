@@ -1,72 +1,52 @@
 import Link from 'next/link'
+import { AnimatedText } from '@/components/animated-text'
 import { BrandMark } from '@/components/brand-mark'
 
-const COLUMNS = [
-  {
-    label: 'Explore',
-    links: [
-      { label: 'Selected work', href: '/work' },
-      { label: 'Studio', href: '/studio' },
-      { label: 'Capabilities', href: '/studio#capabilities' },
-      { label: 'Approach', href: '/studio#approach' },
-    ],
-  },
-  {
-    label: 'Studio',
-    links: [
-      { label: 'Austin, Texas', href: '/studio' },
-      { label: 'Independent', href: '/studio' },
-      { label: 'Start a project', href: '/contact' },
-    ],
-  },
-  {
-    label: 'Connect',
-    links: [
-      { label: 'hello@burgama.com', href: 'mailto:hello@burgama.com', external: true },
-      { label: 'Instagram', href: 'https://www.instagram.com/', external: true },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/', external: true },
-    ],
-  },
+const LINKS = [
+  { label: 'Selected work', href: '/work' },
+  { label: 'Studio', href: '/studio' },
+  { label: 'Capabilities', href: '/#capabilities' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export function SiteFooter() {
   return (
-    <footer className="ed-footer">
-      <div className="ed-footer-card">
-        <div className="ed-footer-top">
-          <Link href="/" aria-label="Burgama, home" className="ed-footer-brand">
-            <BrandMark className="h-auto w-[150px] min-[700px]:w-[210px]" />
-          </Link>
-
-          <nav aria-label="Footer" className="ed-footer-columns">
-            {COLUMNS.map((column) => (
-              <div key={column.label} className="ed-footer-column">
-                <p className="ed-footer-label">{column.label}</p>
-                <ul className="ed-footer-list">
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      {'external' in link && link.external ? (
-                        <a href={link.href} className="ed-footer-link">
-                          {link.label}
-                        </a>
-                      ) : (
-                        <Link href={link.href} className="ed-footer-link">
-                          {link.label}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
+    <footer className="section-navy px-module py-12 md:py-20">
+      <div className="rail mx-auto grid gap-module min-[900px]:grid-cols-12">
+        <div className="pair-invert rounded-module p-5 md:p-8 min-[900px]:col-span-7 min-[900px]:row-span-2 min-[900px]:min-h-[320px]">
+          <AnimatedText
+            as="h2"
+            lines={['Start a project', 'with the studio']}
+            className="t-title max-w-[18ch] min-[900px]:text-6xl"
+          />
         </div>
 
-        <div className="ed-footer-base">
-          <p className="ed-footer-fine">
-            © {new Date().getFullYear()} Burgama. All rights reserved.
-          </p>
-          <p className="ed-footer-fine">Design-led creative studio · Austin, Texas</p>
+        <a
+          href="mailto:hello@burgama.com"
+          className="flex min-h-24 items-end rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy min-[900px]:col-span-5"
+        >
+          <span className="t-section">hello@burgama.com</span>
+        </a>
+
+        <p className="flex min-h-24 items-end rounded-module bg-navy p-5 ring-1 ring-inset ring-periwinkle/30 min-[900px]:col-span-5">
+          <span className="t-section">Austin, Texas</span>
+        </p>
+
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-module min-[900px]:col-span-8 min-[900px]:grid-cols-4">
+          {LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="t-ui flex h-control items-center justify-center rounded-module bg-navy px-4 text-center ring-1 ring-inset ring-periwinkle/30 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-end justify-between gap-module rounded-module bg-navy p-4 ring-1 ring-inset ring-periwinkle/30 min-[900px]:col-span-4">
+          <BrandMark className="h-4 w-auto" />
+          <p className="t-ui text-right">Independent studio</p>
         </div>
       </div>
     </footer>

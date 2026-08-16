@@ -5,51 +5,56 @@ export function HomeEditorial({ projects }: { projects: Project[] }) {
   const work = projects.slice(0, 5)
 
   return (
-    <div className="ed-page">
-      <section className="ed-hero" aria-labelledby="ed-hero-title">
-        <h1 id="ed-hero-title" className="ed-display">
-          Identity systems made for what comes next
-        </h1>
+    <div className="section-navy px-module pb-12 pt-28 md:pb-20">
+      <div className="rail mx-auto flex flex-col gap-module">
+        <section className="pair-invert rounded-module p-5 md:p-8" aria-labelledby="home-title">
+          <h1 id="home-title" className="t-title max-w-[28ch]">
+            Burgama is an independent creative studio in Austin, Texas.
+          </h1>
+        </section>
 
-        <p className="ed-lede">
-          Burgama is a design-led studio in Austin, Texas. We build identities, sites and
-          campaigns that can move, change and stay recognizable. A point of view first, then
-          the system that carries it.
-        </p>
-
-        <div className="ed-actions">
-          <Link href="/work" className="ed-button ed-button-solid">
-            See the work
+        <div className="flex flex-col gap-module min-[700px]:flex-row">
+          <Link
+            href="/work"
+            className="t-ui flex h-control flex-1 items-center justify-center rounded-module bg-periwinkle px-4 text-navy transition-colors duration-300 ease-module hover:bg-surface-3 hover:text-periwinkle focus-visible:bg-surface-3 focus-visible:text-periwinkle"
+          >
+            Work
           </Link>
-          <Link href="/contact" className="ed-button ed-button-quiet">
+          <Link
+            href="/contact"
+            className="t-ui flex h-control flex-1 items-center justify-center rounded-module bg-surface-1 px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+          >
             Start a project
           </Link>
         </div>
-      </section>
 
-      <section className="ed-work" aria-labelledby="ed-work-title">
-        <div className="ed-work-head">
-          <p className="ed-label">Selected work</p>
-          <h2 id="ed-work-title" className="ed-work-title">
-            Six years of systems, campaigns and launches
+        <section className="flex flex-col gap-module" aria-labelledby="home-work-title">
+          <h2 id="home-work-title" className="t-section rounded-module bg-surface-1 p-5">
+            Selected work
           </h2>
-        </div>
 
-        <ul className="ed-list">
-          {work.map((project) => (
-            <li key={project.slug} className="ed-row">
-              <Link href={`/work/${project.slug}`} className="ed-row-link">
-                <span className="ed-row-name">{project.client}</span>
-                <span className="ed-row-meta">{project.disciplines.join(' · ')}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+          <ul className="flex flex-col gap-module">
+            {work.map((project) => (
+              <li key={project.slug}>
+                <Link
+                  href={`/work/${project.slug}`}
+                  className="flex flex-wrap items-baseline justify-between gap-module rounded-module bg-surface-1 p-5 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+                >
+                  <span className="t-section">{project.client}</span>
+                  <span className="t-ui">{project.disciplines.join(', ')}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-        <Link href="/work" className="ed-button ed-button-quiet ed-work-cta">
-          All work
-        </Link>
-      </section>
+          <Link
+            href="/work"
+            className="t-ui flex h-control items-center justify-center rounded-module bg-surface-1 px-4 transition-colors duration-300 ease-module hover:bg-periwinkle hover:text-navy focus-visible:bg-periwinkle focus-visible:text-navy"
+          >
+            View all
+          </Link>
+        </section>
+      </div>
     </div>
   )
 }

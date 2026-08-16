@@ -150,10 +150,9 @@ export function SiteNav() {
 
           <div className="hidden items-center justify-center gap-1 min-[700px]:flex">
             {[
-              { label: 'Work', href: '/work' },
+              { label: 'Selected work', href: '/work' },
               { label: 'Studio', href: '/studio' },
-              { label: 'Capabilities', href: '/studio#capabilities' },
-              { label: 'Approach', href: '/studio#approach' },
+              { label: 'Capabilities', href: '/#capabilities' },
             ].map((item) => (
               <Link
                 key={item.label}
