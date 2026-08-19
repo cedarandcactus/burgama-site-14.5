@@ -138,6 +138,90 @@
   max-width: 44rem;
 }
 
+/*
+  Contained measure taken from the Eleken reference, whose content column
+  measures ~1048px centred. The structural chrome (nav, index, footer) stays
+  full-bleed per the Locomotive references; prose sits inside this.
+*/
+@utility measure {
+  width: 100%;
+  max-width: 1048px;
+  margin-inline: auto;
+}
+
+/*
+  Button proportions measured off the Eleken reference: 13px/500 label,
+  9px 16px padding, 10px radius, solid fill. Deliberately small — the
+  reference never scales its controls with the headings.
+*/
+@utility action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-module);
+  padding: 0.5625rem 1rem;
+  background: var(--periwinkle);
+  color: var(--navy);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    opacity 260ms var(--ease-module),
+    transform 260ms var(--ease-module);
+}
+
+a.action:hover,
+a.action:focus-visible,
+button.action:hover,
+button.action:focus-visible {
+  background: var(--periwinkle);
+  color: var(--navy);
+  opacity: 0.86;
+}
+
+/* Secondary reads as outline-only against the navy ground. */
+@utility action-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
+  border-radius: var(--radius-module);
+  padding: 0.5625rem 1rem;
+  background: transparent;
+  color: var(--periwinkle);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    border-color 260ms var(--ease-module),
+    background-color 260ms var(--ease-module);
+}
+
+a.action-quiet:hover,
+a.action-quiet:focus-visible {
+  border-color: var(--periwinkle);
+  background: transparent;
+  color: var(--periwinkle);
+}
+
+/* The arrow nudges rather than the whole control moving. */
+.action-arrow {
+  transition: transform 260ms var(--ease-module);
+}
+
+a.action:hover .action-arrow,
+a.action-quiet:hover .action-arrow {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-arrow {
+    transition: none;
+  }
+}
+
 @utility section-burgundy {
   background-color: var(--surface-1);
   color: var(--periwinkle);
@@ -464,18 +548,9 @@
   background: transparent;
 }
 
+/* Solid pill, matching the reference's nav CTA. Colour comes from `action`. */
 .site-nav-contact {
   justify-self: end;
-  font-size: 0.9375rem;
-  color: var(--periwinkle);
-  transition: opacity 240ms var(--ease-module);
-}
-
-.site-nav-contact:hover,
-.site-nav-contact:focus-visible {
-  opacity: 0.62;
-  background: transparent;
-  color: var(--periwinkle);
 }
 
 /* The index and the contact link collapse into a single toggle on small screens. */
@@ -531,8 +606,9 @@
 
 /* --- Page and index --------------------------------------------- */
 
+/* Sections own their own vertical rhythm, so the page adds no trailing pad. */
 .page {
-  padding-bottom: clamp(4rem, 10vw, 9rem);
+  padding-bottom: 0;
 }
 
 /* Left marker, right statement — the reference's asymmetric intro. */
@@ -657,13 +733,95 @@
 @media (min-width: 760px) {
   .index-row {
     grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
-    align-items: baseline;
+    /*
+      Centred, not baseline: the collapsed thumbnail is a zero-width but
+      full-height image, and its bottom edge would otherwise become the
+      row's baseline and drag the meta columns out of alignment.
+    */
+    align-items: center;
     gap: clamp(1.5rem, 4vw, 4rem);
     padding-block: clamp(1.5rem, 2.6vw, 2.5rem);
   }
 
   .index-meta-end {
     text-align: right;
+  }
+}
+
+/* --- Two-column statement block ---------------------------------- */
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  padding: clamp(4rem, 9vw, 8rem) var(--page-gutter);
+}
+
+.split-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.split-title {
+  max-width: 26ch;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/*
+  The reference sets body copy at 15px in a muted grey against near-black
+  headings. Periwinkle at 68% against navy is the equivalent step here.
+*/
+.split-body {
+  max-width: 54ch;
+  font-size: 0.9375rem;
+  line-height: 1.67;
+  color: color-mix(in srgb, var(--periwinkle) 68%, var(--navy)) !important;
+}
+
+.split-copy .action {
+  margin-top: 0.75rem;
+}
+
+.split-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-self: start;
+}
+
+.split-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding-block: 1.125rem;
+  border-top: 1px solid var(--rule);
+}
+
+.split-fact:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.split-fact-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--periwinkle) 55%, var(--navy));
+}
+
+.split-fact-value {
+  font-size: 1rem;
+  color: var(--periwinkle);
+}
+
+@media (min-width: 860px) {
+  .split {
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    gap: clamp(3rem, 8vw, 7rem);
   }
 }
 

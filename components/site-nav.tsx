@@ -59,7 +59,7 @@ export function SiteNav() {
           ))}
         </p>
 
-        <Link href="/contact" className="site-nav-contact">
+        <Link href="/contact" className="site-nav-contact action">
           Start a project
         </Link>
 

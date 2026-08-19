@@ -43,6 +43,49 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
           ))}
         </ul>
       </section>
+
+      {/*
+        Two-column statement block taken from the Eleken reference: heading,
+        muted body, small solid action. Sits inside the contained measure
+        while the index above it runs full-bleed.
+      */}
+      <section className="split" aria-labelledby="home-approach-title">
+        <div className="split-copy">
+          <h2 id="home-approach-title" className="split-title">
+            Most studios hand you a deck. We hand you the thing itself.
+          </h2>
+          <p className="split-body">
+            Brand systems and websites for companies that have outgrown their first
+            attempt. We work in small, senior teams — no account layer, no handoff
+            between the people who plan the work and the people who make it.
+          </p>
+          <p className="split-body">
+            Every engagement starts with the same question: what does this need to do,
+            and for whom. The design follows from the answer.
+          </p>
+          <Link href="/studio" className="action">
+            How we work
+            <span aria-hidden="true" className="action-arrow">
+              &rarr;
+            </span>
+          </Link>
+        </div>
+
+        <dl className="split-facts">
+          <div className="split-fact">
+            <dt className="split-fact-label">Founded</dt>
+            <dd className="split-fact-value">2019, Austin</dd>
+          </div>
+          <div className="split-fact">
+            <dt className="split-fact-label">Practice</dt>
+            <dd className="split-fact-value">Brand, digital, editorial</dd>
+          </div>
+          <div className="split-fact">
+            <dt className="split-fact-label">Engagements</dt>
+            <dd className="split-fact-value">{projects.length} shipped</dd>
+          </div>
+        </dl>
+      </section>
     </main>
   )
 }
