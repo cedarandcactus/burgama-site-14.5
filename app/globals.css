@@ -662,21 +662,76 @@ a.action-quiet:hover .action-arrow {
 }
 
 /*
+  Sub-cell jitter for the dither lattice. Registered so the steps() keyframes
+  below can animate them; they resolve into a single `transform`, so the
+  shimmer stays on one composited layer instead of repainting a background.
+*/
+@property --dither-x {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --dither-y {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+/*
+  2px against a 4px cell is a half-cell shift, so the lattice lands on the
+  alternate phase each step — the pattern genuinely re-screens rather than
+  sliding. steps(1, end) keeps it stop-motion; easing would smear it into a
+  drifting moire.
+*/
+@keyframes hero-dither-shift {
+  0% {
+    --dither-x: 0px;
+    --dither-y: 0px;
+  }
+  25% {
+    --dither-x: 2px;
+    --dither-y: -2px;
+  }
+  50% {
+    --dither-x: -2px;
+    --dither-y: 2px;
+  }
+  75% {
+    --dither-x: 2px;
+    --dither-y: 2px;
+  }
+}
+
+/*
   Dither pass 2 of 2: an ordered dot lattice, offset on alternating cells so
   it reads as a dither screen rather than a regular halftone grid. Hard
   colour stops keep every dot aliased — a soft gradient would just look like
   blur. Multiply means the dots only show where there is light to subtract,
   so the dark stone stays solid and the arch carries the texture.
+
+  Two things stop it reading as a fixed grille laid over moving footage:
+  it repeats the video's parallax translate, so the screen travels *with*
+  the image on scroll; and the stepped jitter re-phases the lattice while
+  the clip plays, the way a real 1-bit dither shimmers as pixels cross the
+  threshold. Inset is negative so the jitter never exposes a hero edge.
 */
 .hero-dither {
   position: absolute;
-  inset: 0;
+  inset: -8px;
   background-image:
     radial-gradient(circle at 25% 25%, var(--navy) 0 40%, transparent 41%),
     radial-gradient(circle at 75% 75%, var(--navy) 0 40%, transparent 41%);
   background-size: 4px 4px;
   mix-blend-mode: multiply;
   opacity: 0.9;
+  transform: translate3d(
+    var(--dither-x),
+    calc(var(--scroll) * -4% + var(--dither-y)),
+    0
+  );
+  animation: hero-dither-shift 320ms steps(1, end) infinite;
+  will-change: transform;
 }
 
 /*
@@ -751,6 +806,15 @@ a.action-quiet:hover .action-arrow {
 @media (prefers-reduced-motion: reduce) {
   .hero-image {
     transform: scale(1.04);
+  }
+
+  /*
+    The lattice keeps its texture but stops re-phasing — the shimmer is the
+    one part of this treatment that genuinely flickers.
+  */
+  .hero-dither {
+    animation: none;
+    transform: none;
   }
 
   .hero-copy {
