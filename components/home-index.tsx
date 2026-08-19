@@ -1,18 +1,12 @@
 import Link from 'next/link'
+import { HeroVault } from '@/components/hero-vault'
 import type { Project } from '@/lib/projects'
 
 export function HomeIndex({ projects }: { projects: Project[] }) {
   return (
     <main className="page">
-      {/* Intro: a left marker against a right-hand statement, per the reference. */}
-      <section className="page-intro" aria-labelledby="home-title">
-        <p className="page-intro-marker">
-          All projects <span className="page-intro-count">{projects.length}</span>
-        </p>
-        <h1 id="home-title" className="page-intro-statement">
-          Burgama is an independent creative studio in Austin, Texas.
-        </h1>
-      </section>
+      {/* Intro now sits over the vault photograph, with a scroll-driven push. */}
+      <HeroVault count={projects.length} />
 
       {/* The index runs edge to edge: client, disciplines, year. */}
       <section aria-labelledby="home-work-title">

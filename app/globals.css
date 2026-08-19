@@ -611,15 +611,76 @@ a.action-quiet:hover .action-arrow {
   padding-bottom: 0;
 }
 
-/* Left marker, right statement — the reference's asymmetric intro. */
-.page-intro {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: clamp(4rem, 12vw, 10rem) var(--page-gutter) clamp(3rem, 7vw, 6rem);
+/* --- Hero over the vault photograph ------------------------------ */
+
+/*
+  Copy is anchored to the bottom so it never lands on the blown-out arch
+  of light in the upper middle of the frame. `--scroll` is written by
+  HeroVault; it stays 0 when JS or motion is unavailable, so every rule
+  below degrades to a static, legible hero.
+*/
+.hero {
+  --scroll: 0;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(24rem, 68vh, 40rem);
+  overflow: hidden;
+  background: var(--navy);
 }
 
-.page-intro-marker {
+/*
+  The source is a 992x432 monochrome frame, so it is already grainy and
+  near-black — desaturating fully and easing the brightness lets it sit in
+  the navy palette and hides the upscaling a full-bleed crop requires.
+  Zoom origin is the arch, so scrolling pushes into the light.
+*/
+.hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: saturate(0) contrast(1.08) brightness(0.94);
+  transform-origin: 50% 44%;
+  transform: scale(calc(1.04 + var(--scroll) * 0.1))
+    translate3d(0, calc(var(--scroll) * -2.5%), 0);
+  will-change: transform;
+}
+
+/*
+  Legibility scrim, not decoration: heavy at the bottom where the type
+  sits, near-clear across the middle so the arch still reads, and solid
+  navy at the very bottom so the hero dissolves into the page below.
+*/
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(8 13 27 / 0.45) 0%,
+    rgb(8 13 27 / 0.06) 30%,
+    rgb(8 13 27 / 0.1) 56%,
+    rgb(8 13 27 / 0.66) 79%,
+    rgb(8 13 27 / 0.94) 92%,
+    var(--navy) 100%
+  );
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  padding: clamp(4rem, 10vw, 8rem) var(--page-gutter) clamp(2.5rem, 5vw, 4rem);
+  transform: translate3d(0, calc(var(--scroll) * -2rem), 0);
+  opacity: calc(1 - var(--scroll) * 0.9);
+}
+
+.hero-marker {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
@@ -627,31 +688,32 @@ a.action-quiet:hover .action-arrow {
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--periwinkle) 60%, var(--navy)) !important;
+  color: color-mix(in srgb, var(--periwinkle) 78%, var(--navy)) !important;
 }
 
-.page-intro-count {
+.hero-count {
   font-size: 0.625rem;
   transform: translateY(-0.15em);
 }
 
-.page-intro-statement {
+.hero-statement {
   max-width: 22ch;
   font-size: clamp(2rem, 3.6vw, 3.5rem);
   line-height: 1.04;
   letter-spacing: -0.035em;
   text-wrap: balance;
+  /* Insurance for the brighter parts of the crop at narrow widths. */
+  text-shadow: 0 1px 28px rgb(8 13 27 / 0.6);
 }
 
-@media (min-width: 760px) {
-  .page-intro {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    gap: clamp(2rem, 6vw, 6rem);
+@media (prefers-reduced-motion: reduce) {
+  .hero-image {
+    transform: scale(1.04);
   }
 
-  /* The marker aligns to the statement's first line, not the block top. */
-  .page-intro-marker {
-    padding-top: 0.5rem;
+  .hero-copy {
+    transform: none;
+    opacity: 1;
   }
 }
 
