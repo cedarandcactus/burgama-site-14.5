@@ -45,11 +45,23 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
       </section>
 
       {/*
-        Two-column statement block taken from the Eleken reference: heading,
-        muted body, small solid action. Sits inside the contained measure
-        while the index above it runs full-bleed.
+        Two-column block matching the Eleken reference's measured proportions:
+        equal 468px columns with a 72px gap, visual left, copy right. The
+        reference fills its left column with gradient spheres; a real project
+        image goes there instead, per the flat/no-gradient direction.
       */}
       <section className="split" aria-labelledby="home-approach-title">
+        <figure className="split-media">
+          <img
+            src="/work/wurqly/cover.png"
+            alt="Wurqly identity system applied across product screens and print"
+            width={936}
+            height={936}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
         <div className="split-copy">
           <h2 id="home-approach-title" className="split-title">
             Most studios hand you a deck. We hand you the thing itself.
@@ -70,21 +82,6 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
             </span>
           </Link>
         </div>
-
-        <dl className="split-facts">
-          <div className="split-fact">
-            <dt className="split-fact-label">Founded</dt>
-            <dd className="split-fact-value">2019, Austin</dd>
-          </div>
-          <div className="split-fact">
-            <dt className="split-fact-label">Practice</dt>
-            <dd className="split-fact-value">Brand, digital, editorial</dd>
-          </div>
-          <div className="split-fact">
-            <dt className="split-fact-label">Engagements</dt>
-            <dd className="split-fact-value">{projects.length} shipped</dd>
-          </div>
-        </dl>
       </section>
     </main>
   )

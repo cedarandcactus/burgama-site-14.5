@@ -757,18 +757,42 @@ a.action-quiet:hover .action-arrow {
   padding: clamp(4rem, 9vw, 8rem) var(--page-gutter);
 }
 
+/* Copy is vertically centred against the media, as in the reference. */
 .split-copy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 1.25rem;
 }
 
+/*
+  The reference fills this column with gradient spheres. A real project
+  image sits here instead — flat, no gradient, and it carries actual work.
+*/
+.split-media {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-module);
+  background: var(--surface-1);
+}
+
+/* Landscape, so a full-bleed column doesn't produce an over-tall image. */
+.split-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* Reference measures 32px / 500 / -0.64px at a 468px column. */
 .split-title {
-  max-width: 26ch;
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  max-width: 24ch;
+  font-size: clamp(1.625rem, 2.4vw, 2rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 500;
   text-wrap: balance;
 }
 
@@ -787,41 +811,17 @@ a.action-quiet:hover .action-arrow {
   margin-top: 0.75rem;
 }
 
-.split-facts {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  align-self: start;
-}
-
-.split-fact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-  padding-block: 1.125rem;
-  border-top: 1px solid var(--rule);
-}
-
-.split-fact:last-child {
-  border-bottom: 1px solid var(--rule);
-}
-
-.split-fact-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--periwinkle) 55%, var(--navy));
-}
-
-.split-fact-value {
-  font-size: 1rem;
-  color: var(--periwinkle);
-}
-
+/*
+  Equal columns and a 72px gap, taken from the reference (468 + 72 + 468).
+  The reference centres this in a 1008px container; here it spans the page
+  gutter instead so the block shares the same left spine and full-bleed
+  width as the nav, index and footer. The copy stays readable because
+  `.split-title` and `.split-body` cap their own measures in ch.
+*/
 @media (min-width: 860px) {
   .split {
-    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
-    gap: clamp(3rem, 8vw, 7rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4.5rem;
   }
 }
 
