@@ -642,6 +642,12 @@ a.action-quiet:hover .action-arrow {
   the arch, into the valley), so scroll adds only a restrained parallax
   drift. An earlier 1.04->1.14 scroll zoom was built for a still frame and
   fought the footage's own dolly; don't reintroduce it.
+
+  Dither pass 1 of 2: the high contrast + low brightness crushes the tonal
+  range so the footage reads closer to 1-bit — mostly ink, mostly paper, few
+  mids. Done with cheap compositor filters rather than an SVG
+  `feComponentTransfer` posterize, because an SVG filter over a playing
+  full-bleed video repaints every frame on the CPU and janks.
 */
 .hero-image {
   position: absolute;
@@ -650,9 +656,27 @@ a.action-quiet:hover .action-arrow {
   height: 100%;
   object-fit: cover;
   object-position: 50% 42%;
-  filter: saturate(0) contrast(1.08) brightness(0.94);
+  filter: saturate(0) contrast(2.35) brightness(1.06);
   transform: scale(1.04) translate3d(0, calc(var(--scroll) * -4%), 0);
   will-change: transform;
+}
+
+/*
+  Dither pass 2 of 2: an ordered dot lattice, offset on alternating cells so
+  it reads as a dither screen rather than a regular halftone grid. Hard
+  colour stops keep every dot aliased — a soft gradient would just look like
+  blur. Multiply means the dots only show where there is light to subtract,
+  so the dark stone stays solid and the arch carries the texture.
+*/
+.hero-dither {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, var(--navy) 0 40%, transparent 41%),
+    radial-gradient(circle at 75% 75%, var(--navy) 0 40%, transparent 41%);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+  opacity: 0.9;
 }
 
 /*
@@ -685,11 +709,18 @@ a.action-quiet:hover .action-arrow {
   opacity: calc(1 - var(--scroll) * 0.9);
 }
 
+/*
+  Monoline: a single hairline rule of the same 1px weight used by the index
+  and footer, so the hero is ruled rather than decorated.
+*/
 .hero-marker {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
   font-size: 0.75rem;
+  font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -701,14 +732,20 @@ a.action-quiet:hover .action-arrow {
   transform: translateY(-0.15em);
 }
 
+/*
+  Monoline: uniform 400 stroke, no weight contrast, and the tracking opened
+  from -0.035em so thin letterforms at this size don't collide. The shadow is
+  tight rather than a soft glow — a wide blur would read as haze against a
+  hard-edged dithered ground.
+*/
 .hero-statement {
-  max-width: 22ch;
-  font-size: clamp(2rem, 3.6vw, 3.5rem);
-  line-height: 1.04;
-  letter-spacing: -0.035em;
+  max-width: 24ch;
+  font-size: clamp(1.875rem, 3.4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   text-wrap: balance;
-  /* Insurance for the brighter parts of the crop at narrow widths. */
-  text-shadow: 0 1px 28px rgb(8 13 27 / 0.6);
+  text-shadow: 0 1px 12px rgb(8 13 27 / 0.72);
 }
 
 @media (prefers-reduced-motion: reduce) {

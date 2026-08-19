@@ -124,6 +124,13 @@ export function HeroVault({ count }: { count: number }) {
       >
         <source src="/hero/vault.mp4" type="video/mp4" />
       </video>
+
+      {/*
+        Ordered dot lattice, multiplied over the crushed footage — the dither.
+        It sits above the video but below the scrim, so the scrim stays a
+        clean gradient instead of being screened too.
+      */}
+      <div className="hero-dither" aria-hidden="true" />
       <div className="hero-scrim" aria-hidden="true" />
 
       <div className="hero-copy">
