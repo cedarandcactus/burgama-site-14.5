@@ -270,9 +270,6 @@ export const projects: Project[] = [
 
 export const disciplines: Discipline[] = ['Brand', 'Web', 'Marketing', 'Content', 'Production', 'Growth']
 export function getProject(slug: string) { return projects.find((project) => project.slug === slug) }
-export const featuredProjects = ['wurqly', 'avro', 'hiking-pony', 'matchday'].map(
-  (slug) => projects.find((project) => project.slug === slug)!,
-)
 export const toneClass: Record<Tone, string> = {
   'surface-1': 'bg-surface-1 text-foreground', 'surface-2': 'bg-surface-2 text-foreground',
   'surface-3': 'bg-surface-3 text-foreground', periwinkle: 'bg-periwinkle text-navy',

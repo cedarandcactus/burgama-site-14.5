@@ -264,25 +264,25 @@
   .premise-atmosphere::before { animation: none; }
 }
 
-/* Sized to sit inside the 438px editorial rail without wrapping oddly. */
+/* A real scale now that the page runs full width instead of a 438px rail. */
 @utility t-display {
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.004em;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
   font-weight: 400;
 }
 
 @utility t-title {
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.004em;
+  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
   font-weight: 400;
 }
 
 @utility t-section {
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.004em;
+  font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   font-weight: 400;
 }
 
@@ -293,21 +293,17 @@
   font-weight: 400;
 }
 
+/* Small caps label, used for column headings and meta rows. */
 @utility t-ui {
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.004em;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   font-weight: 400;
 }
 
-/* Flat type system: semantics remain in the markup, not in visual scale. */
-:where(h1, h2, h3, h4, p, li, strong, blockquote, figcaption) {
+:where(h1, h2, h3, h4, p, li, blockquote, figcaption) {
   max-width: 100%;
-  overflow-wrap: anywhere;
-  font-size: 1rem !important;
-  line-height: 1.5 !important;
-  letter-spacing: -0.004em !important;
-  font-weight: 400 !important;
 }
 
 :where(p, figcaption, blockquote) {
@@ -416,658 +412,328 @@
 }
 
 /* ------------------------------------------------------------------
-   Navbar frosted film: tinted body, physical frost, color bloom, sheen.
+   Wide layout: full-bleed page, hairline rules, three fixed columns.
+   Replaces the 438px rail and the frosted nav pill.
 ------------------------------------------------------------------ */
-.burgama-shell {
-  --shell-width: 438px;
-  --nav-current-width: 438px;
-  --shell-height: 46px;
-  --shell-radius: 10px;
-  --text: 154 161 209;
-  --glass: 176 181 226;
-  --tone-a: 214 122 176;
-  --tone-b: 168 176 230;
-  --tone-c: 160 117 211;
-  --nav-glass-alpha: 0.48;
-  position: fixed;
+
+:root {
+  --page-gutter: clamp(1rem, 3.2vw, 2.5rem);
+  --rule: color-mix(in srgb, var(--periwinkle) 22%, transparent);
+}
+
+/* --- Nav --------------------------------------------------------- */
+
+.site-nav {
+  position: sticky;
+  top: 0;
   z-index: 50;
-  top: 13px;
-  left: 50%;
-  width: min(var(--nav-current-width), calc(100vw - 20px));
-  min-height: var(--shell-height);
-  transform: translateX(-50%);
-  overflow: hidden;
-  isolation: isolate;
-  border: 0;
-  outline: 0;
-  border-radius: var(--shell-radius);
-  color: rgb(var(--text));
-  background: rgb(var(--glass) / var(--nav-glass-alpha));
-  backdrop-filter: blur(16px) saturate(138%) brightness(1.035);
-  -webkit-backdrop-filter: blur(16px) saturate(138%) brightness(1.035);
-  transition:
-    width 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.76s cubic-bezier(0.16, 1, 0.3, 1),
-    border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-    color 0.42s ease,
-    background-color 0.42s ease;
+  background: var(--navy);
+  border-bottom: 1px solid var(--rule);
 }
 
-.burgama-shell::before,
-.burgama-shell::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-}
-
-.burgama-shell::before {
-  z-index: 0;
-  inset: -22%;
-  background:
-    radial-gradient(58% 70% at 17% 12%, rgb(var(--tone-b) / 0.26), transparent 68%),
-    radial-gradient(58% 68% at 84% 82%, rgb(var(--tone-c) / 0.22), transparent 68%),
-    radial-gradient(46% 58% at 56% 46%, rgb(var(--tone-a) / 0.19), transparent 72%);
-  filter: blur(28px) saturate(120%);
-  transform: translate3d(0, 0, 0) scale(1.04);
-  transition: background 0.44s ease;
-}
-
-.burgama-shell::after {
-  z-index: 1;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgb(255 255 255 / 0.11),
-    rgb(255 255 255 / 0.025) 42%,
-    rgb(255 255 255 / 0.075)
-  );
-  opacity: 0.85;
-  transition:
-    background 0.5s ease,
-    opacity 0.5s ease;
-}
-
-.burgama-shell[data-hero-active='true']::after {
-  background: linear-gradient(
-    118deg,
-    rgb(168 176 230 / 0.28),
-    rgb(214 122 176 / 0.12) 42%,
-    rgb(160 117 211 / 0.26)
-  );
-  opacity: 0.92;
-}
-
-.nav-frost-content,
-.burgama-bar {
-  position: relative;
-  z-index: 2;
-}
-
-.burgama-bar {
+.site-nav-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  width: 100%;
-  height: var(--shell-height);
-  padding: 0 14px;
-  gap: 11px;
+  gap: 1.5rem;
+  padding: 1.125rem var(--page-gutter);
 }
 
-@media (min-width: 700px) {
-  /* The pill hugs its own contents rather than spanning the page. */
-  .burgama-shell {
-    /* 44px control inside one module of padding top and bottom. */
-    --shell-height: calc(var(--spacing-control) + var(--spacing-module) * 2);
-    --shell-radius: var(--radius-xl);
-    width: max-content !important;
-    max-width: calc(100vw - 28px);
-    background: var(--navy);
+.site-nav-brand {
+  justify-self: start;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+  color: var(--periwinkle);
+}
+
+.site-nav-index {
+  justify-self: center;
+  color: var(--periwinkle) !important;
+  font-size: 0.9375rem;
+}
+
+.site-nav-link {
+  color: color-mix(in srgb, var(--periwinkle) 64%, var(--navy));
+  transition: color 240ms var(--ease-module);
+}
+
+.site-nav-link:hover,
+.site-nav-link:focus-visible,
+.site-nav-link.is-current {
+  color: var(--periwinkle);
+  background: transparent;
+}
+
+.site-nav-contact {
+  justify-self: end;
+  font-size: 0.9375rem;
+  color: var(--periwinkle);
+  transition: opacity 240ms var(--ease-module);
+}
+
+.site-nav-contact:hover,
+.site-nav-contact:focus-visible {
+  opacity: 0.62;
+  background: transparent;
+  color: var(--periwinkle);
+}
+
+/* The index and the contact link collapse into a single toggle on small screens. */
+.site-nav-toggle {
+  display: none;
+  justify-self: end;
+  font-size: 0.9375rem;
+  color: var(--periwinkle);
+}
+
+.site-nav-panel {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .site-nav-row {
+    grid-template-columns: 1fr auto;
   }
 
-  .burgama-shell::before,
-  .burgama-shell::after {
+  .site-nav-index,
+  .site-nav-contact {
     display: none;
   }
 
-  .burgama-bar {
-    grid-template-columns: auto auto auto;
-    /* Brand sits inset from the left; the CTA sits one module off the right. */
-    padding-inline: calc(var(--spacing-module) * 3) var(--spacing-module);
-    gap: calc(var(--spacing-module) * 5);
+  .site-nav-toggle {
+    display: block;
   }
 
-  .burgama-bar > div:not([id]) {
-    gap: var(--spacing-module);
+  .site-nav-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 460ms var(--ease-module);
+  }
+
+  .site-nav-panel[data-open='true'] {
+    grid-template-rows: 1fr;
+  }
+
+  .site-nav-panel-inner {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-nav-panel-link {
+    padding: 1rem var(--page-gutter);
+    border-top: 1px solid var(--rule);
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--periwinkle);
   }
 }
 
-/* Plain text links, so the CTA is the only filled element in the pill. */
-.nav-link {
+/* --- Page and index --------------------------------------------- */
+
+.page {
+  padding-bottom: clamp(4rem, 10vw, 9rem);
+}
+
+/* Left marker, right statement — the reference's asymmetric intro. */
+.page-intro {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: clamp(4rem, 12vw, 10rem) var(--page-gutter) clamp(3rem, 7vw, 6rem);
+}
+
+.page-intro-marker {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--periwinkle) 60%, var(--navy)) !important;
+}
+
+.page-intro-count {
+  font-size: 0.625rem;
+  transform: translateY(-0.15em);
+}
+
+.page-intro-statement {
+  max-width: 22ch;
+  font-size: clamp(2rem, 3.6vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+@media (min-width: 760px) {
+  .page-intro {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+
+  /* The marker aligns to the statement's first line, not the block top. */
+  .page-intro-marker {
+    padding-top: 0.5rem;
+  }
+}
+
+.index {
+  border-top: 1px solid var(--rule);
+}
+
+.index-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.375rem;
+  padding: 1.375rem var(--page-gutter);
+  border-bottom: 1px solid var(--rule);
   color: var(--periwinkle);
-  transition: color 300ms var(--ease-module);
-}
-
-.nav-link:hover,
-.nav-link:focus-visible,
-.nav-link-active {
-  color: var(--navy);
-  background: var(--periwinkle);
-}
-
-/* Solid control at the right end of the nav pill. */
-.nav-cta {
-  align-items: center;
-  justify-content: center;
-  height: var(--spacing-control);
-  padding-inline: 1.5rem;
-  border-radius: var(--radius-sm);
-  background: var(--periwinkle);
-  color: var(--navy) !important;
-  white-space: nowrap;
   transition:
     background-color 300ms var(--ease-module),
     color 300ms var(--ease-module);
 }
 
-.nav-cta:hover,
-.nav-cta:focus-visible {
-  background: var(--surface-3);
-  color: var(--periwinkle) !important;
+.index-row:hover,
+.index-row:focus-visible {
+  background: var(--periwinkle);
+  color: var(--navy);
 }
 
-@media (max-width: 580px) {
-  .burgama-shell {
-    --shell-height: 44px;
-  }
-
-  .burgama-bar {
-    height: 44px;
-    padding-inline: 12px;
-    gap: 9px;
-  }
-}
-
-/* ==================================================================
-   Cinematic entrance.
-
-   One very tall scroll track, one sticky stage, exactly one video.
-   JavaScript writes the custom properties below every frame from a
-   single normalized 0–1 timeline; CSS never animates on its own here.
-   Everything in this block is the entrance only — the surrounding flat
-   modular interface rules do not apply inside it.
-================================================================== */
-
-/* The preference layer scroll-locks the document while it is open. */
-html[data-entry-open='true'],
-html[data-entry-open='true'] body {
-  overflow: hidden;
-  height: 100%;
-}
-
-.hero-scroll {
-  --experience-periwinkle: #989ec9;
-  --experience-navy: #0e1225;
-  --video-clip-x: calc((100vw - 438px) / 2);
-  --video-clip-y: calc((100vh - 270px) / 2);
-  --video-radius: 14px;
-  --video-opacity: 0;
-  --video-inner-scale: 1.04;
-  --glass-progress: 0;
-  --scroll-soften: 0;
-  --note-blend: 0;
-  --gradient-sweep: 0;
-  --note-width: 438px;
-  --note-size: 18.6px;
-  --intro-opacity: 0;
-  --sections-opacity: 0;
-  --final-word-opacity: 0;
-  --logo-stage-opacity: 0;
-  --film-tint: 0;
-  --film-solid: 0;
-  --film-veil-y: 0px;
-  --film-video-blur: 13.5px;
-  --film-video-brightness: 0.81;
-  --film-video-contrast: 1.13;
-  position: relative;
-  min-height: 3600vh;
-}
-
-.hero-sticky {
-  position: sticky;
-  top: 0;
-  z-index: 55;
-  height: 100vh;
-  height: 100svh;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--experience-periwinkle);
-}
-
-/* Shared geometry for every treatment layer over the film. */
-.hero-sticky::before,
-.hero-shadow,
-.hero-gauze,
-.hero-frost,
-.hero-gradient,
-.hero-dither {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hero-sticky::before {
-  z-index: 7;
-  background:
-    radial-gradient(88% 76% at 52% 86%, rgb(226 92 150 / 0.34), transparent 64%),
-    linear-gradient(
-      180deg,
-      rgb(154 161 209 / 0.1) 0%,
-      rgb(214 86 132 / 0.44) 52%,
-      rgb(122 18 42 / 0.88) 100%
-    );
-  opacity: var(--gradient-sweep);
-  clip-path: inset(var(--video-clip-y) var(--video-clip-x) round var(--video-radius));
-  will-change: opacity, clip-path;
-}
-
-.hero-media {
-  position: absolute;
-  inset: 0;
-  opacity: var(--video-opacity);
-  clip-path: inset(var(--video-clip-y) var(--video-clip-x) round var(--video-radius));
-  overflow: hidden;
-  isolation: isolate;
-  contain: paint;
-  background: linear-gradient(180deg, rgb(214 86 132 / 0.3), rgb(122 18 42 / 0.7));
-  will-change: clip-path, opacity;
-}
-
-/* Exactly one media element. It never hands off to a second one. */
-.hero-video {
-  position: absolute;
-  inset: -6%;
-  display: block;
-  width: 112%;
-  height: 112%;
-  max-width: none;
-  max-height: none;
-  object-fit: cover;
-  object-position: 50% 44%;
-  opacity: 0.88;
-  mix-blend-mode: luminosity;
-  transform: translate3d(0, 0, 0) scale(var(--video-inner-scale));
-  transform-origin: 50% 46%;
-  backface-visibility: hidden;
-  filter: grayscale(1) blur(var(--film-video-blur))
-    brightness(var(--film-video-brightness)) contrast(var(--film-video-contrast));
-  will-change: transform, filter;
-}
-
-.hero-shadow {
-  z-index: 2;
-  background: linear-gradient(
-    180deg,
-    rgb(211 76 126 / 0.1),
-    rgb(138 24 54 / 0.22) 56%,
-    rgb(104 10 30 / 0.46) 100%
-  );
-  opacity: calc(0.24 + (var(--note-blend) * 0.28));
-  mix-blend-mode: multiply;
-}
-
-.hero-gauze {
-  z-index: 3;
-  opacity: calc(0.18 + (var(--note-blend) * 0.12) + (var(--scroll-soften) * 0.16));
-  background:
-    radial-gradient(82% 70% at 26% 24%, rgb(226 92 150 / 0.42), transparent 58%),
-    radial-gradient(72% 66% at 76% 72%, rgb(154 22 66 / 0.3), transparent 60%);
-  filter: blur(20px);
-  mix-blend-mode: screen;
-}
-
-/*
-  Cinematic frosted film — entrance only.
-  The video stays physically underneath this full-screen layer. Blur remains
-  fixed at 42px; scroll changes only film opacity through the two progress vars.
-*/
-.hero-frost {
-  z-index: 4;
-  opacity: calc(0.3 + (var(--glass-progress) * 0.48) + (var(--scroll-soften) * 0.2));
-  background:
-    radial-gradient(92% 78% at 50% 10%, rgb(255 231 242 / 0.22), transparent 62%),
-    linear-gradient(
-      180deg,
-      rgb(255 219 236 / 0.23),
-      rgb(235 135 181 / 0.16) 38%,
-      rgb(131 27 71 / 0.18) 100%
-    );
-  backdrop-filter: blur(42px) saturate(1.34) brightness(1.08);
-  -webkit-backdrop-filter: blur(42px) saturate(1.34) brightness(1.08);
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Soft top highlight and uneven coloured film. */
-.hero-frost::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(70% 52% at 48% 12%, rgb(255 241 248 / 0.34), transparent 68%),
-    radial-gradient(82% 72% at 12% 82%, rgb(232 103 159 / 0.19), transparent 70%),
-    radial-gradient(76% 68% at 88% 68%, rgb(255 184 215 / 0.12), transparent 72%),
-    linear-gradient(180deg, rgb(255 255 255 / 0.1), transparent 42%, rgb(105 15 48 / 0.11));
-  opacity: calc(0.58 + (var(--glass-progress) * 0.25));
-  filter: blur(8px);
-}
-
-/* Oversized secondary moving-film highlight. */
-.hero-frost::after {
-  content: '';
-  position: absolute;
-  inset: -8%;
-  pointer-events: none;
-  background:
-    radial-gradient(48% 34% at 34% 26%, rgb(255 242 249 / 0.18), transparent 72%),
-    radial-gradient(52% 40% at 72% 62%, rgb(244 151 195 / 0.15), transparent 74%),
-    linear-gradient(122deg, transparent 22%, rgb(255 255 255 / 0.055) 46%, transparent 70%);
-  opacity: calc(0.18 + (var(--scroll-soften) * 0.34));
-  filter: blur(18px);
-  mix-blend-mode: screen;
-}
-
-.hero-gradient {
-  z-index: 5;
-  opacity: calc(0.22 + (var(--note-blend) * 0.46));
-  background: linear-gradient(160deg, rgb(232 96 156 / 0.42) 0%, rgb(129 18 52 / 0.8) 100%);
-  mix-blend-mode: color;
-}
-
-.hero-dither {
-  z-index: 6;
-  opacity: calc(0.04 + (var(--note-blend) * 0.018));
-  background-image:
-    radial-gradient(circle at 1px 1px, rgb(238 116 170 / 0.34) 0.9px, transparent 1px),
-    radial-gradient(circle at 1px 1px, rgb(126 18 52 / 0.28) 0.9px, transparent 1px);
-  background-size: 4px 4px, 4px 4px;
-  background-position: 0 0, 2px 2px;
-  mix-blend-mode: soft-light;
-  filter: contrast(1.18) saturate(1.02);
-  image-rendering: pixelated;
-}
-
-/*
-  The film resolves into the same gradient that begins the premise scene below,
-  keeping the final sticky frame and the next full-width section continuous.
-  */
-.hero-color-transition {
-  position: absolute;
-  inset: 0;
-  z-index: 7;
-  pointer-events: none;
-}
-
-.hero-color-transition::before,
-.hero-color-transition::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-}
-
-.hero-color-transition::before {
-  opacity: var(--film-tint);
-  transform: translate3d(0, var(--film-veil-y), 0);
-  background:
-    radial-gradient(92% 84% at 52% 100%, rgb(174 181 220 / 0.4) 0%, rgb(174 181 220 / 0.12) 50%, transparent 72%),
-    linear-gradient(180deg, transparent 0%, rgb(17 26 49 / 0.16) 42%, rgb(32 43 74 / 0.72) 100%);
-}
-
-.hero-color-transition::after {
-  opacity: var(--film-solid);
-  background:
-    radial-gradient(92% 84% at 52% 100%, rgb(174 181 220 / 0.4) 0%, rgb(174 181 220 / 0.12) 50%, transparent 72%),
-    radial-gradient(88% 96% at 8% 62%, rgb(32 43 74 / 0.74) 0%, transparent 68%),
-    radial-gradient(94% 106% at 96% 34%, rgb(17 26 49 / 0.96) 0%, rgb(17 26 49 / 0.42) 58%, transparent 80%),
-    linear-gradient(24deg, var(--surface-3) 0%, var(--surface-1) 72%, var(--navy) 100%);
-}
-
-.hero-copy-layer {
-  position: absolute;
-  inset: 0;
-  /* The assembling mark is the navbar logo, so it sits above the nav shell
-     while the static copy is withheld. */
-  z-index: 60;
+.index-client {
   display: flex;
   align-items: center;
-  justify-content: center;
-  pointer-events: none;
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
 }
 
-.hero-copy-shell {
-  position: relative;
-  width: var(--note-width);
-  max-width: calc(100vw - 20px);
-  height: min(62vh, 610px);
-  margin: 0 auto;
+/*
+  The cover stays collapsed until the row is engaged, then wipes open.
+  Margin rather than gap, so a collapsed thumb adds no offset and every
+  client name stays flush to the same left edge.
+*/
+.index-thumb {
+  width: 0;
+  height: 3.25rem;
+  flex: none;
+  margin-right: 0;
+  border-radius: 4px;
+  object-fit: cover;
+  opacity: 0;
+  transition:
+    width 420ms var(--ease-module),
+    margin-right 420ms var(--ease-module),
+    opacity 300ms var(--ease-module);
 }
 
-.founder-experience {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  color: var(--experience-periwinkle);
+.index-row:hover .index-thumb,
+.index-row:focus-visible .index-thumb {
+  width: 5rem;
+  margin-right: 1rem;
+  opacity: 1;
 }
 
-.founder-intro,
-.founder-sections,
-.founder-final-word,
-.founder-logo-stage {
-  position: absolute;
-  inset: 0;
+@media (max-width: 760px) {
+  .index-thumb {
+    display: none;
+  }
 }
 
-.founder-intro {
+@media (prefers-reduced-motion: reduce) {
+  .index-thumb {
+    transition: none;
+  }
+}
+
+.index-meta {
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: inherit;
+  opacity: 0.7;
+}
+
+@media (min-width: 760px) {
+  .index-row {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding-block: clamp(1.5rem, 2.6vw, 2.5rem);
+  }
+
+  .index-meta-end {
+    text-align: right;
+  }
+}
+
+/* --- Footer ------------------------------------------------------ */
+
+.page-footer {
+  border-top: 1px solid var(--rule);
+  background: var(--navy);
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  padding: clamp(2.5rem, 5vw, 4rem) var(--page-gutter);
+}
+
+.footer-column {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  text-align: center;
-  opacity: var(--intro-opacity);
-  transform: translate3d(0, var(--intro-y, 13px), 0) scale(var(--intro-scale, 0.992));
-  transform-origin: center;
-  will-change: opacity, transform;
+  align-items: flex-start;
+  gap: 0.625rem;
 }
 
-.founder-intro-dingbat {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 25px;
-  border-radius: 10px;
-  background: rgb(154 161 209 / 0.14);
-  color: rgb(154 161 209 / 0.78);
-  font-size: 12px;
-  line-height: 1;
+.footer-heading {
+  margin-bottom: 0.375rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--periwinkle) 55%, var(--navy)) !important;
 }
 
-.founder-intro-title {
-  max-width: 18ch;
-  margin: 0 auto;
-  color: rgb(154 161 209 / 0.98);
-  font-size: calc(var(--note-size) * 1.38);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
-  font-weight: 400;
+.footer-link {
+  font-size: 1rem;
+  color: var(--periwinkle) !important;
+  transition: opacity 240ms var(--ease-module);
 }
 
-.founder-sections {
-  opacity: var(--sections-opacity);
-  will-change: opacity;
+a.footer-link:hover,
+a.footer-link:focus-visible {
+  opacity: 0.6;
+  background: transparent;
 }
 
-.founder-section {
-  --section-opacity: 0;
-  --section-y: 28px;
-  --section-scale: 0.985;
-  --section-blur: 4px;
-  --section-type-scale: 1;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  text-align: center;
-  opacity: var(--section-opacity);
-  transform: translate3d(0, calc(-50% + var(--section-y)), 0) scale(var(--section-scale));
-  filter: blur(var(--section-blur));
-  transform-origin: center;
-  will-change: opacity, transform, filter;
-}
-
-.founder-section:nth-child(2) {
-  --section-type-scale: 1.025;
-}
-.founder-section:nth-child(3) {
-  --section-type-scale: 1.05;
-}
-.founder-section:nth-child(4) {
-  --section-type-scale: 1.075;
-}
-
-.founder-section-text {
-  max-width: 34ch;
-  margin: 0 auto;
-  color: rgb(154 161 209 / 1);
-  font-size: calc(var(--note-size) * var(--section-type-scale));
-  line-height: 1.18;
-  letter-spacing: -0.026em;
-  text-wrap: balance;
-}
-
-/* Phrase modules unfold from their leading edge and hand the sentence on. */
-.phrase-unit {
-  display: inline-flex;
-  align-items: baseline;
-  opacity: var(--phrase-opacity, 1);
-  transform: translate3d(var(--phrase-x, 0px), var(--phrase-y, 0px), 0)
-    scaleX(var(--phrase-scale-x, 1));
-  filter: blur(var(--phrase-blur, 0px));
-  clip-path: inset(-0.35em var(--phrase-clip-right, 0%) -0.35em var(--phrase-clip-left, 0%));
-  transform-origin: left center;
-  will-change: opacity, transform, filter, clip-path;
-}
-
-.char-unit {
-  display: inline-block;
-  transform: translate3d(0, var(--char-y, 0px), 0) scale(var(--char-scale, 1));
-  transform-origin: center 72%;
-  opacity: var(--char-opacity, 1);
-  color: var(--char-color, rgb(154 161 209 / 1));
-  filter: saturate(calc(1 + (var(--char-focus, 0) * 0.14)));
-  backface-visibility: hidden;
-  text-rendering: geometricPrecision;
-  will-change: transform, opacity, color;
-}
-
-.word-unit {
-  padding-inline: 0.015em;
-}
-
-.char-space {
-  width: 0.26em;
-}
-
-.founder-final-word {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  opacity: var(--final-word-opacity);
-  transform: translate3d(0, var(--final-word-y, 10px), 0) scale(var(--final-word-scale, 0.996));
-  will-change: opacity, transform;
-}
-
-.founder-final-name {
-  display: inline-flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0;
-  color: rgb(190 196 238 / 0.99);
-  font-family: var(--font-wordmark), var(--font-standard), sans-serif;
-  font-size: clamp(58px, 9.4vw, 132px);
-  line-height: 0.78;
-  /* The source resolves to zero tracking plus a negative per-character margin,
-     so the animated characters keep the wordmark's true fit. */
-  letter-spacing: 0;
-  font-weight: 400;
-  font-synthesis: none;
-}
-
-.founder-final-character {
-  display: inline-block;
-  opacity: var(--final-character-opacity, 0);
-  transform: translate3d(0, var(--final-character-y, 18px), 0)
-    scale(var(--final-character-scale, 0.91));
-  filter: blur(var(--final-character-blur, 8px));
-  transform-origin: center 72%;
-  will-change: opacity, transform, filter;
-}
-
-.founder-final-character + .founder-final-character {
-  margin-left: -0.08em;
-}
-
-.founder-logo-stage {
-  display: grid;
-  place-items: center;
-  opacity: var(--logo-stage-opacity);
-  transform: translate3d(0, var(--logo-stage-y, 8px), 0) scale(var(--logo-stage-scale, 0.99));
-  will-change: opacity, transform;
-}
-
-.founder-logo-drawing {
-  display: grid;
-  place-items: center;
-  /*
-    The source's CSS base (86px) is deliberately slightly smaller than the
-    JS logical box (90px), which keeps the expanded mark restrained at
-    ~279px rather than the logical 292px. Do not "correct" this mismatch.
-  */
-  width: 86px;
-  transform: translate3d(var(--logo-draw-x, 0px), var(--logo-draw-y, 0px), 0)
-    scale(var(--logo-draw-scale, 1));
-  transform-origin: center;
-  will-change: transform;
-}
-
-.founder-end-logo {
-  display: block;
-  width: 100%;
-  height: auto;
-  color: rgb(181 188 232 / 0.98);
-  overflow: visible;
-}
-
-.founder-end-logo path {
-  fill: currentColor;
-  fill-opacity: 1;
-  stroke: none;
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  filter: blur(var(--logo-part-blur, 0px));
-  will-change: transform, opacity, filter;
-}
-
-@media (max-width: 759px) {
-  .hero-scroll {
-    min-height: 3280vh;
+@media (min-width: 760px) {
+  .footer-columns {
+    grid-template-columns: repeat(4, 1fr);
   }
+}
+
+.footer-sign {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0 var(--page-gutter) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* The wordmark closes the page at display scale. */
+.footer-wordmark {
+  font-size: clamp(3rem, 13vw, 11rem);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+}
+
+.footer-note {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .premise-bridge {
@@ -1162,13 +828,6 @@ html[data-entry-open='true'] body {
   will-change: transform;
 }
 
-/* The mark's small breakpoint follows the closed nav shell, not the 760 split. */
-@media (max-width: 580px) {
-  .founder-logo-drawing {
-    width: 70px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .project-card-parallax {
     animation: none;
@@ -1201,7 +860,7 @@ html[data-entry-open='true'] body {
 }
 
 /* The nav lives on every other route; the flyer is a full-bleed artifact. */
-body:has(.lot-poster) > .burgama-shell {
+body:has(.lot-poster) > .site-nav {
   display: none;
 }
 
