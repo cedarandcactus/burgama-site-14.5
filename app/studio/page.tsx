@@ -34,6 +34,26 @@ const CAPABILITIES = [
   },
 ]
 
+/* The four short principles, set as a ruled column row beneath the hero. */
+const PRINCIPLES = [
+  {
+    title: 'Close collaboration',
+    body: 'Small, senior teams. No account layer between planning the work and making it.',
+  },
+  {
+    title: 'A point of view first',
+    body: 'The sentence the work answers to, agreed before anything is drawn.',
+  },
+  {
+    title: 'Systems, not one-offs',
+    body: 'Every engagement leaves behind something reusable and documented.',
+  },
+  {
+    title: 'Austin, Texas',
+    body: 'Working wherever the project leads.',
+  },
+]
+
 const APPROACH = [
   {
     title: 'Discovery and positioning',
@@ -54,38 +74,33 @@ export default function StudioPage() {
     <>
       <PageHero
         eyebrow="Burgama — Independent studio"
-        title="Studio"
+        label="Studio"
+        wordmark="Studio"
         artifactId="studio-hero"
-        columns={[
-          {
-            title: 'Close collaboration',
-            body: 'Small, senior teams. No account layer between planning the work and making it.',
-          },
-          {
-            title: 'A point of view first',
-            body: 'The sentence the work answers to, agreed before anything is drawn.',
-          },
-          {
-            title: 'Systems, not one-offs',
-            body: 'Every engagement leaves behind something reusable and documented.',
-          },
-          {
-            title: 'Austin, Texas',
-            body: 'Working wherever the project leads.',
-          },
+        intro={[
+          'Burgama shapes identities and digital experiences for people with something meaningful to make, staying close from the first conversation through launch.',
+          'We work in small senior teams with no account layer between planning the work and making it. Every engagement starts from a point of view — the sentence the work answers to — and ends with a system somebody else can carry forward.',
         ]}
       />
 
+      <section aria-label="How we work" className="wide">
+        <div className="page-hero-columns">
+          {PRINCIPLES.map((item) => (
+            <div key={item.title}>
+              <h2 className="page-hero-column-title">{item.title}</h2>
+              <p className="page-hero-column-body">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <div className="wide case">
-        <section aria-label="Introduction" className="case-module">
-          <h1 className="case-module-title">Studio</h1>
+        <section aria-label="Elsewhere" className="case-module">
+          <h2 className="case-module-title">Elsewhere</h2>
           <div className="case-module-body">
             <p>
-              Burgama shapes identities and digital experiences for people with something
-              meaningful to make, staying close from the first conversation through launch.
-            </p>
-            <p>
-              <Link href="/work">Selected work</Link> · <Link href="/contact">Start a project</Link>
+              <Link href="/work">Selected work</Link> ·{' '}
+              <Link href="/contact">Start a project</Link>
             </p>
           </div>
         </section>

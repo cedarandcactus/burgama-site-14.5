@@ -480,36 +480,134 @@
 }
 
 /* ------------------------------------------------------------------
-   Interior page hero — NON HOMEPAGE HERO INSPO
+   Interior page spread — the two-column reference layout
+
+   Used by EVERY interior page hero (/work, /studio, /contact and each case
+   study). Left column: a three-dot mark at the top, then caps labels, body
+   copy, and an oversized wordmark anchored at the BOTTOM. Right column: a
+   single ink panel with large rounded corners holding the artifact.
+
+   The empty upper-left is the composition, not an accident — content is
+   weighted hard to the bottom-left. That is why the left column is a flex
+   column and the wordmark takes `margin-top: auto`: the ink panel is the
+   tallest thing in the row, and the wordmark sits on the floor it defines.
 ------------------------------------------------------------------ */
 
-.page-hero {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+.spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
   /* Clears the sticky nav. */
-  padding-top: clamp(4.5rem, 7vw, 6.5rem);
+  padding-top: clamp(3rem, 5.5vw, 5rem);
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.page-hero-stage {
+/*
+  Splits at 860px, not 1000px. Measured: at ~950px the single-column form left
+  the whole right half empty and pushed the panel below the fold, which reads
+  as a broken page rather than a composition. Two columns at 860px gives each
+  side ~410px — the copy measure is ~340px of tracked caps, so it still fits.
+*/
+@media (min-width: 860px) {
+  .spread {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr);
+    align-items: stretch;
+  }
+}
+
+.spread-left {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Three dots, top left. A compositional mark only, so it stays unannounced. */
+.spread-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.spread-dots span {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: var(--ink);
+}
+
+.spread-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  /* The distance from the dots down to here is the reference's empty half. */
+  margin-top: clamp(2.5rem, 10vw, 9rem);
+}
+
+.spread-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  max-width: 52ch;
 }
 
 /*
-  Sized by HEIGHT, like the poster stage. At ultra-wide widths a purely
-  ratio-driven slot is enormous — 21/9 across a 1520px gutter is 650px tall,
-  and 4/3 is over 1100px, which buries the rest of the page. Driving height
-  and letting width follow from aspect-ratio keeps the object centred with
-  air around it, as in the reference.
+  The wordmark — the largest thing on the page. Extended face, very tight
+  tracking, bottom-anchored so the eye falls from empty space into it.
 */
-.page-hero-stage .artifact,
-.page-hero-stage .artifact-figure {
-  height: clamp(10rem, 23vw, 18rem);
-  width: auto;
-  max-width: 100%;
+.spread-wordmark {
+  margin-top: auto;
+  padding-top: clamp(1.5rem, 4vw, 3rem);
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 10vw, 8.5rem);
+  line-height: 0.84;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  /* A long project name must not overflow the column. */
+  overflow-wrap: anywhere;
+}
+
+/*
+  The ink panel. Media sits CONTAINED inside it — the panel is a field, not a
+  frame that crops. The padding is what guarantees that: the asset never
+  reaches the rounded corners.
+*/
+.spread-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(14rem, 42vw, 31rem);
+  padding: clamp(1.25rem, 3.5vw, 3rem);
+  border-radius: clamp(1.25rem, 3vw, 2.75rem);
+  background-color: var(--ink);
+}
+
+.spread-panel .artifact,
+.spread-panel .artifact-figure,
+.spread-panel .case-media {
+  width: 100%;
+  max-height: 100%;
+}
+
+/*
+  Everything inside the panel is on ink, so the slot's own paper-ground
+  outline, fill and annotation colours all have to flip to paper.
+*/
+.spread-panel .artifact-empty,
+.spread-panel .case-media-frame {
+  outline-color: color-mix(in srgb, var(--paper) 24%, transparent);
+  background-color: color-mix(in srgb, var(--paper) 6%, transparent);
+}
+
+.spread-panel .artifact-slug {
+  color: color-mix(in srgb, var(--paper) 74%, transparent);
+}
+
+.spread-panel .artifact-slug-kind {
+  color: color-mix(in srgb, var(--paper) 46%, transparent);
+}
+
+.spread-panel .artifact-caption {
+  color: color-mix(in srgb, var(--paper) 56%, transparent);
 }
 
 /*
@@ -553,9 +651,76 @@
 }
 
 .page-hero-column-body {
-  font-size: 0.75rem;
-  line-height: 1.6;
   color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------
+   Body copy — tiny letter-spaced uppercase mono, sitewide
+
+   From the reference, where every paragraph is set in small tracked caps
+   mono well below normal body size. Declared ONCE as a grouped rule rather
+   than per component so the treatment cannot drift apart later.
+
+   Three things to know before editing:
+   - Tracked caps run much wider per character, so measures are set in `ch`
+     and are deliberately short. Reusing a lowercase measure here gives a
+     line far too long to track back to.
+   - Caps need more leading than lowercase to stay readable. 1.75 is the
+     floor that still looks set rather than cramped.
+   - Display type (wordmark, case title, quote, contact address) is NOT in
+     this group. It stays in the Standard/Extended faces at large sizes —
+     the contrast between tiny mono copy and huge display is the whole idea.
+------------------------------------------------------------------ */
+
+.poster-body,
+.spread-copy,
+.page-hero-column-body,
+.case-summary,
+.case-spec-value,
+.case-module-body {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.75;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+/*
+  Justified with hyphenation, as the reference sets it. The ragged edge of
+  tracked caps is markedly messier than lowercase, and justifying is what
+  makes each paragraph read as a printed block. Excludes the spec list,
+  whose values are single short phrases that justification would stretch.
+*/
+.poster-body,
+.spread-copy,
+.page-hero-column-body,
+.case-summary,
+.case-module-body {
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Caps copy needs a shorter measure than the lowercase original. */
+.case-module-body,
+.case-summary {
+  max-width: 46ch;
+}
+
+/* The small caps labels move to the same mono face as the copy. */
+.poster-label,
+.artifact-caption,
+.artifact-slug,
+.case-module-title,
+.case-spec-label,
+.page-hero-column-title,
+.artifact-index-meta {
+  font-family: var(--font-mono);
+}
+
+.page-hero-column-title {
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 /* ------------------------------------------------------------------
@@ -574,6 +739,14 @@
   /* Clears the sticky nav. */
   padding-top: clamp(4.5rem, 7vw, 6.5rem);
   padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/*
+  For a `.case` that follows the hero spread: the spread already clears the
+  sticky nav, so the section's own top padding would double the gap.
+*/
+.case-lead {
+  padding-top: 0;
 }
 
 .case-head {

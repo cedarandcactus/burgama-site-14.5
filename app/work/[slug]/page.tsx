@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
+import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
 import { getProject, projects } from '@/lib/projects'
@@ -50,28 +51,27 @@ export default async function ProjectPage({
 
   return (
     <>
-      <article className="wide case">
-        <header className="case-head">
-          <div className="poster-masthead">
-            <p className="poster-label">Burgama — {project.client}</p>
-            <p className="poster-label">{project.year}</p>
+      {/*
+        The case study opens on the same spread as every other interior page:
+        client and year as labels, the intro copy in small caps, the project
+        name as the wordmark, and the hero media contained in the ink panel.
+      */}
+      <PageHero
+        eyebrow={`Burgama — ${project.client}`}
+        label={project.year}
+        wordmark={project.title}
+        intro={project.introCopy}
+        panel={<MediaFrame item={project.heroMedia} />}
+      />
+
+      {/* `case-lead` trims the section's own nav clearance — the spread above
+          already provides it. */}
+      <article className="wide case case-lead">
+        <Reveal as="section" aria-label="Summary" className="case-module">
+          <h2 className="case-module-title">Summary</h2>
+          <div className="case-module-body">
+            <p>{project.summary}</p>
           </div>
-
-          <Reveal>
-            <h1 className="case-title">{project.title}</h1>
-          </Reveal>
-
-          <Reveal delay={80}>
-            <p className="case-lede">{project.introCopy.join(' ')}</p>
-          </Reveal>
-
-          <Reveal delay={140}>
-            <p className="case-summary">{project.summary}</p>
-          </Reveal>
-        </header>
-
-        <Reveal>
-          <MediaFrame item={project.heroMedia} />
         </Reveal>
 
         <Reveal as="section" aria-label="Project information" className="case-spec">

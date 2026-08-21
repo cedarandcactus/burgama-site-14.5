@@ -1,48 +1,71 @@
+import type { ReactNode } from 'react'
 import { ArtifactSlot } from '@/components/artifact-slot'
 import { Reveal } from '@/components/reveal'
 
 /**
- * The interior-page hero, built from NON HOMEPAGE HERO INSPO: two tiny caps
- * labels sharing one hairline rule, a wide artifact beneath them, then a row
- * of short columns.
+ * The interior-page hero, built from the two-column reference spread.
  *
- * Used by every page except the homepage, which has its own poster hero.
+ * Left column runs top to bottom: dot mark, caps labels, body copy, then an
+ * oversized wordmark on the floor. Right column is one ink panel holding the
+ * artifact, contained rather than cropped.
+ *
+ * Every interior page uses this — /work, /studio, /contact and each case
+ * study. The homepage keeps its own poster hero.
  */
 export function PageHero({
   eyebrow,
-  title,
+  label,
+  wordmark,
+  intro = [],
   artifactId,
-  columns = [],
+  panel,
+  headingLevel: Heading = 'h1',
 }: {
-  /** Small caps label, top left. */
+  /** Small caps label, first line. */
   eyebrow: string
-  /** Small caps label, top right — usually the page name. */
-  title: string
-  artifactId: string
-  /** Short supporting columns set beneath the artifact. */
-  columns?: { title: string; body: string }[]
+  /** Small caps label, second line — usually the page or client name. */
+  label: string
+  /** The large display word. Set as the page heading. */
+  wordmark: string
+  /** Paragraphs of small caps copy, set above the wordmark. */
+  intro?: string[]
+  /** Artifact registry id for the panel. Ignored when `panel` is given. */
+  artifactId?: string
+  /** Custom panel content, for pages whose hero media is not an artifact. */
+  panel?: ReactNode
+  headingLevel?: 'h1' | 'h2'
 }) {
   return (
-    <section className="wide page-hero">
-      <div className="poster-masthead">
-        <p className="poster-label">{eyebrow}</p>
-        <p className="poster-label">{title}</p>
+    <section className="wide spread">
+      <div className="spread-left">
+        {/* Decorative: three dots, as in the reference. */}
+        <div className="spread-dots" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+
+        <div className="spread-labels">
+          <p className="poster-label">{eyebrow}</p>
+          <p className="poster-label">{label}</p>
+        </div>
+
+        {intro.length > 0 ? (
+          <Reveal className="spread-copy">
+            {intro.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </Reveal>
+        ) : null}
+
+        <Reveal delay={80}>
+          <Heading className="spread-wordmark">{wordmark}</Heading>
+        </Reveal>
       </div>
 
-      <Reveal className="page-hero-stage">
-        <ArtifactSlot id={artifactId} />
+      <Reveal delay={140} className="spread-panel">
+        {panel ?? (artifactId ? <ArtifactSlot id={artifactId} /> : null)}
       </Reveal>
-
-      {columns.length > 0 ? (
-        <div className="page-hero-columns">
-          {columns.map((column, index) => (
-            <Reveal key={column.title} delay={index * 80}>
-              <h2 className="page-hero-column-title">{column.title}</h2>
-              <p className="page-hero-column-body">{column.body}</p>
-            </Reveal>
-          ))}
-        </div>
-      ) : null}
     </section>
   )
 }

@@ -27,13 +27,16 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Burgama — Start a project"
-        title="Contact"
+        label="Contact"
+        wordmark="Contact"
         artifactId="contact-hero"
+        intro={[
+          'Tell us what you are making and where it needs to go. One conversation, not a form funnel — write with as much or as little as you have and we will reply with a straight answer about fit.',
+          'We take on a small number of projects at a time so that each one gets the studio rather than a queue position. If the timing is wrong we will say so, and point you somewhere useful.',
+        ]}
       />
 
       <div className="wide case">
-        <h1 className="sr-only">Start a project</h1>
-
         <section aria-label="Email the studio" className="case-module">
           <h2 className="case-module-title">Write to us</h2>
           <div className="case-module-body">
