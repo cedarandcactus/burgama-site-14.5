@@ -1,12 +1,12 @@
-import { AnimatedText } from '@/components/animated-text'
-import { type ContentModule, type MediaItem, toneClass } from '@/lib/projects'
+import { Reveal } from '@/components/reveal'
+import { type ContentModule, type MediaItem } from '@/lib/projects'
 
 const RATIO: Record<MediaItem['ratio'], string> = {
-  wide: 'aspect-[3/2]',
-  video: 'aspect-video',
-  tall: 'aspect-[3/4]',
-  square: 'aspect-square',
-  full: 'aspect-[16/10]',
+  wide: '3 / 2',
+  video: '16 / 9',
+  tall: '3 / 4',
+  square: '1 / 1',
+  full: '16 / 10',
 }
 
 export function MediaFrame({
@@ -16,13 +16,15 @@ export function MediaFrame({
   item: MediaItem
   className?: string
 }) {
+  /*
+    Everything is contained, never cropped. The frame caps its own height, so
+    its rendered ratio rarely matches the asset's — `cover` under that cap
+    silently cut the edges off logo plates and wide screen captures. Contain
+    matches `.artifact-media` and lets the frame's fill do the letterboxing.
+  */
   return (
-    <figure className={`flex flex-col gap-module ${className}`}>
-      <div
-        className={`relative w-full overflow-hidden rounded-module ${RATIO[item.ratio]} ${
-          toneClass[item.tone ?? 'surface-1']
-        } ${item.src?.includes('/wurqly/') ? 'wurqly-media-frame' : ''}`}
-      >
+    <figure className={`case-media ${className}`}>
+      <div className="case-media-frame" style={{ aspectRatio: RATIO[item.ratio] }}>
         {item.src && item.mediaType === 'video' ? (
           <video
             src={item.src}
@@ -33,134 +35,111 @@ export function MediaFrame({
             controls
             preload="metadata"
             aria-label={item.label}
-            className="h-full w-full object-cover"
           />
         ) : item.src ? (
-          <img
-            src={item.src}
-            alt={item.label}
-            className={`h-full w-full ${item.src.includes('/wurqly/') ? 'object-contain p-6 md:p-12' : 'object-cover'}`}
-          />
+          <img src={item.src} alt={item.label} loading="lazy" decoding="async" />
         ) : (
-          <span className="t-title absolute inset-0 flex items-end p-6" aria-hidden="true">
-            {item.label}
-          </span>
+          /*
+            Unfilled media falls back to the same quiet annotation the
+            artifact slots use, so a missing asset reads as a placeholder
+            rather than an empty box.
+          */
+          <p className="artifact-slug">
+            <span>{item.label}</span>
+          </p>
         )}
       </div>
-      <figcaption className="t-ui">{item.label}</figcaption>
+
+      <figcaption className="artifact-caption">{item.label}</figcaption>
     </figure>
   )
 }
 
 export function ProjectModules({ modules }: { modules: ContentModule[] }) {
   return (
-    <div className="flex flex-col gap-16 md:gap-24">
+    <>
       {modules.map((module, index) => {
         switch (module.type) {
           case 'text':
             return (
-              <section key={index} className="flex flex-col gap-6 md:flex-row md:gap-module">
-                {module.title ? (
-                  <h2 className="t-section md:basis-[38%]">{module.title}</h2>
-                ) : null}
-                <div className="flex flex-col gap-4 md:basis-[58%]">
+              <Reveal key={index} as="section" className="case-module">
+                <h2 className="case-module-title">{module.title ?? ''}</h2>
+                <div className="case-module-body">
                   {module.body.map((paragraph) => (
-                    <p key={paragraph} className="t-body max-w-[62ch]">
-                      {paragraph}
-                    </p>
+                    <p key={paragraph}>{paragraph}</p>
                   ))}
                 </div>
-              </section>
+              </Reveal>
             )
 
           case 'media':
-            return <MediaFrame key={index} item={module.item} />
+            return (
+              <Reveal key={index}>
+                <MediaFrame item={module.item} />
+              </Reveal>
+            )
 
           case 'mediaPair':
             return (
-              <div key={index} className="flex flex-col gap-module md:flex-row">
-                <MediaFrame item={module.items[0]} className="md:basis-[56%]" />
-                <MediaFrame item={module.items[1]} className="md:basis-[44%]" />
-              </div>
+              <Reveal key={index} className="case-media-row">
+                <MediaFrame item={module.items[0]} />
+                <MediaFrame item={module.items[1]} />
+              </Reveal>
             )
 
-          case 'mediaSplit': {
-            const textFirst = module.split === '60/40'
+          case 'mediaSplit':
             return (
-              <div
-                key={index}
-                className={`flex flex-col gap-module md:flex-row ${
-                  textFirst ? '' : 'md:flex-row-reverse'
-                }`}
-              >
-                <div
-                  className="flex flex-col justify-end gap-5 rounded-module bg-surface-1 p-6 md:p-8"
-                  style={{ flexBasis: textFirst ? '58%' : '42%' }}
-                >
-                  <h2 className="t-section">{module.title}</h2>
+              <Reveal key={index} className="case-module">
+                <h2 className="case-module-title">{module.title}</h2>
+                <div className="case-module-body">
                   {module.body.map((paragraph) => (
-                    <p key={paragraph} className="t-body max-w-[52ch]">
-                      {paragraph}
-                    </p>
+                    <p key={paragraph}>{paragraph}</p>
                   ))}
+                  <MediaFrame item={module.item} />
                 </div>
-                <MediaFrame
-                  item={module.item}
-                  className={textFirst ? 'md:basis-[42%]' : 'md:basis-[58%]'}
-                />
-              </div>
+              </Reveal>
             )
-          }
 
           case 'mediaGrid':
             return (
-              <div key={index} className="flex flex-col gap-module md:flex-row">
-                {module.items.map((item, itemIndex) => (
-                  <MediaFrame
-                    key={item.label}
-                    item={item}
-                    className={itemIndex === 0 ? 'md:basis-[40%]' : 'md:basis-[30%]'}
-                  />
+              <Reveal
+                key={index}
+                className={`case-media-row ${
+                  module.items.length > 2 ? 'case-media-row-3' : ''
+                }`}
+              >
+                {module.items.map((item) => (
+                  <MediaFrame key={item.label} item={item} />
                 ))}
-              </div>
+              </Reveal>
             )
 
           case 'quote':
             return (
-              <AnimatedText
-                key={index}
-                as="blockquote"
-                lines={[module.body]}
-                className="t-title max-w-[24ch] rounded-module bg-surface-2 p-6 md:p-10"
-              />
+              <Reveal key={index}>
+                <blockquote className="case-quote">{module.body}</blockquote>
+              </Reveal>
             )
 
           case 'process':
             return (
-              <section key={index} className="flex flex-col gap-module">
-                <h2 className="t-section">{module.title}</h2>
-                <div className="flex flex-col gap-module md:flex-row">
-                  {module.steps.map((step, stepIndex) => (
-                    <div
-                      key={step.title}
-                      className="flex flex-col gap-3 rounded-module bg-surface-1 p-6"
-                      style={{
-                        flexBasis:
-                          stepIndex === 0 ? '38%' : stepIndex === 1 ? '32%' : '30%',
-                      }}
-                    >
-                      <h3 className="text-xl leading-none">{step.title}</h3>
-                      <p className="t-body">{step.body}</p>
+              <Reveal key={index} as="section" className="case-module">
+                <h2 className="case-module-title">{module.title}</h2>
+                <div className="page-hero-columns" style={{ border: 0, padding: 0 }}>
+                  {module.steps.map((step) => (
+                    <div key={step.title}>
+                      <h3 className="page-hero-column-title">{step.title}</h3>
+                      <p className="page-hero-column-body">{step.body}</p>
                     </div>
                   ))}
                 </div>
-              </section>
+              </Reveal>
             )
 
           default:
             return null
         }
       })}
-    </div>
+    </>
   )
 }

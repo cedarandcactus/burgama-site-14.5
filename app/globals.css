@@ -499,6 +499,20 @@
 }
 
 /*
+  Sized by HEIGHT, like the poster stage. At ultra-wide widths a purely
+  ratio-driven slot is enormous — 21/9 across a 1520px gutter is 650px tall,
+  and 4/3 is over 1100px, which buries the rest of the page. Driving height
+  and letting width follow from aspect-ratio keeps the object centred with
+  air around it, as in the reference.
+*/
+.page-hero-stage .artifact,
+.page-hero-stage .artifact-figure {
+  height: clamp(10rem, 23vw, 18rem);
+  width: auto;
+  max-width: 100%;
+}
+
+/*
   Short columns of small text under the artifact, as in the reference. Falls
   to two columns before one so the row never becomes a single long measure.
 */
@@ -522,6 +536,15 @@
   }
 }
 
+/*
+  The same column grid without its leading rule, for use inside a section that
+  already has a label in the margin (case-study process steps, capabilities).
+*/
+.columns-bare {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .page-hero-column-title {
   margin-bottom: 0.5rem;
   font-size: 0.75rem;
@@ -533,6 +556,191 @@
   font-size: 0.75rem;
   line-height: 1.6;
   color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------
+   Case study — the project detail page in the archive language
+
+   Every project uses the same structure. The previous direction
+   special-cased one slug with a full-bleed dark video hero, which is why
+   its title overflowed the viewport; a uniform page is the point of an
+   archive, so nothing here is keyed to a particular project.
+------------------------------------------------------------------ */
+
+.case {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 6.5rem);
+  /* Clears the sticky nav. */
+  padding-top: clamp(4.5rem, 7vw, 6.5rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.case-head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.case-title {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.case-lede {
+  max-width: 30ch;
+  font-size: clamp(1rem, 1.7vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.case-summary {
+  max-width: 62ch;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* The project's facts as a ruled spec list rather than a row of filled cards. */
+.case-spec {
+  display: flex;
+  flex-direction: column;
+}
+
+.case-spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+  padding-block: 0.875rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+@media (min-width: 720px) {
+  .case-spec-row {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: baseline;
+  }
+}
+
+.case-spec-label {
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 52%, transparent);
+}
+
+.case-spec-value {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* Body sections: a tiny caps label in the margin, prose in the main column. */
+.case-module {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.75rem, 2vw, 2rem);
+}
+
+@media (min-width: 860px) {
+  .case-module {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+}
+
+.case-module-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.case-module-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 62ch;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/*
+  Links inside body copy need an affordance of their own — the ink and the
+  body grey are close enough that colour alone does not read as a link.
+*/
+.case-module-body a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: opacity var(--dur-med) var(--ease-smooth);
+}
+
+.case-module-body a:hover,
+.case-module-body a:focus-visible {
+  opacity: 0.6;
+}
+
+.case-quote {
+  max-width: 32ch;
+  font-size: clamp(1.25rem, 3vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/*
+  Project media keeps its own colour — portfolio work should read as itself,
+  which is why the registry reserves `treatment: 'none'` for it. The frame is
+  what makes it sit in the system: a hairline outline, contained rather than
+  cropped, and capped in height so a logo plate cannot run the full viewport.
+*/
+.case-media {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.case-media-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-height: clamp(18rem, 50vh, 34rem);
+  overflow: hidden;
+  outline: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  outline-offset: -1px;
+  background-color: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+.case-media-frame img,
+.case-media-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.case-media-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+@media (min-width: 760px) {
+  .case-media-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-media-row-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -1572,70 +1780,6 @@ a.footer-link:focus-visible {
   justify-content: center;
   font-size: 0.875rem;
   line-height: 1;
-}
-
-.wurqly-hero {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  background: var(--navy);
-}
-
-.wurqly-hero > video,
-.wurqly-hero > img {
-  transform: scale(1.08);
-  filter: blur(11px) saturate(0.42) contrast(0.72) brightness(0.72);
-}
-
-.wurqly-hero-wash {
-  background: linear-gradient(
-    180deg,
-    rgb(8 13 27 / 0.2) 0%,
-    rgb(17 26 49 / 0.56) 58%,
-    var(--navy) 100%
-  );
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-}
-
-.wurqly-hero-copy {
-  color: var(--periwinkle);
-}
-
-.wurqly-title {
-  font-family: var(--font-wordmark), var(--font-standard), sans-serif;
-  font-size: clamp(3rem, 7vw, 6.5rem);
-  line-height: 0.82;
-  letter-spacing: -0.055em;
-}
-
-.wurqly-project-info {
-  position: relative;
-  z-index: 2;
-  margin-top: -4rem;
-  overflow: hidden;
-  border-radius: var(--radius-module);
-  background: var(--surface-1);
-}
-
-.wurqly-project-info > div {
-  min-width: 0;
-  border-radius: 0;
-  background: transparent;
-}
-
-.wurqly-media-frame {
-  background: var(--surface-2);
-  color: var(--periwinkle);
-}
-
-.wurqly-case-study .wurqly-media-frame img[src$='shaded-logo.png'] {
-  filter: saturate(0.72) contrast(0.94);
-}
-
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .wurqly-hero-wash {
-    background: linear-gradient(180deg, rgb(17 26 49 / 0.72), var(--navy));
-  }
 }
 
 @keyframes project-image-parallax {

@@ -1,44 +1,37 @@
-import { ProjectCard, type ModuleShape } from '@/components/project-card'
+import Link from 'next/link'
+import { Reveal } from '@/components/reveal'
 import { type Project } from '@/lib/projects'
 
-const SHAPES: ModuleShape[] = [
-  'arch',
-  'leaf-right',
-  'leaf-left',
-  'quarter',
-  'bulb',
-  'capsule',
-  'terminal',
-  'opposed',
-]
-
-const RHYTHM = [
-  { size: 'feature', basis: '100%' },
-  { size: 'medium', basis: '56%' },
-  { size: 'medium', basis: '42%' },
-  { size: 'wide', basis: '100%' },
-  { size: 'compact', basis: '48%' },
-  { size: 'compact', basis: '50%' },
-] as const
-
+/**
+ * The project list as a ruled index rather than a grid of cards.
+ *
+ * The reworked direction treats work as an archive: one hairline row per
+ * project, numbered, with the disciplines and year set as tiny caps. Hover
+ * fills the whole row with ink (see `.artifact-index-row`), so the list reads
+ * as a set of plates being pulled rather than as a wall of thumbnails.
+ */
 export function WorkIndex({ projects }: { projects: Project[] }) {
   return (
-    <div className="rail mx-auto">
-      <div className="flex flex-wrap gap-module">
-        {projects.map((project, index) => {
-          const rhythm = RHYTHM[index % RHYTHM.length]
-          return (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              size={rhythm.size}
-              shape={SHAPES[index % SHAPES.length]}
-              className="min-w-[260px]"
-              style={{ flexBasis: rhythm.basis, flexGrow: 1 }}
-            />
-          )
-        })}
-      </div>
+    <div className="artifact-index">
+      {projects.map((project, index) => (
+        <Reveal key={project.id} delay={index * 60}>
+          <Link href={`/work/${project.slug}`} className="artifact-index-row">
+            <span className="artifact-index-num">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+
+            <span className="artifact-index-client">{project.client}</span>
+
+            <span className="artifact-index-meta">
+              {project.disciplines.join(' · ')}
+            </span>
+
+            <span className="artifact-index-meta artifact-index-year">
+              {project.year}
+            </span>
+          </Link>
+        </Reveal>
+      ))}
     </div>
   )
 }
