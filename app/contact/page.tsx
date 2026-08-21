@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { AnimatedText } from '@/components/animated-text'
 import { PageHero } from '@/components/page-hero'
+import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
 import { LiquidEmail } from '@/components/liquid-email'
 
@@ -9,12 +9,17 @@ export const metadata: Metadata = {
   description: 'Start a project with Burgama.',
 }
 
+/*
+  Previously each item carried a flex `basis` so the cards tiled at uneven
+  widths. The ruled column grid handles arrangement now, so these are plain
+  strings.
+*/
 const INCLUDE = [
-  { label: 'What you are making', basis: '54%' },
-  { label: 'Where it needs to go', basis: '44%' },
-  { label: 'Timing', basis: '38%' },
-  { label: 'Budget range', basis: '32%' },
-  { label: 'Who is involved', basis: '28%' },
+  'What you are making',
+  'Where it needs to go',
+  'Timing',
+  'Budget range',
+  'Who is involved',
 ]
 
 export default function ContactPage() {
@@ -26,49 +31,44 @@ export default function ContactPage() {
         artifactId="contact-hero"
       />
 
-      <section className="wide flex flex-col gap-module pb-16">
+      <div className="wide case">
         <h1 className="sr-only">Start a project</h1>
 
-        <div className="flex flex-col gap-module md:flex-row">
-          <div className="md:basis-[58%]">
+        <section aria-label="Email the studio" className="case-module">
+          <h2 className="case-module-title">Write to us</h2>
+          <div className="case-module-body">
             <LiquidEmail />
-          </div>
-
-          <div className="flex flex-col gap-module md:basis-[40%]">
-            <p className="t-body flex-1 rounded-module bg-surface-2 p-6">
-              One conversation, not a form funnel. Write with as much or as little as you have —
-              we will reply with a straight answer about fit.
-            </p>
-            <p className="t-body rounded-module bg-surface-2 p-6">
-              Austin, Texas
-              <span className="t-ui mt-2 block">Working wherever the project leads</span>
+            <p>
+              One conversation, not a form funnel. Write with as much or as little as you
+              have — we will reply with a straight answer about fit.
             </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section
-        aria-labelledby="include-title"
-        className="flex flex-col gap-module px-module pb-24 md:pb-36"
-      >
-        <AnimatedText
-          as="h2"
-          id="include-title"
-          lines={['Useful to include']}
-          className="t-title rail mx-auto mb-6"
-        />
-        <div className="rail mx-auto flex flex-wrap gap-module">
-          {INCLUDE.map((item) => (
-            <p
-              key={item.label}
-              style={{ flexBasis: item.basis, flexGrow: 1 }}
-              className="t-body flex h-24 min-w-[200px] items-end rounded-module bg-surface-1 p-5"
-            >
-              {item.label}
-            </p>
-          ))}
-        </div>
-      </section>
+        <Reveal as="section" aria-label="Location" className="case-spec">
+          <div className="case-spec-row">
+            <span className="case-spec-label">Studio</span>
+            <span className="case-spec-value">Austin, Texas</span>
+          </div>
+          <div className="case-spec-row">
+            <span className="case-spec-label">Availability</span>
+            <span className="case-spec-value">Working wherever the project leads</span>
+          </div>
+        </Reveal>
+
+        <Reveal as="section" aria-labelledby="include-title" className="case-module">
+          <h2 id="include-title" className="case-module-title">
+            Useful to include
+          </h2>
+          <div className="case-spec">
+            {INCLUDE.map((item) => (
+              <div key={item} className="case-spec-row">
+                <span className="case-spec-value">{item}</span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </div>
 
       <SiteFooter />
     </>

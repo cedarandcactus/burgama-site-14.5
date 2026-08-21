@@ -686,6 +686,51 @@
   opacity: 0.6;
 }
 
+/*
+  A button that reads as inline text, for actions sitting inside a sentence
+  (copy address, reveal options). `.inline-action` is a filled periwinkle pill
+  from the previous direction and would be the loudest thing on a quiet page.
+*/
+.case-action {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  transition: opacity var(--dur-med) var(--ease-smooth);
+}
+
+.case-action:hover,
+.case-action:focus-visible {
+  opacity: 0.6;
+}
+
+.contact-address {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  align-items: flex-start;
+}
+
+.contact-address-line {
+  font-size: clamp(1.5rem, 5vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  /* Long address must not overflow a narrow viewport. */
+  overflow-wrap: anywhere;
+  transition: opacity var(--dur-med) var(--ease-smooth);
+}
+
+.contact-address-line:hover,
+.contact-address-line:focus-visible {
+  opacity: 0.6;
+}
+
 .case-quote {
   max-width: 32ch;
   font-size: clamp(1.25rem, 3vw, 2.25rem);

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AnimatedText } from '@/components/animated-text'
 import { PageHero } from '@/components/page-hero'
+import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
 
 export const metadata: Metadata = {
@@ -10,30 +10,27 @@ export const metadata: Metadata = {
     'Burgama is a design-led creative studio working on identities, digital experiences, campaigns and systems.',
 }
 
+/*
+  Capabilities and approach carry no per-item `basis`/`tone` any more. Those
+  fields existed to size and fill the old sculptural cards; in the archive
+  language the grid and the rules do that work, so the data is just content.
+*/
 const CAPABILITIES = [
   {
     title: 'Brand identity and direction',
     body: 'Marks, type systems, colour, art direction and the guidelines that keep them coherent.',
-    basis: '58%',
-    tone: 'bg-surface-1',
   },
   {
     title: 'Digital design and development',
     body: 'Sites, product surfaces and design systems, built as reusable components.',
-    basis: '40%',
-    tone: 'bg-surface-2',
   },
   {
     title: 'Campaigns and content systems',
     body: 'A kit of parts rather than a one-off layout, so every placement holds.',
-    basis: '42%',
-    tone: 'bg-surface-2',
   },
   {
     title: 'Positioning and creative strategy',
     body: 'The sentence the work answers to, agreed before anything is drawn.',
-    basis: '56%',
-    tone: 'bg-surface-1',
   },
 ]
 
@@ -41,17 +38,14 @@ const APPROACH = [
   {
     title: 'Discovery and positioning',
     body: 'We start with a point of view. Placeholder copy describing how the studio arrives at it.',
-    basis: '38%',
   },
   {
     title: 'Design and build',
     body: 'The point of view becomes a system: modules, spacing, type and motion.',
-    basis: '32%',
   },
   {
     title: 'Launch and support',
     body: 'Handover, documentation and the ongoing work of keeping a system recognisable.',
-    basis: '28%',
   },
 ]
 
@@ -82,69 +76,67 @@ export default function StudioPage() {
         ]}
       />
 
-      <section className="wide pb-16">
-        <h1 className="sr-only">Studio</h1>
-        <p className="page-hero-column-body max-w-[52ch]">
-          Burgama shapes identities and digital experiences for people with something
-          meaningful to make, staying close from the first conversation through launch.{' '}
-          <Link href="/work" className="inline-action">
-            Selected work
-          </Link>{' '}
-          <Link href="/contact" className="inline-action">
-            Start a project
-          </Link>
-        </p>
-      </section>
+      <div className="wide case">
+        <section aria-label="Introduction" className="case-module">
+          <h1 className="case-module-title">Studio</h1>
+          <div className="case-module-body">
+            <p>
+              Burgama shapes identities and digital experiences for people with something
+              meaningful to make, staying close from the first conversation through launch.
+            </p>
+            <p>
+              <Link href="/work">Selected work</Link> · <Link href="/contact">Start a project</Link>
+            </p>
+          </div>
+        </section>
 
-      <section
-        id="capabilities"
-        aria-labelledby="capabilities-title"
-        className="flex flex-col gap-module px-module pb-16 md:scroll-mt-24"
-      >
-        <AnimatedText
-          as="h2"
-          id="capabilities-title"
-          lines={['Capabilities']}
-          className="t-title rail mx-auto mb-6"
-        />
-        <div className="rail mx-auto flex flex-wrap gap-module">
-          {CAPABILITIES.map((item) => (
-            <div
-              key={item.title}
-              style={{ flexBasis: item.basis, flexGrow: 1 }}
-              className={`flex min-h-[220px] min-w-[260px] flex-col justify-between gap-8 rounded-module p-6 ${item.tone}`}
-            >
-              <h3 className="t-section max-w-[18ch]">{item.title}</h3>
-              <p className="t-body max-w-[40ch]">{item.body}</p>
+        {/*
+          The anchor id sits on this plain section, NOT on the Reveal inside it.
+          Reveal starts its child translated down, so the browser scrolled to
+          that pre-animation position and the element then settled upward,
+          leaving the heading above the viewport. An untransformed target keeps
+          /studio#capabilities landing correctly.
+        */}
+        <section
+          id="capabilities"
+          aria-labelledby="capabilities-title"
+          className="scroll-mt-28"
+        >
+          <Reveal className="case-module">
+            <h2 id="capabilities-title" className="case-module-title">
+              Capabilities
+            </h2>
+            <div className="page-hero-columns columns-bare">
+              {CAPABILITIES.map((item) => (
+                <div key={item.title}>
+                  <h3 className="page-hero-column-title">{item.title}</h3>
+                  <p className="page-hero-column-body">{item.body}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </Reveal>
+        </section>
 
-      <section
-        id="approach"
-        aria-labelledby="approach-title"
-        className="flex flex-col gap-module px-module pb-24 md:scroll-mt-24 md:pb-36"
-      >
-        <AnimatedText
-          as="h2"
-          id="approach-title"
-          lines={['Approach']}
-          className="t-title rail mx-auto mb-6"
-        />
-        <div className="rail mx-auto flex flex-col gap-module md:flex-row">
-          {APPROACH.map((step) => (
-            <div
-              key={step.title}
-              style={{ flexBasis: step.basis }}
-              className="flex flex-col gap-4 rounded-module bg-surface-1 p-6"
-            >
-              <h3 className="t-section">{step.title}</h3>
-              <p className="t-body">{step.body}</p>
+        {/*
+          The approach is a sequence, so it reads as ruled rows — the same spec
+          list used on a case study — rather than as a row of equal cards.
+        */}
+        <section id="approach" aria-labelledby="approach-title" className="scroll-mt-28">
+          <Reveal className="case-module">
+            <h2 id="approach-title" className="case-module-title">
+              Approach
+            </h2>
+            <div className="case-spec">
+              {APPROACH.map((step) => (
+                <div key={step.title} className="case-spec-row">
+                  <span className="case-spec-label">{step.title}</span>
+                  <span className="case-spec-value">{step.body}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </Reveal>
+        </section>
+      </div>
 
       <SiteFooter />
     </>
