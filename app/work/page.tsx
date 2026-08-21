@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { AnimatedText } from '@/components/animated-text'
+import { PageHero } from '@/components/page-hero'
 import { SiteFooter } from '@/components/site-footer'
 import { WorkIndex } from '@/components/work-index'
 import { projects } from '@/lib/projects'
@@ -13,23 +13,34 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <>
-      <section
-        aria-labelledby="work-index-title"
-        className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]"
-      >
-        <div className="rail mx-auto mb-6 flex flex-col gap-4">
-          <AnimatedText
-            as="h1"
-            id="work-index-title"
-            lines={['Work']}
-            className="t-display"
-          />
-          <p className="t-body">
-            Selected multidisciplinary work from Burgama, a marketing and design studio.
-            Each story brings the full engagement together around one client.
-          </p>
-        </div>
+      <PageHero
+        eyebrow="Burgama — Selected work"
+        title="Work"
+        artifactId="work-hero"
+        columns={[
+          {
+            title: 'Brand',
+            body: 'Marks, type systems, colour and the guidelines that keep them coherent.',
+          },
+          {
+            title: 'Digital',
+            body: 'Sites, product surfaces and design systems built as reusable components.',
+          },
+          {
+            title: 'Content',
+            body: 'A kit of parts rather than a one-off layout, so every placement holds.',
+          },
+          {
+            title: 'Growth',
+            body: 'Search, social and the ongoing work of keeping a system recognizable.',
+          },
+        ]}
+      />
 
+      <section aria-labelledby="work-index-title" className="wide pb-24">
+        <h1 id="work-index-title" className="sr-only">
+          Work
+        </h1>
         <WorkIndex projects={projects} />
       </section>
 

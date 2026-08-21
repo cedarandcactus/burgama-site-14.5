@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { AnimatedText } from '@/components/animated-text'
+import { PageHero } from '@/components/page-hero'
 import { SiteFooter } from '@/components/site-footer'
 import { LiquidEmail } from '@/components/liquid-email'
 
@@ -19,14 +20,16 @@ const INCLUDE = [
 export default function ContactPage() {
   return (
     <>
-      <section className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]">
-        <AnimatedText
-          as="h1"
-          lines={['Start a project']}
-          className="t-display rail mx-auto mb-6"
-        />
+      <PageHero
+        eyebrow="Burgama — Start a project"
+        title="Contact"
+        artifactId="contact-hero"
+      />
 
-        <div className="rail mx-auto flex flex-col gap-module md:flex-row">
+      <section className="wide flex flex-col gap-module pb-16">
+        <h1 className="sr-only">Start a project</h1>
+
+        <div className="flex flex-col gap-module md:flex-row">
           <div className="md:basis-[58%]">
             <LiquidEmail />
           </div>

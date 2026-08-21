@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AnimatedText } from '@/components/animated-text'
+import { PageHero } from '@/components/page-hero'
 import { SiteFooter } from '@/components/site-footer'
 
 export const metadata: Metadata = {
@@ -57,22 +58,42 @@ const APPROACH = [
 export default function StudioPage() {
   return (
     <>
-      <section className="flex flex-col gap-module px-module pt-[92px] pb-16 md:pt-[140px]">
-        <div className="rail mx-auto mb-6 grid gap-7 min-[900px]:grid-cols-12 min-[900px]:items-end">
-          <AnimatedText
-            as="h1"
-            lines={['An independent studio', 'built around close', 'collaboration']}
-            className="t-display min-[900px]:col-span-7 min-[900px]:text-7xl"
-          />
-          <div className="flex flex-col gap-7 min-[900px]:col-span-5">
-            <p className="t-body reading-measure">
-              Burgama shapes identities and digital experiences for people with something
-              meaningful to make, staying close from the first conversation through launch.{' '}
-              <Link href="/work" className="inline-action">Selected work</Link>{' '}
-              <Link href="/contact" className="inline-action">Start a project</Link>
-            </p>
-          </div>
-        </div>
+      <PageHero
+        eyebrow="Burgama — Independent studio"
+        title="Studio"
+        artifactId="studio-hero"
+        columns={[
+          {
+            title: 'Close collaboration',
+            body: 'Small, senior teams. No account layer between planning the work and making it.',
+          },
+          {
+            title: 'A point of view first',
+            body: 'The sentence the work answers to, agreed before anything is drawn.',
+          },
+          {
+            title: 'Systems, not one-offs',
+            body: 'Every engagement leaves behind something reusable and documented.',
+          },
+          {
+            title: 'Austin, Texas',
+            body: 'Working wherever the project leads.',
+          },
+        ]}
+      />
+
+      <section className="wide pb-16">
+        <h1 className="sr-only">Studio</h1>
+        <p className="page-hero-column-body max-w-[52ch]">
+          Burgama shapes identities and digital experiences for people with something
+          meaningful to make, staying close from the first conversation through launch.{' '}
+          <Link href="/work" className="inline-action">
+            Selected work
+          </Link>{' '}
+          <Link href="/contact" className="inline-action">
+            Start a project
+          </Link>
+        </p>
       </section>
 
       <section

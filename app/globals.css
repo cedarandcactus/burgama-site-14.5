@@ -57,18 +57,60 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --navy: #080d1b;
-  --periwinkle: #aeb5dc;
-  --surface-1: #111a31;
-  --surface-2: #17213d;
-  --surface-3: #202b4a;
+  /*
+    ARTIFACT PALETTE — muted, light-ground, taken from COLOR REF.
+    Read this before changing any colour.
 
-  --background: var(--navy);
-  --foreground: var(--periwinkle);
+    The site inverted from navy-on-dark to ink-on-paper. Rather than rewrite
+    every colour reference across five pages, the two legacy aliases are
+    redefined at the root: `--navy` is now the PAPER (page ground) and
+    `--periwinkle` is now the INK (text). Every legacy rule was written as
+    "navy background, periwinkle text", so re-pointing the aliases flips the
+    whole site correctly and keeps the sanctioned hover (periwinkle fill,
+    navy text) working as ink-fill/paper-text.
+
+    The names are therefore deliberately misleading. Prefer the semantic
+    tokens below (--paper / --ink / --plum / --peri) in all new work.
+  */
+  --paper: #e8e9f0;
+  --paper-raised: #f7f7fa;
+  --paper-sunk: #d6d8e4;
+  --ink: #14182f;
+  --ink-soft: #4a4f6a;
+  --plum: #574c5e;
+  --peri: #a9a5d9;
+
+  /* Legacy aliases — see note above. */
+  --navy: var(--paper);
+  --periwinkle: var(--ink);
+  --surface-1: var(--paper-raised);
+  --surface-2: var(--paper-sunk);
+  --surface-3: #c6c9da;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 
   --radius: 10px;
+
+  /*
+    Ultra-wide layout. The references run nearly edge to edge, so content is
+    gutter-aligned rather than centred in a narrow column. --page-max is
+    generous on purpose; the old 438px rail and 1048px measure remain only
+    for pages not yet converted.
+  */
+  --page-gutter: clamp(1.25rem, 3.4vw, 4rem);
+  --page-max: 1920px;
+
+  /*
+    One long, gentle ease for the "ultra-smooth" motion, plus a slow
+    duration scale. Everything site-wide animates on these two so nothing
+    feels faster or snappier than anything else.
+  */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slow: 900ms;
+  --dur-med: 620ms;
 
   /*
     The nav is fully unwound everywhere by default. Only the entrance overrides
@@ -147,6 +189,451 @@
   width: 100%;
   max-width: 1048px;
   margin-inline: auto;
+}
+
+/*
+  The new width system: gutter-aligned and very wide, per the references.
+  Use this instead of `rail`/`measure` in all new work.
+*/
+@utility wide {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+/* ------------------------------------------------------------------
+   ARTIFACT SYSTEM
+
+   The references are built around a single carved/dithered object
+   floating in a lot of air, with tiny monoline labels pinned around it.
+   Artifacts are content, not decoration, so they are data-driven
+   (`lib/artifacts.ts`) and every slot renders a labelled placeholder
+   until a real asset is dropped in.
+------------------------------------------------------------------ */
+
+/*
+  A slot with no asset yet. It is deliberately quiet — a hairline frame and
+  tiny caps label — so an unfilled page still reads as a composition rather
+  than a broken one. Placeholders must never look like an error.
+*/
+.artifact {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.artifact-empty {
+  outline: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  outline-offset: -1px;
+  background-color: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+/*
+  Tiny spec text: what belongs here, so slots can be filled one by one.
+  Pinned to the bottom-left rather than centred — it reads as an archival
+  annotation, and it keeps the centre of the slot clear for display type
+  that is meant to sit over the artifact.
+*/
+.artifact-slug {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1rem;
+  font-size: 0.625rem;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 52%, transparent);
+}
+
+.artifact-slug-kind {
+  color: color-mix(in srgb, var(--ink) 34%, transparent);
+}
+
+.artifact-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.artifact-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.artifact-caption {
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 52%, transparent);
+}
+
+/*
+  Video artifacts are the exception to object-fit: contain — footage should
+  fill its frame rather than letterbox inside it.
+*/
+.artifact video.artifact-media {
+  object-fit: cover;
+}
+
+/*
+  The dither treatment, generalised from the hero. Crushes an asset toward
+  1-bit and screens it with an ordered dot lattice, so a photo, a render and
+  a 3D capture all land in the same material world.
+
+  Brightness must stay above 1.0 — measured on the hero: crushing with
+  brightness below 1 flattens highlights to mid-grey and kills the object.
+*/
+.artifact-dither .artifact-media {
+  filter: saturate(0) contrast(1.72) brightness(1.04);
+}
+
+.artifact-dither::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  background-image:
+    radial-gradient(circle at 25% 25%, var(--ink) 0 40%, transparent 41%),
+    radial-gradient(circle at 75% 75%, var(--ink) 0 40%, transparent 41%);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* The COLOR REF's second half: the same object with its tones inverted. */
+.artifact-invert .artifact-media {
+  filter: saturate(0) invert(1) contrast(1.3);
+}
+
+/* ------------------------------------------------------------------
+   Poster composition — LAYOUT INSPO
+
+   Tiny caps labels pinned to the corners of a full-width band, a large
+   artifact centred in it, and small justified copy beneath.
+------------------------------------------------------------------ */
+
+.poster {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  padding-block: clamp(1rem, 2vw, 1.75rem) clamp(4rem, 8vw, 7rem);
+}
+
+/* Corner labels sit on one hairline rule, mirroring the poster's masthead. */
+.poster-masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+.poster-label {
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.poster-label-mid {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .poster-label-mid {
+    display: block;
+    color: color-mix(in srgb, var(--ink) 58%, transparent);
+  }
+}
+
+/*
+  The artifact stage. min-height is viewport-relative so the object always
+  has air around it — the references are mostly empty space, and that space
+  is the design.
+*/
+.poster-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(19rem, 46vw, 34rem);
+}
+
+/*
+  The artifact is sized by HEIGHT here, not width. A square slot constrained
+  only by max-width grows as tall as it is wide and swallows the viewport;
+  driving height and letting width follow from aspect-ratio keeps any ratio
+  inside the stage.
+*/
+.poster-stage .artifact,
+.poster-stage .artifact-figure {
+  height: clamp(17rem, 40vw, 31rem);
+  width: auto;
+  max-width: 100%;
+}
+
+/*
+  Display type set over the artifact, as in the poster where the title is
+  carved out of the stone. Tracking is tight and the type is large; it
+  overlaps the object deliberately.
+*/
+.poster-title {
+  font-size: clamp(2.25rem, 9vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Small justified body, centred and narrow, exactly as the poster sets it. */
+.poster-body {
+  width: 100%;
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: justify;
+  text-align-last: center;
+  font-size: 0.75rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+/*
+  Rotated marginalia. Absolutely positioned against the poster, hidden below
+  the width where there is no margin to put it in.
+*/
+.poster-margin {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .poster-margin {
+    position: absolute;
+    top: 50%;
+    display: block;
+    font-size: 0.5625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: color-mix(in srgb, var(--ink) 45%, transparent);
+  }
+
+  .poster-margin-left {
+    left: 0;
+    transform: translateY(-50%) rotate(180deg);
+    writing-mode: vertical-rl;
+  }
+
+  .poster-margin-right {
+    right: 0;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+  }
+}
+
+/* Vertical rhythm between the homepage's full-width bands. */
+.page-artifact {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 9vw, 9rem);
+  padding-bottom: clamp(4rem, 9vw, 9rem);
+}
+
+/*
+  The title sits over the artifact. mix-blend-mode: difference means it
+  stays legible across both the pale ground and the dark object without a
+  scrim — it inverts against whatever is behind it, which also matches the
+  invert reference.
+*/
+.poster-title-over {
+  position: absolute;
+  inset-inline: 0;
+  margin: 0;
+  color: var(--paper);
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+/* Three tall specimen slots side by side, stacking on narrow screens. */
+.specimen-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+@media (min-width: 760px) {
+  .specimen-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Interior page hero — NON HOMEPAGE HERO INSPO
+------------------------------------------------------------------ */
+
+.page-hero {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  /* Clears the sticky nav. */
+  padding-top: clamp(4.5rem, 7vw, 6.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.page-hero-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+  Short columns of small text under the artifact, as in the reference. Falls
+  to two columns before one so the row never becomes a single long measure.
+*/
+.page-hero-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 2.4vw, 2.25rem);
+  padding-top: clamp(1rem, 2vw, 1.75rem);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+@media (min-width: 620px) {
+  .page-hero-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 980px) {
+  .page-hero-columns {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.page-hero-column-title {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.page-hero-column-body {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------
+   Artifact index — the project list, ruled and very wide
+------------------------------------------------------------------ */
+
+.artifact-index {
+  display: flex;
+  flex-direction: column;
+}
+
+.artifact-index-row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  padding-block: clamp(1rem, 1.8vw, 1.6rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  color: var(--ink);
+  transition:
+    background-color var(--dur-med) var(--ease-smooth),
+    color var(--dur-med) var(--ease-smooth),
+    padding-inline var(--dur-med) var(--ease-smooth);
+}
+
+@media (min-width: 860px) {
+  .artifact-index-row {
+    grid-template-columns: 3.5rem minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  }
+}
+
+/*
+  Hover fills with ink and insets the row, so the list feels like it responds
+  as a plate rather than as a link. Colour and padding both ride the shared
+  smooth ease.
+*/
+.artifact-index-row:hover,
+.artifact-index-row:focus-visible {
+  background-color: var(--ink);
+  color: var(--paper);
+  padding-inline: clamp(0.5rem, 1.2vw, 1.25rem);
+  outline: none;
+}
+
+.artifact-index-num {
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, currentcolor 55%, transparent);
+}
+
+.artifact-index-client {
+  font-size: clamp(1.125rem, 2.4vw, 1.875rem);
+  letter-spacing: -0.02em;
+}
+
+.artifact-index-meta {
+  grid-column: 2;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, currentcolor 62%, transparent);
+}
+
+@media (min-width: 860px) {
+  .artifact-index-meta {
+    grid-column: auto;
+  }
+
+  .artifact-index-year {
+    text-align: right;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Smooth reveal — one shared entrance for every block
+------------------------------------------------------------------ */
+
+/*
+  Long distance, long duration, single ease. Driven by an
+  IntersectionObserver that sets data-visible, so blocks resolve as they are
+  reached rather than all at once on load.
+*/
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 1.75rem, 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-smooth),
+    transform var(--dur-slow) var(--ease-smooth);
+}
+
+.reveal[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /*
@@ -521,7 +1008,10 @@ a.action-quiet:hover .action-arrow {
   align-items: center;
   gap: 1.5rem;
   padding: 1.125rem var(--page-gutter);
-}
+  /* Capped to the same measure as `.wide` so the chrome aligns with content. */
+  max-width: var(--page-max);
+  margin-inline: auto;
+  }
 
 .site-nav-brand {
   justify-self: start;
@@ -530,11 +1020,17 @@ a.action-quiet:hover .action-arrow {
   color: var(--periwinkle);
 }
 
+/*
+  Monoline caps, matching the poster masthead — the nav reads as another
+  ruled label row rather than as web navigation.
+*/
 .site-nav-index {
   justify-self: center;
   color: var(--periwinkle) !important;
-  font-size: 0.9375rem;
-}
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  }
 
 .site-nav-link {
   color: color-mix(in srgb, var(--periwinkle) 64%, var(--navy));
@@ -1005,7 +1501,9 @@ a.action-quiet:hover .action-arrow {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   padding: clamp(2.5rem, 5vw, 4rem) var(--page-gutter);
-}
+  max-width: var(--page-max);
+  margin-inline: auto;
+  }
 
 .footer-column {
   display: flex;
@@ -1047,7 +1545,9 @@ a.footer-link:focus-visible {
   justify-content: space-between;
   gap: 1.5rem;
   padding: 0 var(--page-gutter) clamp(1.5rem, 3vw, 2.5rem);
-}
+  max-width: var(--page-max);
+  margin-inline: auto;
+  }
 
 /* The wordmark closes the page at display scale. */
 .footer-wordmark {
