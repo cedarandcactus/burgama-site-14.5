@@ -25,8 +25,16 @@ export function SiteFooter() {
     <footer className="page-footer">
       <div className="footer-columns">
         {COLUMNS.map((column) => (
+          /*
+            The visible `MENU` / `STUDIO` headings are gone. Tiny tracked
+            uppercase labels announcing "menu" above a list of links, and
+            "studio" above an address, are the eyebrow/section-label pattern
+            the global rules prohibit — a list of links is self-evidently a
+            menu. The heading is kept as the nav's `aria-label`, so the
+            grouping is still announced to screen readers without printing a
+            label nobody needed to read.
+          */
           <nav key={column.heading} aria-label={column.heading} className="footer-column">
-            <p className="footer-heading">{column.heading}</p>
             {column.items.map((item) =>
               item.href ? (
                 <Link key={item.label} href={item.href} className="footer-link">

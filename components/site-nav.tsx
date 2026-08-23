@@ -95,9 +95,11 @@ export function SiteNav() {
               {link.label}
             </Link>
           ))}
-          <Link href="/contact" tabIndex={open ? 0 : -1} className="site-nav-panel-link">
-            Start a project
-          </Link>
+          {/*
+            The "Start a project" entry was removed: it pointed at /contact,
+            which is already the fourth link above, so the mobile menu listed
+            the same destination twice under two names.
+          */}
         </div>
       </div>
     </nav>

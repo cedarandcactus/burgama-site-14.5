@@ -1,14 +1,23 @@
 import Link from 'next/link'
+import { CategoryCluster } from '@/components/category-cluster'
+import { Dingbat } from '@/components/dingbat'
 import { Reveal } from '@/components/reveal'
 import { type Project } from '@/lib/projects'
 
 /**
- * The project list as a ruled index rather than a grid of cards.
+ * The project list as an index rather than a grid of cards.
  *
- * The reworked direction treats work as an archive: one hairline row per
- * project, numbered, with the disciplines and year set as tiny caps. Hover
- * fills the whole row with ink (see `.artifact-index-row`), so the list reads
- * as a set of plates being pulled rather than as a wall of thumbnails.
+ * Rebuilt to the sanctioned ingredients — dingbat, project name, category
+ * cluster — and away from the `01 / title / dot-joined metadata / year /
+ * hairline` row, which is the exact structure the rules call out as generic
+ * CMS UI. The hairline is gone (see `--rule`), the number is a dingbat glyph,
+ * and the disciplines are a tight pill cluster.
+ *
+ * The year was dropped. It is a CMS field that was being rendered only
+ * because it exists: it did not help navigation, understanding or
+ * storytelling in a list this short, and removing it lets the client name
+ * hold the authority the rules want it to have. It is still on the project
+ * record and still shown on the case-study page.
  */
 export function WorkIndex({ projects }: { projects: Project[] }) {
   return (
@@ -16,19 +25,11 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
       {projects.map((project, index) => (
         <Reveal key={project.id} delay={index * 60}>
           <Link href={`/work/${project.slug}`} className="artifact-index-row">
-            <span className="artifact-index-num">
-              {String(index + 1).padStart(2, '0')}
-            </span>
+            <Dingbat n={index + 1} className="artifact-index-num" />
 
             <span className="artifact-index-client">{project.client}</span>
 
-            <span className="artifact-index-meta">
-              {project.disciplines.join(' · ')}
-            </span>
-
-            <span className="artifact-index-meta artifact-index-year">
-              {project.year}
-            </span>
+            <CategoryCluster items={project.disciplines} />
           </Link>
         </Reveal>
       ))}

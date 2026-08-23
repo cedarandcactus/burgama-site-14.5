@@ -57,7 +57,9 @@
 }
 
 :root {
-  color-scheme: light;
+  /* Dark again — the ground is deep navy, so form controls and scrollbars
+     should render dark rather than light. */
+  color-scheme: dark;
 
   /*
     ARTIFACT PALETTE — muted, light-ground, taken from COLOR REF.
@@ -75,45 +77,52 @@
     tokens below (--paper / --ink / --plum / --peri) in all new work.
   */
   /*
-    PERIWINKLE ON SLATE, from the reference. The ground is a slate blue-grey
-    and the type is pale periwinkle, so `--paper` is the slate and `--ink` is
-    the periwinkle. Every rule on the site is written against these two,
-    which is why the whole palette turns over from here.
+    PERIWINKLE ON DEEP NAVY, from the reference. `--paper` is the navy ground
+    and `--ink` is the periwinkle type. Every rule on the site is written as
+    "paper background, ink text", so the whole palette turns over from these
+    two declarations.
 
-    ON THE TWO VALUES — read before "correcting" them to the reference.
-    The source art is roughly #C3D3F2 type on a #8390B5 ground, which
-    measures 2.3:1. Body copy is now the largest thing on the page and that
-    is not readable. Rather than darken the ground a long way (which would
-    lose the slate character), the type is lifted to #E8EEFC and the ground
-    settled at #5F6B8C — computed at 4.6:1, so it clears AA outright while
-    staying much closer to the reference than a dark ground would.
+    TWO BASE COLOUR FAMILIES, per the global rules: NAVY + PERIWINKLE.
+    Everything visible is a tonal variation of one of them — no convenience
+    grey, white, black or border-grey anywhere. The `-raised` / `-sunk` /
+    `-soft` / `-mid` values below exist so hierarchy can be built from tone
+    within the two families instead of by introducing a third.
+
+    Unlike the two previous passes, this reference needs no contrast
+    correction: pale periwinkle on deep navy measures about 11:1, so the
+    values sit essentially where the source art puts them. (For the record,
+    the amber-on-grey and periwinkle-on-slate versions were 2.4:1 and 2.3:1
+    and both had to be adjusted. This one does not.)
   */
-  --paper: #5f6b8c;
-  --paper-raised: #6b789c;
-  --paper-sunk: #55607e;
-  --ink: #e8eefc;
+  --paper: #161c40;
+  --paper-raised: #1e2450;
+  --paper-sunk: #111634;
+  --ink: #c7cbf2;
   /*
-    Secondary type. Kept close to `--ink` rather than faded toward the
-    ground — the flat-UI rule forbids hierarchy by opacity, and dimming this
-    far enough to read as "soft" would drop it below contrast. 4.2:1.
+    Secondary type — a darker step of the same periwinkle, not a grey and
+    not an opacity. Still about 7:1 on the navy.
   */
-  --ink-soft: #dbe4f8;
+  --ink-soft: #a6abdc;
+  /* Mid tone of the ink family, used for the default control fill. */
+  --ink-mid: #b9bcec;
   --plum: #574c5e;
-  --peri: #a9a5d9;
+  --peri: var(--ink);
 
   /*
-    The deep field media sits on. A deeper slate, NOT `--ink`: a periwinkle
-    panel would put pale media on pale and hand the largest area on the page
-    to the brightest colour. Media reads against the deep tone.
+    The field media sits on: a raised navy, NOT periwinkle. A periwinkle
+    panel would hand the largest area on the page to the brightest colour
+    and fight the type for attention.
   */
-  --panel: #3f4860;
+  --panel: #1e2450;
 
   /* Legacy aliases — see note above. */
   --navy: var(--paper);
   --periwinkle: var(--ink);
   --surface-1: var(--paper-raised);
   --surface-2: var(--paper-sunk);
-  --surface-3: #c6c9da;
+  /* Was a hardcoded #c6c9da — an invented grey with no relation to either
+     base family, which the global colour rules prohibit. Now a navy step. */
+  --surface-3: var(--paper-raised);
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -368,7 +377,8 @@
   justify-content: space-between;
   gap: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  /* Routed through `--rule` (now transparent) — see the NO LINES note. */
+  border-bottom: 1px solid var(--rule);
 }
 
 .poster-label {
@@ -679,7 +689,7 @@
   grid-template-columns: 1fr;
   gap: clamp(1.25rem, 2.4vw, 2.25rem);
   padding-top: clamp(1rem, 2vw, 1.75rem);
-  border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-top: 1px solid var(--rule);
 }
 
 @media (min-width: 620px) {
@@ -806,35 +816,49 @@
 .case-module-title,
 .case-spec-label,
 .case-spec-value,
-.page-hero-column-title,
-.page-hero-column-body,
-.artifact-index-meta {
-  font-family: var(--font-mono);
-}
+/*
+  These columns hold REAL CONTENT — the four disciplines, each a heading with
+  its own sentence of copy. They were being rendered as 10px tracked
+  uppercase mono titles over 11px tracked mono body, which is precisely the
+  "tiny widely tracked uppercase metadata" the global rules prohibit, and it
+  buried actual writing under a utility treatment.
 
+  Now: sentence-case sans titles at reading scale, and body copy at a size
+  someone can actually read. Mono is reserved for genuine utility text
+  (spec labels and values), which is the contrast the system depends on.
+  This block previously overrode the sizes set earlier in the file — source
+  order was winning silently, so both declarations had to be reconciled here.
+*/
 .page-hero-column-title {
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: clamp(1.0625rem, 1.4vw, 1.375rem);
+  letter-spacing: -0.01em;
+  text-transform: none;
+  line-height: 1.25;
 }
 
 .page-hero-column-body {
-  font-size: 0.6875rem;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
+  font-family: var(--font-sans);
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
 }
 
 /* ------------------------------------------------------------------
    Pill buttons — three sizes, from the reference
 
-   Fully rounded (`border-radius: 999px`), which is a deliberate exception to
-   the site's uniform 10px corner: the reference's controls are pills and the
-   whole point of this pass is its sizing language. Amber fill with a grey
-   label — the same inversion the site already uses for hover states, so the
-   control reads as part of the system rather than as a new colour.
+   Fully rounded (`border-radius: 999px`), a deliberate exception to the
+   site's uniform 10px corner: the reference's controls are pills, and the
+   global rules call for fully rounded buttons while also insisting that
+   button geometry stays on buttons — so no image, panel or section inherits
+   this radius.
 
-   Sizes are `.pill-sm` / default / `.pill-wide`. They differ in padding and
-   size, NOT in radius, so they still read as one family.
+   Periwinkle fill with a navy label — the same inversion the site already
+   uses for hover, so a control reads as part of the system rather than as a
+   new colour.
+
+   SIZE classes are `.pill-sm` / default / `.pill-wide`, differing in padding
+   only — same radius, same family. TONE classes are separate, below.
 ------------------------------------------------------------------ */
 
 .pill {
@@ -845,7 +869,9 @@
   border: 0;
   border-radius: 999px;
   padding: 0.6rem 1.35rem;
-  background: var(--ink);
+  /* Mid step of the ink family — the reference's middle "Button" tone. The
+     palest step is `.pill-strong`, the recessed one `.pill-muted`. */
+  background: var(--ink-mid);
   color: var(--paper);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
@@ -866,14 +892,29 @@
 }
 
 /*
-  The reference's "Small" pill is a muted, semi-transparent version of the
-  solid ones rather than a different hue — it recedes without becoming a
-  second colour. The label steps up to full `--ink` to hold contrast against
-  the lighter fill.
+  TONE IS SEPARATE FROM SIZE — this matters.
+
+  The reference shows its three controls in three different tones, but the
+  global rules say the wide variant exists only to carry longer labels. So
+  tone must not ride on `.pill-wide`, or "long label" and "more emphasis"
+  become the same decision and the vocabulary collapses. Size classes
+  (`.pill-sm` / `.pill-wide`) change geometry only; these change tone only,
+  and any tone composes with any size.
+
+  All three are tonal steps of the SAME periwinkle family, which is what
+  keeps the cluster inside the two-colour rule. The label is navy on the two
+  solid fills and periwinkle on the translucent one — on a 26% fill over a
+  deep navy ground, a navy label would be unreadable.
 */
 .pill-muted {
-  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
   color: var(--ink);
+}
+
+/* The palest step. For the one control that should carry the most weight. */
+.pill-strong {
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .pill:hover,
@@ -964,7 +1005,7 @@
   grid-template-columns: 1fr;
   gap: 0.25rem;
   padding-block: 0.875rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-bottom: 1px solid var(--rule);
 }
 
 @media (min-width: 720px) {
@@ -1163,7 +1204,7 @@
   align-items: center;
   gap: 0.25rem 1.5rem;
   padding-block: clamp(1rem, 1.8vw, 1.6rem);
-  border-bottom: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-bottom: 1px solid var(--rule);
   color: var(--ink);
   transition:
     background-color var(--dur-med) var(--ease-smooth),
@@ -1172,8 +1213,14 @@
 }
 
 @media (min-width: 860px) {
+  /*
+    Three columns now, not four — the year was removed from the row. The name
+    column takes the freed space rather than the cluster, so the project name
+    keeps the authority and the cluster stays a compact object sitting away
+    from it (the rules want distance and placement, not two stretched blocks).
+  */
   .artifact-index-row {
-    grid-template-columns: 3.5rem minmax(0, 1.4fr) minmax(0, 1fr) auto;
+    grid-template-columns: 3.5rem minmax(0, 1.75fr) auto;
   }
 }
 
@@ -1190,15 +1237,54 @@
   outline: none;
 }
 
+/*
+  The dingbat glyph. Sized up from the old 0.625rem tracked `01` — a circled
+  numeral is a graphic mark and the rules allow it to be generous, whereas
+  tiny tracked digits are the CMS-metadata look being removed. Tracking is
+  zeroed: letter-spacing on a single glyph only pushed it off its own centre.
+*/
 .artifact-index-num {
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
-  color: color-mix(in srgb, currentcolor 55%, transparent);
+  font-size: clamp(1rem, 1.5vw, 1.375rem);
+  letter-spacing: 0;
+  line-height: 1;
+  color: color-mix(in srgb, currentcolor 70%, transparent);
 }
 
 .artifact-index-client {
   font-size: clamp(1.125rem, 2.4vw, 1.875rem);
   letter-spacing: -0.02em;
+}
+
+/*
+  Category cluster — deliberately tight. The rules ask for "several little
+  objects collected into one graphic unit", so the gap is small and wrapping
+  is allowed; an evenly spread row of categories is called out as wrong.
+*/
+.category-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  grid-column: 2;
+}
+
+@media (min-width: 860px) {
+  .category-cluster {
+    grid-column: auto;
+    justify-content: flex-end;
+  }
+}
+
+/*
+  Index rows fill with ink on hover and flip their text to paper. The pills
+  inside are translucent ink with an ink label, which on an ink-filled row
+  would be ink-on-ink — invisible. Measured and confirmed, so on hover the
+  cluster inverts to translucent paper with a paper label, keeping the same
+  recessed relationship against the new background.
+*/
+.artifact-index-row:hover .pill-muted,
+.artifact-index-row:focus-visible .pill-muted {
+  background: color-mix(in srgb, var(--paper) 20%, transparent);
+  color: var(--paper);
 }
 
 .artifact-index-meta {
@@ -1602,7 +1688,19 @@ a.action-quiet:hover .action-arrow {
 
 :root {
   --page-gutter: clamp(1rem, 3.2vw, 2.5rem);
-  --rule: color-mix(in srgb, var(--periwinkle) 22%, transparent);
+  /*
+    NO LINES (global rule 04). This was a visible 22% hairline used as the
+    default separator between nav, index rows, spec rows, columns, project
+    rows and the footer. The rules prohibit exactly that: lines must not be
+    used to announce that one section ended and another began — separation
+    comes from whitespace, scale, position and density instead.
+
+    Kept as a transparent token rather than deleting ~10 border declarations,
+    so every divider in the codebase has ONE control point. The padding those
+    rules carried is retained, so the spacing rhythm survives; only the
+    drawn line is gone. Set this to a colour to bring them all back.
+  */
+  --rule: transparent;
 }
 
 /* --- Nav --------------------------------------------------------- */
@@ -1653,11 +1751,11 @@ a.action-quiet:hover .action-arrow {
 
 .site-nav-link {
   /*
-    Full-strength colour, not a dimmed mix. At this size a 64% mix against
-    the ground read as disabled rather than as secondary, and the flat-UI
-    rule forbids hierarchy by opacity.
+    One tonal step back from `--ink` so the current page can be distinguished
+    without an underline. This is a real colour step in the periwinkle
+    family, not an opacity fade — the earlier 64% mix read as disabled.
   */
-  color: var(--periwinkle);
+  color: var(--ink-soft);
   transition: opacity 240ms var(--ease-module);
 }
 
@@ -1687,10 +1785,15 @@ a.action-quiet:hover .action-arrow {
   transform: translate(1px, -1px);
 }
 
+/*
+  Current page marked by TONE, not an underline — the NO LINES rule names
+  unnecessary underlines specifically, and the colour rules say to reach for
+  tonal variation before adding a mark. The current link sits at full `--ink`
+  while the rest sit one step back at `--ink-soft` (still ~7:1, so "quieter"
+  never means "unreadable"). No extra element, no drawn line.
+*/
 .site-nav-link.is-current {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.3em;
+  color: var(--ink);
 }
 
 /* The index collapses into a single toggle on small screens. */
@@ -1907,7 +2010,7 @@ a.action-quiet:hover .action-arrow {
   align-items: flex-start;
   gap: 0.5rem;
   padding-top: 0.875rem;
-  border-top: 1px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
+  border-top: 1px solid var(--rule);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.2;

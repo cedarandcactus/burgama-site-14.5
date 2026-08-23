@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { ArtifactSlot } from '@/components/artifact-slot'
+import { CategoryCluster } from '@/components/category-cluster'
+import { Dingbat } from '@/components/dingbat'
 import { Reveal } from '@/components/reveal'
 import type { Project } from '@/lib/projects'
 
@@ -62,17 +64,11 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
         <ul className="artifact-index">
           {projects.map((project, index) => (
             <Reveal as="li" key={project.slug} delay={index * 60}>
+              {/* Same ingredients as /work — dingbat, name, cluster. */}
               <Link href={`/work/${project.slug}`} className="artifact-index-row">
-                <span className="artifact-index-num">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+                <Dingbat n={index + 1} className="artifact-index-num" />
                 <span className="artifact-index-client">{project.client}</span>
-                <span className="artifact-index-meta">
-                  {project.disciplines.join(' · ')}
-                </span>
-                <span className="artifact-index-meta artifact-index-year">
-                  {project.year}
-                </span>
+                <CategoryCluster items={project.disciplines} />
               </Link>
             </Reveal>
           ))}
