@@ -1287,23 +1287,11 @@
   color: var(--paper);
 }
 
-.artifact-index-meta {
-  grid-column: 2;
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, currentcolor 62%, transparent);
-}
-
-@media (min-width: 860px) {
-  .artifact-index-meta {
-    grid-column: auto;
-  }
-
-  .artifact-index-year {
-    text-align: right;
-  }
-}
+/*
+  `.artifact-index-meta` / `.artifact-index-year` removed. They were the tiny
+  tracked-uppercase metadata treatment on the index rows; every row that used
+  them now uses `.category-cluster` instead, so the rules had no markup left.
+*/
 
 /* ------------------------------------------------------------------
    Smooth reveal — one shared entrance for every block
@@ -2253,13 +2241,10 @@ a.action-quiet:hover .action-arrow {
   gap: 0.625rem;
 }
 
-.footer-heading {
-  margin-bottom: 0.375rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--periwinkle) 55%, var(--navy)) !important;
-}
+/*
+  `.footer-heading` removed — the MENU / STUDIO eyebrow labels it styled are
+  gone from the markup, so this rule (and its `!important`) was dead.
+*/
 
 .footer-link {
   font-size: 1rem;

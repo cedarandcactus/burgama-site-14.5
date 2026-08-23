@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { CategoryCluster } from '@/components/category-cluster'
+import { Dingbat } from '@/components/dingbat'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
 import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
@@ -38,6 +40,8 @@ export default async function ProjectPage({
   if (!project) notFound()
 
   const next = getProject(project.nextProjectSlug) ?? projects[0]
+  /* Its position in the archive, so its dingbat matches the /work index. */
+  const nextIndex = projects.findIndex((p) => p.id === next.id)
 
   const spec = [
     { label: 'Client', value: project.client },
@@ -120,10 +124,18 @@ export default async function ProjectPage({
             aria-label={`Next project: ${next.title}`}
             className="artifact-index-row"
           >
-            <span className="artifact-index-num">Next</span>
+            {/*
+              Rebuilt to match the /work row exactly, which the comment above
+              already claimed but was no longer true: it still had the word
+              "Next" in the dingbat slot (now glyph-sized), dot-joined
+              disciplines and a year. The dingbat carries this project's real
+              position in the archive, so the row is literally the same row.
+              "Next project" is still announced via the section and link
+              aria-labels, so nothing is lost by dropping the word.
+            */}
+            <Dingbat n={nextIndex + 1} className="artifact-index-num" />
             <span className="artifact-index-client">{next.client}</span>
-            <span className="artifact-index-meta">{next.disciplines.join(' · ')}</span>
-            <span className="artifact-index-meta artifact-index-year">{next.year}</span>
+            <CategoryCluster items={next.disciplines} />
           </Link>
         </section>
       </article>
