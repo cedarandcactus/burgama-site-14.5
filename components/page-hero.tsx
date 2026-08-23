@@ -5,30 +5,37 @@ import { Reveal } from '@/components/reveal'
 /**
  * The interior-page hero, built from the two-column reference spread.
  *
- * Left column runs top to bottom: dot mark, caps labels, body copy, then an
- * oversized wordmark on the floor. Right column is one ink panel holding the
- * artifact, contained rather than cropped.
+ * Left column runs top to bottom: dot mark, body copy, then an oversized
+ * wordmark on the floor. Right column is one ink panel holding the artifact,
+ * contained rather than cropped.
+ *
+ * There is deliberately NO eyebrow or label above the wordmark. Per the
+ * typography system the page carries only display, body, and small utility
+ * text that is functionally necessary — and a caps "Studio" label sitting
+ * above a giant "Studio" wordmark is the redundant subtitle that rule names.
+ * The page title lives in one place: the wordmark.
  *
  * Every interior page uses this — /work, /studio, /contact and each case
  * study. The homepage keeps its own poster hero.
  */
 export function PageHero({
-  eyebrow,
-  label,
   wordmark,
   intro = [],
   artifactId,
   panel,
   headingLevel: Heading = 'h1',
 }: {
-  /** Small caps label, first line. */
-  eyebrow: string
-  /** Small caps label, second line — usually the page or client name. */
-  label: string
   /** The large display word. Set as the page heading. */
   wordmark: string
-  /** Paragraphs of small caps copy, set above the wordmark. */
+  /** Paragraphs of body copy, set above the wordmark. */
   intro?: string[]
+  /**
+   * Set `true` when `intro` is a short display tagline rather than prose.
+   * Project intros are two-line statements ("One workforce. / Every side of
+   * the work.") — setting those as tiny tracked caps read as a caption, not
+   * as the line the project is about.
+   */
+  introAsTagline?: boolean
   /** Artifact registry id for the panel. Ignored when `panel` is given. */
   artifactId?: string
   /** Custom panel content, for pages whose hero media is not an artifact. */
@@ -43,11 +50,6 @@ export function PageHero({
           <span />
           <span />
           <span />
-        </div>
-
-        <div className="spread-labels">
-          <p className="poster-label">{eyebrow}</p>
-          <p className="poster-label">{label}</p>
         </div>
 
         {intro.length > 0 ? (

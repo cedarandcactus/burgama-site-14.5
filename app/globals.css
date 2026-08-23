@@ -410,39 +410,6 @@
   color: var(--ink-soft);
 }
 
-/*
-  Rotated marginalia. Absolutely positioned against the poster, hidden below
-  the width where there is no margin to put it in.
-*/
-.poster-margin {
-  display: none;
-}
-
-@media (min-width: 1180px) {
-  .poster-margin {
-    position: absolute;
-    top: 50%;
-    display: block;
-    font-size: 0.5625rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: color-mix(in srgb, var(--ink) 45%, transparent);
-  }
-
-  .poster-margin-left {
-    left: 0;
-    transform: translateY(-50%) rotate(180deg);
-    writing-mode: vertical-rl;
-  }
-
-  .poster-margin-right {
-    right: 0;
-    transform: translateY(-50%);
-    writing-mode: vertical-rl;
-  }
-}
-
 /* Vertical rhythm between the homepage's full-width bands. */
 .page-artifact {
   display: flex;
@@ -513,6 +480,14 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr);
     align-items: stretch;
   }
+
+  /*
+    Matches `.spread-panel`'s min-height so the wordmark's `margin-top: auto`
+    always has a floor to sit on, whether the intro copy is two lines or ten.
+  */
+  .spread-left {
+    min-height: clamp(14rem, 42vw, 31rem);
+  }
 }
 
 .spread-left {
@@ -534,25 +509,29 @@
   background-color: var(--ink);
 }
 
-.spread-labels {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  /* The distance from the dots down to here is the reference's empty half. */
-  margin-top: clamp(2.5rem, 10vw, 9rem);
-}
-
+/*
+  The copy now owns the drop from the dot mark, which the removed caps labels
+  used to provide. That gap IS the reference composition — the empty upper
+  left is what lets the bottom-weighted wordmark land — so it has to live on
+  whatever comes first, not on labels that no longer exist.
+*/
 .spread-copy {
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
-  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  margin-top: clamp(2.5rem, 10vw, 9rem);
   max-width: 52ch;
 }
 
 /*
   The wordmark — the largest thing on the page. Extended face, very tight
   tracking, bottom-anchored so the eye falls from empty space into it.
+
+  `margin-top: auto` only pushes it down when the column is SHORTER than the
+  panel. A case study whose intro is a two-line tagline left the left column
+  short enough that the wordmark floated mid-column instead of sitting on the
+  floor, so the row needs a floor of its own: the left column is given the
+  panel's minimum height at the two-column breakpoint.
 */
 .spread-wordmark {
   margin-top: auto;
@@ -840,6 +819,15 @@
   font-size: 0.875rem;
   line-height: 1.7;
   color: var(--ink-soft);
+}
+
+/*
+  A `.case-module` whose heading was removed has only one child, which would
+  otherwise sit in the narrow label column. Collapsing to a single column
+  moves the prose into the main measure.
+*/
+.case-module > .case-module-body:only-child {
+  grid-column: 1 / -1;
 }
 
 /*

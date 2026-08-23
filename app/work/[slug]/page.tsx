@@ -53,12 +53,11 @@ export default async function ProjectPage({
     <>
       {/*
         The case study opens on the same spread as every other interior page:
-        client and year as labels, the intro copy in small caps, the project
-        name as the wordmark, and the hero media contained in the ink panel.
+        the intro copy, the project name as the wordmark, and the hero media
+        contained in the ink panel. Client and year are NOT repeated as
+        labels here — they are already stated as rows in the spec list below.
       */}
       <PageHero
-        eyebrow={`Burgama — ${project.client}`}
-        label={project.year}
         wordmark={project.title}
         intro={project.introCopy}
         panel={<MediaFrame item={project.heroMedia} />}
@@ -67,11 +66,9 @@ export default async function ProjectPage({
       {/* `case-lead` trims the section's own nav clearance — the spread above
           already provides it. */}
       <article className="wide case case-lead">
-        <Reveal as="section" aria-label="Summary" className="case-module">
-          <h2 className="case-module-title">Summary</h2>
-          <div className="case-module-body">
-            <p>{project.summary}</p>
-          </div>
+        {/* The summary is a paragraph, not a titled section. */}
+        <Reveal as="section" aria-label="Summary" className="case-module-body">
+          <p>{project.summary}</p>
         </Reveal>
 
         <Reveal as="section" aria-label="Project information" className="case-spec">

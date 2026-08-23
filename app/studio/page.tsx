@@ -73,8 +73,6 @@ export default function StudioPage() {
   return (
     <>
       <PageHero
-        eyebrow="Burgama — Independent studio"
-        label="Studio"
         wordmark="Studio"
         artifactId="studio-hero"
         intro={[
@@ -95,22 +93,13 @@ export default function StudioPage() {
       </section>
 
       <div className="wide case">
-        <section aria-label="Elsewhere" className="case-module">
-          <h2 className="case-module-title">Elsewhere</h2>
-          <div className="case-module-body">
-            <p>
-              <Link href="/work">Selected work</Link> ·{' '}
-              <Link href="/contact">Start a project</Link>
-            </p>
-          </div>
-        </section>
-
         {/*
-          The anchor id sits on this plain section, NOT on the Reveal inside it.
-          Reveal starts its child translated down, so the browser scrolled to
-          that pre-animation position and the element then settled upward,
-          leaving the heading above the viewport. An untransformed target keeps
-          /studio#capabilities landing correctly.
+          Capabilities and Approach keep their headings: both are navigation
+          targets (/studio#capabilities, /studio#approach) linked from the nav
+          and footer, so the heading is functional, not decorative. The
+          anchor id sits on the plain section rather than the Reveal — Reveal
+          starts its child translated down, so scrolling landed on the
+          pre-animation position and the heading settled above the viewport.
         */}
         <section
           id="capabilities"
@@ -150,6 +139,14 @@ export default function StudioPage() {
               ))}
             </div>
           </Reveal>
+        </section>
+
+        {/* Two links need no "Elsewhere" label above them. */}
+        <section aria-label="Elsewhere" className="case-module-body">
+          <p>
+            <Link href="/work">Selected work</Link> ·{' '}
+            <Link href="/contact">Start a project</Link>
+          </p>
         </section>
       </div>
 

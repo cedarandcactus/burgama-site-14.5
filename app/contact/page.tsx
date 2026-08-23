@@ -26,8 +26,6 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Burgama — Start a project"
-        label="Contact"
         wordmark="Contact"
         artifactId="contact-hero"
         intro={[
@@ -37,15 +35,13 @@ export default function ContactPage() {
       />
 
       <div className="wide case">
-        <section aria-label="Email the studio" className="case-module">
-          <h2 className="case-module-title">Write to us</h2>
-          <div className="case-module-body">
-            <LiquidEmail />
-            <p>
-              One conversation, not a form funnel. Write with as much or as little as you
-              have — we will reply with a straight answer about fit.
-            </p>
-          </div>
+        {/*
+          No "Write to us" label: the email address is the largest thing in
+          this section and states its own purpose. The explanatory sentence
+          that sat under it is gone too — the hero copy already says it.
+        */}
+        <section aria-label="Email the studio">
+          <LiquidEmail />
         </section>
 
         <Reveal as="section" aria-label="Location" className="case-spec">
@@ -59,6 +55,11 @@ export default function ContactPage() {
           </div>
         </Reveal>
 
+        {/*
+          This heading STAYS. "What you are making / Where it needs to go /
+          Timing…" is a list of fragments that means nothing without it —
+          it carries information rather than labelling a section.
+        */}
         <Reveal as="section" aria-labelledby="include-title" className="case-module">
           <h2 id="include-title" className="case-module-title">
             Useful to include

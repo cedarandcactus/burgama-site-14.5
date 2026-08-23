@@ -34,8 +34,6 @@ export default function WorkPage() {
   return (
     <>
       <PageHero
-        eyebrow="Burgama — Selected work"
-        label="Work"
         wordmark="Work"
         artifactId="work-hero"
         intro={[
@@ -44,6 +42,12 @@ export default function WorkPage() {
         ]}
       />
 
+      {/*
+        The four discipline titles ARE the content here — each is a real
+        heading with its own copy, not a label decorating a section. So the
+        row carries no "Disciplines" title above it; that would be the
+        section label the typography system rules out.
+      */}
       <section aria-label="Disciplines" className="wide">
         <div className="page-hero-columns">
           {DISCIPLINES.map((item) => (

@@ -61,9 +61,17 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
       {modules.map((module, index) => {
         switch (module.type) {
           case 'text':
+            /*
+              An untitled text module renders as prose with NO heading. It
+              previously emitted an empty `<h2>`, which reserved the label
+              column and left an unexplained gap beside the paragraph — a
+              label existing only because other sections have one.
+            */
             return (
               <Reveal key={index} as="section" className="case-module">
-                <h2 className="case-module-title">{module.title ?? ''}</h2>
+                {module.title ? (
+                  <h2 className="case-module-title">{module.title}</h2>
+                ) : null}
                 <div className="case-module-body">
                   {module.body.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>

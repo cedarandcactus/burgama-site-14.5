@@ -28,20 +28,18 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
           The artifact stage. The title sits over the object rather than
           above it — in the reference the type is carved out of the stone.
         */}
+        {/*
+          The rotated marginalia that used to flank the artifact is gone.
+          "Artifact 01 — awaiting asset" was build scaffolding, and the
+          discipline list is already in the masthead and the footer — both
+          were decorative metadata rather than information.
+        */}
         <div className="poster-stage">
-          <p className="poster-margin poster-margin-left">
-            Artifact 01 — awaiting asset
-          </p>
-
           <ArtifactSlot id="home-hero" />
 
           <h1 id="home-title" className="poster-title poster-title-over">
             Burgama
           </h1>
-
-          <p className="poster-margin poster-margin-right">
-            Brand systems · Digital · Production
-          </p>
         </div>
 
         <Reveal>
@@ -68,13 +66,17 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
         <ArtifactSlot id="home-motion" />
       </Reveal>
 
-      {/* The index: client, disciplines, year — edge to edge. */}
+      {/*
+        The index: client, disciplines, year — edge to edge. The redundant
+        "Index" label opposite the heading is gone; one heading names the
+        section, and a ruled list of numbered projects is self-evidently an
+        index without being told so twice.
+      */}
       <section className="wide" aria-labelledby="home-work-title">
         <div className="poster-masthead">
           <h2 id="home-work-title" className="poster-label">
             Selected work
           </h2>
-          <p className="poster-label">Index</p>
         </div>
 
         <ul className="artifact-index">
