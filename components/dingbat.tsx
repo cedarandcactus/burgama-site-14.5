@@ -15,10 +15,23 @@
 const CIRCLED_ONE = 0x2460
 const CIRCLED_MAX = 20
 
+/*
+ * U+FE0E (VARIATION SELECTOR-15) pins the glyph to its TEXT presentation.
+ * Several environments render these as colour emoji instead, which paint
+ * their own palette and ignore the CSS `color`, silently introducing a third
+ * colour family. Measured in this sandbox on the footer's U+2733: it drew
+ * green while its computed colour was correctly periwinkle.
+ *
+ * Applied here rather than in CSS because `font-variant-emoji` is not yet
+ * supported everywhere. It is appended only to the GLYPH branch — a plain
+ * numeral past the circled range has no emoji form and must stay untouched.
+ */
+const TEXT_PRESENTATION = '\uFE0E'
+
 export function dingbat(n: number): string {
   if (!Number.isInteger(n) || n < 1) return ''
   if (n > CIRCLED_MAX) return String(n)
-  return String.fromCodePoint(CIRCLED_ONE + n - 1)
+  return String.fromCodePoint(CIRCLED_ONE + n - 1) + TEXT_PRESENTATION
 }
 
 /**

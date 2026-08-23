@@ -47,8 +47,28 @@ export function SiteFooter() {
           */}
           <p className="footer-invite">
             Have something worth building?{' '}
+            {/*
+              A PLAIN ASTERISK, deliberately — not U+2733 EIGHT SPOKED
+              ASTERISK and not U+2217 ASTERISK OPERATOR.
+
+              U+2733 has an emoji presentation and this engine resolved it to
+              the colour-emoji font, drawing GREEN while the computed `color`
+              was correctly periwinkle — quietly adding a third colour
+              family. U+FE0E did not override it (identical 50px advance with
+              and without the selector).
+
+              U+2217 removed the green but rendered as a broken blob: the
+              brand face doesn't ship it, so it fell back to tofu. Canvas
+              measurement can't distinguish "has glyph" from "tofu of the
+              same advance", which is exactly how that slipped through — it
+              had to be caught by looking at the screenshot.
+
+              `*` is in every font, is unambiguously monochrome text, and
+              obeys `color`. `--font-sans` on `.footer-ding` keeps it out of
+              any emoji fallback.
+            */}
             <span aria-hidden="true" className="footer-ding">
-              ✳
+              *
             </span>
           </p>
 
@@ -98,7 +118,7 @@ export function SiteFooter() {
           <p className="footer-note">
             Independent studio{' '}
             <span aria-hidden="true" className="footer-ding is-small">
-              ✳
+              *
             </span>
           </p>
         </div>

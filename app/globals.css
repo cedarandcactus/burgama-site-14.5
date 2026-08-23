@@ -1301,11 +1301,24 @@
   --btn-chip-w: 2.5rem;
 }
 
-/* The long one — a full-measure control that anchors a composition. */
+/*
+  The long one — a full-measure control that anchors a composition.
+
+  The label column is `1fr` so the extra width lands in the label rather
+  than in the fixed seam/chip columns. (The shape pieces are absolutely
+  positioned against the element's right edge, so they track it regardless;
+  this keeps the LABEL's own box honest at full width.)
+
+  `--btn-chip-w` is deliberately left at the default. Widening it here to
+  4rem pulled `.btn-chip` further left than `.btn-chip-tongue` — which is
+  only `--btn-swx * 2` wide — could reach, so the tongue no longer spanned
+  the gap and the joint read as two detached blocks. Chip width and tongue
+  width are coupled; changing one without the other breaks the seam.
+*/
 .btn--long {
   --action-button-height: 3.75rem;
   --action-button-padding-x: 2rem;
-  --btn-chip-w: 4rem;
+  grid-template-columns: 1fr var(--btn-seamx) var(--btn-chip-w);
   width: 100%;
 }
 
@@ -2246,7 +2259,15 @@ a.action-quiet:hover .action-arrow {
   --nav-w-closed: 15.5rem;
   --nav-h-closed: 4rem;
   --nav-w-open: 30rem;
-  --nav-h-open: 27.5rem;
+  /*
+    Measured against the real content rather than guessed: head 64 +
+    cluster 143 + CTA 52 + padding/gap 44 = 303px. The first value here was
+    27.5rem (440px), which left ~137px of empty frosted panel hanging below
+    the CTA. Since the height must be a concrete number to animate, it has
+    to be maintained against the content — if a destination is added to the
+    cluster, this grows by one row (4.25rem + 7px).
+  */
+  --nav-h-open: 19rem;
   transition:
     width var(--dur-med) var(--ease-module),
     height var(--dur-med) var(--ease-module);
@@ -2255,6 +2276,36 @@ a.action-quiet:hover .action-arrow {
 @media (min-width: 900px) {
   .nav-module {
     display: flex;
+  }
+}
+
+/*
+  CHROME CLEARANCE
+
+  The module is `position: fixed`, whereas the header it replaced was
+  `sticky` and so occupied flow space. Without replacing that space the
+  first line of every page rendered underneath the nav — measured on the
+  homepage with the intro at y=44 behind a module occupying y=18–82.
+
+  Content is still ALLOWED to pass behind the module while scrolling; that
+  is the point of a frosted floating object and what the adaptive tint
+  reacts to. This only guarantees each page STARTS clear of it, so nothing
+  is ever unreadable at rest.
+*/
+@media (min-width: 900px) {
+  #main {
+    padding-top: calc(var(--nav-h-closed, 4rem) + clamp(2rem, 5vw, 4.5rem));
+  }
+}
+
+/*
+  On mobile the console sits at the BOTTOM, so no top clearance is needed —
+  but the page still wants air above its first line rather than starting
+  hard against the viewport edge.
+*/
+@media (max-width: 899px) {
+  #main {
+    padding-top: clamp(1.5rem, 6vw, 2.5rem);
   }
 }
 
@@ -3117,11 +3168,45 @@ a.action-quiet:hover .action-arrow {
   Dingbats stay TYPOGRAPHIC: an inline character in the text flow, sized
   relative to its line, never boxed or turned into an icon.
 */
+/*
+  DINGBAT TEXT PRESENTATION
+
+  U+2733 and the circled numerals have BOTH a text and an emoji presentation.
+  Left to the browser, the emoji form wins in several environments — measured
+  here as a green glyph while the computed `color` was correctly
+  rgb(166,171,220), because a colour-emoji font paints its own palette and
+  ignores `color` entirely. That silently introduces a third colour family
+  and breaks the navy/periwinkle rule.
+
+  `font-variant-emoji: text` is the modern control; the explicit font stack
+  is the fallback for engines that don't support it yet, and deliberately
+  lists no emoji font so the monochrome glyph is chosen.
+*/
+.footer-ding,
+.artifact-index-num,
+.hero-count {
+  font-variant-emoji: text;
+  font-family: var(--font-sans);
+}
+
+/*
+  A plain `*` already sits high in its em box — near cap height rather than
+  centred — so it needs a NEGATIVE shift to pull it down to optical centre.
+  The previous +0.28em was tuned for U+2733, a centred glyph, and left the
+  asterisk floating above the line.
+*/
 .footer-ding {
-  display: inline-block;
-  font-size: 0.62em;
-  vertical-align: 0.28em;
+  vertical-align: -0.06em;
   color: var(--ink-soft);
+  /* Larger than the old 0.62em: an asterisk draws much smaller than an
+     eight-spoked dingbat at the same font-size. */
+  font-size: 0.8em;
+  display: inline-block;
+}
+
+.footer-ding.is-small {
+  vertical-align: -0.02em;
+  font-size: 1em;
 }
 
 .footer-ding.is-small {
