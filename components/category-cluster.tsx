@@ -5,21 +5,23 @@
  * Replaces the `Brand · Digital · Motion` metadata line. The global rules
  * prohibit that dot-joined tracked list as passive text under a title and say
  * that when those concepts must appear they use the category-button
- * vocabulary. So this reuses the existing `.btn` primitives rather than
- * introducing a chip/tag/badge that does the same job.
+ * vocabulary — not a chip/tag/badge that does the same job.
  *
- * These are `.btn-cat`, the sanctioned smaller member of the action-button
- * family: same rectangular geometry, same flat construction, same
- * typography, less physical mass. It is a smaller BLOCK — the label stays at
- * reading size. The rules are explicit that categories are actual graphic
- * elements, not tiny metadata typography, so this must never be shrunk into
- * caps, and it must not become a separate badge/chip/tag design.
+ * These are `.cat`, the smaller relative of the action button: same flat
+ * construction, same rectangle, same typography, less physical mass. It is a
+ * smaller BLOCK — the label stays at reading size, and must never be shrunk
+ * into caps.
+ *
+ * `.cat` is deliberately NOT a `.btn` modifier. An action button is a label
+ * body joined to an arrow region; a category has no arrow region, so sharing
+ * the class would have meant either an arrow where none belongs or a `.btn`
+ * whose defining structure is switched off.
  *
  * Rendered as SPANS, not buttons or links. These clusters sit inside the
  * row-level `<a>` of an index, and nesting interactive elements inside an
  * anchor is invalid HTML — the row is the click target, these are its
- * labels. `.btn-muted` keeps them recessed so they never out-shout the
- * project name, which the rules want to hold the authority in a work index.
+ * labels. The recessed fill keeps them from out-shouting the project name,
+ * which the rules want to hold the authority in a work index.
  *
  * Gaps are deliberately small (rules: "tight clusters", "several little
  * objects collected into one graphic unit") and wrapping is allowed, so the
@@ -37,7 +39,7 @@ export function CategoryCluster({
   return (
     <span className={className ? `category-cluster ${className}` : 'category-cluster'}>
       {items.map((item) => (
-        <span key={item} className="btn btn-cat btn-muted">
+        <span key={item} className="cat">
           {item}
         </span>
       ))}

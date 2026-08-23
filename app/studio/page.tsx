@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { ModularButton } from '@/components/modular-button'
 import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
@@ -147,18 +147,11 @@ export default function StudioPage() {
           body scale read as stray underlined prose rather than actions.
 
           One group, so one tone and one geometry — no "primary vs secondary"
-          treatment. Both navigate away, so both carry the established arrow;
-          they differ only in label length, and therefore width.
+          treatment. They differ only in label length, and therefore width.
         */}
         <section aria-label="Elsewhere" className="contact-actions">
-          <Link href="/work" className="btn btn-muted">
-            See the work
-            <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/contact" className="btn btn-muted">
-            Start a project
-            <span aria-hidden="true">↗</span>
-          </Link>
+          <ModularButton href="/work">See the work</ModularButton>
+          <ModularButton href="/contact">Start a project</ModularButton>
         </section>
       </div>
 

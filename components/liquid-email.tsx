@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ModularButton } from '@/components/modular-button'
 
 const ADDRESS = 'hello@burgama.com'
 
@@ -33,25 +34,19 @@ export function LiquidEmail() {
       </a>
 
       {/*
-        Two action buttons in one group, so per the button-system rules they
-        share ONE tone and ONE geometry — the earlier version made "Start a
-        project" a larger, paler "primary" beside a recessed secondary, which
-        is exactly the per-button differentiation the rules disallow. They now
-        differ only in label, and therefore in width.
+        Two action buttons in one group, so they share ONE tone and ONE
+        geometry and differ only in label, and therefore in width.
 
-        Only the link carries the arrow: the glyph signals navigation, and
-        putting it on the copy button (which stays on the page) would make it
-        decoration. The copy button's label also swaps to "Copied", so its
-        width changes on click — correct behaviour for a content-driven width.
+        Both now carry the arrow region — it is structural to the button, not
+        a navigation signal, so the copy control gets it too. The copy label
+        swaps to "Copied", so its width changes on click, which is correct
+        behaviour for a content-driven width.
       */}
       <div className="contact-actions">
-        <button type="button" onClick={copyAddress} className="btn btn-muted">
+        <ModularButton onClick={copyAddress}>
           {copied ? 'Copied' : 'Copy address'}
-        </button>
-        <a href={`mailto:${ADDRESS}`} className="btn btn-muted">
-          Start a project
-          <span aria-hidden="true">↗</span>
-        </a>
+        </ModularButton>
+        <ModularButton href={`mailto:${ADDRESS}`}>Start a project</ModularButton>
       </div>
     </div>
   )

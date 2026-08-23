@@ -178,6 +178,50 @@
   --action-button-padding-x: 1.5rem;
 
   /*
+    ---- MODULAR FIELD GEOMETRY -------------------------------------
+
+    ONE set of numbers drives the notch language at every scale, so a
+    hero, a section and a button read as the same system. Do not invent
+    local curves — derive from these.
+
+    `--notch-curve-*` are the ELLIPTICAL radii of the shallow transition
+    where an edge steps up or down: x is long, y is short, which is what
+    keeps the curve shallow and architectural instead of a fat quarter
+    round. `--notch-break` is where along the edge the step happens.
+
+    Mobile is the primary surface here, so these are the small-screen
+    values and the desktop media query scales them UP. A 24px curve on a
+    331px-wide field would eat a tenth of the width.
+  */
+  --field-radius: 14px;
+  --field-gap: 10px;
+  --notch-break: 44%;
+  --notch-curve-x: 14px;
+  --notch-curve-y: 8px;
+  /* Tab overlap must exceed the step depth so the union never seams. */
+  --notch-tab-h: 48px;
+  /* Width of the inward recess carved into a top edge (footer). */
+  --notch-recess: 40%;
+
+  /*
+    ---- BUTTON SEAM (the micro scale of the same geometry) ----------
+
+    The action button is a label body joined to a distinct arrow region
+    by this same stepped, shallow-curved seam — the site's architecture
+    at control size. `--btn-seam` is the half-height where the joint
+    flips from one piece to the other; `--btn-seamx` is the total
+    horizontal room the joint needs.
+  */
+  --btn-step: 4px;
+  --btn-cap: 12px;
+  --btn-chip-w: 3.25rem;
+  --btn-gap: 5px;
+  --btn-swx: 14px;
+  --btn-swy: 9px;
+  --btn-seam: calc(var(--action-button-height) / 2);
+  --btn-seamx: calc(var(--btn-swx) * 2 + var(--btn-gap));
+
+  /*
     Category labels are the SMALLER member of the same family — same
     geometry, same flat construction, same typography, less physical mass.
     Not a badge/chip/tag system. The label stays at reading size; only the
@@ -915,11 +959,11 @@
    "Explore the archive" are not three sizes; they are one component holding
    three different strings.
 
-   This DELIBERATELY REPLACES the earlier `.btn-sm` / `.btn-wide` /
-   `.btn-big` set. Those were a legitimate reading of an earlier brief, but
-   the button-system rules are explicit that one shared height is the point,
-   so a "big fat primary" variant is exactly the kind of well-intentioned
-   improvement that breaks the system. Do not reintroduce them.
+   Size variants were removed for good: no `.btn-sm`, `.btn-wide` or
+   `.btn-big`. One shared height is the point, so a "big fat primary" is
+   exactly the well-intentioned improvement that breaks the system.
+   Categories live in `.cat`, which is a separate class, not a size of this
+   one — see the note there.
 
    GEOMETRY: fat, squat, substantial, flat, rectangular, only slightly
    rounded. Never a pill or capsule, never `rounded-full`. The height token
@@ -935,20 +979,37 @@
    periwinkle) as tonal steps. Never a third colour.
 ------------------------------------------------------------------ */
 
+/*
+  STRUCTURE (this is the part that changed): a button is no longer one
+  rectangle. It is a MAIN LABEL BODY joined to a DISTINCT ARROW REGION by the
+  same stepped, shallow-curved seam the fields use — the site's architecture
+  reproduced at control size. The seam flips at the half-height: the label
+  body owns the top of the joint, the arrow region owns the bottom.
+
+  The pieces are the same union-of-blocks technique as `.mfield`, so there is
+  one shape language, not two. Six pieces:
+
+    .btn-bar          the label plane
+    .btn-bar-tab      its top half, reaching toward the arrow region
+    .btn-bar-fil      fillet turning the bar's inside corner
+    .btn-chip-tongue  the arrow region's lower half, reaching back
+    .btn-chip-fil     fillet turning the chip's inside corner
+    .btn-chip         the arrow plane
+
+  Width is still content-driven and the height is still ONE global value —
+  the seam is fixed geometry, so a longer label only stretches the bar.
+*/
 .btn {
-  display: inline-flex;
+  position: relative;
+  /* Label sizes column 1; the seam and arrow region are fixed. */
+  display: inline-grid;
+  grid-template-columns: auto var(--btn-seamx) var(--btn-chip-w);
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  /* Content-driven width, one fixed height. */
   width: fit-content;
   min-height: var(--action-button-height);
   border: 0;
-  border-radius: var(--action-button-radius);
-  padding-inline: var(--action-button-padding-x);
-  /* Mid step of the ink family. */
-  background: var(--ink-mid);
-  color: var(--paper);
+  padding: 0;
+  background: none;
   font-family: var(--font-sans);
   font-size: var(--action-button-font-size);
   line-height: 1.25;
@@ -956,7 +1017,160 @@
   text-transform: none;
   text-decoration: none;
   cursor: pointer;
+  /*
+    Default tonal pair. Both roles are steps of the SAME periwinkle family
+    against navy, so the label/arrow split never introduces a third colour.
+  */
+  --btn-bar-bg: color-mix(in srgb, var(--ink) 26%, transparent);
+  --btn-bar-fg: var(--ink);
+  --btn-chip-bg: var(--ink);
+  --btn-chip-fg: var(--paper);
+}
+
+.btn-shape {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.btn-shape > i {
+  position: absolute;
+  display: block;
+}
+
+.btn-bar,
+.btn-bar-tab,
+.btn-bar-fil {
+  background: var(--btn-bar-bg);
+}
+
+.btn-chip,
+.btn-chip-tongue,
+.btn-chip-fil {
+  background: var(--btn-chip-bg);
+}
+
+.btn-bar {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: calc(var(--btn-chip-w) + var(--btn-seamx));
+  border-radius: var(--action-button-radius) var(--btn-step) var(--btn-step)
+    var(--action-button-radius);
+}
+
+/* Top half of the joint, belonging to the label body. */
+.btn-bar-tab {
+  top: 0;
+  left: 0;
+  height: calc(var(--btn-seam) + 0.5px);
+  right: calc(var(--btn-chip-w) + var(--btn-gap));
+  border-radius: var(--action-button-radius) var(--btn-step) var(--btn-swx) 0 /
+    var(--action-button-radius) var(--btn-step) var(--btn-swy) 0;
+}
+
+.btn-bar-fil {
+  top: var(--btn-seam);
+  right: calc(var(--btn-chip-w) + var(--btn-gap) + var(--btn-swx));
+  width: var(--btn-swx);
+  height: var(--btn-swy);
+  -webkit-mask: radial-gradient(
+    ellipse var(--btn-swx) var(--btn-swy) at 100% 100%,
+    #0000 98%,
+    #000 100%
+  );
+  mask: radial-gradient(
+    ellipse var(--btn-swx) var(--btn-swy) at 100% 100%,
+    #0000 98%,
+    #000 100%
+  );
+}
+
+/* Lower half of the joint, belonging to the arrow region. */
+.btn-chip-tongue {
+  right: calc(var(--btn-chip-w) - 0.5px);
+  top: calc(var(--btn-seam) + var(--btn-gap));
+  bottom: 0;
+  width: calc(var(--btn-swx) * 2 + 0.5px);
+  border-radius: calc(var(--btn-swx) - var(--btn-gap)) 0 0 var(--btn-step) /
+    calc(var(--btn-swy) - var(--btn-gap)) 0 0 var(--btn-step);
+}
+
+.btn-chip-fil {
+  right: var(--btn-chip-w);
+  top: calc(var(--btn-seam) - var(--btn-swy));
+  width: calc(var(--btn-swx) + var(--btn-gap));
+  height: calc(var(--btn-swy) + var(--btn-gap));
+  -webkit-mask: radial-gradient(
+    ellipse calc(var(--btn-swx) + var(--btn-gap))
+      calc(var(--btn-swy) + var(--btn-gap)) at 0 0,
+    #0000 98%,
+    #000 100%
+  );
+  mask: radial-gradient(
+    ellipse calc(var(--btn-swx) + var(--btn-gap))
+      calc(var(--btn-swy) + var(--btn-gap)) at 0 0,
+    #0000 98%,
+    #000 100%
+  );
+}
+
+.btn-chip {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: var(--btn-chip-w);
+  border-radius: var(--btn-step) var(--btn-cap) var(--btn-cap) 0;
+}
+
+/* ---- content sits above the shape ---- */
+
+/*
+  The label must clear the seam on its right. `.btn-bar` stops short of the
+  arrow region by `--btn-chip-w + --btn-seamx`, so the label needs padding on
+  BOTH sides: the normal inset on the left, and enough on the right to stay
+  off the joint. Without the right pad the text ran under the seam and
+  collided with the arrow plane.
+*/
+.btn-label {
+  position: relative;
+  z-index: 1;
+  grid-column: 1;
+  padding-left: var(--action-button-padding-x);
+  padding-right: calc(var(--action-button-padding-x) - var(--btn-gap));
+  color: var(--btn-bar-fg);
+  white-space: nowrap;
+}
+
+.btn-arrow {
+  position: relative;
+  z-index: 1;
+  grid-column: 3;
+  display: grid;
+  place-items: center;
+}
+
+.btn-arrow svg {
+  width: 60%;
+  height: 12px;
+  fill: none;
+  stroke: var(--btn-chip-fg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* Mechanical, controlled — the arrow travels, nothing bounces or scales. */
   transition: transform var(--dur-med) var(--ease-smooth);
+}
+
+.btn:hover .btn-arrow svg,
+.btn:focus-visible .btn-arrow svg {
+  transform: translateX(3px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: var(--action-button-radius);
 }
 
 /*
@@ -969,12 +1183,26 @@
 
   It is a smaller BLOCK, not smaller typography: the label holds at reading
   size and must never be shrunk into tracked caps.
+
+  Its own class rather than a `.btn` modifier, because a category has NO
+  arrow region — the seam and arrow region are what make an action button an
+  action button. Same flat construction, same rectangle, same typography,
+  smaller block. Not a badge, chip or tag language.
 */
-.btn-cat {
+.cat {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
   min-height: var(--category-height);
+  border: 0;
   border-radius: var(--category-radius);
   padding-inline: var(--category-padding-x);
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
+  color: var(--ink);
+  font-family: var(--font-sans);
   font-size: var(--category-font-size);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 /*
@@ -987,28 +1215,16 @@
   actions apart is not allowed. Tone varies by PAGE or by object type
   (action vs category), never button-by-button within a row.
 
-  The label is navy on the solid fills and periwinkle on the translucent
-  one: on a 26% fill over deep navy, a navy label would be unreadable.
-*/
-.btn-muted {
-  background: color-mix(in srgb, var(--ink) 26%, transparent);
-  color: var(--ink);
-}
-
-/*
-  The paler tonal treatment. Currently unused in markup and kept on purpose:
-  the rules allow a PAGE to give the button a different tonal treatment, so
-  this is the sanctioned way to do that. Apply it to every action button in a
-  composition at once — never to a single button to make it "the primary".
+  Tone now sets FOUR values, not two, because a button has two planes. The
+  label body and the arrow region must stay tonal steps of one family — that
+  contrast is what makes the arrow region legible as a separate plane
+  without reaching for a second colour.
 */
 .btn-strong {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.btn:hover,
-.btn:focus-visible {
-  transform: translateY(-1px);
+  --btn-bar-bg: var(--ink);
+  --btn-bar-fg: var(--paper);
+  --btn-chip-bg: var(--paper);
+  --btn-chip-fg: var(--ink);
 }
 
 /* The reference groups its controls in a row at the trailing edge. */
@@ -1393,8 +1609,8 @@
   on hover the cluster inverts to translucent paper with a paper label,
   keeping the same recessed relationship against the new background.
 */
-.artifact-index-row:hover .btn-muted,
-.artifact-index-row:focus-visible .btn-muted {
+.artifact-index-row:hover .cat,
+.artifact-index-row:focus-visible .cat {
   background: color-mix(in srgb, var(--paper) 20%, transparent);
   color: var(--paper);
 }
@@ -2578,4 +2794,222 @@ body:has(.lot-poster) > .site-nav {
 
 .lot-poster-ear-right {
   right: 0;
+}
+
+/* ==================================================================
+   MODULAR FIELD SYSTEM — notches, tabs, recesses
+
+   HOW THE SHAPE IS MADE. A notched field is not a clip-path and not an
+   SVG. It is the UNION of same-coloured rectangles plus small
+   mask-carved fillets:
+
+     .mfield        positioning context, owns the four corner radii
+     .mfield-body   the main plane, holds the content
+     .mfield-tab    a block that extends PAST the body's edge
+     .mfield-fil    an ellipse-masked square that turns the inside
+                    corner where tab meets body
+
+   Because every piece carries the same background, they read as one
+   continuous surface with a stepped edge. The fillet is the whole
+   trick: without it the tab meets the body at a hard right angle and
+   the result looks like two stacked boxes rather than one cut plane.
+
+   WHY NOT clip-path: the global rules forbid diagonals, and a
+   clip-path polygon can't hold the shallow ELLIPTICAL curves this
+   language depends on. `border-radius: x / y` can, natively.
+
+   Corner radii are driven per-variant through `--f-rt*` so a notched
+   corner can square off while the other three stay rounded.
+================================================================== */
+
+.mfield {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Default: a plain rounded field. Variants zero out specific corners. */
+  --f-rtl: var(--field-radius);
+  --f-rtr: var(--field-radius);
+  --f-rbr: var(--field-radius);
+  --f-rbl: var(--field-radius);
+  /* The surface colour, overridable per field to move through the palette. */
+  --f-face: var(--panel);
+}
+
+.mfield-body {
+  position: relative;
+  /* Sits above the tabs so content is never covered by a shape piece. */
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--f-rtl) var(--f-rtr) var(--f-rbr) var(--f-rbl);
+  background: var(--f-face);
+}
+
+.mfield-tab,
+.mfield-fil {
+  position: absolute;
+  background: var(--f-face);
+  pointer-events: none;
+}
+
+.mfield-tab {
+  height: var(--notch-tab-h);
+}
+
+.mfield-fil {
+  width: var(--notch-curve-x);
+  height: var(--notch-curve-y);
+}
+
+/*
+  Every variant reserves room for the step by padding the OUTER element,
+  which pushes the body inward and leaves the tab somewhere to live.
+*/
+.mfield--tab-top-left,
+.mfield--tab-top-right,
+.mfield--recess-top {
+  padding-top: calc(var(--notch-curve-y) * 2);
+}
+
+/* ---- outward tab, top edge, left portion ---- */
+.mfield--tab-top-left {
+  --f-rtl: 0;
+}
+
+.mfield--tab-top-left > .mfield-tab {
+  top: 0;
+  left: 0;
+  width: var(--notch-break);
+  /*
+    Long-x / short-y elliptical radii. The top-left keeps the field
+    radius; the top-right is where the edge steps down to the body.
+  */
+  border-radius: var(--field-radius) var(--notch-curve-x) 0 0 /
+    var(--field-radius) var(--notch-curve-y) 0 0;
+}
+
+.mfield--tab-top-left > .mfield-fil {
+  top: var(--notch-curve-y);
+  left: var(--notch-break);
+  /* Keeps only the material OUTSIDE the ellipse — a concave corner. */
+  -webkit-mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 100% 0,
+    #0000 98%,
+    #000 100%
+  );
+  mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 100% 0,
+    #0000 98%,
+    #000 100%
+  );
+}
+
+/* ---- outward tab, top edge, right portion (mirror) ---- */
+.mfield--tab-top-right {
+  --f-rtr: 0;
+}
+
+.mfield--tab-top-right > .mfield-tab {
+  top: 0;
+  right: 0;
+  left: var(--notch-break);
+  border-radius: var(--notch-curve-x) var(--field-radius) 0 0 /
+    var(--notch-curve-y) var(--field-radius) 0 0;
+}
+
+.mfield--tab-top-right > .mfield-fil {
+  top: var(--notch-curve-y);
+  right: calc(100% - var(--notch-break));
+  -webkit-mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 0 0,
+    #0000 98%,
+    #000 100%
+  );
+  mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 0 0,
+    #0000 98%,
+    #000 100%
+  );
+}
+
+/*
+  ---- INWARD recess, top edge, centred ----
+
+  The important variant, and the one the footer uses. Rather than
+  protruding, the edge is carved DOWN into the field: material stays high
+  on both shoulders and dips in the middle.
+
+  Built from the same vocabulary as the outward tabs — it is simply BOTH
+  shoulders present with a gap between them, so the "recess" is the
+  absence of tab. Same pieces, inverted reading.
+*/
+.mfield--recess-top {
+  --f-rtl: 0;
+  --f-rtr: 0;
+}
+
+.mfield--recess-top > .mfield-tab-l,
+.mfield--recess-top > .mfield-tab-r {
+  top: 0;
+  width: calc((100% - var(--notch-recess)) / 2);
+}
+
+.mfield--recess-top > .mfield-tab-l {
+  left: 0;
+  border-radius: var(--field-radius) var(--notch-curve-x) 0 0 /
+    var(--field-radius) var(--notch-curve-y) 0 0;
+}
+
+.mfield--recess-top > .mfield-tab-r {
+  right: 0;
+  border-radius: var(--notch-curve-x) var(--field-radius) 0 0 /
+    var(--notch-curve-y) var(--field-radius) 0 0;
+}
+
+.mfield--recess-top > .mfield-fil-l {
+  top: var(--notch-curve-y);
+  left: calc((100% - var(--notch-recess)) / 2);
+  -webkit-mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 100% 0,
+    #0000 98%,
+    #000 100%
+  );
+  mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 100% 0,
+    #0000 98%,
+    #000 100%
+  );
+}
+
+.mfield--recess-top > .mfield-fil-r {
+  top: var(--notch-curve-y);
+  right: calc((100% - var(--notch-recess)) / 2);
+  -webkit-mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 0 0,
+    #0000 98%,
+    #000 100%
+  );
+  mask: radial-gradient(
+    ellipse var(--notch-curve-x) var(--notch-curve-y) at 0 0,
+    #0000 98%,
+    #000 100%
+  );
+}
+
+/*
+  Desktop scales the geometry UP from the mobile baseline. The rules ask
+  for reduced notch width/depth on small screens, so the small values are
+  the tokens and this widens them — the opposite of shrinking a desktop
+  design down, and the reason the curve still reads at 331px.
+*/
+@media (min-width: 48rem) {
+  :root {
+    --field-radius: 20px;
+    --field-gap: 14px;
+    --notch-curve-x: 24px;
+    --notch-curve-y: 12px;
+    --notch-tab-h: 70px;
+    --btn-swx: 16px;
+    --btn-swy: 10px;
+  }
 }
