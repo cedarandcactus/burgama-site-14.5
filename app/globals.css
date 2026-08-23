@@ -306,10 +306,16 @@
   width: 100%;
 }
 
+/*
+  Captions are real sentences about the work, so they read at reading scale
+  and are set back by tone — not shrunk to 0.625rem tracked caps, which made
+  a description look like a filename.
+*/
 .artifact-caption {
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  text-transform: none;
   color: color-mix(in srgb, var(--ink) 52%, transparent);
 }
 
@@ -381,12 +387,19 @@
   border-bottom: 1px solid var(--rule);
 }
 
+/*
+  Was 0.6875rem tracked uppercase — an eyebrow label. Now the same muted
+  body-scale title treatment as `.case-module-title`, since it does the same
+  job (naming a section in language that can live on the page).
+*/
 .poster-label {
-  font-size: 0.6875rem;
-  line-height: 1.2;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink);
+  font-size: clamp(1.25rem, 2.1vw, 2.125rem);
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+  text-transform: none;
+  /* Titles are softened by tone, not size. */
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
 }
 
 .poster-label-mid {
@@ -809,13 +822,6 @@
   }
 }
 
-/* Small text keeps the mono face — the counterweight to the big prose. */
-.poster-label,
-.artifact-caption,
-.artifact-slug,
-.case-module-title,
-.case-spec-label,
-.case-spec-value,
 /*
   These columns hold REAL CONTENT — the four disciplines, each a heading with
   its own sentence of copy. They were being rendered as 10px tracked
@@ -824,10 +830,16 @@
   buried actual writing under a utility treatment.
 
   Now: sentence-case sans titles at reading scale, and body copy at a size
-  someone can actually read. Mono is reserved for genuine utility text
-  (spec labels and values), which is the contrast the system depends on.
-  This block previously overrode the sizes set earlier in the file — source
-  order was winning silently, so both declarations had to be reconciled here.
+  someone can actually read.
+
+  SCOPED TO THIS SELECTOR ONLY — and it must stay that way. This used to be a
+  seven-selector group that also caught `.poster-label`, `.artifact-caption`,
+  `.artifact-slug`, `.case-module-title`, `.case-spec-label` and
+  `.case-spec-value`, pinning them all to one size from further down the
+  file. That silently beat the sizes those classes set for themselves above:
+  the section titles were computing to 17px instead of the ~34px their own
+  clamp asked for, which the browser caught and reading the CSS did not.
+  Each of those classes now owns its own size; do not re-group them here.
 */
 .page-hero-column-title {
   font-family: var(--font-sans);
@@ -845,80 +857,102 @@
 }
 
 /* ------------------------------------------------------------------
-   Pill buttons — three sizes, from the reference
+   Buttons — ONE rectangular family, three sizes
 
-   Fully rounded (`border-radius: 999px`), a deliberate exception to the
-   site's uniform 10px corner: the reference's controls are pills, and the
-   global rules call for fully rounded buttons while also insisting that
-   button geometry stays on buttons — so no image, panel or section inherits
-   this radius.
+   GEOMETRY: rectangular with only slight corner rounding
+   (`var(--radius-module)`, 10px). NOT pills, capsules or fully rounded.
+   This replaces the earlier `border-radius: 999px` pill treatment — the
+   buttons+titles rules are explicit that the size changes and the geometry
+   does not, so every size below shares this one radius. Renamed from
+   `.pill` to `.btn` deliberately: leaving "pill" on a rectangle would have
+   the codebase describing the opposite of what it renders.
 
-   Periwinkle fill with a navy label — the same inversion the site already
-   uses for hover, so a control reads as part of the system rather than as a
-   new colour.
+   TYPOGRAPHY: buttons are NOT a separate small UI layer. Labels sit at the
+   same scale as adjacent primary text, regular weight, sentence case, no
+   tracking, never uppercase metadata. That is why even `.btn-sm` has a 1rem
+   floor rather than the 0.9375rem it used to carry.
 
-   SIZE classes are `.pill-sm` / default / `.pill-wide`, differing in padding
-   only — same radius, same family. TONE classes are separate, below.
+   Periwinkle fill with a navy label — the inversion the site already uses
+   for hover, so a control reads as part of the system, not a new colour.
+
+   SIZE classes (`.btn-sm` / default / `.btn-wide` / `.btn-big`) change
+   padding and label size only. TONE classes are separate, below.
 ------------------------------------------------------------------ */
 
-.pill {
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border: 0;
-  border-radius: 999px;
-  padding: 0.6rem 1.35rem;
-  /* Mid step of the ink family — the reference's middle "Button" tone. The
-     palest step is `.pill-strong`, the recessed one `.pill-muted`. */
+  border-radius: var(--radius-module);
+  padding: 0.7rem 1.35rem;
+  /* Mid step of the ink family. The palest is `.btn-strong`, the recessed
+     one `.btn-muted`. */
   background: var(--ink-mid);
   color: var(--paper);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.01em;
+  text-transform: none;
   cursor: pointer;
   transition: transform var(--dur-med) var(--ease-smooth);
 }
 
-.pill-sm {
-  padding: 0.45rem 1rem;
-  font-size: 0.9375rem;
+/*
+  Category size — a smaller physical BLOCK, not smaller typography. The
+  padding tightens; the label only drops to 1rem, which is still reading
+  size. Shrinking this into 0.75rem tracked caps is the exact "categories as
+  tiny metadata" failure the rules prohibit.
+*/
+.btn-sm {
+  padding: 0.5rem 0.9rem;
+  font-size: 1rem;
 }
 
 /* Wide is extra horizontal padding only — same height, same radius. */
-.pill-wide {
+.btn-wide {
   padding-inline: 2.25rem;
+}
+
+/*
+  The BIG FAT primary action: same rectangle, same slight radius, much more
+  mass. Substantial height and a noticeably large label — the label grows
+  with the block rather than staying at UI size inside a big shape.
+*/
+.btn-big {
+  padding: clamp(1rem, 2.2vw, 1.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 /*
   TONE IS SEPARATE FROM SIZE — this matters.
 
-  The reference shows its three controls in three different tones, but the
-  global rules say the wide variant exists only to carry longer labels. So
-  tone must not ride on `.pill-wide`, or "long label" and "more emphasis"
-  become the same decision and the vocabulary collapses. Size classes
-  (`.pill-sm` / `.pill-wide`) change geometry only; these change tone only,
+  The reference shows three controls in three tones, but the wide variant
+  exists only to carry longer labels. If tone rode on `.btn-wide`, "long
+  label" and "more emphasis" would become one decision and the vocabulary
+  would collapse. Size classes change geometry only; these change tone only,
   and any tone composes with any size.
 
-  All three are tonal steps of the SAME periwinkle family, which is what
-  keeps the cluster inside the two-colour rule. The label is navy on the two
-  solid fills and periwinkle on the translucent one — on a 26% fill over a
-  deep navy ground, a navy label would be unreadable.
+  All are tonal steps of the SAME periwinkle family, keeping the cluster
+  inside the two-colour rule. The label is navy on the solid fills and
+  periwinkle on the translucent one — on a 26% fill over deep navy, a navy
+  label would be unreadable.
 */
-.pill-muted {
+.btn-muted {
   background: color-mix(in srgb, var(--ink) 26%, transparent);
   color: var(--ink);
 }
 
 /* The palest step. For the one control that should carry the most weight. */
-.pill-strong {
+.btn-strong {
   background: var(--ink);
   color: var(--paper);
 }
 
-.pill:hover,
-.pill:focus-visible {
+.btn:hover,
+.btn:focus-visible {
   transform: translateY(-1px);
 }
 
@@ -932,12 +966,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pill {
+  .btn {
     transition: none;
   }
 
-  .pill:hover,
-  .pill:focus-visible {
+  .btn:hover,
+  .btn:focus-visible {
     transform: none;
   }
 }
@@ -1016,37 +1050,60 @@
   }
 }
 
+/*
+  Spec rows. The label was 0.625rem tracked caps against a 0.875rem value —
+  two separate tiny UI sizes. Both now sit at reading scale, and the label is
+  distinguished by TONE alone, which is the hierarchy the rules ask for
+  (opacity/position, never shrinking the type).
+*/
 .case-spec-label {
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--ink) 52%, transparent);
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  /*
+    Measured in the browser: at equal size, a 58% label against a 100% value
+    was too close to read as a label — the row lost its structure. Since size
+    can no longer carry the distinction, tone has to do all of it, so this
+    steps down further than it otherwise would.
+  */
+  color: color-mix(in srgb, var(--ink) 42%, transparent);
 }
 
 .case-spec-value {
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
   color: var(--ink);
 }
 
-/* Body sections: a tiny caps label in the margin, prose in the main column. */
+/*
+  Body sections. Previously a 14rem margin column holding a tiny caps label
+  beside the prose. The title is now at body scale, so a narrow margin column
+  can no longer hold it — and the rules want the title integrated into the
+  composition rather than parked in the gutter as a label. Single column,
+  title stacked above its prose.
+*/
 .case-module {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(0.75rem, 2vw, 2rem);
+  gap: clamp(0.5rem, 1.2vw, 1rem);
 }
 
-@media (min-width: 860px) {
-  .case-module {
-    grid-template-columns: 14rem minmax(0, 1fr);
-  }
-}
-
+/*
+  TITLES: same general scale as the primary text they sit with, softened by
+  tone rather than shrunk. This was 0.6875rem tracked uppercase — a separate
+  tiny heading layer, which the rules prohibit outright. It now reads as
+  muted editorial text one step under the body it introduces.
+*/
 .case-module-title {
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: clamp(1.25rem, 2.1vw, 2.125rem);
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+  text-transform: none;
   color: color-mix(in srgb, var(--ink) 55%, transparent);
+  text-wrap: pretty;
 }
 
 /*
@@ -1275,14 +1332,14 @@
 }
 
 /*
-  Index rows fill with ink on hover and flip their text to paper. The pills
-  inside are translucent ink with an ink label, which on an ink-filled row
-  would be ink-on-ink — invisible. Measured and confirmed, so on hover the
-  cluster inverts to translucent paper with a paper label, keeping the same
-  recessed relationship against the new background.
+  Index rows fill with ink on hover and flip their text to paper. The
+  category buttons inside are translucent ink with an ink label, which on an
+  ink-filled row would be ink-on-ink — invisible. Measured and confirmed, so
+  on hover the cluster inverts to translucent paper with a paper label,
+  keeping the same recessed relationship against the new background.
 */
-.artifact-index-row:hover .pill-muted,
-.artifact-index-row:focus-visible .pill-muted {
+.artifact-index-row:hover .btn-muted,
+.artifact-index-row:focus-visible .btn-muted {
   background: color-mix(in srgb, var(--paper) 20%, transparent);
   color: var(--paper);
 }
@@ -1551,12 +1608,16 @@ a.action-quiet:hover .action-arrow {
   font-weight: 400;
 }
 
-/* Small caps label, used for column headings and meta rows. */
+/*
+  Was a small tracked-caps label utility. The rules forbid a separate tiny UI
+  typography layer, so it is now simply reading-scale sans. Kept as a utility
+  because the skip link and some legacy modules still reference it.
+*/
 @utility t-ui {
-  font-size: 0.75rem;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 1rem;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  text-transform: none;
   font-weight: 400;
 }
 
@@ -2283,9 +2344,11 @@ a.footer-link:focus-visible {
 }
 
 .footer-note {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  /* Reading scale, set back by tone — was 0.75rem tracked caps. */
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  text-transform: none;
 }
 
 .premise-bridge {

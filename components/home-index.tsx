@@ -56,8 +56,13 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
       */}
       <section className="wide" aria-labelledby="home-work-title">
         <div className="poster-masthead">
+          {/*
+            "Selected work" is named in the rules as a phrase to avoid. This
+            is descriptive language that can live on the page as text rather
+            than sit above it as a label.
+          */}
           <h2 id="home-work-title" className="poster-label">
-            Selected work
+            A selection of work across different disciplines
           </h2>
         </div>
 

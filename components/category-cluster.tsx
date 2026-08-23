@@ -1,16 +1,21 @@
 /**
- * Category cluster — disciplines as a tight bunch of small pills.
+ * Category cluster — disciplines as a tight bunch of small rectangular
+ * category buttons.
  *
  * Replaces the `Brand · Digital · Motion` metadata line. The global rules
  * prohibit that dot-joined tracked list as passive text under a title and say
  * that when those concepts must appear they use the category-button
- * vocabulary. So this reuses the existing `.pill` primitives rather than
+ * vocabulary. So this reuses the existing `.btn` primitives rather than
  * introducing a chip/tag/badge that does the same job.
+ *
+ * These are `.btn-sm`, which is a smaller BLOCK — the label stays at reading
+ * size. The rules are explicit that categories are actual graphic elements,
+ * not tiny metadata typography, so this must never be shrunk into caps.
  *
  * Rendered as SPANS, not buttons or links. These clusters sit inside the
  * row-level `<a>` of an index, and nesting interactive elements inside an
- * anchor is invalid HTML — the row is the click target, the pills are its
- * labels. `.pill-muted` keeps them recessed so they never out-shout the
+ * anchor is invalid HTML — the row is the click target, these are its
+ * labels. `.btn-muted` keeps them recessed so they never out-shout the
  * project name, which the rules want to hold the authority in a work index.
  *
  * Gaps are deliberately small (rules: "tight clusters", "several little
@@ -29,7 +34,7 @@ export function CategoryCluster({
   return (
     <span className={className ? `category-cluster ${className}` : 'category-cluster'}>
       {items.map((item) => (
-        <span key={item} className="pill pill-sm pill-muted">
+        <span key={item} className="btn btn-sm btn-muted">
           {item}
         </span>
       ))}

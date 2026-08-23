@@ -88,7 +88,7 @@ export default async function ProjectPage({
         <ProjectModules modules={project.contentModules} />
 
         <Reveal as="section" aria-label="Outcome" className="case-module">
-          <h2 className="case-module-title">Outcome</h2>
+          <h2 className="case-module-title">What changed once the work was live</h2>
           <div className="case-module-body">
             {project.outcomes.map((outcome) => (
               <p key={outcome}>{outcome}</p>
@@ -97,7 +97,7 @@ export default async function ProjectPage({
         </Reveal>
 
         <Reveal as="section" aria-label="Credits" className="case-module">
-          <h2 className="case-module-title">Credits</h2>
+          <h2 className="case-module-title">The people who made it</h2>
           <div className="case-module-body">
             {project.credits.map((credit) => (
               <p key={credit.role}>

@@ -107,8 +107,9 @@ export default function StudioPage() {
           className="scroll-mt-28"
         >
           <Reveal className="case-module">
+            {/* Descriptive sentence, not a one-word section label. */}
             <h2 id="capabilities-title" className="case-module-title">
-              Capabilities
+              The disciplines the studio works across
             </h2>
             <div className="page-hero-columns columns-bare">
               {CAPABILITIES.map((item) => (
@@ -128,7 +129,7 @@ export default function StudioPage() {
         <section id="approach" aria-labelledby="approach-title" className="scroll-mt-28">
           <Reveal className="case-module">
             <h2 id="approach-title" className="case-module-title">
-              Approach
+              How a project moves from first conversation to launch
             </h2>
             <div className="case-spec">
               {APPROACH.map((step) => (
@@ -141,12 +142,22 @@ export default function StudioPage() {
           </Reveal>
         </section>
 
-        {/* Two links need no "Elsewhere" label above them. */}
-        <section aria-label="Elsewhere" className="case-module-body">
-          <p>
-            <Link href="/work">Selected work</Link> ·{' '}
-            <Link href="/contact">Start a project</Link>
-          </p>
+        {/*
+          These were dot-separated inline text links. Now that body text is
+          set large, they rendered as two oversized underlined phrases with no
+          shape — reading as stray prose rather than actions. They are
+          buttons in the rectangular family instead: starting a project is
+          the page's primary action and gets the BIG FAT variant, browsing
+          the work is secondary at default size.
+        */}
+        <section aria-label="Elsewhere" className="contact-actions">
+          <Link href="/work" className="btn btn-muted">
+            See the work
+          </Link>
+          <Link href="/contact" className="btn btn-big btn-strong">
+            Start a project
+            <span aria-hidden="true">↗</span>
+          </Link>
         </section>
       </div>
 

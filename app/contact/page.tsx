@@ -67,7 +67,7 @@ export default function ContactPage() {
         */}
         <Reveal as="section" aria-labelledby="include-title" className="case-module">
           <h2 id="include-title" className="case-module-title">
-            Useful to include
+            What helps most when you first get in touch
           </h2>
           <div className="case-spec">
             {INCLUDE.map((item) => (

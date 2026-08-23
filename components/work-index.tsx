@@ -11,7 +11,7 @@ import { type Project } from '@/lib/projects'
  * cluster — and away from the `01 / title / dot-joined metadata / year /
  * hairline` row, which is the exact structure the rules call out as generic
  * CMS UI. The hairline is gone (see `--rule`), the number is a dingbat glyph,
- * and the disciplines are a tight pill cluster.
+ * and the disciplines are a tight cluster of category buttons.
  *
  * The year was dropped. It is a CMS field that was being rendered only
  * because it exists: it did not help navigation, understanding or
