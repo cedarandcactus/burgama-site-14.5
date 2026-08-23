@@ -21,6 +21,7 @@ import { Reveal } from '@/components/reveal'
 export function PageHero({
   wordmark,
   intro = [],
+  introAsTagline = false,
   artifactId,
   panel,
   headingLevel: Heading = 'h1',
@@ -53,14 +54,21 @@ export function PageHero({
         </div>
 
         {intro.length > 0 ? (
-          <Reveal className="spread-copy">
+          <Reveal className={introAsTagline ? 'spread-tagline' : 'spread-copy'}>
             {intro.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </Reveal>
         ) : null}
 
-        <Reveal delay={80}>
+        {/*
+          `spread-wordmark-anchor` goes on the Reveal wrapper, not the heading.
+          The wrapper is the flex child of `.spread-left`, so it is the only
+          element whose `margin-top: auto` can push to the column floor —
+          measured, an auto margin on the heading inside this block wrapper
+          did nothing at all.
+        */}
+        <Reveal delay={80} className="spread-wordmark-anchor">
           <Heading className="spread-wordmark">{wordmark}</Heading>
         </Reveal>
       </div>

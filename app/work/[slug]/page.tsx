@@ -60,6 +60,7 @@ export default async function ProjectPage({
       <PageHero
         wordmark={project.title}
         intro={project.introCopy}
+        introAsTagline
         panel={<MediaFrame item={project.heroMedia} />}
       />
 
