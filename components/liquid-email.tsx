@@ -38,7 +38,7 @@ export function LiquidEmail() {
         40px justified paragraph. They are pills in their own row instead.
       */}
       <div className="contact-actions">
-        <button type="button" onClick={copyAddress} className="pill pill-sm pill-accent">
+        <button type="button" onClick={copyAddress} className="pill pill-sm pill-muted">
           {copied ? 'Copied' : 'Copy address'}
         </button>
         <a href={`mailto:${ADDRESS}`} className="pill pill-wide">

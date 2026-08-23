@@ -14,33 +14,22 @@ import type { Project } from '@/lib/projects'
 export function HomeIndex({ projects }: { projects: Project[] }) {
   return (
     <div className="page-artifact">
+      {/*
+        The reference is nothing but wordmark, nav, big copy and controls, so
+        this section is now exactly that. Removed as "extra":
+        - the ruled masthead label row (studio/location/count) — the nav
+          already carries the name and the index below states the count,
+        - the empty hero artifact slot and its overlaid title, plus the three
+          empty specimen slots. All four had no `src` in the registry, so
+          they rendered as labelled grey placeholders occupying the middle of
+          the page. Their entries stay in `lib/artifacts.ts`, so dropping a
+          file in re-enables any of them.
+        The `h1` moves onto the copy block so the page keeps one top heading.
+      */}
       <section className="wide poster" aria-labelledby="home-title">
-        {/* Masthead: the poster's corner labels, sharing one hairline rule. */}
-        <div className="poster-masthead">
-          <p className="poster-label">Burgama — Independent studio</p>
-          <p className="poster-label poster-label-mid">Austin, Texas</p>
-          <p className="poster-label">
-            {String(projects.length).padStart(2, '0')} projects
-          </p>
-        </div>
-
-        {/*
-          The artifact stage. The title sits over the object rather than
-          above it — in the reference the type is carved out of the stone.
-        */}
-        {/*
-          The rotated marginalia that used to flank the artifact is gone.
-          "Artifact 01 — awaiting asset" was build scaffolding, and the
-          discipline list is already in the masthead and the footer — both
-          were decorative metadata rather than information.
-        */}
-        <div className="poster-stage">
-          <ArtifactSlot id="home-hero" />
-
-          <h1 id="home-title" className="poster-title poster-title-over">
-            Burgama
-          </h1>
-        </div>
+        <h1 id="home-title" className="sr-only">
+          Burgama — independent creative studio
+        </h1>
 
         <Reveal>
           <p className="poster-body">
@@ -50,15 +39,6 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
             follows is the record: objects, studies and the projects they became.
           </p>
         </Reveal>
-      </section>
-
-      {/* Three specimen slots — the vertical artifact row from the references. */}
-      <section className="wide specimen-row" aria-label="Specimens">
-        {['home-specimen-a', 'home-specimen-b', 'home-specimen-c'].map((id, index) => (
-          <Reveal key={id} delay={index * 90}>
-            <ArtifactSlot id={id} />
-          </Reveal>
-        ))}
       </section>
 
       {/* The one moving artifact, run wide. */}

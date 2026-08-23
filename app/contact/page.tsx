@@ -25,9 +25,14 @@ const INCLUDE = [
 export default function ContactPage() {
   return (
     <>
+      {/*
+        No `artifactId`: `contact-hero` has no `src` in the registry, so it
+        rendered an empty labelled placeholder panel taking up half the hero.
+        The reference has no such panel. The registry entry remains, so
+        passing the id back in restores it once there is a real asset.
+      */}
       <PageHero
         wordmark="Contact"
-        artifactId="contact-hero"
         intro={[
           'Tell us what you are making and where it needs to go. One conversation, not a form funnel — write with as much or as little as you have and we will reply with a straight answer about fit.',
           'We take on a small number of projects at a time so that each one gets the studio rather than a queue position. If the timing is wrong we will say so, and point you somewhere useful.',

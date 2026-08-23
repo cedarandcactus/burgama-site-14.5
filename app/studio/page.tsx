@@ -72,9 +72,9 @@ const APPROACH = [
 export default function StudioPage() {
   return (
     <>
+      {/* No `artifactId` — `studio-hero` is an empty placeholder slot. */}
       <PageHero
         wordmark="Studio"
-        artifactId="studio-hero"
         intro={[
           'Burgama shapes identities and digital experiences for people with something meaningful to make, staying close from the first conversation through launch.',
           'We work in small senior teams with no account layer between planning the work and making it. Every engagement starts from a point of view — the sentence the work answers to — and ends with a system somebody else can carry forward.',

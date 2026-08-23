@@ -75,39 +75,38 @@
     tokens below (--paper / --ink / --plum / --peri) in all new work.
   */
   /*
-    AMBER ON GREY. The ground is grey and the type is amber, so `--paper` is
-    the grey and `--ink` is the amber. Every rule on the site is written
-    against these two, which is why the whole palette turns over from here.
+    PERIWINKLE ON SLATE, from the reference. The ground is a slate blue-grey
+    and the type is pale periwinkle, so `--paper` is the slate and `--ink` is
+    the periwinkle. Every rule on the site is written against these two,
+    which is why the whole palette turns over from here.
 
-    ON THE GREY VALUE — read before "correcting" it to match the reference.
-    The reference art is roughly #EFC07A type on a #808080 ground, which
-    measures about 2.4:1. That is unreadable for body copy, and body copy is
-    now the largest thing on the page. #545454 is the lightest grey that
-    still clears 4.5:1 against this amber (computed, not guessed), so it is
-    deliberately a few steps darker than the source image. The amber-on-grey
-    character is intact; the contrast is not optional.
+    ON THE TWO VALUES — read before "correcting" them to the reference.
+    The source art is roughly #C3D3F2 type on a #8390B5 ground, which
+    measures 2.3:1. Body copy is now the largest thing on the page and that
+    is not readable. Rather than darken the ground a long way (which would
+    lose the slate character), the type is lifted to #E8EEFC and the ground
+    settled at #5F6B8C — computed at 4.6:1, so it clears AA outright while
+    staying much closer to the reference than a dark ground would.
   */
-  --paper: #545454;
-  --paper-raised: #616161;
-  --paper-sunk: #474747;
-  --ink: #efc07a;
+  --paper: #5f6b8c;
+  --paper-raised: #6b789c;
+  --paper-sunk: #55607e;
+  --ink: #e8eefc;
   /*
     Secondary type. Kept close to `--ink` rather than faded toward the
     ground — the flat-UI rule forbids hierarchy by opacity, and dimming this
-    far enough to read as "soft" would drop it below contrast.
+    far enough to read as "soft" would drop it below contrast. 4.2:1.
   */
-  --ink-soft: #e3b273;
+  --ink-soft: #dbe4f8;
   --plum: #574c5e;
   --peri: #a9a5d9;
 
   /*
-    The deep field media sits on. NOT `--ink`: an amber panel would put amber
-    media on amber and leave the brightest colour on the page carrying the
-    largest area. Media reads against neutral, type stays the only amber.
+    The deep field media sits on. A deeper slate, NOT `--ink`: a periwinkle
+    panel would put pale media on pale and hand the largest area on the page
+    to the brightest colour. Media reads against the deep tone.
   */
-  --panel: #333333;
-  /* The reference's one cool accent, used on the small pill. */
-  --accent-blue: #8fb8ea;
+  --panel: #3f4860;
 
   /* Legacy aliases — see note above. */
   --navy: var(--paper);
@@ -354,7 +353,12 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 3vw, 2.75rem);
-  padding-block: clamp(1rem, 2vw, 1.75rem) clamp(4rem, 8vw, 7rem);
+  /*
+    Bottom padding removed. It was ~77px and stacked on top of the parent's
+    ~86px flex gap — 163px of dead space, which only became visible once the
+    artifact stage that used to sit between them was taken out.
+  */
+  padding-block: clamp(1rem, 2vw, 1.75rem) 0;
 }
 
 /* Corner labels sit on one hairline rule, mirroring the poster's masthead. */
@@ -450,10 +454,10 @@
   mix-blend-mode: difference, which worked when the ground was near-white
   paper and the object was near-black — the inversion was strong either way.
 
-  With a mid-grey ground that blend fails: differencing amber against #545454
-  computes to a muddy brown (155,108,38) that all but disappears. Mid-tones
-  have nothing to invert *to*. Plain amber is used instead, which has real
-  contrast against both the page grey and the darker panel behind it.
+  With a mid-tone slate ground that blend fails: differencing a pale value
+  against #5F6B8C lands back in the mid-tones and all but disappears. A
+  mid-tone has nothing to invert *to*. Plain `--ink` is used instead, which
+  has real contrast against both the page slate and the darker panel.
 */
 .poster-title-over {
   position: absolute;
@@ -509,6 +513,24 @@
   .spread {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr);
     align-items: stretch;
+  }
+
+  /*
+    Panel-less heroes stay one column so the copy runs the full page width,
+    matching the reference. Without this the two-column rule above still
+    split the row and left the right half empty.
+  */
+  .spread.is-full {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /*
+    No panel means no tall neighbour to define a floor, so the reserved
+    min-height would just open a gap under the copy. The wordmark sits
+    directly beneath the copy instead.
+  */
+  .spread.is-full .spread-left {
+    min-height: 0;
   }
 
   /*
@@ -628,10 +650,10 @@
 }
 
 /*
-  Annotations inside the panel mix from `--ink` (amber), NOT `--paper`. Paper
-  is now a mid grey and the panel is a darker grey, so the old paper-based
-  mixes would have put grey on grey and effectively vanished. Amber is the
-  only colour with contrast against this field.
+  Annotations inside the panel mix from `--ink`, NOT `--paper`. Paper is now
+  a mid slate and the panel is a deeper slate, so the old paper-based mixes
+  would have put slate on slate and effectively vanished. The pale ink is the
+  only value with contrast against this field.
 */
 .spread-panel .artifact-empty,
 .spread-panel .case-media-frame {
@@ -745,6 +767,22 @@
 }
 
 /*
+  In a panel-less hero the copy has the whole page width, so it takes the
+  full big-body size rather than the reduced half-column size above.
+*/
+.spread.is-full .spread-copy {
+  font-size: clamp(1.375rem, 2.4vw, 2.5rem);
+  line-height: 1.26;
+  letter-spacing: -0.015em;
+  /*
+    Clears the `max-width: 52ch` the two-column form needs. Measured, that
+    cap held the copy to 654px inside an 899px column — the grid was already
+    full width but the paragraph itself was still narrow.
+  */
+  max-width: none;
+}
+
+/*
   Justification needs a wide measure to work. Measured at 390px, the big body
   copy opened obvious rivers between words even with hyphenation — a narrow
   column simply has too few break opportunities per line to distribute. Below
@@ -828,12 +866,14 @@
 }
 
 /*
-  The reference's one cool control. Blue is light enough that it takes the
-  same dark-grey label rather than paper.
+  The reference's "Small" pill is a muted, semi-transparent version of the
+  solid ones rather than a different hue — it recedes without becoming a
+  second colour. The label steps up to full `--ink` to hold contrast against
+  the lighter fill.
 */
-.pill-accent {
-  background: var(--accent-blue);
-  color: #23303f;
+.pill-muted {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  color: var(--ink);
 }
 
 .pill:hover,

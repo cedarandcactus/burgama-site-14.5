@@ -33,9 +33,9 @@ const DISCIPLINES = [
 export default function WorkPage() {
   return (
     <>
+      {/* No `artifactId` — `work-hero` is an empty placeholder slot. */}
       <PageHero
         wordmark="Work"
-        artifactId="work-hero"
         intro={[
           'A record of what the studio has made, kept as an archive rather than a showcase. Each entry names the client, the disciplines involved and the year, and opens into the full account of how it was built.',
           'The work spans identity, digital product, content systems and growth. What it has in common is that every piece was made to survive contact with the real world — to be extended by other people, on other surfaces, long after we handed it over.',

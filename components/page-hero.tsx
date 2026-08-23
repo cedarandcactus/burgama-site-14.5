@@ -43,8 +43,15 @@ export function PageHero({
   panel?: ReactNode
   headingLevel?: 'h1' | 'h2'
 }) {
+  const panelContent = panel ?? (artifactId ? <ArtifactSlot id={artifactId} /> : null)
+
   return (
-    <section className="wide spread">
+    /*
+      `is-full` when there is no panel. Otherwise the empty `.spread-panel`
+      still claimed its half of the two-column grid, leaving the copy
+      squeezed into a narrow column beside dead space.
+    */
+    <section className={panelContent ? 'wide spread' : 'wide spread is-full'}>
       <div className="spread-left">
         {/* Decorative: three dots, as in the reference. */}
         <div className="spread-dots" aria-hidden="true">
@@ -73,9 +80,11 @@ export function PageHero({
         </Reveal>
       </div>
 
-      <Reveal delay={140} className="spread-panel">
-        {panel ?? (artifactId ? <ArtifactSlot id={artifactId} /> : null)}
-      </Reveal>
+      {panelContent ? (
+        <Reveal delay={140} className="spread-panel">
+          {panelContent}
+        </Reveal>
+      ) : null}
     </section>
   )
 }
