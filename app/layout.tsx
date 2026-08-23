@@ -1,6 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
+import { FrostFieldProvider } from '@/components/frost-field'
+import { MobileConsole } from '@/components/mobile-console'
 import { SiteNav } from '@/components/site-nav'
 import './globals.css'
 
@@ -74,8 +76,17 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        {/*
+          Publishes --frost-face/--frost-fg from whichever [data-field]
+          section is currently behind the chrome. Renders nothing; both the
+          nav module and the console read the same variables so they can
+          never disagree about the current tint.
+        */}
+        <FrostFieldProvider />
+        {/* Desktop: floating module. Mobile: bottom console. Never both. */}
         <SiteNav />
         <main id="main">{children}</main>
+        <MobileConsole />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

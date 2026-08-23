@@ -28,7 +28,13 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
           file in re-enables any of them.
         The `h1` moves onto the copy block so the page keeps one top heading.
       */}
-      <section className="wide poster" aria-labelledby="home-title">
+      {/*
+        `data-field` opts this section into the adaptive frost: as it passes
+        behind the floating nav, FrostFieldProvider retints the material to
+        this section's colour family. Sections that don't opt in simply leave
+        the resting tint alone.
+      */}
+      <section className="wide poster" aria-labelledby="home-title" data-field="paper">
         <h1 id="home-title" className="sr-only">
           Burgama — independent creative studio
         </h1>
@@ -44,6 +50,11 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
       </section>
 
       {/* The one moving artifact, run wide. */}
+      {/*
+        No `data-field` here: `Reveal` takes an explicit prop set and would
+        silently drop the attribute. The neighbouring sections carry the
+        opt-in instead, which is enough for the tint to track the page.
+      */}
       <Reveal as="section" className="wide">
         <ArtifactSlot id="home-motion" />
       </Reveal>
@@ -54,7 +65,7 @@ export function HomeIndex({ projects }: { projects: Project[] }) {
         section, and a ruled list of numbered projects is self-evidently an
         index without being told so twice.
       */}
-      <section className="wide" aria-labelledby="home-work-title">
+      <section className="wide" aria-labelledby="home-work-title" data-field="paper">
         <div className="poster-masthead">
           {/*
             "Selected work" is named in the rules as a phrase to avoid. This

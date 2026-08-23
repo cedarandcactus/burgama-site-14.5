@@ -163,10 +163,16 @@
     2.5:1, which is what makes them read as fat and squat rather than as thin
     web controls.
 
-    There is exactly ONE action-button height and ONE action-button text size
-    site-wide. No hero size, no footer size, no per-page resizing. Anything
-    that needs to look different changes its LABEL (and therefore its width)
-    or its palette-derived tone — never its geometry.
+    These are the DEFAULT proportions, not the only ones. An earlier brief
+    demanded one universal height; the current one explicitly asks for
+    variation — short and fat, wide and fat, taller and narrower, square-ish,
+    odd intermediate shapes. So the family now holds a small set of
+    deliberate proportions (the `.btn--*` modifiers) and consistency comes
+    from the shared corner language, typography, padding philosophy and tone
+    rather than from identical dimensions.
+
+    Still forbidden is ARBITRARY sizing: the variants are a closed set chosen
+    for composition, not licence for a page to invent its own height.
 
     `--action-button-radius` is intentionally its own token rather than an
     alias of `--radius-module`: the button rounding must be free to be tuned
@@ -231,6 +237,31 @@
   --category-radius: 8px;
   --category-font-size: 1rem;
   --category-padding-x: 0.75rem;
+
+  /*
+    ---- ADAPTIVE FROSTED MATERIAL ----------------------------------
+
+    The floating nav and the mobile console are made of ONE material that
+    samples whatever is behind it. Two things make it Burgama's frost
+    rather than generic "glassmorphism":
+
+    1. The fill is TINTED FROM THE PALETTE, never white. White glass over
+       navy reads as an Apple control panel dropped onto the site.
+    2. There is NO rim — no border, no inset highlight, no glow, no
+       box-shadow. Separation comes from the tonal shift of the material
+       itself, which is the same "no lines" rule the rest of the site obeys.
+
+    `--frost-face` / `--frost-fg` are REASSIGNED AT RUNTIME by
+    FrostFieldProvider as different sections pass behind the chrome, which
+    is what makes the material feel like it is reacting to the page instead
+    of being a fixed grey bar. They are transitioned, not snapped.
+  */
+  --frost-blur: 20px;
+  --frost-saturate: 140%;
+  /* Resting tint: a raised step of the page navy, at partial alpha. */
+  --frost-face: color-mix(in srgb, var(--paper-raised) 72%, transparent);
+  --frost-fg: var(--ink);
+  --frost-dur: 400ms;
 }
 
 @layer base {
@@ -313,6 +344,38 @@
   max-width: var(--page-max);
   margin-inline: auto;
   padding-inline: var(--page-gutter);
+}
+
+/* ==================================================================
+   ADAPTIVE FROSTED MATERIAL
+
+   One class, used by the desktop nav module and the mobile console so
+   they are unmistakably the same substance.
+
+   Deliberately ABSENT, because the brief rules them out and they are what
+   makes frosted UI look default: bright white reflections, glowing
+   outlines, a 1px light rim, drop shadows, high transparency.
+
+   The tint transitions so that when FrostFieldProvider swaps
+   `--frost-face` the material *shifts* over 400ms rather than flicking.
+================================================================== */
+
+.frost {
+  /* Solid fallback FIRST: if backdrop-filter is unsupported this is what
+     renders, and an opaque panel is still readable. */
+  background: var(--panel);
+  color: var(--frost-fg);
+  transition:
+    background-color var(--frost-dur) var(--ease-smooth),
+    color var(--frost-dur) var(--ease-smooth);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .frost {
+    background: var(--frost-face);
+    -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturate));
+    backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturate));
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -996,8 +1059,17 @@
     .btn-chip-fil     fillet turning the chip's inside corner
     .btn-chip         the arrow plane
 
-  Width is still content-driven and the height is still ONE global value —
-  the seam is fixed geometry, so a longer label only stretches the bar.
+  Width is content-driven; height comes from `--action-button-height`, which
+  a proportion variant may override (see `.btn--*` below).
+
+  `--btn-seam` is REDECLARED HERE rather than only at `:root`. Custom
+  properties resolve at computed-value time against the element they are
+  declared on, so a `--btn-seam` computed at `:root` would be frozen to the
+  root height and inherited as a fixed pixel value — a taller variant would
+  keep a seam positioned for the default height and the two halves of the
+  joint would visibly misalign. Declared here, `calc(height / 2)` re-solves
+  per button, which is what lets the whole notch geometry follow any
+  proportion for free.
 */
 .btn {
   position: relative;
@@ -1007,6 +1079,7 @@
   align-items: center;
   width: fit-content;
   min-height: var(--action-button-height);
+  --btn-seam: calc(var(--action-button-height) / 2);
   border: 0;
   padding: 0;
   background: none;
@@ -1171,6 +1244,118 @@
   outline: 2px solid var(--ink);
   outline-offset: 3px;
   border-radius: var(--action-button-radius);
+}
+
+/* ==================================================================
+   BUTTON PROPORTION VARIANTS
+
+   The family is meant to hold several DIFFERENT proportions — short and
+   fat, wide and fat, taller and narrower, square-ish, and odd intermediate
+   shapes — so a row of controls reads as an assembled composition instead
+   of a uniform strip. An earlier pass had collapsed every action to one
+   height; that is what these restore.
+
+   Each variant overrides TOKENS ONLY. Because `--btn-seam` is computed on
+   `.btn` from `--action-button-height`, and the fillets/tabs are all
+   expressed in terms of the seam, the stepped joint re-solves itself at
+   every size. No variant needs its own seam maths, and none should ever
+   add any — that is the property that keeps this a system rather than five
+   hand-tuned buttons.
+
+   Consistency lives in: the corner language, the typography, the
+   padding philosophy, and the tone. Not in the dimensions.
+================================================================== */
+
+/* Short and fat: less height, generous horizontal padding. */
+.btn--fat {
+  --action-button-height: 2.75rem;
+  --action-button-padding-x: 1.75rem;
+  --btn-chip-w: 2.75rem;
+}
+
+/* Wide and fat: full default height, much more horizontal room. */
+.btn--wide {
+  --action-button-padding-x: 2.5rem;
+  min-width: 17rem;
+}
+
+/*
+  Taller and narrower. The label column is deliberately tight, so this is
+  the variant that most changes the silhouette — useful as the odd shape in
+  a cluster.
+*/
+.btn--tall {
+  --action-button-height: 4.25rem;
+  --action-button-padding-x: 1.25rem;
+  --btn-chip-w: 3rem;
+  --action-button-radius: 12px;
+}
+
+/*
+  Square-ish. Height and minimum width are close, which only works with a
+  short label — it is for `Go`, `Next`, `All`, not for a sentence.
+*/
+.btn--square {
+  --action-button-height: 4.25rem;
+  --action-button-padding-x: 1rem;
+  --btn-chip-w: 2.5rem;
+}
+
+/* The long one — a full-measure control that anchors a composition. */
+.btn--long {
+  --action-button-height: 3.75rem;
+  --action-button-padding-x: 2rem;
+  --btn-chip-w: 4rem;
+  width: 100%;
+}
+
+/*
+  CLUSTER
+
+  Buttons of differing proportions packed tightly so the group reads as one
+  assembled object sitting in open space. `align-items: flex-end` matters:
+  with mixed heights, aligning on the shared BOTTOM edge is what makes the
+  varied tops read as intentional silhouette rather than as misalignment.
+*/
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+/*
+  EXPANDING LABEL — opt-in, and deliberately rare.
+
+  On hover the control reveals more of its own sentence, so the button
+  physically grows. Used on ONE or TWO controls site-wide; if everything
+  expanded, the page would never sit still.
+
+  The hidden half uses grid-template-columns rather than `width`, so the
+  animation runs on a real interpolable value and the label never has to be
+  measured in JS.
+*/
+.btn-label-grow {
+  display: inline-grid;
+  grid-template-columns: 0fr;
+  overflow: hidden;
+  transition: grid-template-columns var(--dur-med) var(--ease-module);
+}
+
+.btn:hover .btn-label-grow,
+.btn:focus-visible .btn-label-grow {
+  grid-template-columns: 1fr;
+}
+
+.btn-label-grow > span {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-label-grow {
+    transition: none;
+  }
 }
 
 /*
@@ -2029,141 +2214,442 @@ a.action-quiet:hover .action-arrow {
   --rule: transparent;
 }
 
-/* --- Nav --------------------------------------------------------- */
+/* ==================================================================
+   FLOATING FROSTED NAV MODULE (desktop only)
 
-.site-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--navy);
-  border-bottom: 1px solid var(--rule);
+   Replaced a full-width sticky header with a horizontal link row and a
+   bottom hairline — all three explicitly ruled out. This is ONE compact
+   object floating in the upper-left holding only the wordmark and `Menu`.
+
+   The expansion is THE SAME OBJECT growing. `width` and `height` are
+   animated on the module itself, from explicit closed values to explicit
+   open values, because `auto` is not interpolable and a height that snaps
+   would break the illusion of one object changing size.
+
+   Hidden below 900px: the bottom console owns mobile navigation.
+================================================================== */
+
+.nav-module {
+  position: fixed;
+  top: clamp(0.75rem, 1.4vw, 1.25rem);
+  left: clamp(0.75rem, 1.4vw, 1.25rem);
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  /* Rectangular first, slightly rounded second — the site's corner language. */
+  border-radius: var(--field-radius);
+  /* Clips the expansion while the module is still growing into it. */
+  overflow: hidden;
+  /* Explicit closed box. Both axes must be concrete to animate. */
+  width: var(--nav-w-closed);
+  height: var(--nav-h-closed);
+  --nav-w-closed: 15.5rem;
+  --nav-h-closed: 4rem;
+  --nav-w-open: 30rem;
+  --nav-h-open: 27.5rem;
+  transition:
+    width var(--dur-med) var(--ease-module),
+    height var(--dur-med) var(--ease-module);
 }
 
-/* Two positions: wordmark left, inline arrow links right. */
-.site-nav-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1.125rem var(--page-gutter);
-  /* Capped to the same measure as `.wide` so the chrome aligns with content. */
-  max-width: var(--page-max);
-  margin-inline: auto;
+@media (min-width: 900px) {
+  .nav-module {
+    display: flex;
   }
+}
 
-/* The wordmark is set large, as in the reference. */
-.site-nav-brand {
-  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+.nav-module[data-open='true'] {
+  width: var(--nav-w-open);
+  height: var(--nav-h-open);
+}
+
+/* The always-visible bar. Fixed height so growth happens below it. */
+.nav-module-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--nav-h-closed);
+  padding-inline: 1.125rem;
+}
+
+.nav-module-brand {
+  font-size: 1.5rem;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--periwinkle);
+  color: currentColor;
+}
+
+.nav-module-trigger {
+  /*
+    Reading size, sentence case. Not tracked caps and not tiny — it is a
+    real control, and the only interactive thing visible when closed.
+  */
+  font-size: 1.0625rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: currentColor;
+  cursor: pointer;
+  background: none;
+}
+
+/* --- The expansion contents --------------------------------------- */
+
+.nav-expansion {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.25rem 1.125rem 1.25rem;
 }
 
 /*
-  Inline sentence-case links with arrows, sized to sit alongside the wordmark
-  rather than reading as small print. Replaces the tracked-caps comma list.
+  A tight CLUSTER of unequal blocks, not a list of identical rows. Wrapping
+  with per-item widths is what produces the irregular packing; `gap` is small
+  on purpose so the group reads as one assembled mass against the open space
+  around it.
 */
-.site-nav-index {
+.nav-expansion-cluster {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: clamp(0.75rem, 1.6vw, 1.5rem);
-  color: var(--periwinkle) !important;
-  font-size: clamp(1rem, 1.6vw, 1.5rem);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  text-transform: none;
+  gap: 7px;
 }
 
-.site-nav-link {
-  /*
-    One tonal step back from `--ink` so the current page can be distinguished
-    without an underline. This is a real colour step in the periwinkle
-    family, not an opacity fade — the earlier 64% mix read as disabled.
-  */
-  color: var(--ink-soft);
-  transition: opacity 240ms var(--ease-module);
+.nav-dest {
+  display: flex;
+  align-items: center;
+  /* Per-item width from the component — the source of the irregularity. */
+  width: var(--w);
+  /* Chunky: tall blocks with real mass, not text links in a list. */
+  height: 4.25rem;
+  padding-inline: 1.125rem;
+  border-radius: var(--action-button-radius);
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  color: var(--ink);
+  font-size: 1.375rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transition:
+    background-color var(--dur-med) var(--ease-module),
+    filter var(--dur-med) var(--ease-module),
+    opacity var(--dur-med) var(--ease-module),
+    transform var(--dur-med) var(--ease-module);
 }
 
-/* The arrow rides slightly high and small, as a mark beside the word. */
-.site-nav-arrow {
-  display: inline-block;
-  margin-left: 0.1em;
-  font-size: 0.72em;
-  vertical-align: super;
-  line-height: 1;
-  transition: transform 240ms var(--ease-module);
+.nav-dest:hover {
+  background: color-mix(in srgb, var(--ink) 24%, transparent);
+}
+
+/* Current page by TONE, no underline and no extra mark. */
+.nav-dest.is-current {
+  background: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+
+/*
+  BLUR-TO-SHARP REVEAL
+
+  Children start soft, slightly compressed and dim, then resolve to sharp,
+  full size and full strength. The point is "coming into focus", which is
+  why the transform is a small SCALE rather than a translate — cards sliding
+  up and fading in is the pattern being avoided.
+
+  The stagger is driven by `--i` from the component, and the delay is short
+  so the whole cluster resolves as one gesture.
+*/
+.nav-expansion > * > .nav-dest,
+.nav-expansion > .nav-dest-cta {
+  filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+.nav-module[data-open='true'] .nav-dest,
+.nav-module[data-open='true'] .nav-dest-cta {
+  filter: blur(0);
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: calc(90ms + var(--i) * 45ms);
+}
+
+/* The weighted control at the bottom of the expansion. */
+.nav-dest-cta {
+  transition:
+    filter var(--dur-med) var(--ease-module),
+    opacity var(--dur-med) var(--ease-module),
+    transform var(--dur-med) var(--ease-module);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-nav-arrow {
+  .nav-module,
+  .nav-dest,
+  .nav-dest-cta {
     transition: none;
   }
+
+  /*
+    Under reduced motion the module still needs to OPEN — it just does it
+    without the blur/scale gesture. Leaving the blurred resting state here
+    would make the menu permanently unreadable.
+  */
+  .nav-expansion > * > .nav-dest,
+  .nav-expansion > .nav-dest-cta {
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/*
-  Links are already full strength, so hover cannot brighten them. It nudges
-  the arrow instead, which keeps the flat rule (no opacity hierarchy) while
-  still giving the link a response.
-*/
-.site-nav-link:hover .site-nav-arrow,
-.site-nav-link:focus-visible .site-nav-arrow {
-  transform: translate(1px, -1px);
+/* ==================================================================
+   MOBILE BOTTOM CONTROL CONSOLE
+
+   The primary navigation on the primary surface. Dense, chunky, frosted,
+   anchored above the home-indicator inset.
+
+   Explicitly NOT: a thin tab bar, tiny icon+label pairs, a hamburger, or
+   anything that hides itself on scroll.
+
+   Desktop-hidden at the same 900px breakpoint where the nav module appears,
+   so exactly one navigation system is present at any width.
+================================================================== */
+
+.mobile-console {
+  position: fixed;
+  z-index: 60;
+  right: clamp(0.5rem, 2vw, 0.875rem);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(0.5rem, 2vw, 0.875rem));
+  left: clamp(0.5rem, 2vw, 0.875rem);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  /* The wrapper is only a positioner; the children carry the material. */
+  pointer-events: none;
 }
 
-/*
-  Current page marked by TONE, not an underline — the NO LINES rule names
-  unnecessary underlines specifically, and the colour rules say to reach for
-  tonal variation before adding a mark. The current link sits at full `--ink`
-  while the rest sit one step back at `--ink-soft` (still ~7:1, so "quieter"
-  never means "unreadable"). No extra element, no drawn line.
-*/
-.site-nav-link.is-current {
-  color: var(--ink);
-}
-
-/* The index collapses into a single toggle on small screens. */
-.site-nav-toggle {
-  display: none;
-  font-size: 1rem;
-  color: var(--periwinkle);
-}
-
-.site-nav-panel {
-  display: none;
-}
-
-@media (max-width: 760px) {
-  .site-nav-index {
+@media (min-width: 900px) {
+  .mobile-console {
     display: none;
   }
+}
 
-  .site-nav-toggle {
-    display: block;
+.console-bar,
+.console-menu {
+  pointer-events: auto;
+}
+
+/*
+  ---- THE BAR ----
+
+  One row of unequal modules. `--vel` (0→1, published by useScrollVelocity)
+  drives the scroll response:
+
+    * padding shrinks slightly    → "becomes more compact"
+    * saturation/blur increase    → "becomes more diffuse"
+
+  Both are tied to the same variable, which is why they move together and
+  return together. When --vel is 0 every term below evaluates to its resting
+  value, so sharpness at rest is guaranteed by arithmetic rather than by a
+  separate "reset" rule that could fall out of sync.
+*/
+.console-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 5px;
+  padding: calc(6px - var(--vel, 0) * 2px);
+  border-radius: var(--field-radius);
+  --frost-blur: calc(20px + var(--vel, 0) * 10px);
+  transition: padding 220ms var(--ease-module);
+}
+
+/*
+  Each module. `flex-grow` from `--grow` is what makes redistribution work:
+  the row is a fixed width, so when one module's grow value doubles the
+  others are compressed to make room. Nothing is explicitly shrunk.
+*/
+.console-module {
+  display: flex;
+  flex: var(--grow, 1) 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  /* Chunky, not a 44px tab strip. */
+  min-height: 3.75rem;
+  padding-inline: 0.5rem;
+  border-radius: calc(var(--field-radius) - 5px);
+  background: color-mix(in srgb, var(--ink) 13%, transparent);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
+  cursor: pointer;
+  /*
+    The redistribution transition. `flex-grow` is animatable, and easing it on
+    the long module ease is what makes the reallocation read as weighted
+    material moving rather than a snap.
+  */
+  transition:
+    flex-grow 420ms var(--ease-module),
+    background-color 300ms var(--ease-module);
+}
+
+/* The one weighted module per context — the forward action. */
+.console-module.is-lead {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* A readout, not a control: no pointer affordance, quieter fill. */
+.console-module.is-static {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  color: var(--ink-soft);
+  cursor: default;
+}
+
+.console-module.is-active {
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+.console-module.is-lead.is-active {
+  background: color-mix(in srgb, var(--ink) 88%, var(--paper));
+}
+
+.console-module-label {
+  /* Labels must not wrap mid-redistribution — the row would change height. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.console-module-arrow {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+}
+
+.console-module-arrow svg {
+  width: 18px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/*
+  ---- THE UPWARD MENU ----
+
+  Grows out of the console. `transform-origin: bottom` plus a scaleY is what
+  makes it read as material emerging from the bar rather than a sheet sliding
+  in from off-screen. The page behind stays visible and unblurred — this is
+  not a takeover.
+
+  Destinations are large GT Pressura, close together, with NO dividers.
+*/
+.console-menu {
+  display: flex;
+  flex-direction: column;
+  /* Close together, per the brief — a tight stack, not an airy list. */
+  gap: 3px;
+  padding: 7px;
+  border-radius: var(--field-radius);
+  transform-origin: bottom center;
+  /* Closed state. `height: 0` keeps it out of the layout entirely. */
+  height: 0;
+  padding-block: 0;
+  opacity: 0;
+  transform: scaleY(0.82);
+  overflow: hidden;
+  transition:
+    height 480ms var(--ease-module),
+    padding-block 480ms var(--ease-module),
+    opacity 300ms var(--ease-module),
+    transform 480ms var(--ease-module);
+}
+
+.mobile-console[data-open='true'] .console-menu {
+  height: 15.5rem;
+  padding-block: 7px;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.console-dest {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-inline: 1rem;
+  border-radius: calc(var(--field-radius) - 6px);
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  color: var(--ink);
+  /* Large — these are the destinations, set at real display scale. */
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  /* Same blur-to-sharp resolve as the desktop expansion. */
+  filter: blur(6px);
+  opacity: 0;
+  transition:
+    filter 420ms var(--ease-module),
+    opacity 420ms var(--ease-module),
+    background-color 300ms var(--ease-module);
+}
+
+.mobile-console[data-open='true'] .console-dest {
+  filter: blur(0);
+  opacity: 1;
+  transition-delay: calc(120ms + var(--i) * 50ms);
+}
+
+.console-dest[aria-current='page'] {
+  background: color-mix(in srgb, var(--ink) 24%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .console-bar,
+  .console-module,
+  .console-menu,
+  .console-dest {
+    transition: none;
   }
 
-  .site-nav-panel {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 460ms var(--ease-module);
+  /* Without this the menu contents stay permanently blurred when open. */
+  .console-dest {
+    filter: none;
+    opacity: 1;
   }
+}
 
-  .site-nav-panel[data-open='true'] {
-    grid-template-rows: 1fr;
+/*
+  ---- OPT-IN MOVEMENT BLUR ----
+
+  Elements subscribe to `--vel` by adding `.mblur-y`. Directional on the
+  axis of travel, capped low so type stays readable, and exactly 0 at rest.
+
+  This is opt-in for a reason: applying it to the whole page or to body copy
+  makes reading during scroll unpleasant. Use it on chrome and large display
+  elements only.
+*/
+.mblur-y {
+  filter: blur(calc(var(--vel, 0) * 2.5px));
+  will-change: filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mblur-y {
+    filter: none;
   }
+}
 
-  .site-nav-panel-inner {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .site-nav-panel-link {
-    padding: 1rem var(--page-gutter);
-    border-top: 1px solid var(--rule);
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
-    color: var(--periwinkle);
+/*
+  Page bottom padding so the console never covers the end of the content.
+  Without this the footer's last row sits underneath the bar.
+*/
+@media (max-width: 899px) {
+  body {
+    padding-bottom: calc(
+      env(safe-area-inset-bottom, 0px) + 5.5rem
+    );
   }
 }
 
@@ -2595,43 +3081,110 @@ a.action-quiet:hover .action-arrow {
   background: var(--f-face);
 }
 
-.footer-columns {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
-  padding: clamp(2.5rem, 5vw, 4rem) var(--page-gutter);
-  max-width: var(--page-max);
-  margin-inline: auto;
-  }
+/* ---- The footer's major composition -----------------------------
 
-.footer-column {
+   Replaces `.footer-columns` / `.footer-column` / `.footer-link` — the
+   four-column grid of 1rem links. Those rules are deleted rather than left
+   behind, since a dead sitemap style is exactly what a later pass would
+   accidentally reintroduce.
+
+   The invitation and the CTA sit together at the top as the weighted
+   moment, with a lot of air around them.
+--------------------------------------------------------------- */
+
+.footer-major {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.625rem;
+  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+  padding: clamp(3.5rem, 7vw, 6.5rem) var(--page-gutter)
+    clamp(2.5rem, 5vw, 4rem);
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
+/* Display scale — this is a statement, not a caption. */
+.footer-invite {
+  max-width: 22em;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  color: var(--ink);
 }
 
 /*
-  `.footer-heading` removed — the MENU / STUDIO eyebrow labels it styled are
-  gone from the markup, so this rule (and its `!important`) was dead.
+  Dingbats stay TYPOGRAPHIC: an inline character in the text flow, sized
+  relative to its line, never boxed or turned into an icon.
 */
-
-.footer-link {
-  font-size: 1rem;
-  color: var(--periwinkle) !important;
-  transition: opacity 240ms var(--ease-module);
+.footer-ding {
+  display: inline-block;
+  font-size: 0.62em;
+  vertical-align: 0.28em;
+  color: var(--ink-soft);
 }
 
-a.footer-link:hover,
-a.footer-link:focus-visible {
-  opacity: 0.6;
-  background: transparent;
+.footer-ding.is-small {
+  font-size: 0.9em;
+  vertical-align: 0.05em;
 }
 
-@media (min-width: 760px) {
-  .footer-columns {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* The CTA is capped so `.btn--long`'s width:100% doesn't span 1920px. */
+.footer-cta {
+  max-width: 28rem;
+}
+
+.footer-lower {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding: 0 var(--page-gutter) clamp(3rem, 6vw, 5rem);
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
+/*
+  Few, large destinations in a tight stack. No dividers — the separation is
+  the space around the group, not a drawn line.
+*/
+.footer-destinations {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15em;
+}
+
+.footer-dest {
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  transition: color 240ms var(--ease-module);
+}
+
+.footer-dest:hover {
+  color: var(--ink-soft);
+}
+
+.footer-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+/* Reading scale, one tonal step back. Not small print. */
+.footer-detail {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.footer-detail.is-quiet {
+  color: var(--ink-soft);
 }
 
 .footer-sign {
@@ -2719,8 +3272,14 @@ a.footer-link:focus-visible {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* The nav lives on every other route; the flyer is a full-bleed artifact. */
-body:has(.lot-poster) > .site-nav {
+/*
+  The chrome lives on every other route; the flyer is a full-bleed artifact.
+  Both the nav module and the mobile console are suppressed — the selector
+  used to name `.site-nav`, which no longer exists, so it had to be repointed
+  or the flyer would have started showing floating chrome over itself.
+*/
+body:has(.lot-poster) > .nav-module,
+body:has(.lot-poster) > .mobile-console {
   display: none;
 }
 

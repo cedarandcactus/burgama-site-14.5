@@ -2,105 +2,177 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BrandMark } from '@/components/brand-mark'
 
 /*
-  The reference nav reads `Index ↗ Work ↗ About ↗ Ideas ↗`. Those labels are
-  kept only where a real page answers to them: "Index" is the homepage and
-  "About" is the studio page. "Ideas" has no route on this site, and adding a
-  nav item that goes nowhere is worse than not matching the reference, so the
-  fourth slot is Contact — a page that exists.
+  FLOATING FROSTED NAVIGATION MODULE (desktop)
+
+  This replaced a conventional full-width sticky header that held a
+  horizontal row of four arrow links and a bottom hairline. All three of
+  those are explicitly ruled out: no full-width header bar, no long
+  horizontal row of links, no lines. What is wanted instead is ONE compact
+  rectangular object floating in the upper-left, containing almost nothing.
+
+  So the module holds two things only: the wordmark and `Menu`. Everything
+  else lives inside the expansion.
+
+  The expansion is the same physical object getting bigger — not a dropdown,
+  not a sidebar, not a modal. That is why `width`/`height` are animated on
+  the module itself rather than a child panel being revealed: the eye has to
+  read it as one thing changing size.
+
+  MOBILE: this module is hidden entirely. The bottom console owns mobile
+  navigation, and shipping both would mean two competing nav systems on the
+  same screen.
 */
-const LINKS = [
-  { label: 'Index', href: '/' },
-  { label: 'Work', href: '/work' },
-  { label: 'About', href: '/studio' },
-  { label: 'Contact', href: '/contact' },
+
+const DESTINATIONS = [
+  /*
+    Deliberately DIFFERENT widths, set per item via `--w`. A menu of
+    identical stacked rows is the generic pattern; a tight cluster of unequal
+    blocks reads as an assembled composition. `Work` is the widest because it
+    is the primary destination.
+
+    `Ideas` is NOT here despite appearing in the reference menu: no such
+    route exists, and a nav entry that 404s is worse than an imperfect match
+    to the reference. These four are the pages that actually exist.
+  */
+  { label: 'Index', href: '/', w: '9.5rem' },
+  { label: 'Work', href: '/work', w: '13rem' },
+  { label: 'About', href: '/studio', w: '10.5rem' },
+  { label: 'Contact', href: '/contact', w: '11.5rem' },
 ]
 
 export function SiteNav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const moduleRef = useRef<HTMLElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
+  /* Route change closes the module — the destination has been reached. */
   useEffect(() => {
     setOpen(false)
   }, [pathname])
 
+  /*
+    While open: Escape closes and focus is kept inside the module. The page
+    is NOT scroll-locked — the expansion is a small object in the corner, not
+    a takeover, and freezing the whole document for it would be wrong.
+  */
   useEffect(() => {
     if (!open) return
+
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape') {
+        setOpen(false)
+        triggerRef.current?.focus()
+        return
+      }
+
+      if (event.key !== 'Tab') return
+
+      const focusables = moduleRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])',
+      )
+      if (!focusables || focusables.length === 0) return
+
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
+
     document.addEventListener('keydown', onKey)
-    document.documentElement.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.documentElement.style.overflow = ''
-    }
+    return () => document.removeEventListener('keydown', onKey)
   }, [open])
 
   const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href.split('#')[0])
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <nav aria-label="Primary" className="site-nav">
-      {/*
-        Two positions only: wordmark left, inline arrow links right. The
-        separate "Start a project" pill is gone — Contact is now one of the
-        links, and a pill beside them would be a second competing CTA.
-      */}
-      <div className="site-nav-row">
-        <Link href="/" aria-label="Burgama, home" className="site-nav-brand">
+    <nav
+      ref={moduleRef}
+      aria-label="Primary"
+      data-open={open}
+      className="nav-module frost"
+    >
+      {/* The permanently visible bar: wordmark + trigger, nothing else. */}
+      <div className="nav-module-head">
+        <Link href="/" aria-label="Burgama, home" className="nav-module-brand">
           <BrandMark />
         </Link>
 
-        <p className="site-nav-index">
-          {LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              aria-current={isActive(link.href) ? 'page' : undefined}
-              className={isActive(link.href) ? 'site-nav-link is-current' : 'site-nav-link'}
-            >
-              {link.label}
-              {/* Decorative: the arrow is part of the mark, not information. */}
-              <span aria-hidden="true" className="site-nav-arrow">
-                ↗
-              </span>
-            </Link>
-          ))}
-        </p>
-
         <button
+          ref={triggerRef}
           type="button"
           aria-expanded={open}
-          aria-controls="site-menu"
+          aria-controls="nav-expansion"
           onClick={() => setOpen((value) => !value)}
-          className="site-nav-toggle"
+          className="nav-module-trigger"
         >
           {open ? 'Close' : 'Menu'}
         </button>
       </div>
 
-      <div id="site-menu" aria-hidden={!open} data-open={open} className="site-nav-panel">
-        <div className="site-nav-panel-inner">
-          {LINKS.map((link) => (
+      {/*
+        The expansion's contents. `inert` when closed so the links are
+        genuinely unreachable rather than merely invisible — tabIndex={-1}
+        alone still leaves them in the a11y tree.
+      */}
+      <div
+        id="nav-expansion"
+        className="nav-expansion"
+        {...(!open ? { inert: true as unknown as boolean } : {})}
+      >
+        <div className="nav-expansion-cluster">
+          {DESTINATIONS.map((item, index) => (
             <Link
-              key={link.href}
-              href={link.href}
-              tabIndex={open ? 0 : -1}
-              className="site-nav-panel-link"
+              key={item.href}
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              /* Stagger index drives the blur-to-sharp resolve. */
+              style={{ '--i': index, '--w': item.w } as React.CSSProperties}
+              className={
+                isActive(item.href) ? 'nav-dest is-current' : 'nav-dest'
+              }
             >
-              {link.label}
+              {item.label}
             </Link>
           ))}
-          {/*
-            The "Start a project" entry was removed: it pointed at /contact,
-            which is already the fourth link above, so the mobile menu listed
-            the same destination twice under two names.
-          */}
         </div>
+
+        {/*
+          The one weighted control in the expansion, and the reason the
+          cluster above can stay quiet. Uses the shared button system with a
+          proportion variant rather than a bespoke nav-only style.
+        */}
+        <Link
+          href="/contact"
+          style={{ '--i': DESTINATIONS.length } as React.CSSProperties}
+          className="nav-dest-cta btn btn-strong btn--wide"
+        >
+          <span className="btn-shape" aria-hidden="true">
+            <i className="btn-bar" />
+            <i className="btn-bar-tab" />
+            <i className="btn-bar-fil" />
+            <i className="btn-chip-tongue" />
+            <i className="btn-chip-fil" />
+            <i className="btn-chip" />
+          </span>
+          <span className="btn-label">Start a Project</span>
+          <span className="btn-arrow" aria-hidden="true">
+            <svg viewBox="0 0 22 12" role="presentation">
+              <path d="M1 6h19M15 1l5 5-5 5" />
+            </svg>
+          </span>
+        </Link>
       </div>
     </nav>
   )
