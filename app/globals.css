@@ -744,6 +744,23 @@
   text-transform: none;
 }
 
+/*
+  Justification needs a wide measure to work. Measured at 390px, the big body
+  copy opened obvious rivers between words even with hyphenation — a narrow
+  column simply has too few break opportunities per line to distribute. Below
+  this width the copy goes ragged-right, which is the lesser compromise: the
+  big size survives (that is the instruction), only the flush edge is given
+  up, and it returns automatically on wider screens.
+*/
+@media (max-width: 640px) {
+  .poster-body,
+  .case-summary,
+  .case-module-body,
+  .spread-copy {
+    text-align: left;
+  }
+}
+
 /* Small text keeps the mono face — the counterweight to the big prose. */
 .poster-label,
 .artifact-caption,
