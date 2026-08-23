@@ -2711,218 +2711,6 @@ a.action-quiet:hover .action-arrow {
   padding-bottom: 0;
 }
 
-/* --- Hero over the vault footage --------------------------------- */
-
-/*
-  Copy is anchored to the bottom because the clip's bright areas all sit in
-  the upper middle — the blown-out arch at the start, then open sky as the
-  camera emerges. The lower band stays dark for the full 30s loop, so that
-  is the only reliably legible place to put type.
-
-  `--scroll` is written by HeroVault; it stays 0 when JS or motion is
-  unavailable, so every rule below degrades to a static, legible hero.
-*/
-.hero {
-  --scroll: 0;
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  align-items: flex-end;
-  min-height: clamp(24rem, 68vh, 40rem);
-  overflow: hidden;
-  background: var(--navy);
-}
-
-/*
-  The source is 992x432 monochrome footage — already grainy and near-black,
-  so desaturating fully and easing the brightness lets it sit in the navy
-  palette and hides the upscaling a full-bleed crop requires.
-
-  The clip carries its own continuous camera move (out of the vault, through
-  the arch, into the valley), so scroll adds only a restrained parallax
-  drift. An earlier 1.04->1.14 scroll zoom was built for a still frame and
-  fought the footage's own dolly; don't reintroduce it.
-
-  Dither pass 1 of 2: the high contrast + low brightness crushes the tonal
-  range so the footage reads closer to 1-bit — mostly ink, mostly paper, few
-  mids. Done with cheap compositor filters rather than an SVG
-  `feComponentTransfer` posterize, because an SVG filter over a playing
-  full-bleed video repaints every frame on the CPU and janks.
-*/
-.hero-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 42%;
-  filter: saturate(0) contrast(2.35) brightness(1.06);
-  transform: scale(1.04) translate3d(0, calc(var(--scroll) * -4%), 0);
-  will-change: transform;
-}
-
-/*
-  Sub-cell jitter for the dither lattice. Registered so the steps() keyframes
-  below can animate them; they resolve into a single `transform`, so the
-  shimmer stays on one composited layer instead of repainting a background.
-*/
-@property --dither-x {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
-}
-
-@property --dither-y {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
-}
-
-/*
-  2px against a 4px cell is a half-cell shift, so the lattice lands on the
-  alternate phase each step — the pattern genuinely re-screens rather than
-  sliding. steps(1, end) keeps it stop-motion; easing would smear it into a
-  drifting moire.
-*/
-@keyframes hero-dither-shift {
-  0% {
-    --dither-x: 0px;
-    --dither-y: 0px;
-  }
-  25% {
-    --dither-x: 2px;
-    --dither-y: -2px;
-  }
-  50% {
-    --dither-x: -2px;
-    --dither-y: 2px;
-  }
-  75% {
-    --dither-x: 2px;
-    --dither-y: 2px;
-  }
-}
-
-/*
-  Dither pass 2 of 2: an ordered dot lattice, offset on alternating cells so
-  it reads as a dither screen rather than a regular halftone grid. Hard
-  colour stops keep every dot aliased — a soft gradient would just look like
-  blur. Multiply means the dots only show where there is light to subtract,
-  so the dark stone stays solid and the arch carries the texture.
-
-  Two things stop it reading as a fixed grille laid over moving footage:
-  it repeats the video's parallax translate, so the screen travels *with*
-  the image on scroll; and the stepped jitter re-phases the lattice while
-  the clip plays, the way a real 1-bit dither shimmers as pixels cross the
-  threshold. Inset is negative so the jitter never exposes a hero edge.
-*/
-.hero-dither {
-  position: absolute;
-  inset: -8px;
-  background-image:
-    radial-gradient(circle at 25% 25%, var(--navy) 0 40%, transparent 41%),
-    radial-gradient(circle at 75% 75%, var(--navy) 0 40%, transparent 41%);
-  background-size: 4px 4px;
-  mix-blend-mode: multiply;
-  opacity: 0.9;
-  transform: translate3d(
-    var(--dither-x),
-    calc(var(--scroll) * -4% + var(--dither-y)),
-    0
-  );
-  animation: hero-dither-shift 320ms steps(1, end) infinite;
-  will-change: transform;
-}
-
-/*
-  Legibility scrim, not decoration: heavy at the bottom where the type
-  sits, near-clear across the middle so the arch still reads, and solid
-  navy at the very bottom so the hero dissolves into the page below.
-*/
-.hero-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgb(8 13 27 / 0.45) 0%,
-    rgb(8 13 27 / 0.06) 30%,
-    rgb(8 13 27 / 0.1) 56%,
-    rgb(8 13 27 / 0.66) 79%,
-    rgb(8 13 27 / 0.94) 92%,
-    var(--navy) 100%
-  );
-}
-
-.hero-copy {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 1rem;
-  width: 100%;
-  padding: clamp(4rem, 10vw, 8rem) var(--page-gutter) clamp(2.5rem, 5vw, 4rem);
-  transform: translate3d(0, calc(var(--scroll) * -2rem), 0);
-  opacity: calc(1 - var(--scroll) * 0.9);
-}
-
-/*
-  Monoline: a single hairline rule of the same 1px weight used by the index
-  and footer, so the hero is ruled rather than decorated.
-*/
-.hero-marker {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  padding-top: 0.875rem;
-  border-top: 1px solid var(--rule);
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--periwinkle) 78%, var(--navy)) !important;
-}
-
-.hero-count {
-  font-size: 0.625rem;
-  transform: translateY(-0.15em);
-}
-
-/*
-  Monoline: uniform 400 stroke, no weight contrast, and the tracking opened
-  from -0.035em so thin letterforms at this size don't collide. The shadow is
-  tight rather than a soft glow — a wide blur would read as haze against a
-  hard-edged dithered ground.
-*/
-.hero-statement {
-  max-width: 24ch;
-  font-size: clamp(1.875rem, 3.4vw, 3.25rem);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-  text-shadow: 0 1px 12px rgb(8 13 27 / 0.72);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-image {
-    transform: scale(1.04);
-  }
-
-  /*
-    The lattice keeps its texture but stops re-phasing — the shimmer is the
-    one part of this treatment that genuinely flickers.
-  */
-  .hero-dither {
-    animation: none;
-    transform: none;
-  }
-
-  .hero-copy {
-    transform: none;
-    opacity: 1;
-  }
-}
-
 .index {
   border-top: 1px solid var(--rule);
 }
@@ -3182,9 +2970,17 @@ a.action-quiet:hover .action-arrow {
   is the fallback for engines that don't support it yet, and deliberately
   lists no emoji font so the monochrome glyph is chosen.
 */
-.footer-ding,
-.artifact-index-num,
-.hero-count {
+/*
+  Scoped to `.footer-ding` ONLY.
+
+  This originally also listed `.artifact-index-num`, which was wrong: it uses
+  the circled numerals, and measurement confirmed those already render as
+  monochrome text in the brand face (36px, correct periwinkle) — they never
+  had the emoji problem. The blanket `font-family` here would also have
+  overridden faces set deliberately elsewhere, which is how duplicate
+  selectors in a long stylesheet fail quietly.
+*/
+.footer-ding {
   font-variant-emoji: text;
   font-family: var(--font-sans);
 }
@@ -3204,14 +3000,20 @@ a.action-quiet:hover .action-arrow {
   display: inline-block;
 }
 
+/*
+  There were TWO `.footer-ding.is-small` blocks here. The later one won on
+  cascade order and silently reverted the asterisk fix — reinstating the
+  `+0.05em` shift tuned for the old centred dingbat and shrinking the glyph
+  to 0.9em, which measured 13.5px and broke the 14px minimum type floor.
+  Collapsed into this single rule.
+
+  `1em` keeps the asterisk at the parent's size (13.5px -> 15px) so it clears
+  the floor, and the small negative shift matches the base rule's reasoning:
+  a plain `*` sits high in its em box and needs pulling DOWN, not up.
+*/
 .footer-ding.is-small {
   vertical-align: -0.02em;
   font-size: 1em;
-}
-
-.footer-ding.is-small {
-  font-size: 0.9em;
-  vertical-align: 0.05em;
 }
 
 /*
@@ -3230,8 +3032,34 @@ a.action-quiet:hover .action-arrow {
 */
 .footer-cta {
   max-width: 28rem;
-  --btn-chip-bg: var(--paper-raised);
-  --btn-chip-fg: var(--ink);
+  /*
+    The chip shares the BAR's material, not the page's.
+
+    `.btn-strong` sets `--btn-chip-bg: var(--paper)`, which on this footer is
+    the page navy itself — chip and background measured identically
+    rgb(22,28,64), so the chip vanished and the arrow appeared to float
+    detached from a bar stopping 33px short. `--paper-raised` was the first
+    attempt and only an 8-point step (rgb(30,36,80) vs #161c40): still
+    essentially invisible next to a bar at rgb(199,203,242), so the two
+    halves of ONE object read as two different materials.
+
+    Giving the chip the bar's own light tone makes the button read as a
+    single piece whose right edge happens to step. The geometry was never
+    wrong here — bar 384 / tongue 389-418 / chip 417-469 is perfectly
+    contiguous. This was purely tonal, and it fooled me three times.
+  */
+  --btn-chip-bg: var(--btn-bar-bg);
+  --btn-chip-fg: var(--paper);
+}
+
+/*
+  `.btn-strong` also declares `--btn-chip-fg` and is defined LATER in the
+  file, so at equal specificity it won and the arrow stayed light-on-light
+  (measured rgb(199,203,242) on a chip of the same value — effectively
+  invisible). Doubling the class outranks it without an `!important`.
+*/
+.footer-cta.footer-cta {
+  --btn-chip-fg: var(--paper);
 }
 
 .footer-lower {
