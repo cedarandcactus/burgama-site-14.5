@@ -74,13 +74,40 @@
     The names are therefore deliberately misleading. Prefer the semantic
     tokens below (--paper / --ink / --plum / --peri) in all new work.
   */
-  --paper: #e8e9f0;
-  --paper-raised: #f7f7fa;
-  --paper-sunk: #d6d8e4;
-  --ink: #14182f;
-  --ink-soft: #4a4f6a;
+  /*
+    AMBER ON GREY. The ground is grey and the type is amber, so `--paper` is
+    the grey and `--ink` is the amber. Every rule on the site is written
+    against these two, which is why the whole palette turns over from here.
+
+    ON THE GREY VALUE — read before "correcting" it to match the reference.
+    The reference art is roughly #EFC07A type on a #808080 ground, which
+    measures about 2.4:1. That is unreadable for body copy, and body copy is
+    now the largest thing on the page. #545454 is the lightest grey that
+    still clears 4.5:1 against this amber (computed, not guessed), so it is
+    deliberately a few steps darker than the source image. The amber-on-grey
+    character is intact; the contrast is not optional.
+  */
+  --paper: #545454;
+  --paper-raised: #616161;
+  --paper-sunk: #474747;
+  --ink: #efc07a;
+  /*
+    Secondary type. Kept close to `--ink` rather than faded toward the
+    ground — the flat-UI rule forbids hierarchy by opacity, and dimming this
+    far enough to read as "soft" would drop it below contrast.
+  */
+  --ink-soft: #e3b273;
   --plum: #574c5e;
   --peri: #a9a5d9;
+
+  /*
+    The deep field media sits on. NOT `--ink`: an amber panel would put amber
+    media on amber and leave the brightest colour on the page carrying the
+    largest area. Media reads against neutral, type stays the only amber.
+  */
+  --panel: #333333;
+  /* The reference's one cool accent, used on the small pill. */
+  --accent-blue: #8fb8ea;
 
   /* Legacy aliases — see note above. */
   --navy: var(--paper);
@@ -399,14 +426,14 @@
 }
 
 /* Small justified body, centred and narrow, exactly as the poster sets it. */
+/*
+  Size, measure and leading come from the big-body group below. This block
+  keeps only what is specific to the homepage: the copy runs the full page
+  width now, so the old 46rem centred measure and its centred last line are
+  gone — a centred last line under a full-bleed block reads as an accident.
+*/
 .poster-body {
   width: 100%;
-  max-width: 46rem;
-  margin-inline: auto;
-  text-align: justify;
-  text-align-last: center;
-  font-size: 0.75rem;
-  line-height: 1.65;
   color: var(--ink-soft);
 }
 
@@ -419,17 +446,20 @@
 }
 
 /*
-  The title sits over the artifact. mix-blend-mode: difference means it
-  stays legible across both the pale ground and the dark object without a
-  scrim — it inverts against whatever is behind it, which also matches the
-  invert reference.
+  The title sits over the artifact. It used `color: --paper` with
+  mix-blend-mode: difference, which worked when the ground was near-white
+  paper and the object was near-black — the inversion was strong either way.
+
+  With a mid-grey ground that blend fails: differencing amber against #545454
+  computes to a muddy brown (155,108,38) that all but disappears. Mid-tones
+  have nothing to invert *to*. Plain amber is used instead, which has real
+  contrast against both the page grey and the darker panel behind it.
 */
 .poster-title-over {
   position: absolute;
   inset-inline: 0;
   margin: 0;
-  color: var(--paper);
-  mix-blend-mode: difference;
+  color: var(--ink);
   pointer-events: none;
 }
 
@@ -586,7 +616,8 @@
   min-height: clamp(14rem, 42vw, 31rem);
   padding: clamp(1.25rem, 3.5vw, 3rem);
   border-radius: clamp(1.25rem, 3vw, 2.75rem);
-  background-color: var(--ink);
+  /* `--panel`, not `--ink` — see the token note. Amber stays type-only. */
+  background-color: var(--panel);
 }
 
 .spread-panel .artifact,
@@ -597,25 +628,24 @@
 }
 
 /*
-  Everything inside the panel is on ink, so the slot's own paper-ground
-  outline, fill and annotation colours all have to flip to paper.
+  Annotations inside the panel mix from `--ink` (amber), NOT `--paper`. Paper
+  is now a mid grey and the panel is a darker grey, so the old paper-based
+  mixes would have put grey on grey and effectively vanished. Amber is the
+  only colour with contrast against this field.
 */
 .spread-panel .artifact-empty,
 .spread-panel .case-media-frame {
-  outline-color: color-mix(in srgb, var(--paper) 24%, transparent);
-  background-color: color-mix(in srgb, var(--paper) 6%, transparent);
+  outline-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  background-color: color-mix(in srgb, var(--ink) 7%, transparent);
 }
 
 .spread-panel .artifact-slug {
-  color: color-mix(in srgb, var(--paper) 74%, transparent);
+  color: var(--ink);
 }
 
-.spread-panel .artifact-slug-kind {
-  color: color-mix(in srgb, var(--paper) 46%, transparent);
-}
-
+.spread-panel .artifact-slug-kind,
 .spread-panel .artifact-caption {
-  color: color-mix(in srgb, var(--paper) 56%, transparent);
+  color: color-mix(in srgb, var(--ink) 68%, transparent);
 }
 
 /*
@@ -663,64 +693,66 @@
 }
 
 /* ------------------------------------------------------------------
-   Body copy — tiny letter-spaced uppercase mono, sitewide
+   Body copy — BIG and WIDE, sitewide
 
-   From the reference, where every paragraph is set in small tracked caps
-   mono well below normal body size. Declared ONCE as a grouped rule rather
-   than per component so the treatment cannot drift apart later.
+   This REVERSES the tiny tracked-caps mono treatment that was here before.
+   The reference sets body copy as the largest element on the page: large
+   lowercase sans running nearly edge to edge, justified with hyphenation.
+   Copy is the content, so copy gets the size.
 
-   Three things to know before editing:
-   - Tracked caps run much wider per character, so measures are set in `ch`
-     and are deliberately short. Reusing a lowercase measure here gives a
-     line far too long to track back to.
-   - Caps need more leading than lowercase to stay readable. 1.75 is the
-     floor that still looks set rather than cramped.
-   - Display type (wordmark, case title, quote, contact address) is NOT in
-     this group. It stays in the Standard/Extended faces at large sizes —
-     the contrast between tiny mono copy and huge display is the whole idea.
+   Rules for editing:
+   - Lowercase, not caps. At this size caps are shouting and lose the
+     word-shapes that make a long measure readable.
+   - No `max-width`. Wide is half the instruction; a 46ch measure at 40px
+     would be six words a line. Prose spans the gutters.
+   - Justified with hyphens, which is what makes a full-width block read as
+     a set page rather than as an overflowing paragraph. Hyphenation is
+     REQUIRED here, not decorative: justifying a wide measure without it
+     opens rivers of white space between words.
+   - Small utility text (spec labels/values, column titles, captions) is
+     NOT in this group and stays small in mono. The contrast between huge
+     prose and small labels is the whole structure.
 ------------------------------------------------------------------ */
 
 .poster-body,
-.spread-copy,
-.page-hero-column-body,
 .case-summary,
-.case-spec-value,
 .case-module-body {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  line-height: 1.75;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: clamp(1.375rem, 2.4vw, 2.5rem);
+  line-height: 1.26;
+  letter-spacing: -0.015em;
+  /* Full width: overrides the narrow measures these carried before. */
+  max-width: none;
+  text-align: justify;
+  hyphens: auto;
+  text-transform: none;
 }
 
 /*
-  Justified with hyphenation, as the reference sets it. The ragged edge of
-  tracked caps is markedly messier than lowercase, and justifying is what
-  makes each paragraph read as a printed block. Excludes the spec list,
-  whose values are single short phrases that justification would stretch.
+  The spread's intro copy sits in a HALF-width column, so it cannot take the
+  full-width size — measured, 2.5rem in a ~430px column gives about ten
+  characters a line. It scales one step down so it still reads as big body
+  copy without collapsing into a column of fragments.
 */
-.poster-body,
-.spread-copy,
-.page-hero-column-body,
-.case-summary,
-.case-module-body {
+.spread-copy {
+  font-family: var(--font-sans);
+  font-size: clamp(1.0625rem, 1.5vw, 1.5rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   text-align: justify;
   hyphens: auto;
+  text-transform: none;
 }
 
-/* Caps copy needs a shorter measure than the lowercase original. */
-.case-module-body,
-.case-summary {
-  max-width: 46ch;
-}
-
-/* The small caps labels move to the same mono face as the copy. */
+/* Small text keeps the mono face — the counterweight to the big prose. */
 .poster-label,
 .artifact-caption,
 .artifact-slug,
 .case-module-title,
 .case-spec-label,
+.case-spec-value,
 .page-hero-column-title,
+.page-hero-column-body,
 .artifact-index-meta {
   font-family: var(--font-mono);
 }
@@ -729,6 +761,87 @@
   font-size: 0.625rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.page-hero-column-body {
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+
+/* ------------------------------------------------------------------
+   Pill buttons — three sizes, from the reference
+
+   Fully rounded (`border-radius: 999px`), which is a deliberate exception to
+   the site's uniform 10px corner: the reference's controls are pills and the
+   whole point of this pass is its sizing language. Amber fill with a grey
+   label — the same inversion the site already uses for hover states, so the
+   control reads as part of the system rather than as a new colour.
+
+   Sizes are `.pill-sm` / default / `.pill-wide`. They differ in padding and
+   size, NOT in radius, so they still read as one family.
+------------------------------------------------------------------ */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.6rem 1.35rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: transform var(--dur-med) var(--ease-smooth);
+}
+
+.pill-sm {
+  padding: 0.45rem 1rem;
+  font-size: 0.9375rem;
+}
+
+/* Wide is extra horizontal padding only — same height, same radius. */
+.pill-wide {
+  padding-inline: 2.25rem;
+}
+
+/*
+  The reference's one cool control. Blue is light enough that it takes the
+  same dark-grey label rather than paper.
+*/
+.pill-accent {
+  background: var(--accent-blue);
+  color: #23303f;
+}
+
+.pill:hover,
+.pill:focus-visible {
+  transform: translateY(-1px);
+}
+
+/* The reference groups its controls in a row at the trailing edge. */
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill {
+    transition: none;
+  }
+
+  .pill:hover,
+  .pill:focus-visible {
+    transform: none;
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -778,10 +891,8 @@
   color: var(--ink);
 }
 
+/* Size and measure come from the big-body group; only colour is set here. */
 .case-summary {
-  max-width: 62ch;
-  font-size: 0.8125rem;
-  line-height: 1.7;
   color: var(--ink-soft);
 }
 
@@ -840,13 +951,15 @@
   color: color-mix(in srgb, var(--ink) 55%, transparent);
 }
 
+/*
+  Size, measure and leading are NOT set here — they come from the big-body
+  group above. Re-declaring them here would silently win on source order and
+  undo the whole treatment, which is exactly what happened the first time.
+*/
 .case-module-body {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-width: 62ch;
-  font-size: 0.875rem;
-  line-height: 1.7;
+  gap: 0.75em;
   color: var(--ink-soft);
 }
 
@@ -1445,10 +1558,11 @@ a.action-quiet:hover .action-arrow {
   border-bottom: 1px solid var(--rule);
 }
 
+/* Two positions: wordmark left, inline arrow links right. */
 .site-nav-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: 1.5rem;
   padding: 1.125rem var(--page-gutter);
   /* Capped to the same measure as `.wide` so the chrome aligns with content. */
@@ -1456,47 +1570,76 @@ a.action-quiet:hover .action-arrow {
   margin-inline: auto;
   }
 
+/* The wordmark is set large, as in the reference. */
 .site-nav-brand {
-  justify-self: start;
-  font-size: 1.125rem;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--periwinkle);
 }
 
 /*
-  Monoline caps, matching the poster masthead — the nav reads as another
-  ruled label row rather than as web navigation.
+  Inline sentence-case links with arrows, sized to sit alongside the wordmark
+  rather than reading as small print. Replaces the tracked-caps comma list.
 */
 .site-nav-index {
-  justify-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
   color: var(--periwinkle) !important;
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  }
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
 
 .site-nav-link {
-  color: color-mix(in srgb, var(--periwinkle) 64%, var(--navy));
-  transition: color 240ms var(--ease-module);
-}
-
-.site-nav-link:hover,
-.site-nav-link:focus-visible,
-.site-nav-link.is-current {
+  /*
+    Full-strength colour, not a dimmed mix. At this size a 64% mix against
+    the ground read as disabled rather than as secondary, and the flat-UI
+    rule forbids hierarchy by opacity.
+  */
   color: var(--periwinkle);
-  background: transparent;
+  transition: opacity 240ms var(--ease-module);
 }
 
-/* Solid pill, matching the reference's nav CTA. Colour comes from `action`. */
-.site-nav-contact {
-  justify-self: end;
+/* The arrow rides slightly high and small, as a mark beside the word. */
+.site-nav-arrow {
+  display: inline-block;
+  margin-left: 0.1em;
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 1;
+  transition: transform 240ms var(--ease-module);
 }
 
-/* The index and the contact link collapse into a single toggle on small screens. */
+@media (prefers-reduced-motion: reduce) {
+  .site-nav-arrow {
+    transition: none;
+  }
+}
+
+/*
+  Links are already full strength, so hover cannot brighten them. It nudges
+  the arrow instead, which keeps the flat rule (no opacity hierarchy) while
+  still giving the link a response.
+*/
+.site-nav-link:hover .site-nav-arrow,
+.site-nav-link:focus-visible .site-nav-arrow {
+  transform: translate(1px, -1px);
+}
+
+.site-nav-link.is-current {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+/* The index collapses into a single toggle on small screens. */
 .site-nav-toggle {
   display: none;
-  justify-self: end;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--periwinkle);
 }
 
@@ -1505,12 +1648,7 @@ a.action-quiet:hover .action-arrow {
 }
 
 @media (max-width: 760px) {
-  .site-nav-row {
-    grid-template-columns: 1fr auto;
-  }
-
-  .site-nav-index,
-  .site-nav-contact {
+  .site-nav-index {
     display: none;
   }
 

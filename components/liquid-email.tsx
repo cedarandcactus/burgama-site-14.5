@@ -32,11 +32,19 @@ export function LiquidEmail() {
         {ADDRESS}
       </a>
 
-      <p className="case-module-body">
-        <button type="button" onClick={copyAddress} className="case-action">
+      {/*
+        These were an inline text button inside `.case-module-body`, which is
+        now the big justified body treatment — a control stretched inside a
+        40px justified paragraph. They are pills in their own row instead.
+      */}
+      <div className="contact-actions">
+        <button type="button" onClick={copyAddress} className="pill pill-sm pill-accent">
           {copied ? 'Copied' : 'Copy address'}
         </button>
-      </p>
+        <a href={`mailto:${ADDRESS}`} className="pill pill-wide">
+          Start a project
+        </a>
+      </div>
     </div>
   )
 }

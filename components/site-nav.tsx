@@ -5,10 +5,18 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { BrandMark } from '@/components/brand-mark'
 
+/*
+  The reference nav reads `Index ↗ Work ↗ About ↗ Ideas ↗`. Those labels are
+  kept only where a real page answers to them: "Index" is the homepage and
+  "About" is the studio page. "Ideas" has no route on this site, and adding a
+  nav item that goes nowhere is worse than not matching the reference, so the
+  fourth slot is Contact — a page that exists.
+*/
 const LINKS = [
+  { label: 'Index', href: '/' },
   { label: 'Work', href: '/work' },
-  { label: 'Studio', href: '/studio' },
-  { label: 'Capabilities', href: '/studio#capabilities' },
+  { label: 'About', href: '/studio' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export function SiteNav() {
@@ -37,31 +45,32 @@ export function SiteNav() {
 
   return (
     <nav aria-label="Primary" className="site-nav">
-      {/* Three fixed positions across the full page width: brand, index, contact. */}
+      {/*
+        Two positions only: wordmark left, inline arrow links right. The
+        separate "Start a project" pill is gone — Contact is now one of the
+        links, and a pill beside them would be a second competing CTA.
+      */}
       <div className="site-nav-row">
         <Link href="/" aria-label="Burgama, home" className="site-nav-brand">
           <BrandMark />
         </Link>
 
-        {/* The index reads as one continuous line, comma separated. */}
         <p className="site-nav-index">
-          {LINKS.map((link, index) => (
-            <span key={link.href}>
-              <Link
-                href={link.href}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-                className={isActive(link.href) ? 'site-nav-link is-current' : 'site-nav-link'}
-              >
-                {link.label}
-              </Link>
-              {index < LINKS.length - 1 ? ', ' : null}
-            </span>
+          {LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              className={isActive(link.href) ? 'site-nav-link is-current' : 'site-nav-link'}
+            >
+              {link.label}
+              {/* Decorative: the arrow is part of the mark, not information. */}
+              <span aria-hidden="true" className="site-nav-arrow">
+                ↗
+              </span>
+            </Link>
           ))}
         </p>
-
-        <Link href="/contact" className="site-nav-contact action">
-          Start a project
-        </Link>
 
         <button
           type="button"
