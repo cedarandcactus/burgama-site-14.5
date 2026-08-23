@@ -143,18 +143,19 @@ export default function StudioPage() {
         </section>
 
         {/*
-          These were dot-separated inline text links. Now that body text is
-          set large, they rendered as two oversized underlined phrases with no
-          shape — reading as stray prose rather than actions. They are
-          buttons in the rectangular family instead: starting a project is
-          the page's primary action and gets the BIG FAT variant, browsing
-          the work is secondary at default size.
+          These were dot-separated inline text links, which at the current
+          body scale read as stray underlined prose rather than actions.
+
+          One group, so one tone and one geometry — no "primary vs secondary"
+          treatment. Both navigate away, so both carry the established arrow;
+          they differ only in label length, and therefore width.
         */}
         <section aria-label="Elsewhere" className="contact-actions">
           <Link href="/work" className="btn btn-muted">
             See the work
+            <span aria-hidden="true">↗</span>
           </Link>
-          <Link href="/contact" className="btn btn-big btn-strong">
+          <Link href="/contact" className="btn btn-muted">
             Start a project
             <span aria-hidden="true">↗</span>
           </Link>

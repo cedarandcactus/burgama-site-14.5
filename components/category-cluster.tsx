@@ -8,9 +8,12 @@
  * vocabulary. So this reuses the existing `.btn` primitives rather than
  * introducing a chip/tag/badge that does the same job.
  *
- * These are `.btn-sm`, which is a smaller BLOCK — the label stays at reading
- * size. The rules are explicit that categories are actual graphic elements,
- * not tiny metadata typography, so this must never be shrunk into caps.
+ * These are `.btn-cat`, the sanctioned smaller member of the action-button
+ * family: same rectangular geometry, same flat construction, same
+ * typography, less physical mass. It is a smaller BLOCK — the label stays at
+ * reading size. The rules are explicit that categories are actual graphic
+ * elements, not tiny metadata typography, so this must never be shrunk into
+ * caps, and it must not become a separate badge/chip/tag design.
  *
  * Rendered as SPANS, not buttons or links. These clusters sit inside the
  * row-level `<a>` of an index, and nesting interactive elements inside an
@@ -34,7 +37,7 @@ export function CategoryCluster({
   return (
     <span className={className ? `category-cluster ${className}` : 'category-cluster'}>
       {items.map((item) => (
-        <span key={item} className="btn btn-sm btn-muted">
+        <span key={item} className="btn btn-cat btn-muted">
           {item}
         </span>
       ))}

@@ -33,23 +33,22 @@ export function LiquidEmail() {
       </a>
 
       {/*
-        These were an inline text button inside `.case-module-body`, which is
-        now the big justified body treatment — a control stretched inside a
-        40px justified paragraph. They are rectangular blocks in their own
-        row instead.
+        Two action buttons in one group, so per the button-system rules they
+        share ONE tone and ONE geometry — the earlier version made "Start a
+        project" a larger, paler "primary" beside a recessed secondary, which
+        is exactly the per-button differentiation the rules disallow. They now
+        differ only in label, and therefore in width.
 
-        Starting a project is the primary action on this page, so it is the
-        BIG FAT variant: same rectangle and same slight radius as the
-        secondary beside it, much more mass, large label, plus the
-        established arrow. The copy button stays at default size and the
-        recessed tone, so emphasis comes from scale and fill rather than from
-        shrinking the quieter label.
+        Only the link carries the arrow: the glyph signals navigation, and
+        putting it on the copy button (which stays on the page) would make it
+        decoration. The copy button's label also swaps to "Copied", so its
+        width changes on click — correct behaviour for a content-driven width.
       */}
       <div className="contact-actions">
         <button type="button" onClick={copyAddress} className="btn btn-muted">
           {copied ? 'Copied' : 'Copy address'}
         </button>
-        <a href={`mailto:${ADDRESS}`} className="btn btn-big btn-strong">
+        <a href={`mailto:${ADDRESS}`} className="btn btn-muted">
           Start a project
           <span aria-hidden="true">↗</span>
         </a>
