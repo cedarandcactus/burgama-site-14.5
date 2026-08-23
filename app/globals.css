@@ -248,9 +248,9 @@
 ------------------------------------------------------------------ */
 
 /*
-  A slot with no asset yet. It is deliberately quiet — a hairline frame and
-  tiny caps label — so an unfilled page still reads as a composition rather
-  than a broken one. Placeholders must never look like an error.
+  A slot with no asset yet. It is deliberately quiet — a faint frame and a
+  low-contrast annotation — so an unfilled page still reads as a composition
+  rather than a broken one. Placeholders must never look like an error.
 */
 .artifact {
   position: relative;
@@ -281,10 +281,16 @@
   flex-direction: column;
   gap: 0.375rem;
   padding: 1rem;
-  font-size: 0.625rem;
-  line-height: 1.4;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  /*
+    Reading scale, set back by tone. Was 0.625rem tracked uppercase — the
+    same tiny-caps metadata treatment removed everywhere else. Not caught by
+    the browser audit because every slot on the live pages has its asset, so
+    this placeholder annotation never rendered; found by reading the CSS.
+  */
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  text-transform: none;
   color: color-mix(in srgb, var(--ink) 52%, transparent);
 }
 
@@ -509,7 +515,7 @@
    Used by EVERY interior page hero (/work, /studio, /contact and each case
    study). Left column: a three-dot mark at the top, then caps labels, body
    copy, and an oversized wordmark anchored at the BOTTOM. Right column: a
-   single ink panel with large rounded corners holding the artifact.
+   single panel, slightly rounded, holding the artifact.
 
    The empty upper-left is the composition, not an accident — content is
    weighted hard to the bottom-left. That is why the left column is a flex
@@ -660,8 +666,14 @@
   justify-content: center;
   min-height: clamp(14rem, 42vw, 31rem);
   padding: clamp(1.25rem, 3.5vw, 3rem);
-  border-radius: clamp(1.25rem, 3vw, 2.75rem);
-  /* `--panel`, not `--ink` — see the token note. Amber stays type-only. */
+  /*
+    Was `clamp(1.25rem, 3vw, 2.75rem)`, computing to 27px — heavy rounding on
+    a content panel. Generous rounding belongs to buttons; panels, images and
+    sections take the site's slight `--radius-module` corner. Found by
+    scanning computed radii in the browser, not by reading the file.
+  */
+  border-radius: var(--radius-module);
+  /* `--panel`, not `--ink` — see the token note. Ink stays type-only. */
   background-color: var(--panel);
 }
 

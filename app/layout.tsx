@@ -46,9 +46,15 @@ export const metadata: Metadata = {
   },
 }
 
+/*
+  Both values were left over from the light palette (`#e8e9f0` was the old
+  off-white ground). The site is deep navy now, so the browser was being told
+  the opposite of what it renders — which affects the mobile address-bar
+  colour and form-control rendering. `themeColor` matches `--paper`.
+*/
 export const viewport: Viewport = {
-  colorScheme: 'light',
-  themeColor: '#e8e9f0',
+  colorScheme: 'dark',
+  themeColor: '#161c40',
 }
 
 export default function RootLayout({
