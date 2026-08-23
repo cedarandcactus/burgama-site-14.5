@@ -2558,9 +2558,41 @@ a.action-quiet:hover .action-arrow {
 
 /* --- Footer ------------------------------------------------------ */
 
+/*
+  A modular field with an inward top notch, not a bordered band.
+
+  Was `background: var(--navy)` + `border-top: 1px solid var(--rule)`.
+  `--navy` is an alias of `--paper` and `--rule` is transparent, so the
+  footer was the page colour separated by nothing — a notch cut into it
+  would have been invisible. It is now a `--panel` plane, which both makes
+  the stepped edge readable and replaces the hairline rule with a real
+  change of material.
+
+  The recess geometry itself comes entirely from `.mfield--recess-top`; the
+  only thing set here is the surface and the notch's proportions.
+*/
 .page-footer {
-  border-top: 1px solid var(--rule);
-  background: var(--navy);
+  --f-face: var(--panel);
+  /* Wider than a field notch — this is a page-scale edge. */
+  --notch-recess: 46%;
+  /* Deeper than the default (which matches the curve) so the step reads at
+     page scale, but still shallow relative to the footer's height. */
+  --notch-depth: 18px;
+  /* Squared off: the footer runs to the bottom of the viewport, so rounding
+     these would leave two slivers of page colour under the panel. */
+  --f-rbl: 0;
+  --f-rbr: 0;
+  margin-top: clamp(3rem, 7vw, 6rem);
+  background: transparent;
+}
+
+/*
+  The body carries the surface so the four shape pieces and the content
+  plane share one continuous colour.
+*/
+.page-footer > .mfield-body {
+  border-radius: var(--f-rtl) var(--f-rtr) 0 0;
+  background: var(--f-face);
 }
 
 .footer-columns {
@@ -2865,10 +2897,17 @@ body:has(.lot-poster) > .site-nav {
   Every variant reserves room for the step by padding the OUTER element,
   which pushes the body inward and leaves the tab somewhere to live.
 */
+/*
+  The step depth IS the curve depth. Reserving `curve-y * 2` made the
+  shoulders twice as tall as the geometry called for and turned a shallow
+  architectural step into a deep bite — measured as a 16px offset against an
+  8px curve. A dedicated token keeps depth tunable without touching the
+  curve, and defaults to matching it exactly.
+*/
 .mfield--tab-top-left,
 .mfield--tab-top-right,
 .mfield--recess-top {
-  padding-top: calc(var(--notch-curve-y) * 2);
+  padding-top: var(--notch-depth, var(--notch-curve-y));
 }
 
 /* ---- outward tab, top edge, left portion ---- */
