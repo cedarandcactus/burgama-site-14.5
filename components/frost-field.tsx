@@ -87,12 +87,25 @@ export function FrostFieldProvider() {
       },
       {
         /*
-         * Collapse the viewport to a ~90px band near the top, where the
-         * floating nav lives. `-90%` bottom margin means "ignore everything
-         * below the top tenth of the screen".
+         * Collapse the viewport to a band at the top, where the floating
+         * chrome lives.
+         *
+         * `-90%` was too tight: it left a ~74px sliver, so whenever a gap
+         * between two sections passed the top of the screen NO section was
+         * intersecting, `active` emptied, and the last tint stuck. Measured
+         * with the panel section at top:155 while the band ended at 90 —
+         * nothing matched and the material never retinted.
+         *
+         * `-75%` gives roughly the top quarter, which is always covered by
+         * some section on these pages, so the band is never empty mid-page.
          */
-        rootMargin: '-16px 0px -90% 0px',
-        threshold: 0,
+        rootMargin: '0px 0px -75% 0px',
+        /*
+         * Several thresholds so the callback also fires while a tall section
+         * is crossing, not only at the moment it enters. With `0` alone a
+         * 700px section reports once and then stays silent.
+         */
+        threshold: [0, 0.01, 0.5],
       },
     )
 

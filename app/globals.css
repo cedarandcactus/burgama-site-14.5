@@ -3214,9 +3214,24 @@ a.action-quiet:hover .action-arrow {
   vertical-align: 0.05em;
 }
 
-/* The CTA is capped so `.btn--long`'s width:100% doesn't span 1920px. */
+/*
+  The CTA is capped so `.btn--long`'s width:100% doesn't span 1920px.
+
+  CHIP TONE OVERRIDE. `.btn-strong` sets `--btn-chip-bg: var(--paper)`, which
+  works on a light panel where the chip reads as an inset. The footer sits
+  directly on the page, so `--paper` made the chip the SAME navy as the
+  background — measured as chip and tongue both rgb(22,28,64) against an
+  identical backdrop, leaving the arrow apparently floating detached from a
+  bar that stopped 33px short. The geometry was correct the whole time; only
+  the tone was wrong.
+
+  A raised step keeps the chip legible as its own piece while staying inside
+  the navy family, so the stepped joint still reads as one object.
+*/
 .footer-cta {
   max-width: 28rem;
+  --btn-chip-bg: var(--paper-raised);
+  --btn-chip-fg: var(--ink);
 }
 
 .footer-lower {

@@ -112,9 +112,17 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* The wordmark closes the page, set large and flush left. */}
+        {/*
+          The wordmark closes the page, set large and flush left.
+
+          `mblur-y` opts it into the movement-driven blur: it is exactly the
+          kind of element that suits it — a single large display form, not
+          body copy, where softening during fast scroll reads as momentum
+          rather than making text hard to read. The blur is directional,
+          capped low, and returns to exactly 0 at rest.
+        */}
         <div className="footer-sign">
-          <BrandMark className="footer-wordmark" />
+          <BrandMark className="footer-wordmark mblur-y" />
           <p className="footer-note">
             Independent studio{' '}
             <span aria-hidden="true" className="footer-ding is-small">
