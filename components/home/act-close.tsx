@@ -63,7 +63,22 @@ export function ActClose() {
         className="msurface handoff-over msurface--studio"
         aria-labelledby="studio-title"
         data-field="paper"
-        data-frame="contained"
+        /*
+          OPEN, for two reasons that both come from this being the COVERING
+          layer rather than an ordinary step in the descent.
+
+          A contained frame here was inset 8px with a 22px radius, so while
+          it travelled up it left contact showing down both gutters and
+          around its corners — it read as a rounded card floating over
+          content instead of a plane being lifted off. Edge to edge, it
+          covers contact completely and the gesture reads correctly.
+
+          It also keeps the alternation intact: Capabilities above is
+          contained, and this pair is ONE slot in the rhythm (two layers
+          occupying a single viewport, never seen side by side), so both of
+          its surfaces being open is consistent rather than a repeat.
+        */
+        data-frame="open"
       >
         <h2 id="studio-title" className="studio-lead">
           Burgama shapes identities and digital experiences for people with

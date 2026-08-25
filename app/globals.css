@@ -2849,9 +2849,17 @@ a.action-quiet:hover .action-arrow {
 /* A readout, not a control: no pointer affordance, quieter fill. */
 .console-module.is-static {
   background: color-mix(in srgb, var(--mod-ink) 8%, transparent);
-  /* Mixed toward the ground rather than using `--ink-soft`, which is a navy
-     token and would not soften correctly on a light field. */
-  color: color-mix(in srgb, var(--mod-ink) 72%, var(--mod-ground));
+  /*
+  Mixed toward the ground rather than using `--ink-soft`, which is a navy
+  token and would not soften correctly on a light field.
+
+  86%, not 72%. This module is a READOUT, so softening it is right — but at
+  72% it measured 4.23:1 ("7 projects" on /work, "Work With Us" on
+  /contact), under the 4.5:1 floor. Secondary emphasis must not cost
+  legibility; the quieter 8% fill above already signals "not a control", so
+  the colour only needs to be a shade softer than the live modules.
+  */
+  color: color-mix(in srgb, var(--mod-ink) 86%, var(--mod-ground));
   cursor: default;
 }
 
@@ -4098,9 +4106,18 @@ body:has(.lot-poster) > .mobile-console {
      Work       contained
      Research   open
      More Work  contained
-     Statement  typography-led (own treatment)
+     Statement  open (typography-led; no image, no container)
      Capabilit. contained
-     Close      open
+     Close      open  <- TWO surfaces, ONE slot: see below
+
+   `ActClose` renders two `.msurface`es (studio over contact), so the page has
+   EIGHT surfaces for seven slots. They are a stacked pair — sticky in the same
+   viewport, one lifted off the other — so they are never seen side by side and
+   count as a single "open" step. Both therefore carry `data-frame="open"`;
+   that is deliberate, not a duplicated value.
+
+   Studio in particular MUST stay open: contained, it was inset 8px with a
+   22px radius and revealed contact down both gutters as it travelled.
 
    Implemented as `data-frame` on the existing wrappers rather than as new
    classes, because `.msurface--open` already means "the Opening act" — a
