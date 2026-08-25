@@ -21,10 +21,34 @@ export type ContentModule =
   | { type: 'quote'; body: string }
   | { type: 'process'; title: string; steps: { title: string; body: string }[] }
 
+/**
+ * The tonal family a case study is set in.
+ *
+ * Only these five are valid on a project: the three case-study families plus
+ * navy and magenta, the two site fields that also work as a full-page ground.
+ *
+ * Periwinkle is deliberately excluded. It is the one field that inverts to a
+ * LIGHT ground, and a case study is a long read — setting some projects light
+ * and others dark would make the archive feel like it was built by different
+ * people. It stays a homepage accent.
+ *
+ * Every value needs a matching `[data-field='…']` block in globals.css.
+ */
+export type ProjectField = 'paper' | 'magenta' | 'pine' | 'rust' | 'teal'
+
 export type Project = {
   id: string
   slug: string
   title: string
+  /**
+   * This project's ground, chosen for its subject rather than for variety —
+   * the pitch is green, food is warm, wealth work stays institutional navy.
+   *
+   * Repeats are expected: there are more projects than families, and
+   * inventing a sixth so every project could be unique would dilute the set
+   * into a palette-per-page free-for-all. Two projects sharing pine is fine.
+   */
+  field: ProjectField
   client: string
   year: string
   summary: string
@@ -47,6 +71,8 @@ export const projects: Project[] = [
     id: 'matchday',
     slug: 'matchday',
     title: 'MatchDay',
+    /* Football pickup platform — the grass of the pitch. */
+    field: 'pine',
     client: 'MatchDay',
     year: 'Ongoing engagement',
     summary: 'A joined-up growth and content partnership for a football pickup platform.',
@@ -72,7 +98,8 @@ export const projects: Project[] = [
     nextProjectSlug: 'go2bites',
   },
   {
-    id: 'go2bites', slug: 'go2bites', title: 'Go2Bites', client: 'Go2Bites', year: 'Selected work',
+    /* Food brand — warm and appetising rather than cool. */
+    id: 'go2bites', slug: 'go2bites', title: 'Go2Bites', field: 'rust', client: 'Go2Bites', year: 'Selected work',
     summary: 'A food brand expressed through digital commerce, marketing, photography and founder film.',
     disciplines: ['Web', 'Marketing', 'Content', 'Production'],
     services: ['Website', 'Marketing', 'Photography', 'Founder video'], role: 'Digital and creative partner', collaborators: [],
@@ -90,7 +117,12 @@ export const projects: Project[] = [
     credits: [{ role: 'Web, marketing, photography and production', name: 'Burgama' }], outcomes: ['A unified customer-facing system across web, marketing, photography and film.'], externalUrl: 'https://go2bites.com/', externalLabel: 'Visit Go2Bites', nextProjectSlug: 'wagner-wealth',
   },
   {
-    id: 'wagner-wealth', slug: 'wagner-wealth', title: 'Wagner Wealth', client: 'Wagner Wealth Management', year: 'Selected work',
+    /*
+      Private wealth — stays on the site's own navy. Not every project needs a
+      new colour, and an institutional finance brand is exactly where the
+      restrained default is the right answer.
+    */
+    id: 'wagner-wealth', slug: 'wagner-wealth', title: 'Wagner Wealth', field: 'paper', client: 'Wagner Wealth Management', year: 'Selected work',
     summary: 'A private wealth brand shaped through identity, digital experience and founder storytelling.',
     disciplines: ['Brand', 'Web', 'Production'], services: ['Branding', 'Website', 'Founder video'], role: 'Brand and digital partner', collaborators: [],
     heroMedia: { label: 'Wagner Wealth digital experience', ratio: 'full', src: '/work/wagner-wealth/cover.png', tone: 'surface-3' },
@@ -106,7 +138,8 @@ export const projects: Project[] = [
     ], credits: [{ role: 'Brand, web and production', name: 'Burgama' }], outcomes: ['A consistent brand story across identity, website and founder film.'], externalUrl: 'https://www.wagnerwealthtx.com/', externalLabel: 'Visit Wagner Wealth', nextProjectSlug: 'avro',
   },
   {
-    id: 'avro', slug: 'avro', title: 'AVRO', client: 'AVRO', year: 'Selected work',
+    /* Content and production work — magenta, the most editorial of the set. */
+    id: 'avro', slug: 'avro', title: 'AVRO', field: 'magenta', client: 'AVRO', year: 'Selected work',
     summary: 'A production partnership spanning commercial social, UGC and retailer collaboration content.',
     disciplines: ['Content', 'Production', 'Marketing'], services: ['Commercial production', 'Social content', 'UGC content', 'Retailer collaborations'], role: 'Content and production partner', collaborators: [],
     heroMedia: { label: 'AVRO content production', ratio: 'full', tone: 'surface-3' },
@@ -121,7 +154,12 @@ export const projects: Project[] = [
     ], credits: [{ role: 'Content and production', name: 'Burgama' }], outcomes: ['A multidisciplinary content library spanning commercial, UGC and retail formats.'], externalUrl: 'https://www.instagram.com/reel/DW9Tvp7kYqJ/', externalLabel: 'View selected AVRO content', nextProjectSlug: 'wurqly',
   },
   {
-    id: 'hiking-pony', slug: 'hiking-pony', title: 'Hiking Pony', client: 'Hiking Pony', year: 'Selected work',
+    /*
+      Outdoor brand — pine again, and deliberately so. It shares the family
+      with MatchDay because both are literally outdoors; forcing a different
+      colour purely to avoid a repeat is what turns a system into decoration.
+    */
+    id: 'hiking-pony', slug: 'hiking-pony', title: 'Hiking Pony', field: 'pine', client: 'Hiking Pony', year: 'Selected work',
     summary: 'A connected website, product design and social presence for an outdoor-minded brand.',
     disciplines: ['Web', 'Content', 'Marketing'], services: ['Website', 'Product design', 'Social'], role: 'Digital, product and social partner', collaborators: [],
     heroMedia: { label: 'Hiking Pony digital and product experience', ratio: 'full', src: '/work/hiking-pony/cover.png', tone: 'surface-1' },
@@ -140,6 +178,12 @@ export const projects: Project[] = [
     id: 'wurqly',
     slug: 'wurqly',
     title: 'Wurqly',
+    /*
+      The brand's own cobalt is the closest thing in the archive to a signal
+      colour, so teal gives it a ground in the same cool region without the
+      page competing with the identity work it is showing.
+    */
+    field: 'teal',
     client: 'Wurqly',
     year: '2025',
     summary: 'A category-defining identity and digital launch for the workforce marketplace built for every side of service work.',
@@ -251,7 +295,8 @@ export const projects: Project[] = [
     nextProjectSlug: 'cellinkey',
   },
   {
-    id: 'cellinkey', slug: 'cellinkey', title: 'CellinKey', client: 'CellinKey', year: 'Selected work',
+    /* Skincare — teal reads clean and clinical without going cold grey. */
+    id: 'cellinkey', slug: 'cellinkey', title: 'CellinKey', field: 'teal', client: 'CellinKey', year: 'Selected work',
     summary: 'A skincare ecommerce experience supported by product and brand photography.',
     disciplines: ['Web', 'Content'], services: ['Website', 'Photography'], role: 'Digital and photography partner', collaborators: [],
     heroMedia: { label: 'CellinKey ecommerce experience', ratio: 'full', src: '/work/cellinkey/cover.png', tone: 'surface-1' },

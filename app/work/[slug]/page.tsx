@@ -54,7 +54,20 @@ export default async function ProjectPage({
   ]
 
   return (
-    <>
+    /*
+      THE PROJECT'S OWN GROUND.
+
+      One `data-field` on the wrapper is the whole mechanism. Every component
+      inside already reads `--field-bg` / `--field-ink` rather than a global
+      colour, so the hero, spec rows, media frames, buttons and footer all
+      retune themselves — and because `FrostFieldProvider` reads the active
+      field's resolved tokens rather than a hardcoded map, the shell and the
+      mobile console pick up the same palette with no per-project code.
+
+      `data-field-page` marks this as the element that paints the page ground,
+      not just a section within one.
+    */
+    <div data-field={project.field} data-field-page>
       {/*
         The case study opens on the same spread as every other interior page:
         the intro copy, the project name as the wordmark, and the hero media
@@ -141,6 +154,6 @@ export default async function ProjectPage({
       </article>
 
       <SiteFooter />
-    </>
+    </div>
   )
 }

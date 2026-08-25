@@ -32,7 +32,20 @@ const DESTINATIONS = [
 
 export function SiteFooter() {
   return (
-    <footer className="page-footer mfield mfield--recess-top" data-field="panel">
+    /*
+      NO `data-field` HERE.
+
+      It used to declare `data-field="panel"`, which is hardcoded to the navy
+      family. That was invisible while every page was navy, but once case
+      studies carry their own ground it would drop a navy footer onto a pine or
+      rust page — ink and ground from different families, the one thing the
+      field system exists to prevent.
+
+      Omitting it lets the footer inherit whichever field it is inside, and
+      `.page-footer` below takes the raised step of that family so it still
+      reads as a recessed panel rather than as flat page.
+    */
+    <footer className="page-footer mfield mfield--recess-top">
       <i className="mfield-tab mfield-tab-l" aria-hidden="true" />
       <i className="mfield-tab mfield-tab-r" aria-hidden="true" />
       <i className="mfield-fil mfield-fil-l" aria-hidden="true" />

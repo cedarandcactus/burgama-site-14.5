@@ -122,8 +122,21 @@
     unrelated colour on top. That is why there is no white and no grey in
     this list — a magenta field gets pale wine type, not white type.
 
-    Three families only. A fourth would make the homepage multicolour, and
-    the page is meant to read as tonal.
+    Three families for the SITE — navy, magenta, periwinkle. A fourth in the
+    site rotation would make the homepage multicolour, and the page is meant
+    to read as tonal.
+
+    The three below that (pine, rust, teal) are CASE-STUDY ONLY, and the rule
+    above is what makes them legal rather than a loophole. A project page is a
+    self-contained artifact: you arrive on it, it is the only ground on
+    screen, and you leave. It is never seen next to another project's palette,
+    so it cannot make anything multicolour. The homepage still moves through
+    exactly three.
+
+    Each one obeys the same family discipline — ground, raised step, and an
+    ink drawn from its own hue rather than dropped on top. No white, no grey,
+    every ink measured at 4.5:1 or better against its own raised tone (the
+    worst case, since raised is the lighter of the two grounds).
   */
 
   /* MAGENTA — muted, dusty, well short of hot pink. */
@@ -147,6 +160,43 @@
   /* Deep blue-violet, i.e. the same family driven dark rather than navy. */
   --peri-field-ink: #2b2154;
   --peri-field-ink-soft: #4a3f78;
+
+  /*
+    ---- CASE-STUDY FAMILIES ----------------------------------------
+
+    Deliberately all DARK grounds with pale same-hue ink, matching navy's
+    relationship rather than periwinkle's. A case study is a long read, and
+    inverting to a light ground for some projects and not others would make
+    the archive feel like it was built by different people.
+
+    They are also all well off primary: the point is that a project has its
+    own temperature, not that it gets a bright accent.
+  */
+
+  /* PINE — deep green. The pitch, the trail. */
+  --pine: #16352c;
+  --pine-raised: #1f4438;
+  --pine-sunk: #0f2620;
+  --pine-ink: #c9e2d5;
+  --pine-ink-soft: #a4c7b6;
+
+  /* RUST — deep warm brown, kept earthy rather than orange. */
+  --rust: #542a1b;
+  --rust-raised: #663627;
+  --rust-sunk: #421f13;
+  --rust-ink: #f2d5c1;
+  --rust-ink-soft: #dcb499;
+
+  /*
+    TEAL — deep cyan-green. Reads as clearly not-navy because it moves the
+    hue past cyan; navy is blue-violet, so the two never look like a
+    near-miss of each other.
+  */
+  --teal: #0e3340;
+  --teal-raised: #16414f;
+  --teal-sunk: #09262f;
+  --teal-ink: #c2e2ec;
+  --teal-ink-soft: #9bc8d6;
 
   /*
     ---- ACTIVE FIELD -----------------------------------------------
@@ -522,6 +572,80 @@
   --field-bg-raised: var(--peri-field-raised);
   --field-ink: var(--peri-field-ink);
   --field-ink-soft: var(--peri-field-ink-soft);
+  color: var(--field-ink);
+}
+
+/*
+  A field applied to a whole PAGE has to paint its own ground.
+
+  `[data-field]` only sets variables plus `color`, which is right for a
+  section sitting inside a page that already has a background. But `<body>`
+  carries a fixed `bg-background`, so a case study declaring a field got its
+  ink and its frost recoloured while the page behind it stayed navy — ink from
+  one family on a ground from another, which is the exact thing the field
+  system exists to prevent.
+
+  `--field-page` is opt-in so this only applies to the element that IS the
+  page ground, never to every nested field.
+*/
+[data-field][data-field-page] {
+  /*
+    Painted on a fixed pseudo-element rather than as this element's own
+    background, because the element does NOT span the whole viewport:
+    `#main` adds `--main-clear` of top padding for page air, and `html`/`body`
+    keep a navy `bg-background`. A plain background therefore left a navy strip
+    above the hero and another one under short pages, plus a navy flash when
+    overscrolling. Both were visible in a screenshot.
+
+    A fixed, full-viewport layer behind the content covers all three at once
+    and keeps `#main`'s padding intact, so the page air is unchanged.
+  */
+  position: relative;
+}
+
+[data-field][data-field-page]::before {
+  content: '';
+  position: fixed;
+  /*
+    `-1px` rather than `0`: at some zoom levels / device pixel ratios a
+    fractional layout rounding left a hairline of body navy along the top
+    edge of an otherwise correct pine page.
+  */
+  inset: -1px;
+  z-index: -1;
+  background: var(--field-bg);
+  /* Matches the field transition so a palette change moves as one. */
+  transition: background-color var(--dur-slow) var(--ease-smooth);
+}
+
+/*
+  Case-study fields. Structurally identical to the three above — that is the
+  point. Because every component reads `--field-*` and never a family token,
+  declaring the four variables here is the entire cost of giving a project its
+  own palette: heroes, spec rows, media frames, buttons and the shell's frost
+  all follow with no per-project code anywhere.
+*/
+[data-field='pine'] {
+  --field-bg: var(--pine);
+  --field-bg-raised: var(--pine-raised);
+  --field-ink: var(--pine-ink);
+  --field-ink-soft: var(--pine-ink-soft);
+  color: var(--field-ink);
+}
+
+[data-field='rust'] {
+  --field-bg: var(--rust);
+  --field-bg-raised: var(--rust-raised);
+  --field-ink: var(--rust-ink);
+  --field-ink-soft: var(--rust-ink-soft);
+  color: var(--field-ink);
+}
+
+[data-field='teal'] {
+  --field-bg: var(--teal);
+  --field-bg-raised: var(--teal-raised);
+  --field-ink: var(--teal-ink);
+  --field-ink-soft: var(--teal-ink-soft);
   color: var(--field-ink);
 }
 
@@ -993,8 +1117,16 @@
     scanning computed radii in the browser, not by reading the file.
   */
   border-radius: var(--radius-module);
-  /* `--panel`, not `--ink` — see the token note. Ink stays type-only. */
-  background-color: var(--panel);
+  /*
+    The raised step of the CURRENT family — still a panel rather than ink
+    (ink stays type-only, per the token note), but no longer pinned to navy.
+
+    On a pine case study the hardcoded `--panel` put a navy slab behind the
+    hero image while everything around it was green, which read as a stray
+    block rather than as a contained panel. Measured in the browser, not read
+    off the file.
+  */
+  background-color: var(--field-bg-raised, var(--panel));
 }
 
 .spread-panel .artifact,
@@ -3126,8 +3258,12 @@ a.action-quiet:hover .action-arrow {
   the foot of the page, and, once `--hand-h` started reading this variable, a
   needlessly shortened closing surface too. Same lockstep rule the shell's own
   breakpoint note calls out.
+
+  759px exactly, matching the other console media queries and `CONSOLE_QUERY`
+  in `frost-field.tsx` — that file's comment requires the JS and CSS
+  breakpoints to be identical, so this must not be a `.98` variant of them.
 */
-@media (max-width: 759.98px) {
+@media (max-width: 759px) {
   :root {
     --console-clear: calc(env(safe-area-inset-bottom, 0px) + 5.5rem);
   }
@@ -3330,7 +3466,13 @@ a.action-quiet:hover .action-arrow {
   only thing set here is the surface and the notch's proportions.
 */
 .page-footer {
-  --f-face: var(--panel);
+  /*
+    No `--f-face` here on purpose: `.mfield` now derives it from the active
+    field, so the footer takes the raised step of whatever family it is in —
+    navy on the site's pages, pine on a pine case study. A declaration here
+    would also be dead code, since `.mfield` is defined later in the file and
+    would win on source order anyway.
+  */
   /* Wider than a field notch — this is a page-scale edge. */
   --notch-recess: 46%;
   /* Deeper than the default (which matches the curve) so the step reads at
@@ -3783,8 +3925,19 @@ body:has(.lot-poster) > .mobile-console {
   --f-rtr: var(--field-radius);
   --f-rbr: var(--field-radius);
   --f-rbl: var(--field-radius);
-  /* The surface colour, overridable per field to move through the palette. */
-  --f-face: var(--panel);
+  /*
+    The surface colour: the RAISED STEP OF THE CURRENT FAMILY, still
+    overridable per instance to move through the palette.
+
+    Was a hardcoded `var(--panel)` (navy). Because `.mfield` is defined after
+    `.page-footer` and both are single-class selectors, that navy value also
+    beat the footer's own `--f-face` on specificity-then-source-order — so
+    fixing this only at the footer had no effect at all, which is exactly what
+    the browser check caught. Fixing it here is also the more correct place:
+    every modular field should take its material from the family it is in, not
+    just the footer.
+  */
+  --f-face: var(--field-bg-raised, var(--panel));
 }
 
 .mfield-body {
