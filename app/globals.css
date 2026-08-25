@@ -2971,6 +2971,26 @@ a.action-quiet:hover .action-arrow {
   flex: 0 0 3.25rem;
   align-items: center;
   padding-inline: 1rem;
+  /*
+  UNEQUAL WIDTHS.
+
+  Measured: all four destinations rendered at exactly 301px, because a
+  column flex container stretches its children to the cross-axis width.
+  Four identical full-bleed rows is the "identical rows" pattern the brief
+  rules out — it reads as a stock mobile nav list rather than a cluster of
+  chunky controls at deliberately different widths.
+
+  Each destination now sizes to its own label, so the stack has a ragged
+  right edge and the words set the proportions. `align-self` is what
+  actually defeats the stretch.
+
+  The min-width is deliberately SMALL. An earlier attempt used 8.5rem,
+  which was wider than every label here and so re-flattened all four to an
+  identical 136px — the same defect at a narrower size. At 5rem it only
+  catches a genuinely tiny label and otherwise leaves the type in charge.
+  */
+  align-self: start;
+  min-width: 5rem;
   border-radius: calc(var(--field-radius) - 6px);
   /* Field-derived, like the modules — see `--mod-ink` on `.mobile-console`. */
   background: color-mix(in srgb, var(--mod-ink) 10%, transparent);

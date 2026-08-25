@@ -109,13 +109,38 @@ export function ActCapabilities() {
             },
             '>-0.15',
           )
-          /*
-            6. The typography arrives in the space the object just vacated,
-            wiped open from the left like the statement plates rather than
-            the usual fade-and-rise. Consistent construction language, and it
-            avoids the one entrance pattern the brief bans outright.
-          */
-          .fromTo(
+
+        /*
+          6. The typography arrives in the space the object just vacated,
+          wiped open from the left rather than the usual fade-and-rise.
+
+          DESKTOP ONLY — see below.
+        */
+        /*
+          NO LINE ENTRANCE ON NARROW SCREENS.
+
+          This step used to wipe each line open with `clip-path`. Two measured
+          problems on a 331px viewport, both traced to the same cause:
+
+          1. The lines wrap and fill the column at this width, so a partly-open
+             inset bisects words mid-glyph. On screen it read as broken text
+             clipping — "Brand identity and direct", "content systems" — not as
+             a reveal. Swapping in an opacity fade fixed the truncation but not
+             the underlying issue.
+          2. The hidden start state is written when the timeline is BUILT, and
+             this act is pinned with a scrub. Any moment the scrub had not yet
+             reached this step, the copy sat invisible (measured opacity 0)
+             rather than merely un-animated. A pinned entrance that can leave
+             the page's only plain-information act blank is a bad trade for a
+             flourish.
+
+          So mobile gets no entrance at all: the four capability lines are
+          simply present, fully opaque, exactly as authored in CSS. The wipe is
+          preserved on desktop, where the lines are short relative to their
+          column and the longer pin gives the scrub room to complete.
+        */
+        if (!short) {
+          tl.fromTo(
             scope.querySelectorAll('.cap-line'),
             { clipPath: 'inset(0 100% 0 0)', x: 14 * s },
             {
@@ -127,6 +152,9 @@ export function ActCapabilities() {
             },
             '>-0.9',
           )
+        }
+
+        tl
           /* 7. Settle — a small hold so the composition is readable at rest. */
           .to({}, { duration: 0.5 })
       }),

@@ -54,6 +54,17 @@ export function ActStatement() {
             opacity: 1,
             ease: 'none',
             stagger: 0.14,
+            /*
+              `fromTo` writes its FROM state during the setup pass, before the
+              trigger has anything to scrub against. Measured: all three lines
+              sat at opacity 0.35 while the act was still below the fold, so
+              the statement was permanently dim to anyone who never scrolled
+              it into range — and dim text is a contrast failure, not a style.
+
+              Deferring the initial render leaves the lines at their authored
+              CSS values until the trigger actually takes over.
+            */
+            immediateRender: false,
             scrollTrigger: {
               trigger: scope,
               start: 'top 80%',
