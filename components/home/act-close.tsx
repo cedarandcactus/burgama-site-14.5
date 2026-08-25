@@ -97,7 +97,13 @@ export function ActClose() {
           </h2>
 
           <div className="contact-row">
-            <a href="mailto:hello@burgama.com" className="contact-address">
+            {/*
+              `close-email`, not `contact-address` — /contact already owns
+              `.contact-address` as a block container. Reusing the name would
+              have inherited its layout here and let a later edit to either
+              page silently change the other.
+            */}
+            <a href="mailto:hello@burgama.com" className="close-email">
               hello@burgama.com
             </a>
             <div className="contact-controls">

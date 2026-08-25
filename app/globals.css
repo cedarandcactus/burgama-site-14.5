@@ -2292,9 +2292,19 @@ a.action-quiet:hover .action-arrow {
   reacts to. This only guarantees each page STARTS clear of it, so nothing
   is ever unreadable at rest.
 */
+/*
+  Published as a token as well as applied, so a full-height first section can
+  subtract the exact clearance it is sitting below. Before this, the homepage
+  opening surface was 100svh tall INSIDE a 114px-padded main and overflowed
+  the fold by exactly that much.
+*/
 @media (min-width: 900px) {
+  :root {
+    --main-clear: calc(var(--nav-h-closed, 4rem) + clamp(2rem, 5vw, 4.5rem));
+  }
+
   #main {
-    padding-top: calc(var(--nav-h-closed, 4rem) + clamp(2rem, 5vw, 4.5rem));
+    padding-top: var(--main-clear);
   }
 }
 
@@ -2304,8 +2314,12 @@ a.action-quiet:hover .action-arrow {
   hard against the viewport edge.
 */
 @media (max-width: 899px) {
+  :root {
+    --main-clear: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
   #main {
-    padding-top: clamp(1.5rem, 6vw, 2.5rem);
+    padding-top: var(--main-clear);
   }
 }
 
@@ -3537,5 +3551,708 @@ body:has(.lot-poster) > .mobile-console {
     --notch-tab-h: 70px;
     --btn-swx: 16px;
     --btn-swy: 10px;
+  }
+}
+
+/* ==================================================================
+   HOMEPAGE — MACRO SURFACES
+
+   The homepage is built from a handful of enormous rounded surfaces
+   inset from the viewport, with the page ground visible around and
+   between them. Everything else on this page lives inside one.
+
+   Obeying the two standing rules from the top of this file: NO LINES
+   (no borders, rims, rules or hairline outlines — separation is done
+   with tone) and TWO COLOUR FAMILIES (every value below is a step of
+   navy or periwinkle; no grey, white or black).
+
+   Mobile-first — the small values are the tokens and the desktop query
+   scales them UP, matching the convention established above.
+================================================================== */
+
+:root {
+  /* Ground left visible around every surface. */
+  --ms-inset: 8px;
+  /* Air between stacked surfaces: the ground showing through as a seam. */
+  --ms-seam: 8px;
+  --ms-radius: 22px;
+  /* Interior padding. These surfaces are large; the margins should feel it. */
+  --ms-pad: 22px;
+  /* Openings cut into a surface for media. */
+  --well-radius: 14px;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --ms-inset: 20px;
+    --ms-seam: 14px;
+    --ms-radius: 40px;
+    --ms-pad: 64px;
+    --well-radius: 26px;
+  }
+}
+
+/*
+  `.wordmark` was used by the existing nav and footer markup but never
+  defined anywhere in this stylesheet, so the brand face was silently
+  never applied. `--font-serif` is mapped to GT Pressura Extended in the
+  @theme block above, which is the wordmark role in the font reference.
+*/
+.wordmark {
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+}
+
+.msurface {
+  position: relative;
+  /* Inset both sides; the seam handles vertical separation. */
+  width: calc(100% - var(--ms-inset) * 2);
+  margin-inline: auto;
+  margin-block-end: var(--ms-seam);
+  padding: var(--ms-pad);
+  border-radius: var(--ms-radius);
+  /*
+    Surfaces crop their own contents — the cinematic crops on this page
+    depend on media being clipped by the surface edge itself.
+  */
+  overflow: hidden;
+  /* Paint the radius correctly while children are transformed. */
+  isolation: isolate;
+}
+
+/* Alternating grounds so consecutive surfaces read as separate objects. */
+.msurface--work,
+.msurface--research,
+.msurface--say,
+.msurface--studio {
+  background: var(--paper-raised);
+}
+
+.msurface--open,
+.msurface--more,
+.msurface--cap,
+.msurface--contact {
+  background: var(--paper-sunk);
+}
+
+/* --- ACT I: the opening ------------------------------------------ */
+
+.msurface--open {
+  /*
+    Whole on load rather than cut by the fold: the viewport, less the nav
+    clearance `#main` already applies above it, less its own inset.
+  */
+  min-height: calc(100svh - var(--main-clear, 0px) - var(--ms-inset) * 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: clamp(20px, 4vw, 44px);
+}
+
+.open-visual {
+  position: absolute;
+  /*
+    Deliberately cropped by the surface's right edge: the visual runs
+    past the boundary rather than being contained politely.
+  */
+  right: calc(var(--ms-pad) * -0.5);
+  top: 11%;
+  width: min(54%, 580px);
+  border-radius: var(--well-radius);
+  overflow: hidden;
+  /* Behind the type, which has to stay legible over it. */
+  z-index: 0;
+}
+
+.open-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Set back so the statement reads as the foreground element. */
+  opacity: 0.5;
+}
+
+.open-statement {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.1rem, 7.4vw, 5.9rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  max-width: 17ch;
+}
+
+.open-line {
+  display: block;
+}
+
+.open-identity {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  color: var(--ink-soft);
+}
+
+/* --- Work compositions (Acts II and IV) -------------------------- */
+
+/*
+  `.wcomp` is a link wrapping one project. Each variant positions its
+  own parts; there is intentionally no single shared card layout.
+*/
+.wcomp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.wcomp + .wcomp,
+.wcomp + .wpair {
+  margin-block-start: clamp(56px, 11vw, 168px);
+}
+
+.well {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--well-radius);
+  background: var(--paper);
+}
+
+.well-media {
+  display: block;
+  position: absolute;
+  /*
+    Oversized inside a fixed opening so the drift in `useImageDrift` has
+    room to travel without ever exposing an edge.
+  */
+  inset: -6% 0 auto 0;
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+}
+
+/* Wurqly: a near-full-width cinematic band. */
+.well--cinema {
+  aspect-ratio: 16 / 9;
+}
+
+/* Go2Bites: a wide landscape opening, held away from its title. */
+.well--landscape {
+  aspect-ratio: 4 / 3;
+}
+
+/* Wagner Wealth: narrow and tall, carrying air around it. */
+.well--portrait {
+  aspect-ratio: 3 / 4;
+}
+
+/* Hiking Pony: filling its surface nearly to the brim. */
+.well--brim {
+  aspect-ratio: 3 / 2;
+}
+
+/*
+  MatchDay and AVRO genuinely have no imagery in `lib/projects.ts`.
+  Rather than invent photography, these read as blank wireframe wells: a
+  flat tonal field, obviously a reserved opening rather than a failed
+  image. No outline — that would be a line.
+*/
+.well--empty {
+  aspect-ratio: 4 / 5;
+  background: color-mix(in srgb, var(--ink) 7%, var(--paper));
+}
+
+.wcomp-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wcomp-name {
+  font-size: clamp(1.35rem, 3vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.wcomp-scope {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 34ch;
+}
+
+/* Go2Bites: the title block, held away from the picture. */
+.wcomp-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wpair {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 6vw, 84px);
+}
+
+.pair-item {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/*
+  The project covers are full-page website screenshots, so they are anchored
+  to their TOP edge inside the well. Centring them crops straight through the
+  headline of the page being shown, which is the one part worth seeing.
+*/
+.wcomp--offset .well-media,
+.wcomp--air .well-media,
+.wcomp--edge .well-media {
+  object-position: center top;
+}
+
+/*
+  DESKTOP COMPOSITIONS.
+
+  Everything above is the single-column mobile reading order. These rules are
+  where the three projects stop resembling each other: without them all three
+  render as image-then-caption, which is exactly the repeated-card layout the
+  brief rules out. Each variant places its own parts.
+*/
+@media (min-width: 62rem) {
+  /* ONE — Wurqly: the video runs wide, the name sits quietly beneath it. */
+  .wcomp--wide .wcomp-caption {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  /*
+    TWO — Go2Bites: title held in the upper LEFT, picture low and RIGHT, so
+    the eye has to cross the surface instead of reading a caption under a
+    photo.
+  */
+  .wcomp--offset {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    align-items: start;
+    column-gap: clamp(32px, 6vw, 96px);
+  }
+
+  .wcomp--offset .wcomp-aside {
+    /* Sits at the top of the row. */
+    grid-column: 1;
+    padding-block-start: 8px;
+  }
+
+  .wcomp--offset .well {
+    grid-column: 2;
+    /* Dropped well below the title's baseline. */
+    margin-block-start: clamp(48px, 9vw, 152px);
+  }
+
+  /*
+    THREE — Wagner Wealth: a narrow portrait image pulled to the left with
+    its caption opposite. The empty right half IS the composition.
+  */
+  .wcomp--air {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: end;
+    column-gap: clamp(32px, 6vw, 96px);
+  }
+
+  .wcomp--air .wcomp-caption--right {
+    padding-block-end: clamp(24px, 5vw, 72px);
+  }
+
+  /*
+    FOUR — Hiking Pony: pushed out past the surface's own padding so it runs
+    nearly to the brim, which is what separates it from Wurqly's wide band.
+  */
+  .wcomp--edge .well {
+    margin-inline: calc(var(--ms-pad) * -1);
+    border-radius: 0;
+  }
+
+  /* FIVE — the asymmetric pair: major wider and lower, minor narrower and higher. */
+  .wpair {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(32px, 5vw, 88px);
+  }
+
+  .pair-item--major {
+    flex: 7;
+    margin-block-start: clamp(40px, 8vw, 128px);
+  }
+
+  .pair-item--minor {
+    flex: 5;
+  }
+}
+
+/* --- ACT III: research ------------------------------------------- */
+
+.ract-title {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+  margin-block-end: clamp(28px, 5vw, 64px);
+}
+
+.rfield {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 5vw, 72px);
+}
+
+.rstudy {
+  margin: 0;
+}
+
+.rstudy img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--well-radius);
+}
+
+.rstudy-note {
+  margin-block-start: 14px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 32ch;
+}
+
+/* --- ACT V: the statement plates --------------------------------- */
+
+/*
+  Each line of the statement gets its own plate, and the plates step in
+  and out so the OUTER silhouette of the block is what carries the
+  composition. The hand-written line breaks generate that geometry.
+*/
+.msurface--say {
+  padding-block: clamp(72px, 14vw, 200px);
+}
+
+.plate-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Plates touch: the stack must read as one mass, not three chips. */
+  gap: 0;
+}
+
+.plate {
+  display: block;
+  /* The sanctioned inversion: ink fill, paper type. */
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 16px;
+  padding: 0.16em 0.42em 0.2em;
+  font-size: clamp(1.9rem, 7vw, 5.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.plate-line {
+  display: block;
+}
+
+/* The step pattern: wide, inset, then wider again. */
+.plate--b {
+  margin-inline-start: clamp(14px, 5vw, 88px);
+}
+
+.plate--c {
+  margin-inline-start: clamp(6px, 2vw, 32px);
+}
+
+@media (min-width: 48rem) {
+  .plate {
+    border-radius: 22px;
+  }
+}
+
+/* --- ACT VI: capabilities ---------------------------------------- */
+
+.msurface--cap {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 6vw, 88px);
+}
+
+.cap-object {
+  width: min(100%, 520px);
+  border-radius: var(--well-radius);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cap-object img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cap-title {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+  margin-block-end: 22px;
+}
+
+.cap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cap-line {
+  font-size: clamp(1.5rem, 4.2vw, 3.1rem);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+@media (min-width: 62rem) {
+  .msurface--cap {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .cap-copy {
+    flex: 1;
+  }
+}
+
+/* --- ACTS VII and VIII: studio, then contact uncovered ----------- */
+
+/*
+  The sticky stack only engages once GSAP has installed the animation
+  and set `data-handoff="on"`. Without that attribute both surfaces stay
+  in ordinary document flow, so contact can never end up permanently
+  covered if scripts fail or reduced motion is on.
+*/
+.handoff[data-handoff='on'] {
+  position: relative;
+  /* Room to travel: the covering surface slides its own height away. */
+  height: 200svh;
+}
+
+.handoff[data-handoff='on'] .handoff-over,
+.handoff[data-handoff='on'] .handoff-under {
+  position: sticky;
+  top: var(--ms-inset);
+  min-height: calc(100svh - var(--ms-inset) * 2);
+}
+
+/* Above contact, and lifted off it on scroll. */
+.handoff[data-handoff='on'] .handoff-over {
+  z-index: 2;
+}
+
+.handoff[data-handoff='on'] .handoff-under {
+  z-index: 1;
+  /* Pulled up into the slot the covering surface vacates. */
+  margin-block-start: -100svh;
+}
+
+.msurface--studio,
+.msurface--contact {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(40px, 8vw, 96px);
+}
+
+.studio-lead {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  max-width: 26ch;
+  text-wrap: pretty;
+}
+
+.studio-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.studio-note {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 38ch;
+}
+
+/*
+  Text links are set back by tone and resolve to the sanctioned hover —
+  an ink plate with paper type — instead of gaining an underline.
+*/
+.studio-more,
+.msurface--contact .contact-links a {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  align-self: flex-start;
+  border-radius: 8px;
+  padding: 4px 8px;
+  margin-inline-start: -8px;
+  transition:
+    background-color var(--dur-med) var(--ease-smooth),
+    color var(--dur-med) var(--ease-smooth);
+}
+
+.studio-more:hover,
+.msurface--contact .contact-links a:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/*
+  Scoped under `.msurface--contact` on purpose. The `.contact-*` names
+  are also used by the /contact route, so scoping keeps either page from
+  silently restyling the other.
+*/
+.msurface--contact .contact-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 5vw, 56px);
+}
+
+.msurface--contact .contact-lead {
+  font-size: clamp(1.6rem, 4.6vw, 3.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  max-width: 24ch;
+  text-wrap: pretty;
+}
+
+.msurface--contact .contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.close-email {
+  font-size: clamp(1.15rem, 3.4vw, 2.4rem);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.msurface--contact .contact-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.msurface--contact .contact-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.msurface--contact .contact-links {
+  display: flex;
+  gap: 14px;
+}
+
+.msurface--contact .contact-mark {
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  color: var(--ink-soft);
+}
+
+/* --- Substantial icon-only controls ------------------------------ */
+
+/*
+  A large field carrying a small, precise glyph — the control IS the
+  field, not the icon. Sized well past the 44px minimum.
+*/
+.icontrol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 56px;
+  block-size: 56px;
+  border-radius: 18px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-med) var(--ease-smooth),
+    color var(--dur-med) var(--ease-smooth);
+}
+
+.icontrol--quiet {
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  color: var(--ink);
+}
+
+.icontrol--quiet:hover {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+.icontrol--strong {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.icontrol--strong:hover {
+  background: var(--ink-mid);
+}
+
+.icontrol-glyph {
+  display: inline-flex;
+}
+
+/* The glyph stays small against the large field. */
+.icontrol-glyph svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+@media (min-width: 48rem) {
+  .icontrol {
+    inline-size: 64px;
+    block-size: 64px;
+    border-radius: 20px;
+  }
+}
+
+/*
+  Reduced motion: the opening video is decorative, so it should not
+  autoplay-loop for anyone who asked for less movement. GSAP is disabled
+  separately in `lib/motion.ts`, which also means `data-handoff` is
+  never set and the closing surfaces stay in normal flow.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .open-video {
+    display: none;
+  }
+
+  .open-visual {
+    aspect-ratio: 4 / 3;
+    background: color-mix(in srgb, var(--ink) 7%, var(--paper));
   }
 }
