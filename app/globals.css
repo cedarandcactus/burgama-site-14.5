@@ -109,6 +109,55 @@
   --peri: var(--ink);
 
   /*
+    ---- FIELD FAMILIES ---------------------------------------------
+
+    The old rule was ONE global pair (navy paper / periwinkle ink) for the
+    entire site. That is relaxed here into a small set of FIELDS, each of
+    which is a self-contained tonal family: a ground, a raised step, and its
+    own related ink.
+
+    The rule that replaces it is stricter than it looks: a field's type must
+    come from the SAME family as its ground. Contrast is made by moving
+    lightness and saturation within the family, never by dropping an
+    unrelated colour on top. That is why there is no white and no grey in
+    this list — a magenta field gets pale wine type, not white type.
+
+    Three families only. A fourth would make the homepage multicolour, and
+    the page is meant to read as tonal.
+  */
+
+  /* MAGENTA — muted, dusty, well short of hot pink. */
+  --mag: #6e2f52;
+  --mag-raised: #7d3a5f;
+  --mag-sunk: #5a2442;
+  --mag-ink: #f0cfe0;
+  --mag-ink-soft: #d5a8c1;
+
+  /* PERIWINKLE AS A GROUND — inverts the default relationship. */
+  --peri-field: #c7cbf2;
+  --peri-field-raised: #d4d7f6;
+  --peri-field-sunk: #b3b8e8;
+  /* Deep blue-violet, i.e. the same family driven dark rather than navy. */
+  --peri-field-ink: #2b2154;
+  --peri-field-ink-soft: #4a3f78;
+
+  /*
+    ---- ACTIVE FIELD -----------------------------------------------
+
+    Every field sets these four, and all component CSS reads THESE rather
+    than the family tokens above. That is what lets one component render
+    correctly on navy, magenta, periwinkle, or a project's own palette
+    without knowing which it is on.
+
+    Defaults are the navy pair, so anything that doesn't declare a field
+    keeps the site's resting appearance.
+  */
+  --field-bg: var(--paper);
+  --field-bg-raised: var(--paper-raised);
+  --field-ink: var(--ink);
+  --field-ink-soft: var(--ink-soft);
+
+  /*
     The field media sits on: a raised navy, NOT periwinkle. A periwinkle
     panel would hand the largest area on the page to the brightest colour
     and fight the type for attention.
@@ -137,6 +186,30 @@
   */
   --page-gutter: clamp(1.25rem, 3.4vw, 4rem);
   --page-max: 1920px;
+
+  /*
+    ---- TYPE SCALE -------------------------------------------------
+
+    FOUR sizes for the whole site. The previous build had accumulated ~40
+    distinct `font-size: clamp(...)` declarations, most of them one-off
+    values invented to solve a single layout — which is how a type system
+    stops being a system. Intermediate sizes are not the tool for fixing a
+    cramped composition; scale, line breaks, placement and negative space
+    are.
+
+    Everything is deliberately LARGE. The brief is that the site reads big
+    throughout, not only in the hero, so even `--t-body` sits above the
+    usual web default and `--t-read` is genuinely editorial.
+
+    - `--t-display`  one huge statement per surface, set in Standard Light
+    - `--t-read`     large editorial copy, subheads, project titles
+    - `--t-body`     normal running text
+    - `--t-ui`       small Mono metadata and controls (the ONLY small size)
+  */
+  --t-display: clamp(2.75rem, 9vw, 8.5rem);
+  --t-read: clamp(1.5rem, 3.2vw, 2.75rem);
+  --t-body: clamp(1.0625rem, 1.5vw, 1.375rem);
+  --t-ui: clamp(0.8125rem, 0.95vw, 0.9375rem);
 
   /*
     One long, gentle ease for the "ultra-smooth" motion, plus a slow
@@ -178,10 +251,33 @@
     alias of `--radius-module`: the button rounding must be free to be tuned
     without leaking into panels, images or sections.
   */
-  --action-button-height: 3.25rem;
-  --action-button-radius: 10px;
-  --action-button-font-size: 1.0625rem;
-  --action-button-padding-x: 1.5rem;
+  /*
+    Substantially larger than the previous 3.25rem/1.0625rem/1.5rem. The
+    revision asks for controls that are physically present rather than
+    miniature web UI, and explicitly rules out 28–36px utility buttons.
+
+    `--action-button-padding-x` is deliberately far wider than any label
+    needs: wide text controls should feel intentionally over-wide, so the
+    padding — not the label — is what sets their width.
+  */
+  --action-button-height: 4.25rem;
+  --action-button-radius: 16px;
+  --action-button-font-size: 1.125rem;
+  --action-button-padding-x: 2.5rem;
+
+  /*
+    ---- SURFACE RADIUS ---------------------------------------------
+
+    The radius for MAJOR architectural surfaces — the contained homepage
+    acts and the frosted shell corners. Much larger than `--field-radius`
+    (which now only covers small interior pieces) because the brief wants
+    these surfaces to read as architecture rather than as cards. A card
+    radius on a full-bleed surface is what makes a page look like a CMS.
+
+    Mobile value; scaled up at the desktop breakpoint.
+  */
+  --surface-radius: 22px;
+  --shell-radius: 18px;
 
   /*
     ---- MODULAR FIELD GEOMETRY -------------------------------------
@@ -360,11 +456,80 @@
    `--frost-face` the material *shifts* over 400ms rather than flicking.
 ================================================================== */
 
+/* ==================================================================
+   FIELD SYSTEM
+
+   A field declares its own tonal family, and everything inside it reads
+   `--field-*` rather than reaching for a global colour. Adding a field
+   here is the ONLY way to introduce a new ground — a component must never
+   hardcode a palette, because the same component has to render on navy,
+   magenta, periwinkle and a project's own colours.
+
+   `color` is set on the field itself so text defaults to the family ink
+   without every child having to ask for it.
+================================================================== */
+
+[data-field] {
+  transition:
+    background-color var(--dur-slow) var(--ease-smooth),
+    color var(--dur-slow) var(--ease-smooth);
+}
+
+[data-field='paper'],
+[data-field='panel'] {
+  --field-bg: var(--paper);
+  --field-bg-raised: var(--paper-raised);
+  --field-ink: var(--ink);
+  --field-ink-soft: var(--ink-soft);
+  color: var(--field-ink);
+}
+
+[data-field='panel'] {
+  --field-bg: var(--paper-raised);
+  --field-bg-raised: var(--paper-sunk);
+}
+
+/* Muted magenta. Type is pale wine from the same family — never white. */
+[data-field='magenta'] {
+  --field-bg: var(--mag);
+  --field-bg-raised: var(--mag-raised);
+  --field-ink: var(--mag-ink);
+  --field-ink-soft: var(--mag-ink-soft);
+  color: var(--field-ink);
+}
+
+/*
+  Periwinkle as a GROUND rather than as ink — the one field where the
+  default relationship inverts, so its type has to go deep blue-violet.
+*/
+[data-field='ink'],
+[data-field='periwinkle'] {
+  --field-bg: var(--peri-field);
+  --field-bg-raised: var(--peri-field-raised);
+  --field-ink: var(--peri-field-ink);
+  --field-ink-soft: var(--peri-field-ink-soft);
+  color: var(--field-ink);
+}
+
+/*
+  ---- ADAPTIVE FROST ----------------------------------------------
+
+  The shell's material is derived FROM the active field rather than being
+  a fixed grey glass. Two moves make it read as neutral-but-belonging:
+
+  1. It mixes the field's own raised tone with a little of its ink, which
+     desaturates the tint without introducing grey.
+  2. `saturate()` in the backdrop filter pulls the blurred content behind
+     it further toward neutral.
+
+  Restrained on purpose: blur, translucency, muted tint, clean edge. No
+  gradient, no gloss highlight, no bright border, no heavy shadow.
+*/
 .frost {
   /* Solid fallback FIRST: if backdrop-filter is unsupported this is what
      renders, and an opaque panel is still readable. */
-  background: var(--panel);
-  color: var(--frost-fg);
+  background: var(--field-bg-raised);
+  color: var(--frost-fg, var(--field-ink));
   transition:
     background-color var(--frost-dur) var(--ease-smooth),
     color var(--frost-dur) var(--ease-smooth);
@@ -1241,9 +1406,65 @@
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--field-ink);
   outline-offset: 3px;
   border-radius: var(--action-button-radius);
+}
+
+/* ==================================================================
+   BUTTON SEAM RETIREMENT
+
+   Same approach as the notch retirement below: the cut seam is withdrawn
+   visually, the markup and the seam maths stay untouched. Every consumer
+   (`ModularButton`, the shell, the footer) keeps rendering its six shape
+   elements; they simply resolve to one solid rounded control now.
+
+   What changes: the label body spans the whole width, the joint pieces
+   are hidden, and the arrow region loses its separate plane so the arrow
+   sits directly on the one surface. The seam column collapses to zero so
+   the grid has no dead gap in the middle.
+================================================================== */
+
+.btn-bar-tab,
+.btn-bar-fil,
+.btn-chip-tongue,
+.btn-chip-fil {
+  display: none;
+}
+
+.btn {
+  /* No joint, so no seam column and no reserved gap. */
+  --btn-seamx: 0px;
+  --btn-gap: 0px;
+}
+
+/* The label body becomes the entire control surface. */
+.btn-bar {
+  right: 0;
+  border-radius: var(--action-button-radius);
+}
+
+/*
+  The arrow region keeps its GRID COLUMN — it still reserves space on the
+  right so the label never runs into the arrow — but loses its fill, so
+  there is no second plane. The arrow is now drawn in the label's own ink
+  rather than the chip's inverted pair.
+*/
+.btn-chip {
+  background: none;
+}
+
+.btn-arrow svg {
+  stroke: var(--btn-bar-fg);
+}
+
+/*
+  With the seam gone the label no longer has a joint to clear, so its
+  right pad returns to the normal inset and the control reads
+  symmetrically.
+*/
+.btn-label {
+  padding-right: var(--action-button-padding-x);
 }
 
 /* ==================================================================
@@ -3551,7 +3772,54 @@ body:has(.lot-poster) > .mobile-console {
     --notch-tab-h: 70px;
     --btn-swx: 16px;
     --btn-swy: 10px;
+    /* Major surfaces get properly architectural at width. */
+    --surface-radius: 40px;
+    --shell-radius: 22px;
   }
+}
+
+/* ==================================================================
+   NOTCH RETIREMENT
+
+   The notch language is withdrawn from the visible design. Consistency
+   now comes from radius, scale, typography, spacing, control proportion
+   and motion instead of from a shared cut-edge geometry.
+
+   This NEUTRALISES rather than deletes. Every rule above stays intact
+   and every consumer keeps its existing markup — `ModularField` still
+   renders its tab and fillet elements, `.mfield--recess-top` still
+   reserves its step. Ripping the geometry out would have meant editing
+   four components and every surface that composes them, for an outcome
+   identical to these few lines. The shape pieces are hidden and the
+   reserved space is reclaimed, so a notched field renders as what the
+   revision actually wants: a plain, generously rounded surface.
+
+   If the notch is ever revived, delete this block — do not go hunting
+   for removed code.
+================================================================== */
+
+.mfield-tab,
+.mfield-fil {
+  display: none;
+}
+
+.mfield {
+  /* One generous radius on all four corners; no variant squares off. */
+  --f-rtl: var(--surface-radius);
+  --f-rtr: var(--surface-radius);
+  --f-rbr: var(--surface-radius);
+  --f-rbl: var(--surface-radius);
+}
+
+/*
+  The variants padded the OUTER element to leave room for a step that no
+  longer renders. Left in place it reads as an unexplained gap above the
+  content.
+*/
+.mfield--tab-top-left,
+.mfield--tab-top-right,
+.mfield--recess-top {
+  padding-top: 0;
 }
 
 /* ==================================================================
