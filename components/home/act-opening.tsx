@@ -66,6 +66,14 @@ export function ActOpening() {
           Three different rates across one scrub — visual furthest, type
           about half that, identity barely at all — so the hero reads as a
           heavy object whose contents shift inside it first.
+
+          `scrub: 0.7`, not `true`. A boolean scrub is welded 1:1 to the raw
+          scroll position, so it reproduces every wheel tick and trackpad
+          jitter exactly — which fought the whole point of a hero built to
+          feel heavy, and made the first surface the twitchiest one on the
+          page while every act below it already used a smoothed scrub. The
+          number gives the tween a short catch-up, so momentum carries the
+          motion instead of the input driving it directly.
         */
         gsap
           .timeline({
@@ -73,7 +81,7 @@ export function ActOpening() {
               trigger: scope,
               start: 'top top',
               end: 'bottom top',
-              scrub: true,
+              scrub: 0.7,
             },
           })
           .to(scope.querySelector('.open-visual'), { y: -78 * s, ease: 'none' }, 0)
@@ -94,7 +102,12 @@ export function ActOpening() {
             trigger: scope,
             start: '55% top',
             end: 'bottom top',
-            scrub: true,
+            /*
+              Slightly looser than the parallax above. This is the heaviest
+              move in the act — the entire surface settling back — so it
+              should trail the input a touch more than its own contents do.
+            */
+            scrub: 0.9,
           },
         })
       }),
