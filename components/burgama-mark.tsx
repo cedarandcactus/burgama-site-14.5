@@ -1,0 +1,36 @@
+/*
+  THE BURGAMA MARK
+
+  Inlined as SVG rather than loaded from `/burgama-mark.svg` through an
+  `<img>` on purpose: the artwork is drawn with `fill="currentColor"`, and an
+  `<img>` renders in its own document where `currentColor` cannot reach it.
+  The mark has to re-tint with the adaptive frost on every field, so it has to
+  be part of this document's cascade.
+
+  The source file ships with clearspace baked in (a 2000x1098 canvas holding
+  1740x838 of artwork, offset by 130 on both axes). The viewBox here is
+  cropped to the artwork itself so the space between mark and wordmark is set
+  once in CSS instead of being the sum of a CSS gap and invisible padding.
+  The `translate(130 130)` group is kept so the path data still matches the
+  original file exactly.
+*/
+export function BurgamaMark({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      className={`burgama-mark ${className}`}
+      viewBox="130 130 1740 838"
+      fill="currentColor"
+      /*
+        Decorative here: this always sits directly beside the "Burgama"
+        wordmark inside the same control, and the control itself is labelled.
+        Announcing "Burgama" twice is worse than announcing it once.
+      */
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g transform="translate(130 130)">
+        <path d="M 0 174 L 0 130 A 130 130 0 0 1 130 0 L 556 0 A 256 256 0 0 1 808.79 215.6 A 27 27 0 1 1 755.35 223.31 A 201 201 0 0 0 556 48 L 158 48 A 90 90 0 0 0 68 138 L 68 174 A 34 34 0 0 1 0 174 Z M 1740 174 L 1740 130 A 130 130 0 0 0 1610 0 L 1184 0 A 256 256 0 0 0 931.21 215.6 A 27 27 0 1 0 984.65 223.31 A 201 201 0 0 1 1184 48 L 1582 48 A 90 90 0 0 1 1672 138 L 1672 174 A 34 34 0 0 0 1740 174 Z M 0 342 L 0 386 A 130 130 0 0 0 130 516 L 268 516 A 24 24 0 0 0 268 468 L 158 468 A 90 90 0 0 1 68 378 L 68 342 A 34 34 0 0 0 0 342 Z M 1740 342 L 1740 386 A 130 130 0 0 1 1610 516 L 1472 516 A 24 24 0 0 1 1472 468 L 1582 468 A 90 90 0 0 0 1672 378 L 1672 342 A 34 34 0 0 1 1740 342 Z M 267 196 L 523.95 196 A 40 40 0 0 1 550.89 206.43 A 178 178 0 0 1 424.79 515.89 A 27 27 0 1 1 426.7 461.92 A 120 120 0 1 0 321.88 292.06 A 41 41 0 0 1 284.6 316 L 267 316 A 45 45 0 0 1 222 271 L 222 241 A 45 45 0 0 1 267 196 Z M 1473 196 L 1216.05 196 A 40 40 0 0 0 1189.11 206.43 A 178 178 0 0 0 1315.21 515.89 A 27 27 0 1 0 1313.3 461.92 A 120 120 0 1 1 1418.12 292.06 A 41 41 0 0 0 1455.4 316 L 1473 316 A 45 45 0 0 0 1518 271 L 1518 241 A 45 45 0 0 0 1473 196 Z M 812 374 L 812 660 A 26 26 0 0 1 765.59 677.3 L 687.11 607.29 A 32 32 0 0 1 686.16 565.83 A 332 332 0 0 0 760.03 372.73 A 26 26 0 1 1 812 374 Z M 928 374 L 928 660 A 26 26 0 0 0 974.41 677.3 L 1052.89 607.29 A 32 32 0 0 0 1053.84 565.83 A 332 332 0 0 1 979.97 372.73 A 26 26 0 1 0 928 374 Z M 680.49 732.56 A 46 46 0 0 1 680.49 797.62 L 653.62 824.49 A 46 46 0 0 1 588.56 824.49 L 523.51 759.44 A 46 46 0 0 1 523.51 694.38 L 550.38 667.51 A 46 46 0 0 1 615.44 667.51 Z M 1059.51 732.56 A 46 46 0 0 0 1059.51 797.62 L 1086.38 824.49 A 46 46 0 0 0 1151.44 824.49 L 1216.49 759.44 A 46 46 0 0 0 1216.49 694.38 L 1189.62 667.51 A 46 46 0 0 0 1124.56 667.51 Z" />
+      </g>
+    </svg>
+  )
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 /**
  * ADAPTIVE FROST SOURCE
@@ -52,30 +52,36 @@ const MUTE = 12
 const OPACITY = 78
 
 /*
- * The shell/console switch. Must stay equal to the CSS breakpoint in
- * globals.css: this decides WHERE the observer looks for the active field,
- * and the CSS decides WHICH chrome is on screen. If they disagree, the
- * visible chrome is tinted from the wrong end of the viewport.
+ * THE ONE-STEP LIGHTNESS RULE
+ *
+ * The tint takes its HUE from the field but must never sit at the field's own
+ * lightness, or the controls dissolve into the background. So the muted ground
+ * is pushed one clear step away: over a dark field it lightens toward the
+ * field's own (light) ink into a soft mid tone; over a light field it deepens
+ * toward that field's own (dark) ink into a hazier version of the same hue.
+ *
+ * Both directions mix toward the field's ink rather than toward white or
+ * black, which is what keeps the step inside the field's own family instead of
+ * introducing a neutral from outside it. Over pure black the ink is near-white
+ * and the result is the required neutral mid-grey for free.
  */
-const CONSOLE_QUERY = '(max-width: 759px)'
+const STEP = 26
+
+/*
+ * Label text stays near-white and slightly translucent over every field, in
+ * both the light and dark cases, so the type reads as one consistent material
+ * across the whole site rather than re-colouring per section.
+ */
+const LABEL = 'color-mix(in srgb, white 90%, transparent)'
 
 export function FrostFieldProvider() {
   /*
-   * Tracks which chrome is live. It is state rather than a one-off read so
-   * that resizing across the breakpoint — including a phone rotating —
-   * rebuilds the observer against the correct band instead of leaving a
-   * bottom-tracking observer running under a top-anchored shell.
+   * No breakpoint state any more. This used to track a `(max-width: 759px)`
+   * media query so the observation band could follow the mobile console to
+   * the bottom of the screen. The console is gone and the shell's corners are
+   * present at every width, so there is one band and the observer is built
+   * once.
    */
-  const [isConsole, setIsConsole] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia(CONSOLE_QUERY)
-    setIsConsole(mq.matches)
-    const onChange = (e: MediaQueryListEvent) => setIsConsole(e.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-
   useEffect(() => {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('[data-field]'),
@@ -96,11 +102,34 @@ export function FrostFieldProvider() {
       /* A field that declares nothing usable is left alone. */
       if (!raised || !ink) return
 
+      /*
+        Two mixes, then translucency:
+
+          1. MUTE  — pull the ground slightly toward its own ink, so the tint
+                     reads as "same colour, dulled" rather than saturated.
+          2. STEP  — push it one clear step of lightness away from the field,
+                     toward the ink. Because the ink is always the readable
+                     opposite of its own ground, mixing toward it lightens a
+                     dark field and deepens a light one automatically — no
+                     luminance branch needed here.
+
+        Never fully opaque: OPACITY caps it below 100 so it stays material.
+      */
+      const muted = `color-mix(in srgb, ${raised} ${100 - MUTE}%, ${ink})`
+      const stepped = `color-mix(in srgb, ${muted} ${100 - STEP}%, ${ink})`
+
       root.style.setProperty(
         '--frost-face',
-        `color-mix(in srgb, color-mix(in srgb, ${raised} ${100 - MUTE}%, ${ink}) ${OPACITY}%, transparent)`,
+        `color-mix(in srgb, ${stepped} ${OPACITY}%, transparent)`,
       )
       root.style.setProperty('--frost-fg', ink)
+      /*
+        Control labels read against the stepped tint, not against the raw
+        field, so they use their own near-white rather than the field's ink —
+        which on a light field would be dark and, over a tint that has just
+        been deepened toward it, would lose contrast.
+      */
+      root.style.setProperty('--frost-label', LABEL)
       /*
         The GROUND that pairs with `--frost-fg`. Published because anything
         inverting against the frost (the console's lead module) needs the
@@ -154,11 +183,17 @@ export function FrostFieldProvider() {
          * section intersected, `active` emptied and the last tint stuck.
          * Both bands below are ~25% for that reason.
          */
-        rootMargin: isConsole
-          ? /* bottom quarter, where the console sits */
-            '-75% 0px 0px 0px'
-          : /* top quarter, where the shell corners sit */
-            '0px 0px -75% 0px',
+        /*
+         * The shell now occupies all four corners at EVERY width, so there is
+         * no longer a mobile case where the chrome lives only at the bottom.
+         * One band, and it is deliberately wide rather than a sliver: a tight
+         * band meant that when a gap between sections crossed it, no section
+         * intersected at all, `active` emptied, and the previous tint stuck.
+         *
+         * Top-weighted because the top-left identity control is the one that
+         * is always present, on every route, in every state.
+         */
+        rootMargin: '0px 0px -70% 0px',
         /*
          * Several thresholds so the callback also fires while a tall section
          * is crossing, not only at the moment it enters. With `0` alone a
@@ -181,9 +216,8 @@ export function FrostFieldProvider() {
       actually contains the band point is correct in both cases; `sections[0]`
       is the fallback when the point hits no field.
     */
-    const seedY = isConsole ? window.innerHeight - 40 : 60
     const seedEl = document
-      .elementFromPoint(window.innerWidth / 2, seedY)
+      .elementFromPoint(window.innerWidth / 2, 60)
       ?.closest<HTMLElement>('[data-field]')
     apply(seedEl ?? sections[0])
 
@@ -192,12 +226,10 @@ export function FrostFieldProvider() {
       root.style.removeProperty('--frost-face')
       root.style.removeProperty('--frost-fg')
       root.style.removeProperty('--frost-bg')
+      root.style.removeProperty('--frost-label')
     }
-    /*
-      Rebuilt when the chrome switches, because `rootMargin` is fixed at
-      observer construction and cannot be changed on a live observer.
-    */
-  }, [isConsole])
+    /* Built once: there is no longer a breakpoint that changes the band. */
+  }, [])
 
   return null
 }

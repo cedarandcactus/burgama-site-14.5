@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { CornerShell } from '@/components/corner-shell'
 import { FrostFieldProvider } from '@/components/frost-field'
-import { MobileConsole } from '@/components/mobile-console'
 import './globals.css'
 
 /* Licensed GT Pressura files, mapped to the roles in the Burgama font reference. */
@@ -83,10 +82,14 @@ export default function RootLayout({
           can never disagree about the current tint.
         */}
         <FrostFieldProvider />
-        {/* Desktop: four-corner shell. Mobile: bottom console. Never both. */}
+        {/*
+          The site's only navigation system, at every breakpoint. A separate
+          `MobileConsole` used to take over below 760px; it is gone, because
+          two navigation systems meant two sets of behaviour to keep in sync
+          and the mobile one had already drifted from this one.
+        */}
         <CornerShell />
         <main id="main">{children}</main>
-        <MobileConsole />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

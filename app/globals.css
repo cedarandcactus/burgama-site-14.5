@@ -2858,389 +2858,19 @@ a.action-quiet:hover .action-arrow {
 }
 
 /* ==================================================================
-   MOBILE BOTTOM CONTROL CONSOLE
+/* ==================================================================
+   MOBILE BOTTOM CONTROL CONSOLE — REMOVED
 
-   The primary navigation on the primary surface. Dense, chunky, frosted,
-   anchored above the home-indicator inset.
+   The console was the mobile half of a two-navigation-system setup: this
+   bar below 760px, the four-corner shell above it. The shell now runs at
+   every width, so the console and all of its CSS (.mobile-console,
+   .console-bar, .console-module, .console-menu, .console-dest,
+   .console-updates) are gone along with the component.
 
-   Explicitly NOT: a thin tab bar, tiny icon+label pairs, a hamburger, or
-   anything that hides itself on scroll.
-
-   Desktop-hidden at the same 900px breakpoint where the nav module appears,
-   so exactly one navigation system is present at any width.
+   `--vel` / `.mblur-y` below are NOT part of it. Those are the site-wide
+   scroll-velocity motion blur, used by the homepage acts and the footer;
+   the shell now publishes the variables the console used to.
 ================================================================== */
-
-.mobile-console {
-  /*
-    THE CONSOLE'S LOCAL INK, inherited by every module, destination and
-    control inside it.
-
-    It resolves to the frost provider's `--frost-fg` — the ink of whichever
-    field is currently under the shell — falling back to the field ink and
-    then to `--ink`.
-
-    This exists because hardcoding `--ink` on the modules was a real
-    contrast bug: over the periwinkle capabilities act the bar correctly
-    retinted to a pale ground while its contents stayed pale periwinkle,
-    leaving ~1.3:1 text. Declared here, once, so a module and its bar can
-    never disagree about the current field.
-  */
-  --mod-ink: var(--frost-fg, var(--field-ink, var(--ink)));
-  /*
-    The counterpart ground. Used by anything inside the console that inverts
-    (the lead module, the updates submit button) so both sides of an
-    inversion come from the same field.
-  */
-  --mod-ground: var(--frost-bg, var(--field-bg-raised, var(--paper-raised)));
-  position: fixed;
-  z-index: 60;
-  right: clamp(0.5rem, 2vw, 0.875rem);
-  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(0.5rem, 2vw, 0.875rem));
-  left: clamp(0.5rem, 2vw, 0.875rem);
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  /* The wrapper is only a positioner; the children carry the material. */
-  pointer-events: none;
-}
-
-/*
-  760px, kept in lockstep with the shell's show breakpoint. See the note in
-  the SHELL section: a mismatch between these two numbers produces a width
-  band with either both nav systems or none. This was 900px while the shell
-  appeared at 760px, which showed both between 760–899px.
-*/
-@media (min-width: 760px) {
-  .mobile-console {
-    display: none;
-  }
-}
-
-.console-bar,
-.console-menu {
-  pointer-events: auto;
-}
-
-/*
-  ---- THE BAR ----
-
-  One row of unequal modules. `--vel` (0→1, published by useScrollVelocity)
-  drives the scroll response:
-
-    * padding shrinks slightly    → "becomes more compact"
-    * saturation/blur increase    → "becomes more diffuse"
-
-  Both are tied to the same variable, which is why they move together and
-  return together. When --vel is 0 every term below evaluates to its resting
-  value, so sharpness at rest is guaranteed by arithmetic rather than by a
-  separate "reset" rule that could fall out of sync.
-*/
-.console-bar {
-  display: flex;
-  align-items: stretch;
-  gap: 5px;
-  padding: calc(6px - var(--vel, 0) * 2px);
-  border-radius: var(--field-radius);
-  --frost-blur: calc(20px + var(--vel, 0) * 10px);
-  transition: padding 220ms var(--ease-module);
-}
-
-/*
-  Each module. `flex-grow` from `--grow` is what makes redistribution work:
-  the row is a fixed width, so when one module's grow value doubles the
-  others are compressed to make room. Nothing is explicitly shrunk.
-*/
-.console-module {
-  display: flex;
-  flex: var(--grow, 1) 1 0;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  /* Chunky, not a 44px tab strip. */
-  min-height: 3.75rem;
-  padding-inline: 0.5rem;
-  border-radius: calc(var(--field-radius) - 5px);
-  /*
-    9%, not 13%. The fill is a tint of the module's OWN text colour, so it
-    pulls the background toward the foreground and eats contrast — on the
-    magenta field 13% measured 4.25:1 against its own label, just under the
-    4.5:1 minimum. Thinning the fill widens the gap instead of narrowing it;
-    it still reads clearly as a distinct block against the bar.
-  */
-  background: color-mix(in srgb, var(--mod-ink) 9%, transparent);
-  color: var(--mod-ink);
-  font-size: 1.0625rem;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  text-align: center;
-  cursor: pointer;
-  /*
-    The redistribution transition. `flex-grow` is animatable, and easing it on
-    the long module ease is what makes the reallocation read as weighted
-    material moving rather than a snap.
-  */
-  transition:
-    flex-grow 420ms var(--ease-module),
-    background-color 300ms var(--ease-module);
-}
-
-/*
-  The one weighted module per context — the forward action. It INVERTS, so
-  its fill is the field's ink and its text is the field's ground; both sides
-  of the inversion have to come from the same field or the pair breaks.
-*/
-/*
-  Both sides of the inversion come from the frost pair. Taking the text from
-  `--field-bg-raised` was a 1.02:1 bug — that variable resolves from the
-  section the console happens to overlap, which on the light periwinkle field
-  is itself light, so a light fill got light text.
-*/
-.console-module.is-lead {
-  background: var(--mod-ink);
-  color: var(--mod-ground);
-}
-
-/* A readout, not a control: no pointer affordance, quieter fill. */
-.console-module.is-static {
-  background: color-mix(in srgb, var(--mod-ink) 8%, transparent);
-  /*
-  Mixed toward the ground rather than using `--ink-soft`, which is a navy
-  token and would not soften correctly on a light field.
-
-  86%, not 72%. This module is a READOUT, so softening it is right — but at
-  72% it measured 4.23:1 ("7 projects" on /work, "Work With Us" on
-  /contact), under the 4.5:1 floor. Secondary emphasis must not cost
-  legibility; the quieter 8% fill above already signals "not a control", so
-  the colour only needs to be a shade softer than the live modules.
-  */
-  color: color-mix(in srgb, var(--mod-ink) 86%, var(--mod-ground));
-  cursor: default;
-}
-
-.console-module.is-active {
-  background: color-mix(in srgb, var(--mod-ink) 26%, transparent);
-}
-
-.console-module.is-lead.is-active {
-  background: color-mix(in srgb, var(--mod-ink) 88%, var(--mod-ground));
-}
-
-.console-module-label {
-  /* Labels must not wrap mid-redistribution — the row would change height. */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.console-module-arrow {
-  display: grid;
-  flex: 0 0 auto;
-  place-items: center;
-}
-
-.console-module-arrow svg {
-  width: 18px;
-  height: 10px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/*
-  ---- THE UPWARD MENU ----
-
-  Grows out of the console. `transform-origin: bottom` plus a scaleY is what
-  makes it read as material emerging from the bar rather than a sheet sliding
-  in from off-screen. The page behind stays visible and unblurred — this is
-  not a takeover.
-
-  Destinations are large GT Pressura, close together, with NO dividers.
-*/
-.console-menu {
-  display: flex;
-  flex-direction: column;
-  /* Close together, per the brief — a tight stack, not an airy list. */
-  gap: 3px;
-  padding: 7px;
-  border-radius: var(--field-radius);
-  transform-origin: bottom center;
-  /* Closed state. `height: 0` keeps it out of the layout entirely. */
-  height: 0;
-  padding-block: 0;
-  opacity: 0;
-  transform: scaleY(0.82);
-  overflow: hidden;
-  transition:
-    height 480ms var(--ease-module),
-    padding-block 480ms var(--ease-module),
-    opacity 300ms var(--ease-module),
-    transform 480ms var(--ease-module);
-}
-
-/*
-  Grown to fit the signup that now lives at the bottom of this menu. The
-  height must stay a concrete number — `auto` is not interpolable and the
-  emerging-material animation depends on interpolating it — so it is
-  maintained against real content:
-
-    4 destinations x 3.25rem  = 13rem
-    3px gaps x 4              = ~0.75rem
-    updates block             = 9rem   (measured at 144px)
-    separator + padding       = ~1.75rem
-
-  MEASURED, not estimated: 22rem overflowed by 30px because the updates
-  block came in at 144px rather than the ~7.5rem first assumed. Verify with
-  `scrollHeight - clientHeight === 0` after changing anything in here.
-
-  Add a destination or a field and this grows accordingly.
-*/
-  .mobile-console[data-open='true'] .console-menu {
-  height: 24.5rem;
-  padding-block: 7px;
-  opacity: 1;
-  transform: scaleY(1);
-  /*
-    OPAQUE when open, overriding `.frost`.
-
-    The bar is short and always sits over a single field, so adaptive
-    translucency works there. This panel is 24.5rem tall and MEASURABLY spans
-    two fields at once (verified: `paper` + `periwinkle` simultaneously). The
-    frost samples one point, so it was applying periwinkle's dark ink over a
-    panel whose upper half was navy — 3.80:1, failing.
-    
-    No amount of tint fixes that: one ink cannot serve two grounds. Going
-    opaque makes the panel its own ground, so the ink/ground pair is
-    self-consistent regardless of what it covers. It also reads better — a
-    navigation panel showing two different page colours through itself is
-    muddy, not atmospheric.
-  */
-  background: var(--mod-ground);
-  color: var(--mod-ink);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  }
-
-.console-dest {
-  display: flex;
-  /*
-    Fixed height rather than `flex: 1`. While the destinations were the only
-    children, sharing the height equally was fine; now that the signup sits
-    in the same column, `flex: 1` would let four links and a form fight over
-    the space and compress the links as the form grew.
-  */
-  flex: 0 0 3.25rem;
-  align-items: center;
-  padding-inline: 1rem;
-  /*
-  UNEQUAL WIDTHS.
-
-  Measured: all four destinations rendered at exactly 301px, because a
-  column flex container stretches its children to the cross-axis width.
-  Four identical full-bleed rows is the "identical rows" pattern the brief
-  rules out — it reads as a stock mobile nav list rather than a cluster of
-  chunky controls at deliberately different widths.
-
-  Each destination now sizes to its own label, so the stack has a ragged
-  right edge and the words set the proportions. `align-self` is what
-  actually defeats the stretch.
-
-  The min-width is deliberately SMALL. An earlier attempt used 8.5rem,
-  which was wider than every label here and so re-flattened all four to an
-  identical 136px — the same defect at a narrower size. At 5rem it only
-  catches a genuinely tiny label and otherwise leaves the type in charge.
-  */
-  align-self: start;
-  min-width: 5rem;
-  border-radius: calc(var(--field-radius) - 6px);
-  /* Field-derived, like the modules — see `--mod-ink` on `.mobile-console`. */
-  background: color-mix(in srgb, var(--mod-ink) 10%, transparent);
-  color: var(--mod-ink);
-  /* Large — these are the destinations, set at real display scale. */
-  font-size: 1.75rem;
-  line-height: 1;
-  letter-spacing: -0.025em;
-  /* Same blur-to-sharp resolve as the desktop expansion. */
-  filter: blur(6px);
-  opacity: 0;
-  transition:
-    filter 420ms var(--ease-module),
-    opacity 420ms var(--ease-module),
-    background-color 300ms var(--ease-module);
-}
-
-.mobile-console[data-open='true'] .console-dest {
-  filter: blur(0);
-  opacity: 1;
-  transition-delay: calc(120ms + var(--i) * 50ms);
-}
-
-.console-dest[aria-current='page'] {
-  background: color-mix(in srgb, var(--mod-ink) 24%, transparent);
-}
-
-/*
-  ---- UPDATES INSIDE THE CONSOLE MENU ----
-
-  Same `UpdatesSignup` component as the desktop shell, so it inherits
-  `.shell-updates-*`. Only the container needs anything: a little separation
-  from the destinations above it, and the same staggered resolve as the
-  links so it arrives as part of the same gesture.
-*/
-.console-updates {
-  margin-top: 4px;
-  padding-top: 8px;
-  /*
-    A tonal step rather than a border — the system separates by field and
-    space, not by hairlines.
-  */
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, currentColor 12%, transparent) 0 1px,
-    transparent 1px
-  );
-  filter: blur(6px);
-  opacity: 0;
-  transition:
-    filter 420ms var(--ease-module),
-    opacity 420ms var(--ease-module);
-}
-
-.mobile-console[data-open='true'] .console-updates {
-  filter: blur(0);
-  opacity: 1;
-  /* Lands after the four destinations have resolved. */
-  transition-delay: 320ms;
-}
-
-/*
-  The console is narrower than the desktop panel, so the field and button
-  stack instead of trying to share a row.
-*/
-.console-updates .shell-updates-form {
-  gap: 6px;
-}
-
-.console-updates .shell-updates-input,
-.console-updates .shell-updates-submit {
-  height: 3.25rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .console-bar,
-  .console-module,
-  .console-menu,
-  .console-dest {
-    transition: none;
-  }
-
-  /* Without this the menu contents stay permanently blurred when open. */
-  .console-dest {
-    filter: none;
-    opacity: 1;
-  }
-}
 
 /*
   ---- OPT-IN MOVEMENT BLUR ----
@@ -5243,10 +4873,10 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /* ==================================================================
-   THE SHELL — persistent four-corner interface
+   THE SHELL — persistent four-corner interface, ALL breakpoints
 
-   Replaces `.nav-module`. Four fixed corners that never move or scroll;
-   only their tint changes as fields pass beneath them.
+   Four fixed corners that never move or scroll; only their tint changes
+   as fields pass beneath them.
 
    Deliberately NOT a wrapper box: `.shell` is a zero-size, non-painting
    layer and each corner is independently fixed. A full-viewport
@@ -5254,43 +4884,63 @@ body:has(.lot-poster) > .mobile-console {
    every click, and defeating that with `pointer-events: none` then
    re-enabling it per child is more moving parts for the same result.
 
-   Desktop only. `.mconsole` owns mobile.
+   This runs at every width. It used to be `display: none` below 760px
+   with `.mobile-console` taking over — a second navigation system with
+   its own geometry, labels and interaction model. That is gone; the
+   controls scale here instead.
+
+   CONTROL PROPORTION is the whole identity of this thing, so it is
+   defined once, in one place, and every control uses it:
+
+     --shell-h        control height. ~92px mobile, easing down on
+                      desktop but never into utility-pill territory.
+     --shell-radius   ~40% of height. Soft and generous — not a
+                      full-round pill, not a small card corner.
+     --shell-pad      horizontal padding, well beyond what the label
+                      needs so each control reads intentionally wide.
+     --shell-inset    ONE margin from the viewport edge, all four sides.
+                      Large on mobile, tighter on desktop so the
+                      controls sit close to the true corners.
+
+   Labels are `--t-body`, real reading type, never small UI type.
 ================================================================== */
 
 .shell {
   /*
-    The shell publishes the SAME ink/ground contract as `.mobile-console`, so
-    a control hosted in either one gets the current field's pair without
-    knowing which chrome it is in. `UpdatesSignup` renders in both, and this
-    is what lets it invert correctly in each.
+    Ink/ground contract for controls hosted in the shell. `--mod-ink` is the
+    frost provider's current ink; `--mod-ground` the matching opaque ground
+    for anything that has to invert against it.
   */
   --mod-ink: var(--frost-fg, var(--field-ink, var(--ink)));
   --mod-ground: var(--frost-bg, var(--field-bg-raised, var(--paper-raised)));
-  display: none;
+
+  /* Mobile-first proportion. Both scale down together on wider screens. */
+  --shell-h: 5.75rem;
+  --shell-inset: 1.25rem;
+  --shell-pad: 1.75rem;
+  --shell-radius: calc(var(--shell-h) * 0.4);
 }
 
 /*
-  760px. This MUST stay in lockstep with `.mobile-console`'s hide breakpoint
-  — the shell and the console are alternatives, so a mismatch leaves a width
-  band showing both (two competing nav systems) or neither (no nav at all).
-  The console's own breakpoint is moved to 760px to match.
+  Desktop: controls scale down relative to the viewport but stay
+  substantial, and the inset tightens so they sit closer to the corners.
 */
 @media (min-width: 760px) {
   .shell {
-    display: block;
+    --shell-h: clamp(4.25rem, 4.6vw, 5.25rem);
+    --shell-inset: clamp(0.875rem, 1.1vw, 1.25rem);
+    --shell-pad: clamp(1.5rem, 1.9vw, 2.25rem);
   }
+}
 
-  /* Hidden rather than deleted; see the note in the nav-module section. */
-  .nav-module {
-    display: none;
-  }
+/* The old floating nav module is superseded by the shell at every width. */
+.nav-module {
+  display: none;
 }
 
 .shell-corner {
   position: fixed;
   z-index: 60;
-  /* Concrete inset so all four corners share one margin. */
-  --shell-inset: clamp(0.875rem, 1.5vw, 1.5rem);
 }
 
 .shell-corner--tl {
@@ -5314,258 +4964,266 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  ---- shared control proportion ------------------------------------
+  ---- shared control geometry ----
 
-  Every corner control is the same height, so the four corners read as one
-  system. Well above the 28–36px utility-button range the revision rules
-  out — these are meant to feel physically present.
+  Every corner control is this. One height, one radius, one padding; only
+  width varies with the label. `width: max-content` is what keeps them
+  sized to their content instead of stretching to fill the row.
 */
 .shell-control,
 .shell-brand {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.875rem;
+  width: max-content;
   height: var(--shell-h);
   padding-inline: var(--shell-pad);
-  font-family: var(--font-mono);
-  font-size: var(--t-ui);
-  letter-spacing: 0.02em;
-  color: currentColor;
-  background: none;
   border: 0;
+  border-radius: var(--shell-radius);
+  font-family: var(--font-mono);
+  font-size: var(--t-body);
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-decoration: none;
   cursor: pointer;
-  --shell-h: 3.5rem;
-  --shell-pad: 1.5rem;
+  /*
+    Label text stays near-white and slightly translucent over every field,
+    per the frost spec. `--frost-label` is published by the provider.
+  */
+  color: var(--frost-label, var(--frost-fg, var(--field-ink)));
 }
 
-/* ---- top-left: identity ---- */
+.shell-control-label {
+  /* Optical: mono caps sit high in their box against a centred glyph. */
+  transform: translateY(0.04em);
+}
+
+.shell-control:disabled {
+  cursor: default;
+}
+
+/* ---- top-left: mark + wordmark ---- */
 
 .shell-brand {
-  border-radius: var(--shell-radius);
-  /* The wordmark is set in its own face at reading size, not as UI. */
+  /* The wordmark is set in its own Extended face at reading size. */
   font-family: var(--font-wordmark);
-  font-size: 1.375rem;
-  letter-spacing: -0.02em;
-  text-decoration: none;
+  font-size: var(--t-body);
+  letter-spacing: -0.015em;
+}
+
+/*
+  Mark and wordmark inside the same control, mark on the left. The gap is
+  optical and in `em` so it tracks the wordmark's size — deliberately no
+  divider, rule, or separator glyph between them.
+*/
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/*
+  Sized from the wordmark's cap height rather than a fixed px value, so the
+  lockup holds its proportion as the control scales. The mark's artwork is
+  wider than it is tall (1740x838), so height drives and width follows.
+*/
+.burgama-mark {
+  display: block;
+  height: 0.72em;
+  width: auto;
+  flex: 0 0 auto;
 }
 
 /* ---- top-right: menu ---- */
 
 /*
-  The trigger stays put and the module grows around it — one object
-  redistributing its own material. Both axes are concrete because `auto`
-  is not interpolable and a snapping height would break that illusion.
-
-  The open height is maintained against real content: 4 rows x 3.5rem +
-  gaps + padding. Add a destination and this grows by one row.
+  The corner is a column: trigger on top, rows beneath, right-aligned. The
+  trigger keeps the corner's exact position and the rows hang below it.
 */
 .shell-menu {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  overflow: hidden;
-  border-radius: var(--shell-radius);
-  width: var(--shell-menu-w);
-  height: var(--shell-h, 3.5rem);
-  --shell-menu-w: 9.5rem;
-  --shell-menu-w-open: 17rem;
-  --shell-menu-h-open: 18.5rem;
-  transition:
-    width var(--dur-med) var(--ease-module),
-    height var(--dur-med) var(--ease-module),
-    background-color var(--frost-dur) var(--ease-smooth),
-    color var(--frost-dur) var(--ease-smooth);
-}
-
-.shell-menu[data-open='true'] {
-  width: var(--shell-menu-w-open);
-  height: var(--shell-menu-h-open);
+  gap: 7px;
 }
 
 .shell-menu-trigger {
-  flex: 0 0 auto;
-  width: 100%;
-  /* Right-aligned so it stays over its corner as the module widens. */
-  justify-content: flex-end;
+  /* Sits above the rows in stacking order while they scale out from under it. */
+  position: relative;
+  z-index: 1;
 }
 
+/* Three rules. The label carries the meaning; this is the affordance. */
+.shell-burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.28em;
+  width: 1.1em;
+  flex: 0 0 auto;
+}
+
+.shell-burger i {
+  display: block;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+/*
+  THE ROWS ANIMATE AS ONE GROUP.
+
+  The container scales and fades; the rows have no transition and no
+  per-index delay of their own. This is the difference between "a stack of
+  material appears" and "four things fade in one after another", and the
+  latter is explicitly not wanted. `transform-origin: top right` anchors
+  the growth to the Menu control above it.
+
+  `display: none` when closed is not usable here — it would kill the
+  transition — so the closed state is scale + opacity, with
+  `visibility: hidden` to take it out of hit-testing, and `inert` on the
+  element itself to take it out of the a11y tree.
+*/
 .shell-menu-list {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 7px;
-  width: 100%;
-  padding: 0 0.5rem 0.5rem;
+  transform-origin: top right;
+  transform: scale(0.94) translateY(-0.5rem);
   opacity: 0;
-  transition: opacity var(--dur-fast) var(--ease-smooth);
+  visibility: hidden;
+  transition:
+    transform var(--dur-med) var(--ease-module),
+    opacity var(--dur-med) var(--ease-module),
+    visibility 0s linear var(--dur-med);
 }
 
 .shell-menu[data-open='true'] .shell-menu-list {
+  transform: scale(1) translateY(0);
   opacity: 1;
-  /* Held back until the module has most of its size, so the list appears
-     inside a room that already exists rather than pushing it open. */
-  transition-delay: 0.12s;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 /*
-  Unequal widths, set per item. A stack of identical rows is the generic
-  menu; unequal blocks read as an assembled composition.
+  Each row matches the Menu control's height and radius, and the whole
+  stack matches its width — `align-items: flex-end` plus `width: 100%` on
+  the rows would stretch to the widest row, so the stack takes its width
+  from the trigger via the parent column instead.
 */
 .shell-dest {
   display: flex;
   align-items: center;
-  width: var(--w, 12rem);
-  height: 3.5rem;
-  padding-inline: 1.25rem;
-  border-radius: calc(var(--shell-radius) - 6px);
-  background: color-mix(in srgb, currentColor 8%, transparent);
+  justify-content: flex-end;
+  width: 100%;
+  min-width: max-content;
+  height: var(--shell-h);
+  padding-inline: var(--shell-pad);
+  border-radius: var(--shell-radius);
+  font-family: var(--font-mono);
   font-size: var(--t-body);
-  color: currentColor;
+  line-height: 1;
+  color: var(--frost-label, var(--frost-fg, var(--field-ink)));
   text-decoration: none;
-  transform: translateY(6px);
-  transition:
-    transform var(--dur-med) var(--ease-module),
-    background-color var(--dur-fast) var(--ease-smooth);
-  /* Staggered arrival, ordered by index from the component. */
-  transition-delay: calc(0.1s + var(--i) * 0.035s);
-}
-
-.shell-menu[data-open='true'] .shell-dest {
-  transform: translateY(0);
-}
-
-.shell-dest:hover {
-  background: color-mix(in srgb, currentColor 16%, transparent);
 }
 
 /* Current route is stated by tone, not by an added marker or rule. */
 .shell-dest.is-current {
-  background: color-mix(in srgb, currentColor 22%, transparent);
+  color: var(--frost-fg, var(--field-ink));
 }
 
-/* ---- bottom-left: updates ---- */
+/* ---- bottom-left: sign up + panel ---- */
 
-.shell-updates {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--shell-radius);
-  width: var(--shell-up-w);
-  height: var(--shell-h, 3.5rem);
-  --shell-up-w: 9.5rem;
-  --shell-up-w-open: 23rem;
-  /* field 3.5 + submit 3.5 + note + padding/gaps. */
-  --shell-up-h-open: 13.5rem;
+/*
+  THE PANEL
+
+  Its own fixed surface spanning inset-to-inset, sitting directly above the
+  bottom row of controls — not a child of the bottom-left corner, because it
+  has to reach the right inset and carry its own larger radius.
+
+  `bottom` is the control row's height plus the inset plus a gap, so the row
+  stays fully visible and in place while the panel is open.
+*/
+.shell-panel {
+  position: fixed;
+  z-index: 59;
+  left: var(--shell-inset);
+  right: var(--shell-inset);
+  bottom: calc(var(--shell-inset) + var(--shell-h) + 0.75rem);
+  /* Noticeably larger than the controls. Generous and architectural. */
+  border-radius: calc(var(--shell-radius) + 1.25rem);
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  /* Expands upward as a single surface. No stagger, no scrim. */
+  transform-origin: bottom center;
+  transform: scaleY(0.86) translateY(1.5rem);
+  opacity: 0;
+  visibility: hidden;
   transition:
-    width var(--dur-med) var(--ease-module),
-    height var(--dur-med) var(--ease-module),
+    transform var(--dur-med) var(--ease-module),
+    opacity var(--dur-med) var(--ease-module),
+    visibility 0s linear var(--dur-med),
     background-color var(--frost-dur) var(--ease-smooth),
     color var(--frost-dur) var(--ease-smooth);
 }
 
-.shell-updates[data-open='true'] {
-  width: var(--shell-up-w-open);
-  height: var(--shell-up-h-open);
-}
-
-.shell-updates-trigger {
-  flex: 0 0 auto;
-  width: 100%;
-  justify-content: flex-start;
-}
-
-.shell-updates-panel {
-  padding: 0 0.75rem 0.75rem;
-  opacity: 0;
-  transition: opacity var(--dur-fast) var(--ease-smooth);
-}
-
-.shell-updates[data-open='true'] .shell-updates-panel {
+.shell-panel[data-open='true'] {
+  transform: scaleY(1) translateY(0);
   opacity: 1;
-  transition-delay: 0.12s;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
-.shell-updates-form {
+.shell-panel-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-}
-
-.shell-updates-input {
-  height: 3.5rem;
-  padding-inline: 1.125rem;
-  border: 0;
-  border-radius: calc(var(--shell-radius) - 6px);
-  background: color-mix(in srgb, currentColor 10%, transparent);
-  color: currentColor;
-  font-family: var(--font-mono);
-  font-size: var(--t-ui);
-}
-
-.shell-updates-input::placeholder {
-  color: color-mix(in srgb, currentColor 55%, transparent);
-}
-
-.shell-updates-input:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+  gap: clamp(0.75rem, 1.2vw, 1rem);
 }
 
 /*
-  Inverted against the panel: the ink family becomes the ground. Reads as
-  the one committed action without introducing a colour from outside.
+  A real label at editorial scale. Not a placeholder, not a micro-label —
+  the field is identified by type large enough to read as content.
 */
-.shell-updates-submit {
-  height: 3.5rem;
+.shell-panel-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-read);
+  line-height: 1;
+  color: var(--frost-label, var(--frost-fg, var(--field-ink)));
+}
+
+/*
+  Softer fill than the panel, inset from its edges on all sides (the inset
+  is the panel's own padding). No border — the fill alone separates it.
+*/
+.shell-panel-input {
+  width: 100%;
+  height: var(--shell-h);
+  padding-inline: clamp(1.25rem, 1.8vw, 1.75rem);
   border: 0;
-  border-radius: calc(var(--shell-radius) - 6px);
-  /*
-    The host's ink/ground pair, published by BOTH `.shell` and
-    `.mobile-console` — this form renders in each of them, and inside the
-    console the ambient ink is the frost field's rather than the section's.
-
-    NOT `background: currentColor`. That was a 1:1 invisible-label bug:
-    `currentColor` resolves against the element's OWN `color`, and this rule
-    sets `color` on the same element, so the fill and the text ended up
-    identical (both rgb(30,36,80)) and the "Sign up" label vanished.
-  */
-  background: var(--mod-ink, var(--field-ink));
-  color: var(--mod-ground, var(--field-bg-raised, var(--field-bg)));
+  border-radius: var(--shell-radius);
+  background: color-mix(in srgb, var(--frost-fg, var(--field-ink)) 12%, transparent);
+  color: var(--frost-fg, var(--field-ink));
   font-family: var(--font-mono);
-  font-size: var(--t-ui);
-  letter-spacing: 0.02em;
-  cursor: pointer;
+  font-size: var(--t-body);
 }
 
-.shell-updates-submit:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.shell-updates-note,
-.shell-updates-done,
-.shell-updates-error {
-  font-family: var(--font-mono);
-  font-size: var(--t-ui);
-  line-height: 1.5;
-  color: color-mix(in srgb, currentColor 70%, transparent);
-}
-
-.shell-updates-done {
-  padding: 0 0.75rem 0.75rem;
-  color: currentColor;
-}
-
-.shell-updates-error {
-  color: currentColor;
+.shell-panel-input:focus-visible {
+  outline: 2px solid var(--frost-fg, var(--field-ink));
+  outline-offset: 3px;
 }
 
 /* ---- bottom-right: contextual action ---- */
 
 /*
-  Uses the site's own `.btn`, so it inherits the seam retirement and the
-  enlarged control proportions rather than defining a private button.
+  Uses the shared control geometry, nothing more. It previously rendered the
+  site's `.btn` with its six-element shape scaffold (`btn-bar`,
+  `btn-chip-tongue`, and friends) — that is the notch/seam language the
+  revision removes, and it also made this one corner a different height and
+  radius from the other three.
 */
 .shell-action {
-  --btn-h: var(--action-button-height);
+  /* Intentionally empty of extras; geometry comes from `.shell-control`. */
+  white-space: nowrap;
 }
+

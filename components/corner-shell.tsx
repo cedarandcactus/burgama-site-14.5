@@ -4,51 +4,52 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { BrandMark } from '@/components/brand-mark'
+import { useScrollVelocity } from '@/components/use-scroll-velocity'
 import { projects } from '@/lib/projects'
 
 /*
-  THE BURGAMA SHELL — persistent four-corner interface (desktop)
+  THE BURGAMA SHELL — one persistent four-corner interface, all breakpoints
 
-  This replaces the single floating upper-left nav module. The idea it is
-  built on: the corners are the STABLE Burgama object and the content
-  underneath is what changes. Scrolling moves the site; the shell stays put
-  and only re-tints.
+  The corners are the stable Burgama object; the content underneath is what
+  changes. Scrolling moves the site, the shell stays put and only re-tints.
 
-  The four corners, and why each one exists:
-
-    top-left      wordmark — identity and the route home
+    top-left      mark + wordmark — identity and the route home
     top-right     Menu — the site's destinations
-    bottom-left   Email / Updates — expands in place, never navigates away
+    bottom-left   Sign Up — opens the email panel
     bottom-right  CONTEXTUAL — a real action for the current route
 
-  The bottom-right corner is the one that could easily have gone wrong. The
-  rule followed here is that it is contextual rather than decorative: it
-  carries the genuinely useful next action per route, and on `/contact` it
-  DISAPPEARS, because there is no useful onward action from the page that is
-  already the destination. A corner is left empty rather than filled with an
-  invented control — the brief rules out inventing controls just to occupy
-  all four positions, and a fourth corner holding a fake action would be
-  worse than three corners holding real ones.
+  THIS IS NOW THE ONLY NAVIGATION SYSTEM. It previously went `display: none`
+  below 760px and a separate `MobileConsole` — a bottom bar of redistributing
+  flex modules with its own upward menu and its own copy of the signup — took
+  over. That was two navigation systems with two sets of behaviour to keep in
+  sync, and the mobile one had drifted: different labels, different geometry,
+  different interaction model. The console is deleted and this shell runs
+  everywhere, with geometry that scales instead of a second implementation.
 
-  MOBILE: hidden entirely. The bottom console owns mobile navigation and has
-  absorbed the Updates function. Shipping both would mean two competing
-  navigation systems on one screen.
+  It also inherits the console's one genuinely global job: publishing the
+  scroll-velocity variables that site-wide motion blur reads. That call moved
+  here because this component is the one that is always mounted.
+
+  Two rules worth keeping in mind when editing:
+
+  - The bottom-right corner is contextual, not decorative. On `/contact` it
+    DISAPPEARS, because there is no useful onward action from the page that is
+    already the destination. A corner is left empty rather than filled with an
+    invented control.
+  - The menu and the signup panel are corner objects, not modals. They can be
+    open at the same time, neither dismisses the other, there is no scrim, and
+    the page is never scroll-locked.
 */
 
+/*
+  Only routes that actually exist. `/lot-2046` is deliberately absent — it is
+  off-system and self-contained.
+*/
 const DESTINATIONS = [
-  /*
-    Deliberately DIFFERENT widths, set per item via `--w`. A menu of
-    identical stacked rows is the generic pattern; a cluster of unequal
-    blocks reads as an assembled composition. `Work` is widest because it is
-    the primary destination.
-
-    Only routes that actually exist. `/lot-2046` is deliberately absent — it
-    is off-system and self-contained.
-  */
-  { label: 'Index', href: '/', w: '11rem' },
-  { label: 'Work', href: '/work', w: '15rem' },
-  { label: 'About', href: '/studio', w: '12rem' },
-  { label: 'Contact', href: '/contact', w: '13rem' },
+  { label: 'Index', href: '/' },
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/studio' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 type CornerAction = { label: string; href: string } | null
@@ -59,8 +60,8 @@ type CornerAction = { label: string; href: string } | null
 */
 function actionFor(pathname: string): CornerAction {
   /*
-    On a project page the useful action is the next project — real data,
-    since every project carries `nextProjectSlug`.
+    On a project page the useful action is the next project — real data, since
+    every project carries `nextProjectSlug`.
   */
   const caseMatch = pathname.match(/^\/work\/([^/]+)$/)
   if (caseMatch) {
@@ -87,90 +88,63 @@ function actionFor(pathname: string): CornerAction {
   return { label: 'Start a Project', href: '/contact' }
 }
 
-/*
-  Traps Tab inside an expanded module and closes it on Escape. Both the menu
-  and the updates panel need exactly this, and duplicating it in two places
-  is how the two drift apart.
-
-  The page is NOT scroll-locked: these are corner objects, not takeovers, and
-  freezing the document for a corner expansion would be wrong.
-*/
-function useExpansion(
-  open: boolean,
-  close: () => void,
-  containerRef: React.RefObject<HTMLElement | null>,
-  triggerRef: React.RefObject<HTMLButtonElement | null>,
-) {
-  useEffect(() => {
-    if (!open) return
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        close()
-        triggerRef.current?.focus()
-        return
-      }
-
-      if (event.key !== 'Tab') return
-
-      const focusables = containerRef.current?.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input:not([disabled])',
-      )
-      if (!focusables || focusables.length === 0) return
-
-      const first = focusables[0]
-      const last = focusables[focusables.length - 1]
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault()
-        last.focus()
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault()
-        first.focus()
-      }
-    }
-
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [open, close, containerRef, triggerRef])
-}
+/* The form the bottom-left control submits. Shared id, declared once. */
+const SIGNUP_FORM_ID = 'shell-signup-form'
 
 export function CornerShell() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [updatesOpen, setUpdatesOpen] = useState(false)
+  const [panelOpen, setPanelOpen] = useState(false)
+  const [email, setEmail] = useState('')
+  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>(
+    'idle',
+  )
 
-  const menuRef = useRef<HTMLElement>(null)
-  const menuTrigger = useRef<HTMLButtonElement>(null)
-  const updatesRef = useRef<HTMLDivElement>(null)
-  const updatesTrigger = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const signupTrigger = useRef<HTMLButtonElement>(null)
+
+  /* Publishes --vel / --vdir for the site's motion blur; see the note above. */
+  useScrollVelocity()
 
   /* Route change closes everything — the destination has been reached. */
   useEffect(() => {
     setMenuOpen(false)
-    setUpdatesOpen(false)
+    setPanelOpen(false)
   }, [pathname])
 
   /*
-    Only one expansion at a time. Two open corners would read as a UI that
-    has lost track of itself rather than as one object responding.
+    Escape closes whatever is open. No focus trap: these are corner objects
+    sitting over a live page, not modals, and both can be open at once — a
+    trap would have to arbitrate between two simultaneous "traps" and would
+    also strand the keyboard away from the page content behind them.
   */
-  const openMenu = (next: boolean) => {
-    setMenuOpen(next)
-    if (next) setUpdatesOpen(false)
-  }
-  const openUpdates = (next: boolean) => {
-    setUpdatesOpen(next)
-    if (next) setMenuOpen(false)
-  }
+  useEffect(() => {
+    if (!menuOpen && !panelOpen) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setMenuOpen(false)
+      setPanelOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [menuOpen, panelOpen])
 
-  useExpansion(menuOpen, () => setMenuOpen(false), menuRef, menuTrigger)
-  useExpansion(
-    updatesOpen,
-    () => setUpdatesOpen(false),
-    updatesRef,
-    updatesTrigger,
-  )
+  /*
+    Tapping outside the panel closes it. The trigger is excluded so its own
+    click is not counted here and then again by its onClick, which would
+    toggle twice and leave the panel stuck shut.
+  */
+  useEffect(() => {
+    if (!panelOpen) return
+    const onDown = (event: PointerEvent) => {
+      const target = event.target as Node
+      if (panelRef.current?.contains(target)) return
+      if (signupTrigger.current?.contains(target)) return
+      setPanelOpen(false)
+    }
+    document.addEventListener('pointerdown', onDown)
+    return () => document.removeEventListener('pointerdown', onDown)
+  }, [panelOpen])
 
   /*
     `/lot-2046` is intentionally off-system with its own hidden navigation.
@@ -183,130 +157,24 @@ export function CornerShell() {
 
   const action = actionFor(pathname)
 
-  return (
-    <div className="shell">
-      {/* ---- top-left: identity ---- */}
-      <div className="shell-corner shell-corner--tl">
-        <Link href="/" aria-label="Burgama, home" className="shell-brand frost">
-          <BrandMark />
-        </Link>
-      </div>
-
-      {/* ---- top-right: destinations ---- */}
-      <nav
-        ref={menuRef}
-        aria-label="Primary"
-        data-open={menuOpen}
-        className="shell-corner shell-corner--tr shell-menu frost"
-      >
-        {/*
-          The trigger stays in place and the module grows around it, so the
-          expansion reads as ONE object redistributing its own material
-          rather than a panel appearing underneath a button. That is why the
-          width/height animate on `.shell-menu` itself and the list is a
-          child that is revealed, not a positioned dropdown.
-        */}
-        <button
-          ref={menuTrigger}
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="shell-menu-list"
-          onClick={() => openMenu(!menuOpen)}
-          className="shell-control shell-menu-trigger"
-        >
-          {menuOpen ? 'Close' : 'Menu'}
-        </button>
-
-        <div
-          id="shell-menu-list"
-          className="shell-menu-list"
-          {...(!menuOpen ? { inert: true as unknown as boolean } : {})}
-        >
-          {DESTINATIONS.map((item, index) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-              style={{ '--i': index, '--w': item.w } as React.CSSProperties}
-              className={
-                isActive(item.href) ? 'shell-dest is-current' : 'shell-dest'
-              }
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      </nav>
-
-      {/* ---- bottom-left: email / updates ---- */}
-      <div
-        ref={updatesRef}
-        data-open={updatesOpen}
-        className="shell-corner shell-corner--bl shell-updates frost"
-      >
-        <button
-          ref={updatesTrigger}
-          type="button"
-          aria-expanded={updatesOpen}
-          aria-controls="shell-updates-panel"
-          onClick={() => openUpdates(!updatesOpen)}
-          className="shell-control shell-updates-trigger"
-        >
-          {updatesOpen ? 'Close' : 'Updates'}
-        </button>
-
-        <div
-          id="shell-updates-panel"
-          className="shell-updates-panel"
-          {...(!updatesOpen ? { inert: true as unknown as boolean } : {})}
-        >
-          <UpdatesSignup idPrefix="shell" />
-        </div>
-      </div>
-
-      {/* ---- bottom-right: contextual action, or nothing ---- */}
-      {action ? (
-        <div className="shell-corner shell-corner--br">
-          <Link href={action.href} className="btn btn-strong shell-action">
-            <span className="btn-shape" aria-hidden="true">
-              <i className="btn-bar" />
-              <i className="btn-bar-tab" />
-              <i className="btn-bar-fil" />
-              <i className="btn-chip-tongue" />
-              <i className="btn-chip-fil" />
-              <i className="btn-chip" />
-            </span>
-            <span className="btn-label">{action.label}</span>
-            <span className="btn-arrow" aria-hidden="true">
-              <svg viewBox="0 0 22 12" role="presentation">
-                <path d="M1 6h19M15 1l5 5-5 5" />
-              </svg>
-            </span>
-          </Link>
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
-/*
-  The signup surface. Deliberately just: field, consent line, submit, close
-  state. No marketing copy, no benefit list, no illustration, no second
-  field — none of that content exists, and inventing it is exactly what the
-  brief rules out.
-*/
-export function UpdatesSignup({ idPrefix = 'shell' }: { idPrefix?: string }) {
-  const [email, setEmail] = useState('')
-  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>(
-    'idle',
-  )
-
   /*
-    The mobile console renders a second instance of this form, so the input
-    id has to be unique per instance — two elements sharing an id would
-    break every `label for=` association on the page.
+    The bottom-left control has two jobs in one position. With the panel open
+    and the field filled it becomes the submit; otherwise it is the toggle.
+    It does this via the `form` attribute rather than by moving a button into
+    the panel, because the panel's interior is specified as label + field and
+    nothing else — and a real `type="submit"` outside the form is the standard
+    way to say that.
   */
-  const inputId = `${idPrefix}-updates-email`
+  const canSubmit = panelOpen && email.trim().length > 0
+
+  const signupLabel =
+    state === 'sending'
+      ? 'Sending'
+      : state === 'done'
+        ? 'Received'
+        : state === 'error'
+          ? 'Try Again'
+          : 'Sign Up'
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -322,63 +190,157 @@ export function UpdatesSignup({ idPrefix = 'shell' }: { idPrefix?: string }) {
       if (!response.ok) throw new Error('subscribe failed')
       setState('done')
       setEmail('')
+      setPanelOpen(false)
     } catch {
       setState('error')
     }
   }
 
-  if (state === 'done') {
-    /*
-      Worded to be TRUE of what actually happens right now. No mailing
-      provider is connected yet, so the endpoint validates the address and
-      records it server-side but does not add anyone to a list. Claiming
-      "you're on the list" would be inventing a result the system cannot
-      deliver. Change this copy at the same time as wiring a provider.
-    */
-    return (
-      <p className="shell-updates-done" role="status">
-        Address received. Thank you.
-      </p>
-    )
-  }
-
   return (
-    <form onSubmit={onSubmit} className="shell-updates-form">
-      <label htmlFor={inputId} className="sr-only">
-        Email address
-      </label>
-      <input
-        id={inputId}
-        type="email"
-        name="email"
-        required
-        autoComplete="email"
-        placeholder="you@studio.com"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        className="shell-updates-input"
-      />
+    <div className="shell">
+      {/* ---- top-left: identity ---- */}
+      <div className="shell-corner shell-corner--tl">
+        <Link href="/" aria-label="Burgama, home" className="shell-brand frost">
+          <BrandMark withMark />
+        </Link>
+      </div>
 
-      <button
-        type="submit"
-        disabled={state === 'sending'}
-        className="shell-updates-submit"
+      {/* ---- top-right: destinations ---- */}
+      <nav
+        aria-label="Primary"
+        data-open={menuOpen}
+        className="shell-corner shell-corner--tr shell-menu"
       >
-        {state === 'sending' ? 'Sending' : 'Sign up'}
-      </button>
+        <button
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="shell-menu-list"
+          onClick={() => setMenuOpen((value) => !value)}
+          className="shell-control shell-menu-trigger frost"
+        >
+          <span className="shell-control-label">
+            {menuOpen ? 'Close' : 'Menu'}
+          </span>
+          {/*
+            Three rules, not a decorative motif. The label carries the
+            meaning; this is the affordance that says the control opens.
+          */}
+          <span className="shell-burger" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+        </button>
+
+        {/*
+          The rows animate as ONE group — the container scales and fades, the
+          rows themselves have no individual transition or per-index delay.
+          They are right-aligned under the trigger and share the corner's
+          width, so trigger and rows read as a single column of material.
+        */}
+        <div
+          id="shell-menu-list"
+          className="shell-menu-list"
+          {...(!menuOpen ? { inert: true as unknown as boolean } : {})}
+        >
+          {DESTINATIONS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              className={
+                isActive(item.href)
+                  ? 'shell-dest frost is-current'
+                  : 'shell-dest frost'
+              }
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
 
       {/*
-        "Unsubscribe any time" is omitted deliberately: there is no
-        unsubscribe mechanism yet, and promising one would be a false
-        commitment. Add it back with the provider.
-      */}
-      <p className="shell-updates-note">Occasional notes on the work.</p>
+        ---- the signup panel ----
 
-      {state === 'error' ? (
-        <p className="shell-updates-error" role="alert">
-          That didn&apos;t send. Try again.
-        </p>
+        Rendered as its own fixed surface spanning inset-to-inset, NOT inside
+        the bottom-left corner. It has to reach the right inset and carry a
+        larger radius than the controls, so it cannot be a child of a
+        corner-anchored control box. The bottom row stays visible and in place
+        above it the whole time.
+      */}
+      <div
+        ref={panelRef}
+        data-open={panelOpen}
+        className="shell-panel frost"
+        {...(!panelOpen ? { inert: true as unknown as boolean } : {})}
+      >
+        <form id={SIGNUP_FORM_ID} onSubmit={onSubmit} className="shell-panel-form">
+          {/*
+            A real label at editorial scale, not a placeholder and not a
+            micro-label. Nothing else lives in here: no submit, no close, no
+            heading, no consent line, no second field.
+          */}
+          <label htmlFor="shell-signup-email" className="shell-panel-label">
+            Email
+          </label>
+          <input
+            id="shell-signup-email"
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="shell-panel-input"
+          />
+        </form>
+      </div>
+
+      {/* ---- bottom-left: sign up ---- */}
+      <div className="shell-corner shell-corner--bl">
+        <button
+          ref={signupTrigger}
+          type={canSubmit ? 'submit' : 'button'}
+          form={canSubmit ? SIGNUP_FORM_ID : undefined}
+          aria-expanded={panelOpen}
+          aria-controls="shell-signup-panel"
+          disabled={state === 'sending'}
+          onClick={
+            canSubmit ? undefined : () => setPanelOpen((value) => !value)
+          }
+          className="shell-control shell-signup frost"
+        >
+          <span className="shell-control-label">{signupLabel}</span>
+        </button>
+      </div>
+
+      {/* ---- bottom-right: contextual action, or nothing ---- */}
+      {action ? (
+        <div className="shell-corner shell-corner--br">
+          <Link href={action.href} className="shell-control shell-action frost">
+            <span className="shell-control-label">{action.label}</span>
+          </Link>
+        </div>
       ) : null}
-    </form>
+
+      {/*
+        The panel interior is specified as label + field only, so the result
+        of a submission is announced here instead of being printed inside it.
+        Visually hidden; the corner control's own label is the visible state.
+
+        Worded to be TRUE of what actually happens right now: no mailing
+        provider is connected, so the endpoint validates the address and
+        records it server-side but does not add anyone to a list. Change this
+        at the same time as wiring a provider.
+      */}
+      <p className="sr-only" role="status" aria-live="polite">
+        {state === 'done'
+          ? 'Address received. Thank you.'
+          : state === 'error'
+            ? 'That did not send. Try again.'
+            : ''}
+      </p>
+    </div>
   )
 }
