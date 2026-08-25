@@ -167,6 +167,14 @@ export function CornerShell() {
   */
   const canSubmit = panelOpen && email.trim().length > 0
 
+  /*
+    Order matters. The transient states win, then submit, and only then the
+    open/closed toggle. The `panelOpen && !canSubmit` case is the important
+    one: with the panel open and the field still empty the control is neither
+    submitting nor idle, and labelling it "Sign Up" left the open panel with
+    no visible way to dismiss it — the same "Close" affordance the menu
+    trigger gets, for the same reason.
+  */
   const signupLabel =
     state === 'sending'
       ? 'Sending'
@@ -174,7 +182,11 @@ export function CornerShell() {
         ? 'Received'
         : state === 'error'
           ? 'Try Again'
-          : 'Sign Up'
+          : canSubmit
+            ? 'Sign Up'
+            : panelOpen
+              ? 'Close'
+              : 'Sign Up'
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()

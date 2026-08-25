@@ -421,6 +421,15 @@
     overlaps, which breaks on any field whose ground is light.
   */
   --frost-bg: var(--paper-raised);
+  /*
+    Shell control labels. Declared here as well as in the provider because
+    pages with no `[data-field]` sections at all — /studio, /contact — never
+    run the provider, so a provider-only value left those pages falling back
+    to `--ink` (periwinkle) while field pages used near-white. Same control,
+    two different label colours depending on the route. This is the resting
+    value; the provider republishes the identical thing per field.
+  */
+  --frost-label: color-mix(in srgb, white 90%, transparent);
   --frost-dur: 400ms;
 }
 
@@ -2904,25 +2913,26 @@ a.action-quiet:hover .action-arrow {
   is off by exactly this much unless it compensates.
 */
 /*
-  759.98px, NOT 899px. The console hides at `min-width: 760px` (and the shell
-  takes over there), so keying the clearance to 899px reserved 88px for a
-  console that was not on screen anywhere in the 760-899 band — dead space at
-  the foot of the page, and, once `--hand-h` started reading this variable, a
-  needlessly shortened closing surface too. Same lockstep rule the shell's own
-  breakpoint note calls out.
+  Clearance for the shell's bottom row, so the last of the page's content can
+  always scroll clear of the floating controls instead of ending underneath
+  them.
 
-  759px exactly, matching the other console media queries and `CONSOLE_QUERY`
-  in `frost-field.tsx` — that file's comment requires the JS and CSS
-  breakpoints to be identical, so this must not be a `.98` variant of them.
+  No longer inside a `max-width: 759px` query. It used to be, because the thing
+  being cleared was the mobile console, which only existed below 760px. The
+  shell's bottom row is present at every width, so the clearance is now
+  unconditional — gating it at 759px left desktop content running under the
+  bottom controls.
+
+  Still includes `safe-area-inset-bottom` for the iOS home indicator, and is
+  still read by `--hand-h` so the closing surface shortens to match rather
+  than overlapping the controls.
 */
-@media (max-width: 759px) {
-  :root {
-    --console-clear: calc(env(safe-area-inset-bottom, 0px) + 5.5rem);
-  }
+:root {
+  --shell-clear: calc(env(safe-area-inset-bottom, 0px) + 5.5rem);
+}
 
-  body {
-    padding-bottom: var(--console-clear);
-  }
+body {
+  padding-bottom: var(--shell-clear);
 }
 
 /* --- Page and index --------------------------------------------- */
@@ -4643,7 +4653,7 @@ body:has(.lot-poster) > .mobile-console {
     surfaces are sized to the space that actually exists above the console
     instead, and then nothing is ever pushed.
   */
-  --hand-h: calc(100svh - var(--ms-inset) * 2 - var(--console-clear, 0px));
+  --hand-h: calc(100svh - var(--ms-inset) * 2 - var(--shell-clear, 0px));
 
   position: relative;
   /* Room to travel: the covering surface slides its own height away. */
@@ -4894,8 +4904,13 @@ body:has(.lot-poster) > .mobile-console {
 
      --shell-h        control height. ~92px mobile, easing down on
                       desktop but never into utility-pill territory.
-     --shell-radius   ~40% of height. Soft and generous — not a
-                      full-round pill, not a small card corner.
+     --shell-radius   ~28% of height. Soft and generous, but still a
+                      squarish rounded rectangle. At 40% a 92px control
+                      rounds to ~37px, which on the shorter controls is
+                      close enough to half the height that they read as
+                      capsules — the utility-pill look this shell is
+                      explicitly not. 28% keeps a flat edge between the
+                      corners at every control width.
      --shell-pad      horizontal padding, well beyond what the label
                       needs so each control reads intentionally wide.
      --shell-inset    ONE margin from the viewport edge, all four sides.
@@ -4918,7 +4933,7 @@ body:has(.lot-poster) > .mobile-console {
   --shell-h: 5.75rem;
   --shell-inset: 1.25rem;
   --shell-pad: 1.75rem;
-  --shell-radius: calc(var(--shell-h) * 0.4);
+  --shell-radius: calc(var(--shell-h) * 0.28);
 }
 
 /*
@@ -5198,10 +5213,17 @@ body:has(.lot-poster) > .mobile-console {
 */
 .shell-panel-input {
   width: 100%;
-  height: var(--shell-h);
+  /*
+    Deliberately shorter than a shell control. At the full `--shell-h` the
+    field plus its label plus the panel's own padding made the panel tower
+    over the controls that opened it and cover the page's headline. It is a
+    field inside a surface, not a peer of the corner controls.
+  */
+  height: calc(var(--shell-h) * 0.72);
   padding-inline: clamp(1.25rem, 1.8vw, 1.75rem);
   border: 0;
-  border-radius: var(--shell-radius);
+  /* Tracks the field's own height so it keeps the shell's corner character. */
+  border-radius: calc(var(--shell-h) * 0.72 * 0.28);
   background: color-mix(in srgb, var(--frost-fg, var(--field-ink)) 12%, transparent);
   color: var(--frost-fg, var(--field-ink));
   font-family: var(--font-mono);

@@ -53,10 +53,23 @@ export function useScrollVelocity() {
      */
     const FULL = 34
 
+    /*
+      Lenis drives scrolling, and its rAF and this one are not ordered. If the
+      loop is allowed to stop the instant velocity decays to 0 it can park
+      during a frame that Lenis has not advanced yet, mid-gesture — and since
+      `wake` only re-arms on a `scroll` EVENT, a gesture already in flight
+      never fires another one and the loop stays dead for the rest of the
+      session. So the loop coasts for a few zero-delta frames before parking.
+    */
+    const IDLE_FRAMES = 6
+    let quiet = 0
+
     const tick = () => {
       const y = window.scrollY
       const delta = y - last
       last = y
+
+      quiet = delta === 0 ? quiet + 1 : 0
 
       const speed = Math.min(Math.abs(delta) / FULL, 1)
 
@@ -76,7 +89,9 @@ export function useScrollVelocity() {
         root.style.setProperty('--vel', String(next))
       }
 
-      if (velocity === 0) {
+      /* Park only once the page has genuinely stopped moving, not merely
+         because the decay reached zero on a frame Lenis had not advanced. */
+      if (velocity === 0 && quiet >= IDLE_FRAMES) {
         idle = true
         frame = 0
         return
