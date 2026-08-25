@@ -590,6 +590,28 @@
 */
 [data-field][data-field-page] {
   /*
+    REBIND THE GLOBAL TYPE TOKENS TO THE ACTIVE FAMILY.
+
+    `--ink` / `--ink-soft` / `--ink-mid` are the site-wide periwinkle, and
+    ~50 rules across this file paint with them directly rather than through
+    `--field-ink`. So a rust page came out with a correct rust ground and
+    correct rust `--field-ink`, yet every heading and paragraph still rendered
+    periwinkle — measured `rgb(199,203,242)` on type sitting on `#542a1b`.
+    Blue-lilac text on a warm brown ground: the exact cross-family clash the
+    field rule forbids, and invisible unless you actually look at the page.
+
+    Rebinding the three tokens here fixes all of those call sites at once,
+    which is also why this is safe: it is scoped to an element that has
+    explicitly declared its own family, so the global values are untouched
+    everywhere else. Site pages keep periwinkle because they never set
+    `data-field-page`.
+  */
+  --ink: var(--field-ink);
+  --ink-soft: var(--field-ink-soft);
+  /* No per-family mid tone; the soft step is the closest honest match. */
+  --ink-mid: var(--field-ink-soft);
+
+  /*
     Painted on a fixed pseudo-element rather than as this element's own
     background, because the element does NOT span the whole viewport:
     `#main` adds `--main-clear` of top padding for page air, and `html`/`body`
