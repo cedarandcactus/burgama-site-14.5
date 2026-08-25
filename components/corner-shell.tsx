@@ -260,7 +260,7 @@ export function CornerShell() {
           className="shell-updates-panel"
           {...(!updatesOpen ? { inert: true as unknown as boolean } : {})}
         >
-          <UpdatesForm />
+          <UpdatesSignup idPrefix="shell" />
         </div>
       </div>
 
@@ -295,11 +295,18 @@ export function CornerShell() {
   field — none of that content exists, and inventing it is exactly what the
   brief rules out.
 */
-function UpdatesForm() {
+export function UpdatesSignup({ idPrefix = 'shell' }: { idPrefix?: string }) {
   const [email, setEmail] = useState('')
   const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>(
     'idle',
   )
+
+  /*
+    The mobile console renders a second instance of this form, so the input
+    id has to be unique per instance — two elements sharing an id would
+    break every `label for=` association on the page.
+  */
+  const inputId = `${idPrefix}-updates-email`
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -321,20 +328,27 @@ function UpdatesForm() {
   }
 
   if (state === 'done') {
+    /*
+      Worded to be TRUE of what actually happens right now. No mailing
+      provider is connected yet, so the endpoint validates the address and
+      records it server-side but does not add anyone to a list. Claiming
+      "you're on the list" would be inventing a result the system cannot
+      deliver. Change this copy at the same time as wiring a provider.
+    */
     return (
       <p className="shell-updates-done" role="status">
-        You are on the list.
+        Address received. Thank you.
       </p>
     )
   }
 
   return (
     <form onSubmit={onSubmit} className="shell-updates-form">
-      <label htmlFor="shell-updates-email" className="sr-only">
+      <label htmlFor={inputId} className="sr-only">
         Email address
       </label>
       <input
-        id="shell-updates-email"
+        id={inputId}
         type="email"
         name="email"
         required
@@ -353,9 +367,12 @@ function UpdatesForm() {
         {state === 'sending' ? 'Sending' : 'Sign up'}
       </button>
 
-      <p className="shell-updates-note">
-        Occasional notes on the work. Unsubscribe any time.
-      </p>
+      {/*
+        "Unsubscribe any time" is omitted deliberately: there is no
+        unsubscribe mechanism yet, and promising one would be a false
+        commitment. Add it back with the provider.
+      */}
+      <p className="shell-updates-note">Occasional notes on the work.</p>
 
       {state === 'error' ? (
         <p className="shell-updates-error" role="alert">

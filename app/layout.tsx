@@ -1,9 +1,9 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
+import { CornerShell } from '@/components/corner-shell'
 import { FrostFieldProvider } from '@/components/frost-field'
 import { MobileConsole } from '@/components/mobile-console'
-import { SiteNav } from '@/components/site-nav'
 import './globals.css'
 
 /* Licensed GT Pressura files, mapped to the roles in the Burgama font reference. */
@@ -78,13 +78,13 @@ export default function RootLayout({
         </a>
         {/*
           Publishes --frost-face/--frost-fg from whichever [data-field]
-          section is currently behind the chrome. Renders nothing; both the
-          nav module and the console read the same variables so they can
-          never disagree about the current tint.
+          section is currently behind the chrome. Renders nothing; the four
+          shell corners and the console all read the same variables, so they
+          can never disagree about the current tint.
         */}
         <FrostFieldProvider />
-        {/* Desktop: floating module. Mobile: bottom console. Never both. */}
-        <SiteNav />
+        {/* Desktop: four-corner shell. Mobile: bottom console. Never both. */}
+        <CornerShell />
         <main id="main">{children}</main>
         <MobileConsole />
         {process.env.NODE_ENV === 'production' && <Analytics />}

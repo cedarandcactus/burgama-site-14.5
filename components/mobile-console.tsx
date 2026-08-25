@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { projects } from '@/lib/projects'
+import { UpdatesSignup } from '@/components/corner-shell'
 import { useScrollVelocity } from '@/components/use-scroll-velocity'
 
 /*
@@ -136,6 +137,23 @@ export function MobileConsole() {
             {item.label}
           </Link>
         ))}
+
+        {/*
+          UPDATES ON MOBILE
+
+          The desktop shell's bottom-left corner is desktop-only, so without
+          this the signup would simply not exist below 900px. It lives inside
+          the console's upward menu rather than becoming a fifth bar module:
+          the bar is for navigation and one-tap actions, and a text field
+          crammed into a redistributing flex row would be unusable.
+
+          `UpdatesSignup` is imported from the shell so there is exactly ONE
+          signup implementation. Two copies would drift the moment a real
+          provider is wired in.
+        */}
+        <div className="console-updates">
+          <UpdatesSignup idPrefix="console" />
+        </div>
       </div>
 
       <div className="console-bar frost">

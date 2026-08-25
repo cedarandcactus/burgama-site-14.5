@@ -2519,9 +2519,13 @@ a.action-quiet:hover .action-arrow {
   opening surface was 100svh tall INSIDE a 114px-padded main and overflowed
   the fold by exactly that much.
 */
-@media (min-width: 900px) {
+/*
+  760px, matching the shell/console switch. Keyed off the shell's own
+  control height now rather than the retired `--nav-h-closed`.
+*/
+@media (min-width: 760px) {
   :root {
-    --main-clear: calc(var(--nav-h-closed, 4rem) + clamp(2rem, 5vw, 4.5rem));
+    --main-clear: calc(3.5rem + clamp(2rem, 5vw, 4.5rem));
   }
 
   #main {
@@ -2534,7 +2538,7 @@ a.action-quiet:hover .action-arrow {
   but the page still wants air above its first line rather than starting
   hard against the viewport edge.
 */
-@media (max-width: 899px) {
+@media (max-width: 759px) {
   :root {
     --main-clear: clamp(1.5rem, 6vw, 2.5rem);
   }
@@ -2711,7 +2715,13 @@ a.action-quiet:hover .action-arrow {
   pointer-events: none;
 }
 
-@media (min-width: 900px) {
+/*
+  760px, kept in lockstep with the shell's show breakpoint. See the note in
+  the SHELL section: a mismatch between these two numbers produces a width
+  band with either both nav systems or none. This was 900px while the shell
+  appeared at 760px, which showed both between 760–899px.
+*/
+@media (min-width: 760px) {
   .mobile-console {
     display: none;
   }
@@ -2853,8 +2863,21 @@ a.action-quiet:hover .action-arrow {
     transform 480ms var(--ease-module);
 }
 
+/*
+  Grown to fit the signup that now lives at the bottom of this menu. The
+  height must stay a concrete number — `auto` is not interpolable and the
+  emerging-material animation depends on interpolating it — so it is
+  maintained against real content:
+
+    4 destinations x 3.25rem  = 13rem
+    3px gaps x 4              = ~0.75rem
+    updates block             = ~7.5rem
+    padding                   = ~0.9rem
+
+  Add a destination or a field and this grows accordingly.
+*/
 .mobile-console[data-open='true'] .console-menu {
-  height: 15.5rem;
+  height: 22rem;
   padding-block: 7px;
   opacity: 1;
   transform: scaleY(1);
@@ -2862,7 +2885,13 @@ a.action-quiet:hover .action-arrow {
 
 .console-dest {
   display: flex;
-  flex: 1;
+  /*
+    Fixed height rather than `flex: 1`. While the destinations were the only
+    children, sharing the height equally was fine; now that the signup sits
+    in the same column, `flex: 1` would let four links and a form fight over
+    the space and compress the links as the form grew.
+  */
+  flex: 0 0 3.25rem;
   align-items: center;
   padding-inline: 1rem;
   border-radius: calc(var(--field-radius) - 6px);
@@ -2889,6 +2918,53 @@ a.action-quiet:hover .action-arrow {
 
 .console-dest[aria-current='page'] {
   background: color-mix(in srgb, var(--ink) 24%, transparent);
+}
+
+/*
+  ---- UPDATES INSIDE THE CONSOLE MENU ----
+
+  Same `UpdatesSignup` component as the desktop shell, so it inherits
+  `.shell-updates-*`. Only the container needs anything: a little separation
+  from the destinations above it, and the same staggered resolve as the
+  links so it arrives as part of the same gesture.
+*/
+.console-updates {
+  margin-top: 4px;
+  padding-top: 8px;
+  /*
+    A tonal step rather than a border — the system separates by field and
+    space, not by hairlines.
+  */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, currentColor 12%, transparent) 0 1px,
+    transparent 1px
+  );
+  filter: blur(6px);
+  opacity: 0;
+  transition:
+    filter 420ms var(--ease-module),
+    opacity 420ms var(--ease-module);
+}
+
+.mobile-console[data-open='true'] .console-updates {
+  filter: blur(0);
+  opacity: 1;
+  /* Lands after the four destinations have resolved. */
+  transition-delay: 320ms;
+}
+
+/*
+  The console is narrower than the desktop panel, so the field and button
+  stack instead of trying to share a row.
+*/
+.console-updates .shell-updates-form {
+  gap: 6px;
+}
+
+.console-updates .shell-updates-input,
+.console-updates .shell-updates-submit {
+  height: 3.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4726,4 +4802,314 @@ body:has(.lot-poster) > .mobile-console {
     aspect-ratio: 4 / 3;
     background: color-mix(in srgb, var(--ink) 7%, var(--paper));
   }
+}
+
+/* ==================================================================
+   THE SHELL — persistent four-corner interface
+
+   Replaces `.nav-module`. Four fixed corners that never move or scroll;
+   only their tint changes as fields pass beneath them.
+
+   Deliberately NOT a wrapper box: `.shell` is a zero-size, non-painting
+   layer and each corner is independently fixed. A full-viewport
+   `position: fixed` container would sit over the entire page and swallow
+   every click, and defeating that with `pointer-events: none` then
+   re-enabling it per child is more moving parts for the same result.
+
+   Desktop only. `.mconsole` owns mobile.
+================================================================== */
+
+.shell {
+  display: none;
+}
+
+/*
+  760px. This MUST stay in lockstep with `.mobile-console`'s hide breakpoint
+  — the shell and the console are alternatives, so a mismatch leaves a width
+  band showing both (two competing nav systems) or neither (no nav at all).
+  The console's own breakpoint is moved to 760px to match.
+*/
+@media (min-width: 760px) {
+  .shell {
+    display: block;
+  }
+
+  /* Hidden rather than deleted; see the note in the nav-module section. */
+  .nav-module {
+    display: none;
+  }
+}
+
+.shell-corner {
+  position: fixed;
+  z-index: 60;
+  /* Concrete inset so all four corners share one margin. */
+  --shell-inset: clamp(0.875rem, 1.5vw, 1.5rem);
+}
+
+.shell-corner--tl {
+  top: var(--shell-inset);
+  left: var(--shell-inset);
+}
+
+.shell-corner--tr {
+  top: var(--shell-inset);
+  right: var(--shell-inset);
+}
+
+.shell-corner--bl {
+  bottom: var(--shell-inset);
+  left: var(--shell-inset);
+}
+
+.shell-corner--br {
+  right: var(--shell-inset);
+  bottom: var(--shell-inset);
+}
+
+/*
+  ---- shared control proportion ------------------------------------
+
+  Every corner control is the same height, so the four corners read as one
+  system. Well above the 28–36px utility-button range the revision rules
+  out — these are meant to feel physically present.
+*/
+.shell-control,
+.shell-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--shell-h);
+  padding-inline: var(--shell-pad);
+  font-family: var(--font-mono);
+  font-size: var(--t-ui);
+  letter-spacing: 0.02em;
+  color: currentColor;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  --shell-h: 3.5rem;
+  --shell-pad: 1.5rem;
+}
+
+/* ---- top-left: identity ---- */
+
+.shell-brand {
+  border-radius: var(--shell-radius);
+  /* The wordmark is set in its own face at reading size, not as UI. */
+  font-family: var(--font-wordmark);
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+/* ---- top-right: menu ---- */
+
+/*
+  The trigger stays put and the module grows around it — one object
+  redistributing its own material. Both axes are concrete because `auto`
+  is not interpolable and a snapping height would break that illusion.
+
+  The open height is maintained against real content: 4 rows x 3.5rem +
+  gaps + padding. Add a destination and this grows by one row.
+*/
+.shell-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: hidden;
+  border-radius: var(--shell-radius);
+  width: var(--shell-menu-w);
+  height: var(--shell-h, 3.5rem);
+  --shell-menu-w: 9.5rem;
+  --shell-menu-w-open: 17rem;
+  --shell-menu-h-open: 18.5rem;
+  transition:
+    width var(--dur-med) var(--ease-module),
+    height var(--dur-med) var(--ease-module),
+    background-color var(--frost-dur) var(--ease-smooth),
+    color var(--frost-dur) var(--ease-smooth);
+}
+
+.shell-menu[data-open='true'] {
+  width: var(--shell-menu-w-open);
+  height: var(--shell-menu-h-open);
+}
+
+.shell-menu-trigger {
+  flex: 0 0 auto;
+  width: 100%;
+  /* Right-aligned so it stays over its corner as the module widens. */
+  justify-content: flex-end;
+}
+
+.shell-menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  width: 100%;
+  padding: 0 0.5rem 0.5rem;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-smooth);
+}
+
+.shell-menu[data-open='true'] .shell-menu-list {
+  opacity: 1;
+  /* Held back until the module has most of its size, so the list appears
+     inside a room that already exists rather than pushing it open. */
+  transition-delay: 0.12s;
+}
+
+/*
+  Unequal widths, set per item. A stack of identical rows is the generic
+  menu; unequal blocks read as an assembled composition.
+*/
+.shell-dest {
+  display: flex;
+  align-items: center;
+  width: var(--w, 12rem);
+  height: 3.5rem;
+  padding-inline: 1.25rem;
+  border-radius: calc(var(--shell-radius) - 6px);
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  font-size: var(--t-body);
+  color: currentColor;
+  text-decoration: none;
+  transform: translateY(6px);
+  transition:
+    transform var(--dur-med) var(--ease-module),
+    background-color var(--dur-fast) var(--ease-smooth);
+  /* Staggered arrival, ordered by index from the component. */
+  transition-delay: calc(0.1s + var(--i) * 0.035s);
+}
+
+.shell-menu[data-open='true'] .shell-dest {
+  transform: translateY(0);
+}
+
+.shell-dest:hover {
+  background: color-mix(in srgb, currentColor 16%, transparent);
+}
+
+/* Current route is stated by tone, not by an added marker or rule. */
+.shell-dest.is-current {
+  background: color-mix(in srgb, currentColor 22%, transparent);
+}
+
+/* ---- bottom-left: updates ---- */
+
+.shell-updates {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--shell-radius);
+  width: var(--shell-up-w);
+  height: var(--shell-h, 3.5rem);
+  --shell-up-w: 9.5rem;
+  --shell-up-w-open: 23rem;
+  /* field 3.5 + submit 3.5 + note + padding/gaps. */
+  --shell-up-h-open: 13.5rem;
+  transition:
+    width var(--dur-med) var(--ease-module),
+    height var(--dur-med) var(--ease-module),
+    background-color var(--frost-dur) var(--ease-smooth),
+    color var(--frost-dur) var(--ease-smooth);
+}
+
+.shell-updates[data-open='true'] {
+  width: var(--shell-up-w-open);
+  height: var(--shell-up-h-open);
+}
+
+.shell-updates-trigger {
+  flex: 0 0 auto;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.shell-updates-panel {
+  padding: 0 0.75rem 0.75rem;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-smooth);
+}
+
+.shell-updates[data-open='true'] .shell-updates-panel {
+  opacity: 1;
+  transition-delay: 0.12s;
+}
+
+.shell-updates-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shell-updates-input {
+  height: 3.5rem;
+  padding-inline: 1.125rem;
+  border: 0;
+  border-radius: calc(var(--shell-radius) - 6px);
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  color: currentColor;
+  font-family: var(--font-mono);
+  font-size: var(--t-ui);
+}
+
+.shell-updates-input::placeholder {
+  color: color-mix(in srgb, currentColor 55%, transparent);
+}
+
+.shell-updates-input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/*
+  Inverted against the panel: the ink family becomes the ground. Reads as
+  the one committed action without introducing a colour from outside.
+*/
+.shell-updates-submit {
+  height: 3.5rem;
+  border: 0;
+  border-radius: calc(var(--shell-radius) - 6px);
+  background: var(--field-ink);
+  color: var(--field-bg);
+  font-family: var(--font-mono);
+  font-size: var(--t-ui);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.shell-updates-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.shell-updates-note,
+.shell-updates-done,
+.shell-updates-error {
+  font-family: var(--font-mono);
+  font-size: var(--t-ui);
+  line-height: 1.5;
+  color: color-mix(in srgb, currentColor 70%, transparent);
+}
+
+.shell-updates-done {
+  padding: 0 0.75rem 0.75rem;
+  color: currentColor;
+}
+
+.shell-updates-error {
+  color: currentColor;
+}
+
+/* ---- bottom-right: contextual action ---- */
+
+/*
+  Uses the site's own `.btn`, so it inherits the seam retirement and the
+  enlarged control proportions rather than defining a private button.
+*/
+.shell-action {
+  --btn-h: var(--action-button-height);
 }
