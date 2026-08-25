@@ -3112,12 +3112,28 @@ a.action-quiet:hover .action-arrow {
 /*
   Page bottom padding so the console never covers the end of the content.
   Without this the footer's last row sits underneath the bar.
+
+  Hoisted into a variable because the sticky close pair needs the SAME
+  number — see `.handoff` below. This padding lives on `body`, which is
+  OUTSIDE `#main`, so it adds 88px of page below the last sticky containing
+  block. Anything relying on "sticky element ends at the document bottom"
+  is off by exactly this much unless it compensates.
 */
-@media (max-width: 899px) {
+/*
+  759.98px, NOT 899px. The console hides at `min-width: 760px` (and the shell
+  takes over there), so keying the clearance to 899px reserved 88px for a
+  console that was not on screen anywhere in the 760-899 band — dead space at
+  the foot of the page, and, once `--hand-h` started reading this variable, a
+  needlessly shortened closing surface too. Same lockstep rule the shell's own
+  breakpoint note calls out.
+*/
+@media (max-width: 759.98px) {
+  :root {
+    --console-clear: calc(env(safe-area-inset-bottom, 0px) + 5.5rem);
+  }
+
   body {
-    padding-bottom: calc(
-      env(safe-area-inset-bottom, 0px) + 5.5rem
-    );
+    padding-bottom: var(--console-clear);
   }
 }
 
@@ -4800,6 +4816,30 @@ body:has(.lot-poster) > .mobile-console {
   covered if scripts fail or reduced motion is on.
 */
 .handoff[data-handoff='on'] {
+  /*
+    THE STACKED SURFACES ARE SHORTER THAN THE VIEWPORT BY THE CONSOLE
+    CLEARANCE, and that is the whole fix for the drift below.
+
+    A sticky child can never settle below its own containing block. The
+    console clearance is padding on `body` — OUTSIDE this wrapper — so at
+    full scroll the document always runs on ~88px after this block has
+    ended, and contact got dragged up with it: its closing headline measured
+    top -58px, scrolled clean off screen at rest.
+
+    Two wrong turns worth recording, because both looked reasonable:
+      - `padding-block-end` on the wrapper did nothing. This element is
+        `border-box`, so the padding was absorbed into the declared height
+        and the wrapper stayed at exactly 1398px.
+      - Adding the clearance to `height` also did nothing: a taller wrapper
+        makes the DOCUMENT taller by the same amount, so max scroll grows in
+        lockstep and the wrapper bottom stayed pinned at 611px. Chasing it.
+
+    The containing block simply cannot reach the viewport bottom. So the
+    surfaces are sized to the space that actually exists above the console
+    instead, and then nothing is ever pushed.
+  */
+  --hand-h: calc(100svh - var(--ms-inset) * 2 - var(--console-clear, 0px));
+
   position: relative;
   /* Room to travel: the covering surface slides its own height away. */
   height: 200svh;
@@ -4809,7 +4849,7 @@ body:has(.lot-poster) > .mobile-console {
 .handoff[data-handoff='on'] .handoff-under {
   position: sticky;
   top: var(--ms-inset);
-  min-height: calc(100svh - var(--ms-inset) * 2);
+  min-height: var(--hand-h);
 }
 
 /* Above contact, and lifted off it on scroll. */
@@ -4819,10 +4859,26 @@ body:has(.lot-poster) > .mobile-console {
 
 .handoff[data-handoff='on'] .handoff-under {
   z-index: 1;
-  /* Pulled up into the slot the covering surface vacates. */
-  margin-block-start: -100svh;
+  /*
+    Pulled up into the slot the covering surface vacates — by exactly the
+    covering surface's own height, so the two stack precisely.
+
+    This has to track `--hand-h` rather than being a flat `-100svh`. Pulling
+    up a full viewport while the surface above is only `--hand-h` tall would
+    overshoot and start this element ABOVE the wrapper, which puts it outside
+    its own containing block and breaks sticky entirely.
+  */
+  margin-block-start: calc(-1 * var(--hand-h));
 }
 
+/*
+  Contact deliberately has NO extra bottom padding for the console.
+
+  It is the last surface and the only one the bar overlaps, so reserving the
+  clearance inside it looked right — but the surface itself now ends above the
+  console (see `--hand-h`), so inner padding would reserve the same 88px
+  twice and push the footer up into the middle of the plate.
+*/
 .msurface--studio,
 .msurface--contact {
   display: flex;

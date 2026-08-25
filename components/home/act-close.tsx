@@ -36,12 +36,30 @@ export function ActClose() {
 
       gsap.to(scope.querySelector('.handoff-over'), {
         yPercent: -100,
+        /*
+          The extra `y` is the sticky top offset, and it is not optional.
+
+          `yPercent: -100` travels exactly the surface's own height, but the
+          surface is stuck at `top: var(--ms-inset)` — so travelling its
+          height leaves precisely that inset still on screen. Measured an 8px
+          periwinkle sliver pinned across the top of contact at rest, which
+          read as a rendering seam rather than a covered surface.
+
+          Read from the custom property instead of hardcoding 8, so it stays
+          correct if the inset is retuned.
+        */
+        y: () =>
+          -parseFloat(
+            getComputedStyle(scope).getPropertyValue('--ms-inset'),
+          ) || 0,
         ease: 'none',
         scrollTrigger: {
           trigger: scope,
           start: 'top top',
           end: 'bottom bottom',
           scrub: 0.8,
+          /* The `y` above is a function, so it must be re-read on resize. */
+          invalidateOnRefresh: true,
         },
       })
     })
