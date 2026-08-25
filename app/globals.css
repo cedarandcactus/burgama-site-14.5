@@ -3656,12 +3656,26 @@ body:has(.lot-poster) > .mobile-console {
     past the boundary rather than being contained politely.
   */
   right: calc(var(--ms-pad) * -0.5);
-  top: 11%;
-  width: min(54%, 580px);
+  top: 8%;
+  /*
+    A real box, not an auto-height container. With no aspect-ratio the video
+    collapsed to its intrinsic height and rendered as a small stray thumbnail
+    in the corner of an otherwise empty hero on narrow screens.
+  */
+  width: min(72%, 420px);
+  aspect-ratio: 3 / 4;
   border-radius: var(--well-radius);
   overflow: hidden;
   /* Behind the type, which has to stay legible over it. */
   z-index: 0;
+}
+
+@media (min-width: 48rem) {
+  .open-visual {
+    top: 11%;
+    width: min(54%, 580px);
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .open-video {
@@ -3741,19 +3755,56 @@ body:has(.lot-poster) > .mobile-console {
   aspect-ratio: 16 / 9;
 }
 
-/* Go2Bites: a wide landscape opening, held away from its title. */
+/*
+  Go2Bites: a wide landscape opening, held away from its title. Matched to
+  the source screenshot's own 16:10 — a 4/3 well cut straight through the
+  middle of the page's headline.
+*/
 .well--landscape {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
 }
 
-/* Wagner Wealth: narrow and tall, carrying air around it. */
+/*
+  Wagner Wealth: a tall plate with the screenshot sitting INSIDE it as a
+  contained artifact rather than a full-bleed crop. This is the one project
+  whose picture is an object on a field instead of a window cut into the
+  surface — that is its compositional difference, and it also means the
+  16:10 source keeps its headline instead of losing half its width.
+*/
 .well--portrait {
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
+  background: color-mix(in srgb, var(--ink) 7%, var(--paper));
 }
 
-/* Hiking Pony: filling its surface nearly to the brim. */
+/*
+  Matted inside the plate. This needs BOTH an explicit 100% size and
+  `border-box`:
+
+  - plain `padding` with a content-box img adds the mat OUTSIDE a 100%-height
+    box, so the image overflowed the plate and sat hard against its top edge;
+  - `inset` with `width/height: auto` does not stretch either, because an
+    absolutely positioned REPLACED element resolves auto dimensions from its
+    intrinsic size and simply ignores the over-constraint — which left the
+    image hanging off the plate's right edge.
+
+  With border-box the mat is subtracted from the 100%, and `contain` then
+  centres the screenshot in what remains.
+*/
+.well--portrait .well-media {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: clamp(16px, 3vw, 40px);
+  object-fit: contain;
+}
+
+/*
+  Hiking Pony: filling its surface nearly to the brim. 4/3 rather than 3/2
+  because the source is square and a wider well would shave a third off it.
+*/
 .well--brim {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3;
 }
 
 /*
@@ -3920,6 +3971,28 @@ body:has(.lot-poster) > .mobile-console {
   margin: 0;
 }
 
+/*
+  The studies are all square 1024px sources. Left at `width: 100%` they each
+  filled the whole surface and the section became three enormous stacked
+  squares — the opposite of an arranged field. Sizes are unequal by intent:
+  one large piece carries the act and the others are genuinely small.
+*/
+.rstudy--fold {
+  width: min(100%, 620px);
+}
+
+.rstudy--plate {
+  width: min(72%, 340px);
+  /* Sits high and to the right. */
+  margin-inline-start: auto;
+}
+
+.rstudy--cast {
+  width: min(58%, 260px);
+  /* Indented, sitting low. */
+  margin-inline-start: clamp(16px, 8vw, 96px);
+}
+
 .rstudy img {
   display: block;
   width: 100%;
@@ -3933,6 +4006,42 @@ body:has(.lot-poster) > .mobile-console {
   line-height: 1.5;
   color: var(--ink-soft);
   max-width: 32ch;
+}
+
+/*
+  DESKTOP: a hand-placed field on a 12-column grid rather than a column of
+  images. The pieces sit at different heights and the two small ones pull up
+  into the large one's row, so the arrangement itself reads as exploratory —
+  which is the only thing distinguishing this act from the client work.
+*/
+@media (min-width: 62rem) {
+  .rfield {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: start;
+    gap: 0;
+  }
+
+  .rstudy--fold {
+    grid-column: 1 / span 7;
+    width: 100%;
+  }
+
+  .rstudy--plate {
+    grid-column: 9 / span 4;
+    width: 100%;
+    margin-inline-start: 0;
+    /* Pulled up so it sits above the large piece's midline. */
+    margin-block-start: clamp(24px, 5vw, 64px);
+  }
+
+  .rstudy--cast {
+    grid-column: 4 / span 3;
+    width: 100%;
+    margin-inline-start: 0;
+    /* Dropped low, overlapping the row below the fold study. */
+    margin-block-start: clamp(-40px, -3vw, -16px);
+  }
 }
 
 /* --- ACT V: the statement plates --------------------------------- */
@@ -3991,6 +4100,13 @@ body:has(.lot-poster) > .mobile-console {
   display: flex;
   flex-direction: column;
   gap: clamp(32px, 6vw, 88px);
+  /*
+    This surface is PINNED, so it has to fit the viewport exactly. Without a
+    bounded height the capability list overflowed past the surface's top edge
+    while it was pinned, with nowhere to scroll to.
+  */
+  min-height: calc(100svh - var(--main-clear, 0px) - var(--ms-inset) * 2);
+  justify-content: center;
 }
 
 .cap-object {
@@ -4019,14 +4135,24 @@ body:has(.lot-poster) > .mobile-console {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  /*
+    The lines wrap onto two lines at most widths, so they need real air
+    between them: at 2px the four capabilities ran together into one
+    unreadable block of text.
+  */
+  gap: clamp(10px, 1.4vw, 18px);
 }
 
 .cap-line {
-  font-size: clamp(1.5rem, 4.2vw, 3.1rem);
-  line-height: 1.14;
+  /*
+    Sized to fit four two-line entries inside a pinned viewport-height
+    surface. The earlier 3.1rem ceiling overflowed it.
+  */
+  font-size: clamp(1.35rem, 2.6vw, 2.05rem);
+  line-height: 1.16;
   letter-spacing: -0.03em;
   color: var(--ink);
+  text-wrap: balance;
 }
 
 @media (min-width: 62rem) {
@@ -4035,8 +4161,18 @@ body:has(.lot-poster) > .mobile-console {
     align-items: center;
   }
 
+  /*
+    The object gives up room to the type. At a fixed 520px it left the list
+    about 230px to wrap in, which is what produced the run-on block.
+  */
+  .cap-object {
+    flex: 0 1 clamp(260px, 40%, 420px);
+    width: auto;
+  }
+
   .cap-copy {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 }
 
