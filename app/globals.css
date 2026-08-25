@@ -3763,18 +3763,31 @@ body:has(.lot-poster) > .mobile-console {
   object-fit: cover;
 }
 
-/* Wurqly: a near-full-width cinematic band. */
+/*
+  Wurqly: a near-full-width cinematic band.
+
+  On mobile a 16/9 band is only ~150px tall at this width — a letterbox slot
+  rather than an image. It goes properly tall here and reclaims the cinematic
+  proportion at the desktop breakpoint below, where there is width to spend.
+*/
 .well--cinema {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 5;
 }
 
 /*
-  Go2Bites: a wide landscape opening, held away from its title. Matched to
-  the source screenshot's own 16:10 — a 4/3 well cut straight through the
-  middle of the page's headline.
+  Go2Bites: a wide landscape opening, held away from its title.
+
+  Tall on mobile, and NOT the same height as its neighbours — the three
+  projects are supposed to differ in shape, so they get three distinct tall
+  ratios rather than one shared one, which would turn the act back into the
+  repeated-card stack the brief rules out.
+
+  Cropping is safe in this direction: `object-position: center top` means a
+  taller well takes the extra off the BOTTOM of the screenshot and leaves the
+  headline intact. It is horizontal cropping that destroys these images.
 */
 .well--landscape {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 6 / 7;
 }
 
 /*
@@ -3818,11 +3831,33 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Hiking Pony: filling its surface nearly to the brim. 4/3 rather than 3/2
-  because the source is square and a wider well would shave a third off it.
+  Hiking Pony: filling its surface nearly to the brim. Square on mobile,
+  which is both the tall end of this act's range and the source image's own
+  ratio — so it is the one work image shown with no crop at all. Widens to
+  4/3 on desktop (never 3/2, which would shave a third off a square source).
 */
 .well--brim {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
+}
+
+/*
+  DESKTOP: the wells reclaim their wider, composition-driven proportions.
+  The tall ratios above exist because a wide well at ~271px of mobile width
+  collapses into a slot; once there is real width, these shapes are what make
+  the three projects read as different pieces of work.
+*/
+@media (min-width: 62rem) {
+  .well--cinema {
+    aspect-ratio: 16 / 9;
+  }
+
+  .well--landscape {
+    aspect-ratio: 16 / 10;
+  }
+
+  .well--brim {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 /*
@@ -4127,8 +4162,17 @@ body:has(.lot-poster) > .mobile-console {
   justify-content: center;
 }
 
+/*
+  The aspect-ratio is load-bearing, not decorative. This image is `loading
+  ="lazy"` with no intrinsic size reserved, so before it decoded the box
+  measured 271x0 — the object was literally absent, and because this is the
+  PINNED act, ScrollTrigger computed the pin distance from that collapsed
+  layout. Reserving the ratio fixes the measurement and the layout shift.
+  1/1 matches the square source, so nothing is cropped.
+*/
 .cap-object {
   width: min(100%, 520px);
+  aspect-ratio: 1 / 1;
   border-radius: var(--well-radius);
   overflow: hidden;
   flex-shrink: 0;
@@ -4137,7 +4181,9 @@ body:has(.lot-poster) > .mobile-console {
 .cap-object img {
   display: block;
   width: 100%;
-  height: auto;
+  /* Fills the reserved box rather than defining it. */
+  height: 100%;
+  object-fit: cover;
 }
 
 .cap-title {

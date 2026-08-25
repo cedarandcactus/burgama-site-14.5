@@ -32,11 +32,16 @@ export function ActResearch() {
 
           These are small numbers on purpose: the instruction is that they
           must not fly around or feel like a scrapbook.
+
+          TRANSLATION ONLY — no rotation. The pieces used to start at a slight
+          angle and straighten as they settled, which meant they were visibly
+          tilted for the whole time the act was crossing the viewport. The
+          differing weights now read purely through distance and direction.
         */
-        const settle: [string, { x?: number; y: number; rotate?: number }][] = [
-          ['.rstudy--fold', { y: 34, x: -14, rotate: -1.6 }],
+        const settle: [string, { x?: number; y: number }][] = [
+          ['.rstudy--fold', { y: 34, x: -14 }],
           ['.rstudy--plate', { y: -30, x: 10 }],
-          ['.rstudy--cast', { y: 46, rotate: 2 }],
+          ['.rstudy--cast', { y: 46 }],
         ]
 
         settle.forEach(([selector, from]) => {
@@ -47,12 +52,10 @@ export function ActResearch() {
             {
               y: (from.y ?? 0) * s,
               x: (from.x ?? 0) * s,
-              rotate: (from.rotate ?? 0) * s,
             },
             {
               y: 0,
               x: 0,
-              rotate: 0,
               ease: 'none',
               scrollTrigger: {
                 trigger: scope,

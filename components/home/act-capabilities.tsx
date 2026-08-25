@@ -10,9 +10,9 @@ import { gsap, createActContext, motionScale, prefersReducedMotion } from '@/lib
  * pages cannot drift apart. No cards, no icons, no paragraph under each line.
  *
  * The choreography is a designer repositioning a physical object: it settles,
- * lifts, turns a few degrees, then moves aside — and the space it vacates is
- * where the typography arrives. The object never spins, never loops, and the
- * rotation is capped low enough to read as a considered placement.
+ * lifts, then moves aside — and the space it vacates is where the typography
+ * arrives. The object never spins and never loops, and it stays SQUARE to the
+ * page throughout: no rotation at any point in the sequence.
  *
  * The RESTING CSS state is the finished composition (object left, type right,
  * everything visible). The timeline animates backwards from an establishing
@@ -85,7 +85,6 @@ export function ActCapabilities() {
             xPercent: aside,
             yPercent: 6,
             scale: sideBySide ? 1.16 : 1,
-            rotate: 0,
           },
           {
             yPercent: 0,
@@ -95,14 +94,14 @@ export function ActCapabilities() {
           },
         )
           /*
-            3–5. The turn and the move aside, together — one gesture, not two.
-            10 degrees, inside the 8–15 ceiling, and reduced on mobile with
-            the rest of the transform work.
+            3–5. The move aside. This used to also turn the object 5–10
+            degrees, which is removed: the pictures stay square to the page.
+            The repositioning gesture now reads through the scale and the
+            lateral move alone, and the object lands upright.
           */
           .to(
             object,
             {
-              rotate: short ? 5 : 10,
               xPercent: 0,
               scale: 1,
               ease: 'none',
