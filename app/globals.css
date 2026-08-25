@@ -3685,6 +3685,19 @@ body:has(.lot-poster) > .mobile-console {
   object-fit: cover;
   /* Set back so the statement reads as the foreground element. */
   opacity: 0.5;
+  /*
+    CONTRAST, NOT STYLING. The statement overlaps ~279x270px of this video,
+    and the vault footage blows out to near-white mid-loop — measured, that
+    put 75px display type at 2.45:1, under even the 3:1 large-text floor.
+    Opacity alone could not fix it: at 0.5 the bright frames still composite
+    to rgb(121,129,154).
+
+    Brightness is capped here so the worst frame stays dark enough for the
+    ink to hold. A scrim gradient would have been the usual answer and is
+    ruled out — the surfaces in this system are flat and ungradiented.
+    Re-measure the worst-case frame if this value is ever touched.
+  */
+  filter: brightness(0.58);
 }
 
 .open-statement {
@@ -3771,8 +3784,13 @@ body:has(.lot-poster) > .mobile-console {
   surface — that is its compositional difference, and it also means the
   16:10 source keeps its headline instead of losing half its width.
 */
+/*
+  5/4 rather than a true portrait. The mat should read as a deliberate margin
+  around the screenshot; a 4/5 plate left roughly a third of its height as
+  dead space beneath a 16:10 image.
+*/
 .well--portrait {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 5 / 4;
   background: color-mix(in srgb, var(--ink) 7%, var(--paper));
 }
 
@@ -4377,16 +4395,19 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Reduced motion: the opening video is decorative, so it should not
-  autoplay-loop for anyone who asked for less movement. GSAP is disabled
-  separately in `lib/motion.ts`, which also means `data-handoff` is
-  never set and the closing surfaces stay in normal flow.
+  Reduced motion: the opening video must not autoplay-loop for anyone who
+  asked for less movement. GSAP is disabled separately in `lib/motion.ts`,
+  which also means `data-handoff` is never set and the closing surfaces stay
+  in normal flow.
+
+  It is NOT hidden, though. `display: none` also drops the poster frame, and
+  the hero composition is a statement set against an image — with the media
+  gone it collapsed to a bare tinted rectangle and the surface read as
+  broken. Playback is stopped in `act-opening.tsx` instead, so the element
+  stays laid out and renders `poster` as a still. Reduced motion means less
+  movement, not less content.
 */
 @media (prefers-reduced-motion: reduce) {
-  .open-video {
-    display: none;
-  }
-
   .open-visual {
     aspect-ratio: 4 / 3;
     background: color-mix(in srgb, var(--ink) 7%, var(--paper));

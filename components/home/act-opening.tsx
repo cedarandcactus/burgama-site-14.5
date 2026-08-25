@@ -18,6 +18,44 @@ import { gsap, createActContext, motionScale } from '@/lib/motion'
 export function ActOpening() {
   const root = useRef<HTMLDivElement>(null)
 
+  /*
+    Reduced motion: hold the decorative opening video on its poster frame.
+
+    This is deliberately NOT inside `createActContext`, which no-ops under
+    reduced motion — the case that needs handling is the exact case that
+    callback never runs in. `autoPlay` is left in the markup so the default
+    experience needs no JS, and is undone here instead.
+
+    Kept as a live `change` listener rather than a one-shot read so toggling
+    the OS setting takes effect without a reload.
+  */
+  useEffect(() => {
+    const video = root.current?.querySelector<HTMLVideoElement>('.open-video')
+    if (!video) return
+
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const apply = () => {
+      if (query.matches) {
+        video.autoplay = false
+        video.loop = false
+        video.pause()
+        // Rewind so the still shown matches the poster rather than
+        // whatever frame playback happened to reach first.
+        video.currentTime = 0
+      } else if (video.paused) {
+        video.autoplay = true
+        video.loop = true
+        // Autoplay can legitimately be refused; the poster remains.
+        void video.play().catch(() => {})
+      }
+    }
+
+    apply()
+    query.addEventListener('change', apply)
+    return () => query.removeEventListener('change', apply)
+  }, [])
+
   useEffect(
     () =>
       createActContext(root.current, ({ scope }) => {

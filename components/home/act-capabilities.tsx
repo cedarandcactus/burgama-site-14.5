@@ -60,13 +60,39 @@ export function ActCapabilities() {
         const object = scope.querySelector('.cap-object')
 
         /*
+          The "move aside" only exists in the two-column desktop composition,
+          where the object genuinely vacates space to its right for the type.
+          On the stacked mobile layout the object is already full width, so a
+          sideways offset just pushes it off the surface and over the heading
+          — which is exactly what it did before this check. There it stays put
+          and only the scale and rotation carry the gesture.
+        */
+        const sideBySide = window.matchMedia('(min-width: 62rem)').matches
+        const aside = sideBySide ? 18 : 0
+
+        /*
           1–2. Establish, then lift. The object starts larger and centred,
           occupying the whole surface, and rises slightly as it recedes.
         */
+        /*
+          Same reasoning for the establishing scale: the desktop object has
+          slack around it to grow into, but the mobile one is already the full
+          width of the surface, so anything above 1 spills past both edges.
+        */
         tl.fromTo(
           object,
-          { xPercent: 18, yPercent: 6, scale: 1.16, rotate: 0 },
-          { yPercent: 0, scale: 1.08, ease: 'none', duration: 1 },
+          {
+            xPercent: aside,
+            yPercent: 6,
+            scale: sideBySide ? 1.16 : 1,
+            rotate: 0,
+          },
+          {
+            yPercent: 0,
+            scale: sideBySide ? 1.08 : 1,
+            ease: 'none',
+            duration: 1,
+          },
         )
           /*
             3–5. The turn and the move aside, together — one gesture, not two.
