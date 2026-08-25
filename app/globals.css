@@ -3965,18 +3965,73 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /* Alternating grounds so consecutive surfaces read as separate objects. */
+/*
+  Grounds come from the ACTIVE FIELD rather than from per-act hardcoded
+  navy steps. This is what lets an act become magenta or periwinkle by
+  changing one `data-field` attribute, and it is also how the frost
+  provider learns each section's dominant colour — it reads
+  `--field-bg-raised` off these same elements.
+
+  The two lists are kept because they still express the tonal alternation
+  down the page; they now just select which STEP of the active family they
+  take rather than naming a colour.
+*/
 .msurface--work,
 .msurface--research,
 .msurface--say,
 .msurface--studio {
-  background: var(--paper-raised);
+  background: var(--field-bg-raised);
 }
 
 .msurface--open,
 .msurface--more,
 .msurface--cap,
 .msurface--contact {
-  background: var(--paper-sunk);
+  background: var(--field-bg);
+}
+
+/* ==================================================================
+   OPEN / CONTAINED RHYTHM
+
+   The descent alternates between surfaces that run to the page edge and
+   surfaces that sit inside it as architecture:
+
+     Opening    open
+     Work       contained
+     Research   open
+     More Work  contained
+     Statement  typography-led (own treatment)
+     Capabilit. contained
+     Close      open
+
+   Implemented as `data-frame` on the existing wrappers rather than as new
+   classes, because `.msurface--open` already means "the Opening act" — a
+   `--open` modifier for "open frame" would collide with it and silently
+   restyle Act I.
+
+   Nothing here changes an act's interior, so every hand-built composition
+   and every GSAP selector is untouched.
+================================================================== */
+
+/* Runs to the page edge: no inset, no radius, no visible container. */
+.msurface[data-frame='open'] {
+  width: 100%;
+  border-radius: 0;
+  /*
+    Horizontal padding still applies so type never touches the edge — it is
+    the CONTAINER that disappears here, not the margins of the text.
+  */
+  padding-inline: var(--page-gutter);
+}
+
+/*
+  Architecture, not a card. The large radius and the generous interior
+  padding are what separate the two readings: a card is small, tightly
+  padded and repeated, this is none of those.
+*/
+.msurface[data-frame='contained'] {
+  border-radius: var(--surface-radius);
+  padding: clamp(1.25rem, 4vw, 4.5rem);
 }
 
 /* --- ACT I: the opening ------------------------------------------ */
