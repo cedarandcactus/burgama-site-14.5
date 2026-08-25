@@ -80,7 +80,15 @@ export function ActResearch() {
       className="msurface msurface--research"
       ref={root}
       aria-labelledby="research-title"
-      data-field="paper"
+      /*
+        The muted magenta field. This is the page's first departure from navy,
+        and it lands here rather than on a work act deliberately: Research is
+        the studio's own material, so a shift in ground reads as a shift in
+        subject. Its type comes from the magenta family (pale wine), never
+        white — see the field definitions in globals.css.
+      */
+      data-field="magenta"
+      data-frame="open"
     >
       {/* Plain naming, exactly as instructed. */}
       <h2 id="research-title" className="ract-title">

@@ -59,7 +59,12 @@ export function ActWork() {
   useImageDrift(root)
 
   return (
-    <div className="msurface msurface--work" ref={root} data-field="paper">
+    <div
+      className="msurface msurface--work"
+      ref={root}
+      data-field="paper"
+      data-frame="contained"
+    >
       <h2 className="sr-only">Selected work</h2>
 
       {/*

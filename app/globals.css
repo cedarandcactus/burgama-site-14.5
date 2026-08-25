@@ -131,7 +131,14 @@
   --mag-raised: #7d3a5f;
   --mag-sunk: #5a2442;
   --mag-ink: #f0cfe0;
-  --mag-ink-soft: #d5a8c1;
+  /*
+    Lightened from #d5a8c1, which measured 3.86:1 against `--mag-raised` —
+    under the 4.5:1 needed for normal-size text. `--field-ink-soft` is a
+    general-purpose secondary ink, so it has to clear normal-text contrast
+    on its own field rather than relying on every consumer being display
+    scale. Now 4.72:1.
+  */
+  --mag-ink-soft: #e0bad0;
 
   /* PERIWINKLE AS A GROUND — inverts the default relationship. */
   --peri-field: #c7cbf2;
@@ -2703,6 +2710,21 @@ a.action-quiet:hover .action-arrow {
 ================================================================== */
 
 .mobile-console {
+  /*
+    THE CONSOLE'S LOCAL INK, inherited by every module, destination and
+    control inside it.
+
+    It resolves to the frost provider's `--frost-fg` — the ink of whichever
+    field is currently under the shell — falling back to the field ink and
+    then to `--ink`.
+
+    This exists because hardcoding `--ink` on the modules was a real
+    contrast bug: over the periwinkle capabilities act the bar correctly
+    retinted to a pale ground while its contents stayed pale periwinkle,
+    leaving ~1.3:1 text. Declared here, once, so a module and its bar can
+    never disagree about the current field.
+  */
+  --mod-ink: var(--frost-fg, var(--field-ink, var(--ink)));
   position: fixed;
   z-index: 60;
   right: clamp(0.5rem, 2vw, 0.875rem);
@@ -2771,8 +2793,8 @@ a.action-quiet:hover .action-arrow {
   min-height: 3.75rem;
   padding-inline: 0.5rem;
   border-radius: calc(var(--field-radius) - 5px);
-  background: color-mix(in srgb, var(--ink) 13%, transparent);
-  color: var(--ink);
+  background: color-mix(in srgb, var(--mod-ink) 13%, transparent);
+  color: var(--mod-ink);
   font-size: 1.0625rem;
   line-height: 1.15;
   letter-spacing: -0.01em;
@@ -2788,25 +2810,35 @@ a.action-quiet:hover .action-arrow {
     background-color 300ms var(--ease-module);
 }
 
-/* The one weighted module per context — the forward action. */
+/*
+  The one weighted module per context — the forward action. It INVERTS, so
+  its fill is the field's ink and its text is the field's ground; both sides
+  of the inversion have to come from the same field or the pair breaks.
+*/
 .console-module.is-lead {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--mod-ink);
+  color: var(--field-bg-raised, var(--paper));
 }
 
 /* A readout, not a control: no pointer affordance, quieter fill. */
 .console-module.is-static {
-  background: color-mix(in srgb, var(--ink) 8%, transparent);
-  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--mod-ink) 8%, transparent);
+  /* Mixed toward the ground rather than using `--ink-soft`, which is a navy
+     token and would not soften correctly on a light field. */
+  color: color-mix(in srgb, var(--mod-ink) 72%, var(--field-bg-raised, transparent));
   cursor: default;
 }
 
 .console-module.is-active {
-  background: color-mix(in srgb, var(--ink) 26%, transparent);
+  background: color-mix(in srgb, var(--mod-ink) 26%, transparent);
 }
 
 .console-module.is-lead.is-active {
-  background: color-mix(in srgb, var(--ink) 88%, var(--paper));
+  background: color-mix(
+    in srgb,
+    var(--mod-ink) 88%,
+    var(--field-bg-raised, var(--paper))
+  );
 }
 
 .console-module-label {
@@ -2895,8 +2927,9 @@ a.action-quiet:hover .action-arrow {
   align-items: center;
   padding-inline: 1rem;
   border-radius: calc(var(--field-radius) - 6px);
-  background: color-mix(in srgb, var(--ink) 10%, transparent);
-  color: var(--ink);
+  /* Field-derived, like the modules — see `--mod-ink` on `.mobile-console`. */
+  background: color-mix(in srgb, var(--mod-ink) 10%, transparent);
+  color: var(--mod-ink);
   /* Large — these are the destinations, set at real display scale. */
   font-size: 1.75rem;
   line-height: 1;
@@ -2917,7 +2950,7 @@ a.action-quiet:hover .action-arrow {
 }
 
 .console-dest[aria-current='page'] {
-  background: color-mix(in srgb, var(--ink) 24%, transparent);
+  background: color-mix(in srgb, var(--mod-ink) 24%, transparent);
 }
 
 /*
@@ -4406,10 +4439,15 @@ body:has(.lot-poster) > .mobile-console {
 
 /* --- ACT III: research ------------------------------------------- */
 
+/*
+  `--field-ink-soft`, not `--ink-soft`: this act is now the MAGENTA field, and
+  a hardcoded periwinkle would be a foreign colour dropped on a wine ground.
+  Every rule inside a recoloured act has to read from the field.
+*/
 .ract-title {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-size: var(--t-ui);
   letter-spacing: -0.01em;
-  color: var(--ink-soft);
+  color: var(--field-ink-soft);
   margin-block-end: clamp(28px, 5vw, 64px);
 }
 
@@ -4454,9 +4492,10 @@ body:has(.lot-poster) > .mobile-console {
 
 .rstudy-note {
   margin-block-start: 14px;
-  font-size: 0.95rem;
+  font-size: var(--t-body);
   line-height: 1.5;
-  color: var(--ink-soft);
+  /* Field ink: this act is magenta. See the note on `.ract-title`. */
+  color: var(--field-ink-soft);
   max-width: 32ch;
 }
 
@@ -4496,53 +4535,78 @@ body:has(.lot-poster) > .mobile-console {
   }
 }
 
-/* --- ACT V: the statement plates --------------------------------- */
+/* --- ACT V: the statement ---------------------------------------- */
 
 /*
-  Each line of the statement gets its own plate, and the plates step in
-  and out so the OUTER silhouette of the block is what carries the
-  composition. The hand-written line breaks generate that geometry.
+  Typography only. The previous `.plate` treatment — one filled, rounded
+  panel per line, wiped open with clip-path — is gone: it made the SHAPES
+  the composition and left the words as their contents, which is the exact
+  pattern the revision removes.
+
+  What carries it now is scale, line break and indent. Nothing is drawn.
 */
 .msurface--say {
-  padding-block: clamp(72px, 14vw, 200px);
+  /*
+    A lot of air. The statement is the one act with no image and no
+    navigation, so the space around the sentence is what signals that it is
+    meant to be read rather than scanned.
+  */
+  padding-block: clamp(96px, 20vw, 260px);
 }
 
-.plate-stack {
+.say-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* Plates touch: the stack must read as one mass, not three chips. */
-  gap: 0;
 }
 
-.plate {
+/*
+  The composition depends on each clause occupying exactly ONE line — the
+  asymmetric left edge is made of three line starts, so a clause that wraps
+  destroys it.
+
+  At `--t-display` (9vw) on a 331px screen, "with a point of view," broke
+  into four ragged lines and the indent read as an accident rather than as a
+  device. So mobile uses `--t-read`, which is the largest size that keeps
+  the longest clause intact at 331px, and the display scale is picked up at
+  the breakpoint below where there is width to carry it.
+
+  `text-wrap: nowrap` is NOT used to enforce this: it would push the text
+  outside the viewport on a narrow screen instead of wrapping, which trades
+  a broken composition for unreachable content.
+*/
+.say-line {
   display: block;
-  /* The sanctioned inversion: ink fill, paper type. */
-  background: var(--ink);
-  color: var(--paper);
-  border-radius: 16px;
-  padding: 0.16em 0.42em 0.2em;
-  font-size: clamp(1.9rem, 7vw, 5.4rem);
-  line-height: 1.06;
-  letter-spacing: -0.035em;
+  font-size: var(--t-read);
+  /* Tight enough that the three lines read as one block of text. */
+  line-height: 1.02;
+  letter-spacing: -0.03em;
 }
 
-.plate-line {
-  display: block;
+/*
+  The device: the middle clause is indented, so the block has an asymmetric
+  left edge. `--say-indent` is animated by the act (a slow further drift
+  inward), which is why the indent is a variable and not a fixed margin.
+*/
+.say-line--turn {
+  --say-indent: 0em;
+  margin-inline-start: calc(1.1em + var(--say-indent));
+  /*
+    Set slightly softer than the outer lines so the turn inward reads
+    tonally as well as positionally — still the same family, one step down.
+  */
+  color: var(--field-ink-soft);
 }
 
-/* The step pattern: wide, inset, then wider again. */
-.plate--b {
-  margin-inline-start: clamp(14px, 5vw, 88px);
-}
-
-.plate--c {
-  margin-inline-start: clamp(6px, 2vw, 32px);
-}
-
-@media (min-width: 48rem) {
-  .plate {
-    border-radius: 22px;
+/*
+  Display scale once the longest clause fits on one line. 34rem is measured,
+  not guessed: below it "with a point of view," wraps at display size.
+*/
+@media (min-width: 34rem) {
+  .say-line {
+    font-size: var(--t-display);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
   }
 }
 
@@ -4585,10 +4649,15 @@ body:has(.lot-poster) > .mobile-console {
   object-fit: cover;
 }
 
+/*
+  This act is the PERIWINKLE field — a light ground. `--ink-soft` here was
+  pale periwinkle type on a pale periwinkle surface, i.e. very nearly
+  invisible; the field ink resolves to deep blue-violet instead.
+*/
 .cap-title {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-size: var(--t-ui);
   letter-spacing: -0.01em;
-  color: var(--ink-soft);
+  color: var(--field-ink-soft);
   margin-block-end: 22px;
 }
 
@@ -4611,10 +4680,11 @@ body:has(.lot-poster) > .mobile-console {
     Sized to fit four two-line entries inside a pinned viewport-height
     surface. The earlier 3.1rem ceiling overflowed it.
   */
-  font-size: clamp(1.35rem, 2.6vw, 2.05rem);
+  font-size: var(--t-read);
   line-height: 1.16;
   letter-spacing: -0.03em;
-  color: var(--ink);
+  /* Deep blue-violet on the periwinkle ground. */
+  color: var(--field-ink);
   text-wrap: balance;
 }
 
@@ -5128,8 +5198,17 @@ body:has(.lot-poster) > .mobile-console {
   height: 3.5rem;
   border: 0;
   border-radius: calc(var(--shell-radius) - 6px);
-  background: var(--field-ink);
-  color: var(--field-bg);
+  /*
+    `currentColor` rather than `--field-ink`, because this form renders in
+    BOTH the desktop shell and the mobile console. Inside the console the
+    ambient ink is the frost field's (`--mod-ink`), not the section's, so
+    reading `--field-ink` directly would fill the button with the wrong
+    field's colour whenever the console sat over a recoloured act.
+    `currentColor` inherits whichever ink the host container established.
+  */
+  background: currentColor;
+  /* The inverse side of the same relationship. */
+  color: var(--field-bg-raised, var(--field-bg));
   font-family: var(--font-mono);
   font-size: var(--t-ui);
   letter-spacing: 0.02em;

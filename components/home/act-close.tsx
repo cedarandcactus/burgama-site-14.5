@@ -63,6 +63,7 @@ export function ActClose() {
         className="msurface handoff-over msurface--studio"
         aria-labelledby="studio-title"
         data-field="paper"
+        data-frame="contained"
       >
         <h2 id="studio-title" className="studio-lead">
           Burgama shapes identities and digital experiences for people with
@@ -89,7 +90,14 @@ export function ActClose() {
       <section
         className="msurface handoff-under msurface--contact"
         aria-labelledby="contact-title"
-        data-field="panel"
+        /*
+          OPEN, closing the alternation the Opening began. The last surface
+          on the page runs to the edge so the site ends by opening out
+          rather than by closing a box — and it means the final thing on
+          screen is the address at scale, not a container edge.
+        */
+        data-field="paper"
+        data-frame="open"
       >
         <div className="contact-body">
           <h2 id="contact-title" className="contact-lead">

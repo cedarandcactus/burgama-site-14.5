@@ -4,15 +4,25 @@ import { useEffect, useRef } from 'react'
 import { gsap, createActContext, motionScale } from '@/lib/motion'
 
 /**
- * ACT V — point of view. The one place the plate system is used.
+ * ACT V — point of view. Typography as the composition.
  *
- * Three line groups, three plates. Each plate hugs its own line, and because
- * the three widths and offsets differ the group resolves into a single stepped
- * architectural mass rather than a card with a headline in it.
+ * REBUILT. The previous version set each line on its own rounded "plate" and
+ * wiped the plates open with clip-path, so the three shapes formed a stepped
+ * mass behind the words. That is precisely the treatment the revision rules
+ * out: type sitting on decorative geometry, with the shapes — not the words —
+ * doing the composing.
  *
- * The geometry exists BECAUSE of the line breaks. Change the copy and the
- * silhouette has to be re-tuned — that is the point of the treatment, and the
- * reason it appears exactly once on the page.
+ * What replaces it uses nothing but type. The line breaks, the indents and the
+ * scale ARE the composition:
+ *
+ *   The work begins          <- full scale, flush left
+ *      with a point of view, <- indented, the sentence turning inward
+ *   then becomes a system.   <- returns to the margin, closing the thought
+ *
+ * The indent on the middle line is the whole device. It gives the block an
+ * asymmetric left edge, which is what stops three stacked lines from reading
+ * as a centred pull-quote — and it does it with white space rather than with
+ * a panel.
  *
  * The statement is Burgama's existing line, already used as the site
  * description: the work begins with a point of view, then becomes a system.
@@ -28,75 +38,47 @@ export function ActStatement() {
         const s = motionScale()
 
         /*
-          Construction, not a fade. Each plate is wiped open with clip-path
-          from a different edge so the mass assembles itself:
-            plate 1 → left to right
-            plate 2 → right to left
-            plate 3 → barely moves, just a short opening
+          The lines rise into place, one clause at a time. This is a plain
+          translation — no clip-path, no reveal geometry, no mask — because
+          there is no longer a shape to construct. The sentence assembles in
+          reading order, which is the only sequence that makes sense for a
+          statement whose meaning depends on its clauses arriving in order.
 
-          clip-path rather than scaleX because scaling a rounded rectangle
-          distorts its corner radii, and the corner language is the one thing
-          holding this to the rest of the site.
+          Held to 34px: enough to feel deliberate, short of a text animation.
         */
-        const wipes: [string, string][] = [
-          ['.plate--a', 'inset(0 100% 0 0 round var(--plate-radius))'],
-          ['.plate--b', 'inset(0 0 0 100% round var(--plate-radius))'],
-          ['.plate--c', 'inset(0 62% 0 0 round var(--plate-radius))'],
-        ]
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: scope,
-            start: 'top 78%',
-            end: 'center center',
-            scrub: 1,
-          },
-        })
-
-        wipes.forEach(([selector, from], i) => {
-          tl.fromTo(
-            scope.querySelector(selector),
-            { clipPath: from },
-            {
-              clipPath: 'inset(0 0 0 0 round var(--plate-radius))',
-              ease: 'none',
+        gsap.fromTo(
+          scope.querySelectorAll('.say-line'),
+          { y: 34 * s, opacity: 0.35 },
+          {
+            y: 0,
+            opacity: 1,
+            ease: 'none',
+            stagger: 0.14,
+            scrollTrigger: {
+              trigger: scope,
+              start: 'top 80%',
+              end: 'center 62%',
+              scrub: 0.9,
             },
-            /*
-              Slightly staggered starts rather than simultaneous, so the
-              silhouette builds in a readable order instead of all three
-              edges moving at once.
-            */
-            i * 0.12,
-          )
-        })
-
-        /*
-          The type itself moves very little — the plates do the work. 22px of
-          travel is enough to feel mechanically related to the geometry
-          without turning into a text animation.
-        */
-        tl.fromTo(
-          scope.querySelectorAll('.plate-line'),
-          { y: 22 * s },
-          { y: 0, ease: 'none', stagger: 0.08 },
-          0,
+          },
         )
 
         /*
-          ONE evolving edge, after the reveal has settled. The bottom plate
-          keeps extending slightly as the user scrolls through the rest of
-          the composition. Only this edge moves; morphing all of them is
-          explicitly what the brief warns against.
+          ONE slow move after the sentence has settled: the indented middle
+          clause drifts a little further in as the act crosses the viewport,
+          so the block's silhouette is still developing while it is read.
+          A single evolving relationship, which is what the brief allows —
+          not three things morphing at once.
         */
         gsap.fromTo(
-          scope.querySelector('.plate--c'),
-          { '--plate-extend': '0rem' },
+          scope.querySelector('.say-line--turn'),
+          { '--say-indent': '0em' },
           {
-            '--plate-extend': `${4 * s}rem`,
+            '--say-indent': `${0.9 * s}em`,
             ease: 'none',
             scrollTrigger: {
               trigger: scope,
-              start: 'center center',
+              start: 'center 62%',
               end: 'bottom top',
               scrub: 1.2,
             },
@@ -107,22 +89,22 @@ export function ActStatement() {
   )
 
   return (
-    <section className="msurface msurface--say" ref={root} data-field="paper">
-      <p className="plate-stack">
-        {/*
-          Each line is its own plate. The widths step: wide, inset and
-          narrower, then wider again — which is what produces the stepped
-          outer silhouette.
-        */}
-        <span className="plate plate--a">
-          <span className="plate-line">The work begins</span>
-        </span>
-        <span className="plate plate--b">
-          <span className="plate-line">with a point of view,</span>
-        </span>
-        <span className="plate plate--c">
-          <span className="plate-line">then becomes a system.</span>
-        </span>
+    <section
+      className="msurface msurface--say"
+      ref={root}
+      /*
+        OPEN frame and no container. A statement act with a visible box
+        around it would be a pull-quote; without one it is the page speaking
+        in its own voice. This is the typography-led beat in the descent.
+      */
+      data-field="paper"
+      data-frame="open"
+    >
+      <p className="say-stack">
+        <span className="say-line">The work begins</span>
+        {/* The indented clause: the sentence turning inward. */}
+        <span className="say-line say-line--turn">with a point of view,</span>
+        <span className="say-line">then becomes a system.</span>
       </p>
     </section>
   )

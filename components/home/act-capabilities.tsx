@@ -138,7 +138,16 @@ export function ActCapabilities() {
       className="msurface msurface--cap"
       ref={root}
       aria-labelledby="cap-title"
-      data-field="panel"
+      /*
+        The inverted field: periwinkle becomes the GROUND and the type goes
+        deep blue-violet. Placed on the capabilities list because this is the
+        one act that is pure information — a plain statement of what the
+        studio does — so it earns the page's brightest, most direct surface.
+        Also the strongest possible contrast against the magenta of Research
+        two acts above.
+      */
+      data-field="periwinkle"
+      data-frame="contained"
     >
       <div className="cap-object">
         <img

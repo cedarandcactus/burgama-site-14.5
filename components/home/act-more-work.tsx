@@ -71,7 +71,12 @@ export function ActMoreWork() {
   )
 
   return (
-    <div className="msurface msurface--more" ref={root} data-field="panel">
+    <div
+      className="msurface msurface--more"
+      ref={root}
+      data-field="paper"
+      data-frame="contained"
+    >
       <h2 className="sr-only">More work</h2>
 
       <Link href="/work/hiking-pony" className="wcomp wcomp--edge">
