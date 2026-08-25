@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * ADAPTIVE FROST SOURCE
@@ -32,7 +32,9 @@ import { useEffect } from 'react'
  *   not a scroll handler. A scroll listener would run every frame to compute
  *   something that changes a handful of times per page.
  * - The observer's `rootMargin` collapses the viewport to a band, so
- *   "intersecting" means "this section is behind the shell right now".
+ *   "intersecting" means "this section is behind the chrome right now". The
+ *   band sits at the TOP for the desktop shell and at the BOTTOM for the
+ *   mobile console, because that is where each one physically is.
  * - Results are written to `<html>`, so the desktop shell and the mobile
  *   console read ONE source and can never disagree about the current tint.
  *
@@ -49,7 +51,31 @@ import { useEffect } from 'react'
 const MUTE = 12
 const OPACITY = 78
 
+/*
+ * The shell/console switch. Must stay equal to the CSS breakpoint in
+ * globals.css: this decides WHERE the observer looks for the active field,
+ * and the CSS decides WHICH chrome is on screen. If they disagree, the
+ * visible chrome is tinted from the wrong end of the viewport.
+ */
+const CONSOLE_QUERY = '(max-width: 759px)'
+
 export function FrostFieldProvider() {
+  /*
+   * Tracks which chrome is live. It is state rather than a one-off read so
+   * that resizing across the breakpoint — including a phone rotating —
+   * rebuilds the observer against the correct band instead of leaving a
+   * bottom-tracking observer running under a top-anchored shell.
+   */
+  const [isConsole, setIsConsole] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia(CONSOLE_QUERY)
+    setIsConsole(mq.matches)
+    const onChange = (e: MediaQueryListEvent) => setIsConsole(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
   useEffect(() => {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('[data-field]'),
@@ -75,6 +101,16 @@ export function FrostFieldProvider() {
         `color-mix(in srgb, color-mix(in srgb, ${raised} ${100 - MUTE}%, ${ink}) ${OPACITY}%, transparent)`,
       )
       root.style.setProperty('--frost-fg', ink)
+      /*
+        The GROUND that pairs with `--frost-fg`. Published because anything
+        inverting against the frost (the console's lead module) needs the
+        counterpart of the current ink, and there was previously no way to get
+        it: reading `--field-bg-raised` from CSS resolves against whichever
+        section element the chrome overlaps, which on a light field is itself
+        light — giving a light fill light text at 1.02:1. Sourced here from
+        the same section as the ink, so the pair can never disagree.
+      */
+      root.style.setProperty('--frost-bg', raised)
     }
 
     /*
@@ -97,19 +133,32 @@ export function FrostFieldProvider() {
       },
       {
         /*
-         * Collapse the viewport to a band at the top, where the floating
-         * shell lives.
+         * Collapse the viewport to a band over the CHROME BEING TINTED.
          *
-         * `-90%` was too tight: it left a ~74px sliver, so whenever a gap
-         * between two sections passed the top of the screen NO section was
-         * intersecting, `active` emptied, and the last tint stuck. Measured
-         * with the panel section at top:155 while the band ended at 90 —
-         * nothing matched and the material never retinted.
+         * This is why the band is not simply "the top": the desktop shell
+         * occupies all four corners, but below 760px the shell is replaced by
+         * the mobile console, which is fixed to the BOTTOM of the screen.
          *
-         * `-75%` gives roughly the top quarter, which is always covered by
-         * some section on these pages, so the band is never empty mid-page.
+         * A top-only band therefore tinted the console from whichever section
+         * happened to be at the top of the viewport — a completely different
+         * part of the page from the one actually behind it. Over the
+         * periwinkle capabilities act the console kept the magenta tint of the
+         * act above, which is how it ended up pale-on-pale.
+         *
+         * So the band tracks the console on mobile and the top on desktop.
+         * `matchMedia` uses the same 760px number as the CSS switch; a
+         * mismatch here would reintroduce the same class of bug.
+         *
+         * A previous value of `-90%` was also too tight even on desktop: it
+         * left a ~74px sliver, so when a gap between sections crossed it NO
+         * section intersected, `active` emptied and the last tint stuck.
+         * Both bands below are ~25% for that reason.
          */
-        rootMargin: '0px 0px -75% 0px',
+        rootMargin: isConsole
+          ? /* bottom quarter, where the console sits */
+            '-75% 0px 0px 0px'
+          : /* top quarter, where the shell corners sit */
+            '0px 0px -75% 0px',
         /*
          * Several thresholds so the callback also fires while a tall section
          * is crossing, not only at the moment it enters. With `0` alone a
@@ -122,18 +171,33 @@ export function FrostFieldProvider() {
     for (const section of sections) observer.observe(section)
 
     /*
-      Seed from the topmost section. Without this the shell renders with the
-      resting default until the first scroll, which is visible on any page
-      whose first field is not navy.
+      Seed before the first scroll, otherwise the chrome renders with the
+      resting default on any page whose relevant field is not navy.
+
+      Seeded from the END of the document when the console is live: at first
+      paint the bottom of the viewport is usually still the FIRST section on
+      short pages, but on a long page the console can already be sitting over
+      later content after a restored scroll position. Reading the section that
+      actually contains the band point is correct in both cases; `sections[0]`
+      is the fallback when the point hits no field.
     */
-    apply(sections[0])
+    const seedY = isConsole ? window.innerHeight - 40 : 60
+    const seedEl = document
+      .elementFromPoint(window.innerWidth / 2, seedY)
+      ?.closest<HTMLElement>('[data-field]')
+    apply(seedEl ?? sections[0])
 
     return () => {
       observer.disconnect()
       root.style.removeProperty('--frost-face')
       root.style.removeProperty('--frost-fg')
+      root.style.removeProperty('--frost-bg')
     }
-  }, [])
+    /*
+      Rebuilt when the chrome switches, because `rootMargin` is fixed at
+      observer construction and cannot be changed on a live observer.
+    */
+  }, [isConsole])
 
   return null
 }

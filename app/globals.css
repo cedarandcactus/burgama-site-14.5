@@ -364,6 +364,13 @@
   /* Resting tint: a raised step of the page navy, at partial alpha. */
   --frost-face: color-mix(in srgb, var(--paper-raised) 72%, transparent);
   --frost-fg: var(--ink);
+  /*
+    The opaque ground paired with `--frost-fg`. Anything that INVERTS against
+    the frost needs the counterpart of the current ink; reaching for
+    `--field-bg-raised` instead resolves against whichever section the chrome
+    overlaps, which breaks on any field whose ground is light.
+  */
+  --frost-bg: var(--paper-raised);
   --frost-dur: 400ms;
 }
 
@@ -2725,6 +2732,12 @@ a.action-quiet:hover .action-arrow {
     never disagree about the current field.
   */
   --mod-ink: var(--frost-fg, var(--field-ink, var(--ink)));
+  /*
+    The counterpart ground. Used by anything inside the console that inverts
+    (the lead module, the updates submit button) so both sides of an
+    inversion come from the same field.
+  */
+  --mod-ground: var(--frost-bg, var(--field-bg-raised, var(--paper-raised)));
   position: fixed;
   z-index: 60;
   right: clamp(0.5rem, 2vw, 0.875rem);
@@ -2793,7 +2806,14 @@ a.action-quiet:hover .action-arrow {
   min-height: 3.75rem;
   padding-inline: 0.5rem;
   border-radius: calc(var(--field-radius) - 5px);
-  background: color-mix(in srgb, var(--mod-ink) 13%, transparent);
+  /*
+    9%, not 13%. The fill is a tint of the module's OWN text colour, so it
+    pulls the background toward the foreground and eats contrast — on the
+    magenta field 13% measured 4.25:1 against its own label, just under the
+    4.5:1 minimum. Thinning the fill widens the gap instead of narrowing it;
+    it still reads clearly as a distinct block against the bar.
+  */
+  background: color-mix(in srgb, var(--mod-ink) 9%, transparent);
   color: var(--mod-ink);
   font-size: 1.0625rem;
   line-height: 1.15;
@@ -2815,9 +2835,15 @@ a.action-quiet:hover .action-arrow {
   its fill is the field's ink and its text is the field's ground; both sides
   of the inversion have to come from the same field or the pair breaks.
 */
+/*
+  Both sides of the inversion come from the frost pair. Taking the text from
+  `--field-bg-raised` was a 1.02:1 bug — that variable resolves from the
+  section the console happens to overlap, which on the light periwinkle field
+  is itself light, so a light fill got light text.
+*/
 .console-module.is-lead {
   background: var(--mod-ink);
-  color: var(--field-bg-raised, var(--paper));
+  color: var(--mod-ground);
 }
 
 /* A readout, not a control: no pointer affordance, quieter fill. */
@@ -2825,7 +2851,7 @@ a.action-quiet:hover .action-arrow {
   background: color-mix(in srgb, var(--mod-ink) 8%, transparent);
   /* Mixed toward the ground rather than using `--ink-soft`, which is a navy
      token and would not soften correctly on a light field. */
-  color: color-mix(in srgb, var(--mod-ink) 72%, var(--field-bg-raised, transparent));
+  color: color-mix(in srgb, var(--mod-ink) 72%, var(--mod-ground));
   cursor: default;
 }
 
@@ -2834,11 +2860,7 @@ a.action-quiet:hover .action-arrow {
 }
 
 .console-module.is-lead.is-active {
-  background: color-mix(
-    in srgb,
-    var(--mod-ink) 88%,
-    var(--field-bg-raised, var(--paper))
-  );
+  background: color-mix(in srgb, var(--mod-ink) 88%, var(--mod-ground));
 }
 
 .console-module-label {
@@ -2903,17 +2925,40 @@ a.action-quiet:hover .action-arrow {
 
     4 destinations x 3.25rem  = 13rem
     3px gaps x 4              = ~0.75rem
-    updates block             = ~7.5rem
-    padding                   = ~0.9rem
+    updates block             = 9rem   (measured at 144px)
+    separator + padding       = ~1.75rem
+
+  MEASURED, not estimated: 22rem overflowed by 30px because the updates
+  block came in at 144px rather than the ~7.5rem first assumed. Verify with
+  `scrollHeight - clientHeight === 0` after changing anything in here.
 
   Add a destination or a field and this grows accordingly.
 */
-.mobile-console[data-open='true'] .console-menu {
-  height: 22rem;
+  .mobile-console[data-open='true'] .console-menu {
+  height: 24.5rem;
   padding-block: 7px;
   opacity: 1;
   transform: scaleY(1);
-}
+  /*
+    OPAQUE when open, overriding `.frost`.
+
+    The bar is short and always sits over a single field, so adaptive
+    translucency works there. This panel is 24.5rem tall and MEASURABLY spans
+    two fields at once (verified: `paper` + `periwinkle` simultaneously). The
+    frost samples one point, so it was applying periwinkle's dark ink over a
+    panel whose upper half was navy — 3.80:1, failing.
+    
+    No amount of tint fixes that: one ink cannot serve two grounds. Going
+    opaque makes the panel its own ground, so the ink/ground pair is
+    self-consistent regardless of what it covers. It also reads better — a
+    navigation panel showing two different page colours through itself is
+    muddy, not atmospheric.
+  */
+  background: var(--mod-ground);
+  color: var(--mod-ink);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  }
 
 .console-dest {
   display: flex;
@@ -4945,6 +4990,14 @@ body:has(.lot-poster) > .mobile-console {
 ================================================================== */
 
 .shell {
+  /*
+    The shell publishes the SAME ink/ground contract as `.mobile-console`, so
+    a control hosted in either one gets the current field's pair without
+    knowing which chrome it is in. `UpdatesSignup` renders in both, and this
+    is what lets it invert correctly in each.
+  */
+  --mod-ink: var(--frost-fg, var(--field-ink, var(--ink)));
+  --mod-ground: var(--frost-bg, var(--field-bg-raised, var(--paper-raised)));
   display: none;
 }
 
@@ -5199,16 +5252,17 @@ body:has(.lot-poster) > .mobile-console {
   border: 0;
   border-radius: calc(var(--shell-radius) - 6px);
   /*
-    `currentColor` rather than `--field-ink`, because this form renders in
-    BOTH the desktop shell and the mobile console. Inside the console the
-    ambient ink is the frost field's (`--mod-ink`), not the section's, so
-    reading `--field-ink` directly would fill the button with the wrong
-    field's colour whenever the console sat over a recoloured act.
-    `currentColor` inherits whichever ink the host container established.
+    The host's ink/ground pair, published by BOTH `.shell` and
+    `.mobile-console` — this form renders in each of them, and inside the
+    console the ambient ink is the frost field's rather than the section's.
+
+    NOT `background: currentColor`. That was a 1:1 invisible-label bug:
+    `currentColor` resolves against the element's OWN `color`, and this rule
+    sets `color` on the same element, so the fill and the text ended up
+    identical (both rgb(30,36,80)) and the "Sign up" label vanished.
   */
-  background: currentColor;
-  /* The inverse side of the same relationship. */
-  color: var(--field-bg-raised, var(--field-bg));
+  background: var(--mod-ink, var(--field-ink));
+  color: var(--mod-ground, var(--field-bg-raised, var(--field-bg)));
   font-family: var(--font-mono);
   font-size: var(--t-ui);
   letter-spacing: 0.02em;
