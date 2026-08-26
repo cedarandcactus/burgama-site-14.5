@@ -4905,13 +4905,17 @@ body:has(.lot-poster) > .mobile-console {
 
      --shell-h        control height. ~92px mobile, easing down on
                       desktop but never into utility-pill territory.
-     --shell-radius   ~28% of height. Soft and generous, but still a
-                      squarish rounded rectangle. At 40% a 92px control
-                      rounds to ~37px, which on the shorter controls is
-                      close enough to half the height that they read as
-                      capsules — the utility-pill look this shell is
-                      explicitly not. 28% keeps a flat edge between the
-                      corners at every control width.
+     --shell-radius   Half the height — a true capsule, so the curve is
+                      continuous with no corner-to-edge transition to
+                      catch the eye.
+
+                      This was 28% while the controls were 92px tall,
+                      because at that size a capsule read as an oversized
+                      utility pill. That reasoning does not survive the
+                      controls dropping to ~40px: at small sizes a 28%
+                      radius (~11px) is where the arc meets the flat edge
+                      abruptly enough to look chiselled rather than soft.
+                      Small capsules read as smooth, not as pills.
      --shell-pad      horizontal padding, well beyond what the label
                       needs so each control reads intentionally wide.
      --shell-inset    ONE margin from the viewport edge, all four sides.
@@ -4934,7 +4938,7 @@ body:has(.lot-poster) > .mobile-console {
   --shell-h: 3rem;
   --shell-inset: 1rem;
   --shell-pad: 1rem;
-  --shell-radius: calc(var(--shell-h) * 0.28);
+  --shell-radius: calc(var(--shell-h) / 2);
   /*
     Label size is its own token rather than `--t-body`. The labels used to
     inherit reading type (17-22px), which does not scale with the control —
@@ -5188,8 +5192,13 @@ body:has(.lot-poster) > .mobile-console {
   left: var(--shell-inset);
   width: min(22rem, calc(100vw - var(--shell-inset) * 2));
   bottom: calc(var(--shell-inset) + var(--shell-h) + 0.5rem);
-  /* A step softer than the controls, not a different language. */
-  border-radius: calc(var(--shell-radius) + 0.375rem);
+  /*
+    Its own value now. Deriving it from `--shell-radius` made sense while
+    that was a percentage, but the token is a capsule (half the control's
+    height) and adding to it says nothing useful about a much taller box.
+    Generously round so it reads as the same soft family as the controls.
+  */
+  border-radius: 1.5rem;
   padding: 1rem;
   /* Expands upward as a single surface. No stagger, no scrim. */
   transform-origin: bottom center;
@@ -5243,9 +5252,10 @@ body:has(.lot-poster) > .mobile-console {
     of how small the controls around it get.
   */
   height: 2.75rem;
-  padding-inline: clamp(0.875rem, 1.2vw, 1.125rem);
+  padding-inline: clamp(1rem, 1.3vw, 1.25rem);
   border: 0;
-  border-radius: calc(2.75rem * 0.28);
+  /* Capsule, matching the controls — half its own height, not the shell's. */
+  border-radius: calc(2.75rem / 2);
   background: color-mix(in srgb, var(--frost-fg, var(--field-ink)) 12%, transparent);
   color: var(--frost-fg, var(--field-ink));
   font-family: var(--font-mono);
