@@ -3804,11 +3804,24 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 .mfield {
-  /* One generous radius on all four corners; no variant squares off. */
-  --f-rtl: var(--surface-radius);
-  --f-rtr: var(--surface-radius);
-  --f-rbr: var(--surface-radius);
-  --f-rbl: var(--surface-radius);
+  /*
+    SQUARE, like every other section. Client rule: rounded images, not
+    sections.
+
+    This was `--surface-radius` on all four corners, which at 40px on desktop
+    gave the site footer — the only `.mfield` actually rendered — visibly
+    rounded top corners while the homepage acts above it were hard-edged. It
+    was the last rounded section on the site.
+
+    The `--f-*` custom properties are kept rather than replaced with a plain
+    `border-radius: 0`, because `.mfield-body` composes all four into a single
+    shorthand and the notch variants still zero individual corners through
+    them. Setting them to 0 here squares the field without disturbing that.
+  */
+  --f-rtl: 0;
+  --f-rtr: 0;
+  --f-rbr: 0;
+  --f-rbl: 0;
 }
 
 /*
@@ -3825,9 +3838,13 @@ body:has(.lot-poster) > .mobile-console {
 /* ==================================================================
    HOMEPAGE — MACRO SURFACES
 
-   The homepage is built from a handful of enormous rounded surfaces
-   inset from the viewport, with the page ground visible around and
-   between them. Everything else on this page lives inside one.
+   The homepage is built from a handful of enormous SQUARE surfaces inset
+   from the viewport, with the page ground visible around and between them.
+   Everything else on this page lives inside one. Rounding belongs to media
+   (`--well-radius`) and to the shell's controls — never to a surface.
+
+   Each surface also HOLDS at the bottom of the viewport while the next one
+   slides up over it; see THE SECTION STACK below.
 
    Obeying the two standing rules from the top of this file: NO LINES
    (no borders, rims, rules or hairline outlines — separation is done
@@ -3843,7 +3860,7 @@ body:has(.lot-poster) > .mobile-console {
   --ms-inset: 8px;
   /* Air between stacked surfaces: the ground showing through as a seam. */
   --ms-seam: 8px;
-  --ms-radius: 22px;
+  /* `--ms-radius` removed — surfaces are square, so nothing consumed it. */
   /* Interior padding. These surfaces are large; the margins should feel it. */
   --ms-pad: 22px;
   /* Openings cut into a surface for media. */
@@ -3854,8 +3871,8 @@ body:has(.lot-poster) > .mobile-console {
   :root {
     --ms-inset: 20px;
     --ms-seam: 14px;
-    --ms-radius: 40px;
     --ms-pad: 64px;
+    /* Media keeps its rounding, and scales up here. Surfaces stay square. */
     --well-radius: 26px;
   }
 }
