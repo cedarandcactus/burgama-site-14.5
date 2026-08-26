@@ -3878,14 +3878,72 @@ body:has(.lot-poster) > .mobile-console {
   margin-inline: auto;
   margin-block-end: var(--ms-seam);
   padding: var(--ms-pad);
-  border-radius: var(--ms-radius);
+  /*
+    SQUARE. Client rule: "we use rounded images but not sections."
+
+    Rounding is reserved for MEDIA — `--well-radius` on `.well`, `.rstudy img`
+    and `.cap-object`. Sections are hard-edged plates, so the only curves on
+    the page belong to images and controls.
+
+    This also settled an inconsistency rather than creating one: the acts split
+    between `data-frame="open"` (already `border-radius: 0`) and
+    `data-frame="contained"` (`--surface-radius`, 22/40px), so half the
+    homepage was square and half was rounded. Both are square now.
+  */
+  border-radius: 0;
   /*
     Surfaces crop their own contents — the cinematic crops on this page
     depend on media being clipped by the surface edge itself.
   */
   overflow: hidden;
-  /* Paint the radius correctly while children are transformed. */
+  /* Children are transformed; keep their paint inside this surface. */
   isolation: isolate;
+}
+
+/* ==================================================================
+   THE SECTION STACK — one scroll effect, every boundary
+
+   Client rule: every section transition behaves like the two the page
+   already had — the capabilities pin ("What we do") and the studio/contact
+   handoff. In both, a section HOLDS while the next moves against it, so the
+   boundary is a handoff rather than a butt-join.
+
+   Generalised here as `position: sticky; bottom: 0`: each section holds at
+   the bottom of the viewport while the following section slides up over it.
+   Later siblings paint over earlier ones automatically — sticky is a
+   positioned element with `z-index: auto`, so document order IS the stacking
+   order and no per-section z-index is needed.
+
+   WHY `bottom: 0` AND NOT `top: 0`, which is the usual way to write this:
+   the sections are wildly different heights. Measured at 331x655:
+   open 655, work 1261, research 264, more 1286, say 265. With `top: 0` a
+   section taller than the viewport pins its own top to the top and its lower
+   half becomes unreachable — `work` and `more` are both ~2x the viewport, so
+   `top: 0` would have silently swallowed half of each. With `bottom: 0` a
+   tall section scrolls through normally and only holds once its BOTTOM edge
+   reaches the viewport bottom, so it is height-agnostic. Verified by driving
+   the full scroll range and confirming the first and last child of `work`
+   both become fully visible.
+
+   Pure CSS on purpose. The page already carries two JS-driven scroll
+   mechanisms; a third would be three things to keep in sync, and this one
+   survives a script failure or reduced-motion bail-out untouched.
+
+   `--ms-seam` still applies, so the ground shows as a thin edge between two
+   stacked surfaces instead of them meeting invisibly.
+================================================================== */
+
+#main
+  > .msurface:not(
+    /*
+      Excluded: capabilities is GSAP-pinned (`pin: true` builds a pin-spacer
+      and drives `position` inline), and it is the act the client named
+      approvingly. CSS sticky here would fight GSAP for the same property.
+      It already holds — by a different mechanism, to the same effect.
+    */ .msurface--cap
+  ) {
+  position: sticky;
+  bottom: 0;
 }
 
 /* Alternating grounds so consecutive surfaces read as separate objects. */
@@ -3958,12 +4016,15 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Architecture, not a card. The large radius and the generous interior
-  padding are what separate the two readings: a card is small, tightly
-  padded and repeated, this is none of those.
+  Architecture, not a card — now carried entirely by SCALE and the generous
+  interior padding, since the radius is gone. A card is small, tightly padded
+  and repeated; this is none of those, with or without a curve.
+
+  `--surface-radius` used to be applied here. Sections are square per the
+  client rule, so this mode is now distinguished from `open` only by its inset
+  and its heavier padding.
 */
 .msurface[data-frame='contained'] {
-  border-radius: var(--surface-radius);
   padding: clamp(1.25rem, 4vw, 4.5rem);
 }
 
