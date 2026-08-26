@@ -90,7 +90,6 @@ export function ActOpening() {
           })
           .to(scope.querySelector('.open-visual'), { y: -78 * s, ease: 'none' }, 0)
           .to(scope.querySelector('.open-statement'), { y: -34 * s, ease: 'none' }, 0)
-          .to(scope.querySelector('.open-identity'), { y: -12 * s, ease: 'none' }, 0)
 
         /*
           Only in the last stretch does the whole surface compress, handing
@@ -161,13 +160,11 @@ export function ActOpening() {
       </h1>
 
       {/*
-        The identity anchors the bottom-left corner of the surface. The nav
-        module carries the name too, but at nav scale it is a control; here it
-        is the composition's signature.
+        No wordmark here. The name is reserved for three places — the nav
+        control, the footer, and the email/contact block — so the hero carries
+        the statement alone and the shell's top-left control is the only
+        identity on screen at this point in the page.
       */}
-      <p className="open-identity wordmark" aria-hidden="true">
-        Burgama
-      </p>
     </div>
   )
 }

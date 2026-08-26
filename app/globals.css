@@ -2903,35 +2903,21 @@ a.action-quiet:hover .action-arrow {
 }
 
 /*
-  Page bottom padding so the console never covers the end of the content.
-  Without this the footer's last row sits underneath the bar.
+  Page bottom padding so the shell's bottom controls never cover the end of
+  the content. Without this the footer's last row sits underneath them.
 
-  Hoisted into a variable because the sticky close pair needs the SAME
-  number — see `.handoff` below. This padding lives on `body`, which is
-  OUTSIDE `#main`, so it adds 88px of page below the last sticky containing
-  block. Anything relying on "sticky element ends at the document bottom"
-  is off by exactly this much unless it compensates.
+  `--shell-clear` is DEFINED with the other shell tokens (see THE SHELL), and
+  derives from the control geometry rather than being a constant here. It was
+  a constant, twice — first gated to `max-width: 759px` when the thing being
+  cleared was the mobile-only console (which left desktop content running
+  under the controls), then a flat 3.75rem that no longer matched the controls
+  after they were resized.
+
+  This padding lives on `body`, OUTSIDE `#main`, so it adds page below the
+  last sticky containing block. Anything relying on "sticky element ends at
+  the document bottom" is off by exactly this much unless it compensates —
+  `--hand-h` reads the same variable for that reason.
 */
-/*
-  Clearance for the shell's bottom row, so the last of the page's content can
-  always scroll clear of the floating controls instead of ending underneath
-  them.
-
-  No longer inside a `max-width: 759px` query. It used to be, because the thing
-  being cleared was the mobile console, which only existed below 760px. The
-  shell's bottom row is present at every width, so the clearance is now
-  unconditional — gating it at 759px left desktop content running under the
-  bottom controls.
-
-  Still includes `safe-area-inset-bottom` for the iOS home indicator, and is
-  still read by `--hand-h` so the closing surface shortens to match rather
-  than overlapping the controls.
-*/
-:root {
-  /* Tracks the smaller controls: was 5.5rem for 92px-tall ones. */
-  --shell-clear: calc(env(safe-area-inset-bottom, 0px) + 3.75rem);
-}
-
 body {
   padding-bottom: var(--shell-clear);
 }
@@ -3985,19 +3971,39 @@ body:has(.lot-poster) > .mobile-console {
 
 .msurface--open {
   /*
-    Whole on load rather than cut by the fold: the viewport, less the nav
-    clearance `#main` already applies above it.
+    FULL VIEWPORT, top edge included. `#main` applies `--main-clear` of top
+    padding for the floating controls, which left a bare navy band above the
+    full-bleed video — a hard horizontal seam across the top of a hero whose
+    whole point is running edge to edge. This act is `#main`'s first child, so
+    it pulls back up through that padding and the footage starts at y=0.
 
-    No longer subtracts `--ms-inset * 2`. This act carries
-    `data-frame="open"`, which zeroes the inset and runs the surface to the
-    page edge — so subtracting an inset it does not have left the full-bleed
-    hero 40px short of the fold with a strip of ground showing under it.
+    Safe because the shell's controls are `position: fixed` and designed to
+    float over content; the clearance exists for interior pages, whose first
+    heading genuinely must start below them. Those are untouched.
+
+    `min-height` is therefore the whole viewport again, not the viewport less
+    the clearance — it no longer sits below anything to subtract. It also no
+    longer subtracts `--ms-inset * 2`: `data-frame="open"` zeroes the inset,
+    so subtracting one left the hero 40px short of the fold.
   */
-  min-height: calc(100svh - var(--main-clear, 0px));
+  margin-top: calc(var(--main-clear, 0px) * -1);
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: clamp(20px, 4vw, 44px);
+  /*
+    The statement is bottom-anchored (`justify-content: flex-end`) inside a
+    surface that fills the viewport, so its last line ended up directly
+    underneath the shell's floating bottom controls — measured 42px of overlap
+    at 331px wide, with "and stay rec..." sitting behind Sign Up / Start a
+    Project. `body`'s padding cannot help here: this surface is one viewport
+    tall by construction, so its own floor is what needs the clearance.
+
+    `max()` because `--ms-pad` is the surface's normal padding and must still
+    win if it is ever the larger of the two.
+  */
+  padding-bottom: max(var(--ms-pad), var(--shell-clear));
 }
 
 .open-visual {
@@ -4065,30 +4071,15 @@ body:has(.lot-poster) > .mobile-console {
   display: block;
 }
 
-.open-identity {
-  position: relative;
-  z-index: 1;
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-  /*
-    CONTRAST, NOT STYLING — and measured, like `.open-video`'s brightness.
+/*
+  `.open-identity` was removed with the hero wordmark it styled. The name is
+  reserved for the nav control, the footer, and the email/contact block.
 
-    This was `--ink-soft` (#a6abdc), which was fine while the visual was a
-    box in the upper right and this line sat over flat surface. Now the video
-    is full-bleed and this 15.6px line sits over the footage's brightest
-    region (the lit valley floor): measured 3.17:1 against the worst frame,
-    below the 4.5:1 floor for small text.
-
-    Fixed by lifting the ink rather than by darkening the video. Dropping
-    brightness to 0.40 would also have passed (4.54:1) but would have crushed
-    the footage the full-bleed treatment exists to show. Near-white measures
-    6.09:1 at the video's UNCHANGED 0.58 brightness.
-
-    Mixed toward `--ink` rather than set to pure white so it stays in the
-    palette family — the same reasoning as the shell's `--frost-label`, which
-    is near-white precisely because it sits over unpredictable fields.
-  */
-  color: color-mix(in srgb, white 85%, var(--ink));
-}
+  Worth noting for whoever revives a small text layer over this video: that
+  rule had just been lifted to near-white because the full-bleed footage put
+  15.6px type over the lit valley floor at a measured 3.17:1, under the 4.5:1
+  floor. Anything new placed there inherits the same problem.
+*/
 
 /* --- Work compositions (Acts II and IV) -------------------------- */
 
@@ -4928,8 +4919,8 @@ body:has(.lot-poster) > .mobile-console {
    CONTROL PROPORTION is the whole identity of this thing, so it is
    defined once, in one place, and every control uses it:
 
-     --shell-h        control height. ~92px mobile, easing down on
-                      desktop but never into utility-pill territory.
+     --shell-h        control height. 48px mobile, ~40px desktop. (Was
+                      ~92px; the client asked for "way smaller".)
      --shell-radius   Half the height — a true capsule, so the curve is
                       continuous with no corner-to-edge transition to
                       catch the eye.
@@ -4947,7 +4938,9 @@ body:has(.lot-poster) > .mobile-console {
                       Large on mobile, tighter on desktop so the
                       controls sit close to the true corners.
 
-   Labels are `--t-body`, real reading type, never small UI type.
+   Labels are `--shell-label`, which scales WITH the control. They were
+   `--t-body` (reading type) while the controls were 92px tall; at 40px that
+   left oversized text straining against the padding.
 ================================================================== */
 
 .shell {
@@ -4958,8 +4951,21 @@ body:has(.lot-poster) > .mobile-console {
   */
   --mod-ink: var(--frost-fg, var(--field-ink, var(--ink)));
   --mod-ground: var(--frost-bg, var(--field-bg-raised, var(--paper-raised)));
+}
 
-  /* Mobile-first proportion. All four scale down together on wider screens. */
+/*
+  Shell GEOMETRY lives on `:root`, not on `.shell`.
+
+  It used to be declared on `.shell`, which meant nothing outside the shell
+  could read it — so `--shell-clear`, the clearance page content needs to
+  scroll past the floating controls, was a hand-tuned constant instead. That
+  drifted the moment the controls were resized: the controls went 92px -> 40px
+  and the clearance sat at 5.5rem until it was noticed by eye. Declared here,
+  the clearance is derived and cannot fall out of step again.
+
+  Mobile-first; all of it scales together on wider screens.
+*/
+:root {
   --shell-h: 3rem;
   --shell-inset: 1rem;
   --shell-pad: 1rem;
@@ -4971,6 +4977,15 @@ body:has(.lot-poster) > .mobile-console {
     padding. Type and box now move together.
   */
   --shell-label: 0.8125rem;
+
+  /*
+    Exactly what the bottom control row occupies — its inset, its height, and
+    a breathing gap — plus the iOS home indicator. Any surface whose content
+    would otherwise end underneath the controls reserves this.
+  */
+  --shell-clear: calc(
+    env(safe-area-inset-bottom, 0px) + var(--shell-inset) + var(--shell-h) + 0.75rem
+  );
 }
 
 /*
@@ -4978,7 +4993,7 @@ body:has(.lot-poster) > .mobile-console {
   tightens so they sit closer to the true corners.
 */
 @media (min-width: 760px) {
-  .shell {
+  :root {
     --shell-h: clamp(2.5rem, 2.7vw, 3rem);
     --shell-inset: clamp(0.75rem, 1vw, 1.125rem);
     --shell-pad: clamp(0.875rem, 1.1vw, 1.25rem);
