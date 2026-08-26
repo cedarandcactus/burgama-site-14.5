@@ -3986,9 +3986,14 @@ body:has(.lot-poster) > .mobile-console {
 .msurface--open {
   /*
     Whole on load rather than cut by the fold: the viewport, less the nav
-    clearance `#main` already applies above it, less its own inset.
+    clearance `#main` already applies above it.
+
+    No longer subtracts `--ms-inset * 2`. This act carries
+    `data-frame="open"`, which zeroes the inset and runs the surface to the
+    page edge — so subtracting an inset it does not have left the full-bleed
+    hero 40px short of the fold with a strip of ground showing under it.
   */
-  min-height: calc(100svh - var(--main-clear, 0px) - var(--ms-inset) * 2);
+  min-height: calc(100svh - var(--main-clear, 0px));
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -3998,30 +4003,28 @@ body:has(.lot-poster) > .mobile-console {
 .open-visual {
   position: absolute;
   /*
-    Deliberately cropped by the surface's right edge: the visual runs
-    past the boundary rather than being contained politely.
+    FULL BLEED. The visual fills the entire opening surface, edge to edge,
+    and the surface itself already runs to the page edge via
+    `[data-frame='open']` — so the footage is cropped by the viewport rather
+    than by a box inside it.
+
+    It used to be a `min(54%, 580px)` box pinned to the right at `top: 11%`
+    with a `--well-radius` corner, which read as a card floating in the hero
+    rather than as the hero.
+
+    Bled past the top and bottom edges rather than sitting at `inset: 0`,
+    because the parallax lifts this element 78px (times `motionScale`) over
+    the act's scrub. At a flush `inset: 0` that lift drags the bottom edge up
+    into view and exposes a strip of bare surface. The extra room absorbs it.
+
+    No `width`, no `aspect-ratio`: with all four insets set the box is fully
+    determined, and the old aspect-ratio would fight them.
   */
-  right: calc(var(--ms-pad) * -0.5);
-  top: 8%;
-  /*
-    A real box, not an auto-height container. With no aspect-ratio the video
-    collapsed to its intrinsic height and rendered as a small stray thumbnail
-    in the corner of an otherwise empty hero on narrow screens.
-  */
-  width: min(72%, 420px);
-  aspect-ratio: 3 / 4;
-  border-radius: var(--well-radius);
+  inset: -4% 0 -14%;
+  border-radius: 0;
   overflow: hidden;
   /* Behind the type, which has to stay legible over it. */
   z-index: 0;
-}
-
-@media (min-width: 48rem) {
-  .open-visual {
-    top: 11%;
-    width: min(54%, 580px);
-    aspect-ratio: 4 / 3;
-  }
 }
 
 .open-video {
@@ -4066,7 +4069,25 @@ body:has(.lot-poster) > .mobile-console {
   position: relative;
   z-index: 1;
   font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-  color: var(--ink-soft);
+  /*
+    CONTRAST, NOT STYLING — and measured, like `.open-video`'s brightness.
+
+    This was `--ink-soft` (#a6abdc), which was fine while the visual was a
+    box in the upper right and this line sat over flat surface. Now the video
+    is full-bleed and this 15.6px line sits over the footage's brightest
+    region (the lit valley floor): measured 3.17:1 against the worst frame,
+    below the 4.5:1 floor for small text.
+
+    Fixed by lifting the ink rather than by darkening the video. Dropping
+    brightness to 0.40 would also have passed (4.54:1) but would have crushed
+    the footage the full-bleed treatment exists to show. Near-white measures
+    6.09:1 at the video's UNCHANGED 0.58 brightness.
+
+    Mixed toward `--ink` rather than set to pure white so it stays in the
+    palette family — the same reasoning as the shell's `--frost-label`, which
+    is near-white precisely because it sits over unpredictable fields.
+  */
+  color: color-mix(in srgb, white 85%, var(--ink));
 }
 
 /* --- Work compositions (Acts II and IV) -------------------------- */
@@ -4878,7 +4899,11 @@ body:has(.lot-poster) > .mobile-console {
 */
 @media (prefers-reduced-motion: reduce) {
   .open-visual {
-    aspect-ratio: 4 / 3;
+    /*
+      `aspect-ratio: 4 / 3` was dropped when this went full-bleed: the box is
+      now sized by four insets, so an aspect-ratio has nothing to act on.
+      The backing tint stays — it is what shows if the poster never paints.
+    */
     background: color-mix(in srgb, var(--ink) 7%, var(--paper));
   }
 }
