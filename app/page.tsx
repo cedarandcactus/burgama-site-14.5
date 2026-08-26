@@ -3,7 +3,6 @@ import { ActClose } from '@/components/home/act-close'
 import { ActMoreWork } from '@/components/home/act-more-work'
 import { ActOpening } from '@/components/home/act-opening'
 import { ActResearch } from '@/components/home/act-research'
-import { ActStatement } from '@/components/home/act-statement'
 import { ActWork } from '@/components/home/act-work'
 import { SmoothScroll } from '@/components/smooth-scroll'
 
@@ -30,6 +29,12 @@ export default function HomePage() {
     projects that have no imagery (MatchDay, AVRO — neither has a `src` in
     projects.ts) sit inside an act built for typography rather than being
     dropped into an image-led one.
+
+    The statement act ("The work begins with a point of view, then becomes a
+    system.") sat between ActMoreWork and ActCapabilities and was removed at
+    the client's request. The sentence itself is still the site description in
+    `app/layout.tsx` and still opens the studio page, so the line is retained
+    as copy — it just no longer gets its own beat on the homepage.
   */
   return (
     <>
@@ -42,7 +47,6 @@ export default function HomePage() {
       <ActWork />
       <ActResearch />
       <ActMoreWork />
-      <ActStatement />
       <ActCapabilities />
       <ActClose />
     </>

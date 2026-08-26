@@ -3977,7 +3977,6 @@ body:has(.lot-poster) > .mobile-console {
 */
 .msurface--work,
 .msurface--research,
-.msurface--say,
 .msurface--studio {
   background: var(--field-bg-raised);
 }
@@ -4539,80 +4538,18 @@ body:has(.lot-poster) > .mobile-console {
   }
 }
 
-/* --- ACT V: the statement ---------------------------------------- */
-
 /*
-  Typography only. The previous `.plate` treatment — one filled, rounded
-  panel per line, wiped open with clip-path — is gone: it made the SHAPES
-  the composition and left the words as their contents, which is the exact
-  pattern the revision removes.
+  ACT V — the statement — was REMOVED at the client's request, along with
+  `.msurface--say`, `.say-stack`, `.say-line` and `.say-line--turn`. It set
+  "The work begins / with a point of view, / then becomes a system." as three
+  lines with the middle clause indented.
 
-  What carries it now is scale, line break and indent. Nothing is drawn.
+  The following acts keep their original roman numerals rather than being
+  renumbered, so this file still reads against the page's history.
+
+  The sentence survives as copy — the site description in `app/layout.tsx`
+  and the opening of `/studio` — so it is only the homepage beat that is gone.
 */
-.msurface--say {
-  /*
-    A lot of air. The statement is the one act with no image and no
-    navigation, so the space around the sentence is what signals that it is
-    meant to be read rather than scanned.
-  */
-  padding-block: clamp(96px, 20vw, 260px);
-}
-
-.say-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-/*
-  The composition depends on each clause occupying exactly ONE line — the
-  asymmetric left edge is made of three line starts, so a clause that wraps
-  destroys it.
-
-  At `--t-display` (9vw) on a 331px screen, "with a point of view," broke
-  into four ragged lines and the indent read as an accident rather than as a
-  device. So mobile uses `--t-read`, which is the largest size that keeps
-  the longest clause intact at 331px, and the display scale is picked up at
-  the breakpoint below where there is width to carry it.
-
-  `text-wrap: nowrap` is NOT used to enforce this: it would push the text
-  outside the viewport on a narrow screen instead of wrapping, which trades
-  a broken composition for unreachable content.
-*/
-.say-line {
-  display: block;
-  font-size: var(--t-read);
-  /* Tight enough that the three lines read as one block of text. */
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-}
-
-/*
-  The device: the middle clause is indented, so the block has an asymmetric
-  left edge. `--say-indent` is animated by the act (a slow further drift
-  inward), which is why the indent is a variable and not a fixed margin.
-*/
-.say-line--turn {
-  --say-indent: 0em;
-  margin-inline-start: calc(1.1em + var(--say-indent));
-  /*
-    Set slightly softer than the outer lines so the turn inward reads
-    tonally as well as positionally — still the same family, one step down.
-  */
-  color: var(--field-ink-soft);
-}
-
-/*
-  Display scale once the longest clause fits on one line. 34rem is measured,
-  not guessed: below it "with a point of view," wraps at display size.
-*/
-@media (min-width: 34rem) {
-  .say-line {
-    font-size: var(--t-display);
-    line-height: 0.98;
-    letter-spacing: -0.04em;
-  }
-}
 
 /* --- ACT VI: capabilities ---------------------------------------- */
 
