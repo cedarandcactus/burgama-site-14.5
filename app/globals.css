@@ -5537,27 +5537,23 @@ body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
 }
 
 #main:has(> .opening-plate) {
-  --section-motif-width: clamp(88px, 13vw, 180px);
-  --section-motif-height: clamp(22px, 3vw, 40px);
+  --section-motif-width: 100%;
+  --section-motif-height: clamp(36px, 7vw, 88px);
 }
 #main > .home-plate:not(.opening-plate)::before,
 #main:has(> .opening-plate) > .editorial-footer::before {
   content: '';
   position: absolute;
   top: calc(1px - var(--section-motif-height));
-  left: var(--motif-position, 50%);
+  left: 0;
   width: var(--section-motif-width);
   height: var(--section-motif-height);
-  border-radius: 999px 999px 0 0;
   background: inherit;
-  transform: translateX(-50%);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100 C80 100 105 48 220 48 C290 48 310 64 350 64 C420 64 425 2 500 2 C575 2 580 64 650 64 C690 64 710 48 780 48 C895 48 920 100 1000 100 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   pointer-events: none;
   z-index: 2;
 }
 #main > .opening-plate { border-top-left-radius: clamp(32px, 6vw, 80px); }
-#main > .featured-plate { --motif-position: 50%; }
-#main > .capabilities-plate { --motif-position: 78%; }
-#main > .studio-plate { --motif-position: 22%; }
 #main:has(> .opening-plate) > .editorial-footer {
   border-radius: 0 0 clamp(32px, 6vw, 80px) clamp(32px, 6vw, 80px);
 }
