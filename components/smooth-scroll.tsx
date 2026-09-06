@@ -37,7 +37,7 @@ export function SmoothScroll() {
         const metrics = plates.map(plate => ({
           plate,
           height: plate.offsetHeight,
-          curveHeight: Math.min(440, Math.max(180, plate.clientWidth * .36)) * 219 / 540,
+          curveHeight: parseFloat(getComputedStyle(plate, '::before').height) || 46,
         }))
         metrics.forEach(({ plate, height, curveHeight }) => {
           // Tall plates finish scrolling before their bottom edge holds.

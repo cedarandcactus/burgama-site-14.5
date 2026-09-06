@@ -5375,7 +5375,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .pill-wide { min-width: min(100%, 320px); }
 .pill:disabled { cursor: wait; opacity: .6; }
 
-.home-plate, .editorial-footer { --section-curve: clamp(73px, 14.6vw, 179px); position: relative; padding: clamp(56px, 7vw, 120px) var(--page-gutter); isolation: isolate; border-radius: 0; }
+.home-plate, .editorial-footer { --section-curve: clamp(46px, 6.1vw, 73px); position: relative; padding: clamp(56px, 7vw, 120px) var(--page-gutter); isolation: isolate; border-radius: 0; }
 /* Curves extend into the previous section's reserved bottom space, not its content. */
 .home-plate { padding-bottom: calc(clamp(56px, 7vw, 120px) + var(--section-curve)); }
 .home-plate:not(.opening-plate)::before, .editorial-footer::before {
@@ -5394,6 +5394,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 #main > [data-home-plate]:not(.opening-plate) {
   --curl-mirror: 1;
   --curl-gap: 0px;
+  box-shadow: 0 calc(var(--section-curve) * -1) 0 0 var(--previous-surface);
   padding-top: calc(clamp(56px, 7vw, 120px) + var(--section-curve) * .7);
 }
 #main > .featured-plate { --previous-surface: var(--brand-blue); }
@@ -5403,8 +5404,9 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 #main > [data-home-plate]:not(.opening-plate)::before,
 #main > [data-home-plate]:not(.opening-plate)::after {
   content: ''; position: absolute; left: auto; right: 0; bottom: auto;
-  width: clamp(180px, 36vw, 440px); aspect-ratio: 540 / 219;
-  pointer-events: none; mask: url('/section-curl-isolated.png') center / 100% 100% no-repeat;
+  width: 100%; height: var(--section-curve); aspect-ratio: auto;
+  pointer-events: none;
+  mask: url('/section-curl-isolated.png') center / calc(var(--section-curve) * 540 / 219) 100% round no-repeat;
 }
 #main > [data-home-plate]:not(.opening-plate)::before {
   top: calc(var(--section-curve) * -.7); z-index: 1;
