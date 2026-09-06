@@ -5375,54 +5375,9 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .pill-wide { min-width: min(100%, 320px); }
 .pill:disabled { cursor: wait; opacity: .6; }
 
-.home-plate, .editorial-footer { --section-curve: clamp(46px, 6.1vw, 73px); position: relative; padding: clamp(56px, 7vw, 120px) var(--page-gutter); isolation: isolate; border-radius: 0; }
-/* Curves extend into the previous section's reserved bottom space, not its content. */
-.home-plate { padding-bottom: calc(clamp(56px, 7vw, 120px) + var(--section-curve)); }
-.home-plate:not(.opening-plate)::before, .editorial-footer::before {
-  content: ''; position: absolute; right: 0; bottom: calc(100% - 1px);
-  width: clamp(180px, 36vw, 440px); aspect-ratio: 540 / 219;
-  background: inherit; pointer-events: none;
-  mask: url('/section-curl-isolated.png') center / 100% 100% no-repeat;
-  transform: scaleY(-1);
-}
-.home-plate.capabilities-plate::before, .editorial-footer::before {
-  left: 0; right: auto; transform: scale(-1);
-}
+.home-plate, .editorial-footer { position: relative; padding: clamp(56px, 7vw, 120px) var(--page-gutter); isolation: isolate; border-radius: 0; }
 #main > [data-home-plate][data-stack-ready] { position: sticky; top: var(--plate-top, 0px); }
-
-/* The outgoing color cuts into the incoming plate using the same original logo stroke. */
-#main > [data-home-plate]:not(.opening-plate) {
-  --curl-mirror: 1;
-  --curl-gap: 0px;
-  box-shadow: 0 calc(var(--section-curve) * -1) 0 0 var(--previous-surface);
-  padding-top: calc(clamp(56px, 7vw, 120px) + var(--section-curve) * .7);
-}
-#main > .featured-plate { --previous-surface: var(--brand-blue); }
-#main > .capabilities-plate[data-home-plate] { --previous-surface: var(--brand-white); --curl-mirror: -1; }
-#main > .studio-plate { --previous-surface: var(--brand-yellow); }
-#main > .editorial-footer[data-home-plate] { --previous-surface: var(--brand-navy); --curl-mirror: -1; }
-#main > [data-home-plate]:not(.opening-plate)::before,
-#main > [data-home-plate]:not(.opening-plate)::after {
-  content: ''; position: absolute; left: auto; right: 0; bottom: auto;
-  width: 100%; height: var(--section-curve); aspect-ratio: auto;
-  pointer-events: none;
-  mask: url('/section-curl-isolated.png') center / calc(var(--section-curve) * 540 / 219) 100% round no-repeat;
-}
-#main > [data-home-plate]:not(.opening-plate)::before {
-  top: calc(var(--section-curve) * -.7); z-index: 1;
-  background: inherit;
-  transform: translateY(calc(var(--curl-gap) * -1)) scale(var(--curl-mirror), -1);
-}
-#main > [data-home-plate]:not(.opening-plate)::after {
-  top: calc(var(--section-curve) * -.3); z-index: 0;
-  background: var(--previous-surface);
-  transform: translateY(var(--curl-gap)) scaleX(var(--curl-mirror));
-}
-#main > .capabilities-plate[data-home-plate]::before, #main > .capabilities-plate[data-home-plate]::after,
-#main > .editorial-footer[data-home-plate]::before, #main > .editorial-footer[data-home-plate]::after {
-  left: 0; right: auto;
-}
-.opening-plate { background: var(--brand-blue); color: var(--brand-navy); padding-top: 28px; padding-bottom: calc(52px + var(--section-curve)); }
+.opening-plate { background: var(--brand-blue); color: var(--brand-navy); padding-top: 28px; padding-bottom: 52px; }
 .opening-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 44px; max-width: var(--page-max); margin-inline: auto; }
 .opening-copy { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; }
 .opening-copy h1 { font-size: clamp(3.2rem, 6.2vw, 7.3rem); max-width: 13.5ch; text-wrap: pretty; }
@@ -5442,7 +5397,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .project-tile-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; }
 .project-tile-caption h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
 .project-tile-caption p { font-weight: 300; font-size: 14px; line-height: 1.5; padding-top: 8px; }
-.project-link-arrow { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid currentColor; border-radius: 50%; flex: none; font-size: 23px; }
+.project-link-arrow { display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 44px; border: 1px solid currentColor; border-radius: 999px; flex: none; font-size: 23px; }
 .project-tile:hover .project-link-arrow { background: var(--brand-navy); color: var(--brand-white); }
 .section-outro { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--rule); margin-top: 56px; padding-top: 32px; }
 .section-outro p { max-width: 32ch; font-size: var(--t-body); line-height: 1.5; }
@@ -5538,7 +5493,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
   .mobile-nav:not([hidden]) { display: flex; flex-direction: column; border: 0; border-radius: 28px; margin-top: 8px; padding: 16px 24px 24px; background: var(--brand-blue); color: var(--brand-navy); pointer-events: auto; }
   .mobile-nav a { color: inherit; padding-block: 12px; font-family: var(--font-cenura); font-size: 30px; text-decoration: none; }
   .mobile-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
-  .opening-plate { padding-top: 22px; padding-bottom: calc(32px + var(--section-curve)); }
+  .opening-plate { padding-top: 22px; padding-bottom: 32px; }
   .opening-layout { grid-template-columns: 1fr; gap: 32px; }
   .opening-copy { gap: 28px; }
   .opening-copy h1 { font-size: clamp(2.8rem, 10.9vw, 4.5rem); max-width: 14ch; }
