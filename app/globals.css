@@ -5346,12 +5346,13 @@ p a { font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em
 .skip-link { position: fixed; left: 20px; top: -100px; z-index: 100; padding: 12px 20px; background: var(--brand-navy); color: var(--brand-white); }
 .skip-link:focus-visible { top: 10px; }
 
-.site-header { position: fixed; inset: 0 0 auto; z-index: 50; background: var(--brand-blue); color: var(--brand-navy); }
-.header-inner { height: var(--header-height); max-width: var(--page-max); margin-inline: auto; padding-inline: var(--page-gutter); display: flex; align-items: center; justify-content: space-between; }
-.header-brand { text-decoration: none; color: inherit; }
+.site-header { position: fixed; inset: 0 0 auto; z-index: 50; padding: 12px var(--page-gutter); background: transparent; color: var(--brand-navy); pointer-events: none; }
+.header-inner { height: var(--header-height); max-width: var(--page-max); margin-inline: auto; padding-inline: 28px; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid currentColor; border-radius: 999px; background: var(--brand-blue); color: var(--brand-navy); pointer-events: auto; }
+.header-brand { display: inline-flex; align-items: center; text-decoration: none; color: inherit; }
+#main { padding-top: calc(var(--header-height) + 24px); }
 .brand-lockup { display: inline-flex; align-items: center; gap: .28em; }
 .brand-lockup .burgama-mark { flex: none; display: inline-block; width: .9em; height: .95em; background: currentColor; mask: url('/burgama-symbol.svg') center / contain no-repeat; }
-.header-brand .brand-lockup { font-size: 38px; }
+.header-brand .brand-lockup { font-size: 60px; line-height: 1; }
 .header-brand .wordmark { font-size: inherit; line-height: 1; }
 .desktop-nav { display: flex; align-items: center; gap: 40px; }
 .desktop-nav > a:not(.pill) { color: inherit; font-size: 16px; text-decoration: none; padding-block: 12px; }
@@ -5482,10 +5483,11 @@ p a { font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em
 }
 @media (max-width: 699px) {
   :root { --header-height: 72px; }
-  .header-brand .brand-lockup { font-size: 32px; }
+  .header-brand .brand-lockup { font-size: 48px; }
+  .header-inner { padding-inline: 20px; }
   .desktop-nav { display: none; }
   .site-header .mobile-menu-trigger { display: inline-flex; }
-  .mobile-nav:not([hidden]) { display: flex; flex-direction: column; border-top: 1px solid var(--rule); padding: 16px var(--page-gutter) 24px; }
+  .mobile-nav:not([hidden]) { display: flex; flex-direction: column; border: 1.5px solid currentColor; border-radius: 28px; margin-top: 8px; padding: 16px 24px 24px; background: var(--brand-blue); color: var(--brand-navy); pointer-events: auto; }
   .mobile-nav a { color: inherit; padding-block: 12px; font-family: var(--font-cenura); font-size: 30px; text-decoration: none; }
   .mobile-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
   .opening-plate { padding-top: 22px; padding-bottom: 32px; }
