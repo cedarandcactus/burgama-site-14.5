@@ -1,0 +1,28 @@
+.stamp {
+  display: block;
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  flex: none;
+  color: inherit;
+}
+
+.signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  flex: none;
+  max-width: 100%;
+  text-align: center;
+}
+
+.identity {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .signature {
+    align-self: center;
+  }
+}
