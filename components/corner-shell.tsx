@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { BrandMark } from '@/components/brand-mark'
+import { BurgamaMark } from '@/components/burgama-mark'
 
 const destinations = [
   { label: 'work', href: '/work' },
@@ -39,7 +39,7 @@ export function CornerShell() {
   return (
     <header ref={header} className="site-header" data-menu-open={open}>
       <div className="header-inner">
-        <Link href="/" aria-label="Burgama home" className="header-brand"><BrandMark withMark /></Link>
+        <Link href="/" aria-label="Burgama home" className="header-brand"><span className="brand-lockup"><BurgamaMark /></span></Link>
         <nav className="desktop-nav" aria-label="Primary">
           {destinations.slice(0, 2).map(item => <Link key={item.href} href={item.href} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>{item.label}</Link>)}
           <Link href="/contact" className="pill pill-small" aria-current={pathname === '/contact' ? 'page' : undefined}>let&apos;s talk</Link>
