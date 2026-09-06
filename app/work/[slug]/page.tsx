@@ -24,8 +24,8 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
-    openGraph: project.heroMedia.poster
-      ? { images: [{ url: project.heroMedia.poster, alt: project.heroMedia.label }] }
+    openGraph: project.heroMedia.src
+      ? { images: [{ url: project.heroMedia.src, alt: project.heroMedia.label }] }
       : undefined,
   }
 }
@@ -78,7 +78,7 @@ export default async function ProjectPage({
         wordmark={project.title}
         intro={project.introCopy}
         introAsTagline
-        panel={<MediaFrame item={project.heroMedia} />}
+        panel={project.heroMedia.src ? <MediaFrame item={project.heroMedia} /> : undefined}
       />
 
       {/* `case-lead` trims the section's own nav clearance — the spread above

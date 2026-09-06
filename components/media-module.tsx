@@ -3,7 +3,7 @@ import { type ContentModule, type MediaItem } from '@/lib/projects'
 
 const RATIO: Record<MediaItem['ratio'], string> = {
   wide: '3 / 2',
-  video: '16 / 9',
+  landscape: '16 / 9',
   tall: '3 / 4',
   square: '1 / 1',
   full: '16 / 10',
@@ -16,38 +16,11 @@ export function MediaFrame({
   item: MediaItem
   className?: string
 }) {
-  /*
-    Everything is contained, never cropped. The frame caps its own height, so
-    its rendered ratio rarely matches the asset's — `cover` under that cap
-    silently cut the edges off logo plates and wide screen captures. Contain
-    matches `.artifact-media` and lets the frame's fill do the letterboxing.
-  */
+  if (!item.src) return null
   return (
     <figure className={`case-media ${className}`}>
       <div className="case-media-frame" style={{ aspectRatio: RATIO[item.ratio] }}>
-        {item.src && item.mediaType === 'video' ? (
-          <video
-            src={item.src}
-            poster={item.poster}
-            muted
-            loop
-            playsInline
-            controls
-            preload="metadata"
-            aria-label={item.label}
-          />
-        ) : item.src ? (
-          <img src={item.src} alt={item.label} loading="lazy" decoding="async" />
-        ) : (
-          /*
-            Unfilled media falls back to the same quiet annotation the
-            artifact slots use, so a missing asset reads as a placeholder
-            rather than an empty box.
-          */
-          <p className="artifact-slug">
-            <span>{item.label}</span>
-          </p>
-        )}
+        <img src={item.src} alt={item.label} loading="lazy" decoding="async" />
       </div>
 
       <figcaption className="artifact-caption">{item.label}</figcaption>

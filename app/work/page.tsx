@@ -1,70 +1,20 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { PageHero } from '@/components/page-hero'
+import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
-import { WorkIndex } from '@/components/work-index'
-import { projects } from '@/lib/projects'
+import { featuredProjects, getPublishedProjects } from '@/lib/projects'
 
-export const metadata: Metadata = {
-  title: 'Work',
-  description:
-    'Selected brand, web, marketing, content, production and growth work from Burgama.',
-}
-
-/* The disciplines, set as a ruled column row beneath the hero spread. */
-const DISCIPLINES = [
-  {
-    title: 'Brand',
-    body: 'Marks, type systems, colour and the guidelines that keep them coherent.',
-  },
-  {
-    title: 'Digital',
-    body: 'Sites, product surfaces and design systems built as reusable components.',
-  },
-  {
-    title: 'Content',
-    body: 'A kit of parts rather than a one-off layout, so every placement holds.',
-  },
-  {
-    title: 'Growth',
-    body: 'Search, social and the ongoing work of keeping a system recognizable.',
-  },
-]
+export const metadata: Metadata = { title: 'Work', description: 'Selected collaborations in brand, digital, marketing and content from Burgama.' }
 
 export default function WorkPage() {
-  return (
-    <>
-      {/* No `artifactId` — `work-hero` is an empty placeholder slot. */}
-      <PageHero
-        wordmark="Work"
-        intro={[
-          /* No longer promises a year — the index stopped rendering that field. */
-          'A record of what the studio has made, kept as an archive rather than a showcase. Each entry names the client and the disciplines involved, and opens into the full account of how it was built.',
-          'The work spans identity, digital product, content systems and growth. What it has in common is that every piece was made to survive contact with the real world — to be extended by other people, on other surfaces, long after we handed it over.',
-        ]}
-      />
-
-      {/*
-        The four discipline titles ARE the content here — each is a real
-        heading with its own copy, not a label decorating a section. So the
-        row carries no "Disciplines" title above it; that would be the
-        section label the typography system rules out.
-      */}
-      <section aria-label="Disciplines" className="wide">
-        <div className="page-hero-columns">
-          {DISCIPLINES.map((item) => (
-            <div key={item.title}>
-              <h2 className="page-hero-column-title">{item.title}</h2>
-              <p className="page-hero-column-body">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section aria-label="Project index" className="wide pt-16 pb-24">
-        <WorkIndex projects={projects} />
-      </section>
-
-      <SiteFooter />
-    </>
-  )
+  const caseStudies = getPublishedProjects('case-study')
+  const archive = getPublishedProjects('archive')
+  return <>
+    <PageHero wordmark="the work." intro={['A few close collaborations. A range of disciplines. A shared belief that the best work connects the whole picture.', 'Explore our featured projects, from the first strategic decision to the details that bring a brand to life.']} />
+    <section className="wide portfolio-section" aria-labelledby="work-featured"><h2 id="work-featured" className="collection-title font-serif">featured collaborations</h2><div className="featured-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div></section>
+    {caseStudies.length > 0 && <section className="wide portfolio-section" aria-labelledby="work-studies"><h2 id="work-studies" className="collection-title font-serif">case studies</h2><div className="featured-grid">{caseStudies.map(project => <ProjectCard key={project.id} project={project} />)}</div></section>}
+    {archive.length > 0 && <section className="wide portfolio-section" aria-labelledby="work-archive"><div className="section-intro"><h2 id="work-archive" className="font-serif">from the archive.</h2><p>More work from across the studio.</p></div><div className="archive-list">{archive.map(project => <Link key={project.id} href={`/work/${project.slug}`}><span className="font-serif archive-name">{project.title.toLowerCase()}</span><span>{project.disciplines.join(' / ')}</span><span aria-hidden="true">↗</span></Link>)}</div></section>}
+    <SiteFooter />
+  </>
 }

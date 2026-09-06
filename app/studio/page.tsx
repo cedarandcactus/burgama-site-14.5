@@ -57,7 +57,7 @@ const PRINCIPLES = [
 const APPROACH = [
   {
     title: 'Discovery and positioning',
-    body: 'We start with a point of view. Placeholder copy describing how the studio arrives at it.',
+    body: 'We agree on a clear direction before design begins: what the work needs to say, who it is for, and where it needs to go.',
   },
   {
     title: 'Design and build',

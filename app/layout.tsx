@@ -2,94 +2,45 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { CornerShell } from '@/components/corner-shell'
-import { FrostFieldProvider } from '@/components/frost-field'
 import './globals.css'
 
-/* Licensed GT Pressura files, mapped to the roles in the Burgama font reference. */
-const pressuraStandard = localFont({
-  src: '../public/fonts/GT-Pressura-LCGV-Standard-Light.otf',
-  weight: '400',
-  style: 'normal',
+const pangram = localFont({
+  src: [
+    { path: '../public/fonts/pangram-light.otf', weight: '300', style: 'normal' },
+    { path: '../public/fonts/pangram-medium.otf', weight: '500', style: 'normal' },
+    { path: '../public/fonts/pangram-semibold.otf', weight: '600', style: 'normal' },
+  ],
   display: 'swap',
-  variable: '--font-standard',
-  fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
+  variable: '--font-pangram',
+  fallback: ['Arial', 'sans-serif'],
 })
-
-const pressuraExtended = localFont({
-  src: '../public/fonts/GT-Pressura-LCGV-Extended-Regular.otf',
+const cenura = localFont({
+  src: '../public/fonts/cenura.otf',
   weight: '400',
   style: 'normal',
   display: 'swap',
-  variable: '--font-wordmark',
-})
-
-const pressuraMono = localFont({
-  src: '../public/fonts/GT-Pressura-LCGV-Mono-Light.otf',
-  weight: '400',
-  style: 'normal',
-  display: 'swap',
-  variable: '--font-mono-pressura',
+  variable: '--font-cenura',
 })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Burgama — Design-led creative studio',
-    template: '%s — Burgama',
-  },
-  description:
-    'Burgama builds identities and experiences that can move, change and remain recognizable. The work begins with a point of view, then becomes a system.',
-  generator: 'v0.app',
+  icons: { icon: '/burgama-symbol.svg' },
+  title: { default: 'Burgama — Creative & marketing studio', template: '%s — Burgama' },
+  description: 'An independent creative and marketing studio in Austin, Texas. Brand, digital and campaign work for founders and startups, from the first conversation through the final detail.',
   openGraph: {
-    title: 'Burgama — Design-led creative studio',
-    description:
-      'Identities, digital experiences, campaigns and systems. Burgama is a design-led creative studio.',
+    title: 'Burgama — Creative & marketing studio',
+    description: 'Brand, digital and campaign work. Based in Austin, working wherever the project leads.',
     type: 'website',
   },
 }
+export const viewport: Viewport = { colorScheme: 'dark light', themeColor: '#99bde5' }
 
-/*
-  Both values were left over from the light palette (`#e8e9f0` was the old
-  off-white ground). The site is deep navy now, so the browser was being told
-  the opposite of what it renders — which affects the mobile address-bar
-  colour and form-control rendering. `themeColor` matches `--paper`.
-*/
-export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: '#161c40',
-}
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${pressuraStandard.variable} ${pressuraExtended.variable} ${pressuraMono.variable} bg-background`}
-    >
+    <html lang="en" className={`${pangram.variable} ${cenura.variable} bg-background`}>
       <body className="bg-background text-foreground font-sans antialiased">
-        <a
-          href="#main"
-          className="t-ui sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-2 focus-visible:z-100 focus-visible:rounded-module focus-visible:px-4 focus-visible:py-3"
-        >
-          Skip to content
-        </a>
-        {/*
-          Publishes --frost-face/--frost-fg from whichever [data-field]
-          section is currently behind the chrome. Renders nothing; the four
-          shell corners and the console all read the same variables, so they
-          can never disagree about the current tint.
-        */}
-        <FrostFieldProvider />
-        {/*
-          The site's only navigation system, at every breakpoint. A separate
-          `MobileConsole` used to take over below 760px; it is gone, because
-          two navigation systems meant two sets of behaviour to keep in sync
-          and the mobile one had already drifted from this one.
-        */}
+        <a href="#main" className="skip-link">Skip to content</a>
         <CornerShell />
-        <main id="main">{children}</main>
+        <main id="main" tabIndex={-1}>{children}</main>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

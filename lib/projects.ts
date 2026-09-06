@@ -1,15 +1,13 @@
 export type Tone = 'surface-1' | 'surface-2' | 'surface-3' | 'periwinkle'
 
 export type Discipline = 'Brand' | 'Web' | 'Marketing' | 'Content' | 'Production' | 'Growth'
-export type MediaRatio = 'wide' | 'video' | 'tall' | 'square' | 'full'
+export type MediaRatio = 'wide' | 'landscape' | 'tall' | 'square' | 'full'
 
 export type MediaItem = {
   label: string
   ratio: MediaRatio
   tone?: Tone
   src?: string
-  mediaType?: 'image' | 'video'
-  poster?: string
 }
 
 export type ContentModule =
@@ -192,11 +190,9 @@ export const projects: Project[] = [
     role: 'Lead brand and digital partner',
     collaborators: [],
     heroMedia: {
-      label: 'Wurqly identity in motion',
-      ratio: 'video',
-      src: '/work/wurqly/brand-motion.mp4',
-      poster: '/work/wurqly/shaded-logo.png',
-      mediaType: 'video',
+      label: 'Wurqly workforce marketplace website',
+      ratio: 'wide',
+      src: '/work/wurqly/cover.png',
       tone: 'surface-2',
     },
     introCopy: ['One workforce.', 'Every side of the work.'],
@@ -312,6 +308,31 @@ export const projects: Project[] = [
     ], credits: [{ role: 'Web and photography', name: 'Burgama' }], outcomes: ['A connected ecommerce and photography system for the skincare brand.'], externalUrl: 'https://cellinkeyskincare.com/', externalLabel: 'Visit CellinKey', nextProjectSlug: 'matchday',
   },
 ]
+
+export type PortfolioCollection = 'featured' | 'case-study' | 'archive'
+export type Publication = { slug: string; collection: PortfolioCollection; published: boolean; order: number }
+
+// Each project has one editorial home. Unready stories keep their existing URL.
+export const portfolioPublications: Publication[] = [
+  { slug: 'wurqly', collection: 'featured', published: true, order: 0 },
+  { slug: 'go2bites', collection: 'featured', published: true, order: 1 },
+  { slug: 'wagner-wealth', collection: 'featured', published: true, order: 2 },
+  { slug: 'hiking-pony', collection: 'featured', published: true, order: 3 },
+  { slug: 'cellinkey', collection: 'archive', published: true, order: 0 },
+  { slug: 'matchday', collection: 'case-study', published: false, order: 0 },
+  { slug: 'avro', collection: 'case-study', published: false, order: 1 },
+]
+
+export function getPublishedProjects(collection: PortfolioCollection): Project[] {
+  return portfolioPublications
+    .filter(item => item.collection === collection && item.published)
+    .sort((a, b) => a.order - b.order)
+    .flatMap(item => {
+      const project = projects.find(project => project.slug === item.slug)
+      return project ? [project] : []
+    })
+}
+export const featuredProjects = getPublishedProjects('featured')
 
 export const disciplines: Discipline[] = ['Brand', 'Web', 'Marketing', 'Content', 'Production', 'Growth']
 export function getProject(slug: string) { return projects.find((project) => project.slug === slug) }

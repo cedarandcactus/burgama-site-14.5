@@ -8,7 +8,7 @@
  *
  * To fill a slot:
  *   1. Drop the file in `public/artifacts/`.
- *   2. Set `src` (and `poster` for video).
+ *   2. Set `src` to an image.
  *   3. Nothing else. Ratio, treatment and captions already live here.
  *
  * `kind: 'model'` is reserved for real 3D. It currently renders the same
@@ -16,7 +16,7 @@
  * so wiring a viewer later is a component change, not a layout change.
  */
 
-export type ArtifactKind = 'image' | 'video' | 'model'
+export type ArtifactKind = 'image' | 'model'
 
 /** Treatment applied to the asset. Matches the supplied references. */
 export type ArtifactTreatment =
@@ -37,8 +37,6 @@ export type Artifact = {
   treatment: ArtifactTreatment
   /** Set this to fill the slot. Leave undefined to keep the placeholder. */
   src?: string
-  /** Video only. */
-  poster?: string
   /** Optional visible caption, set beneath the artifact. */
   caption?: string
   /**
@@ -87,19 +85,14 @@ export const artifacts: Record<string, Artifact> = {
     alt: '',
   },
 
-  /*
-    The vault footage from the previous direction, kept as a filled slot so
-    the reworked site still has one moving artifact in it. Treatment is
-    'dither' to match everything else; the clip is already near-monochrome.
-  */
+  /* The existing still remains available; motion assets are retired. */
   'home-motion': {
-    label: 'Motion study',
-    kind: 'video',
+    label: 'Vault study',
+    kind: 'image',
     ratio: 'panorama',
-    treatment: 'dither',
-    src: '/hero/vault.mp4',
-    poster: '/hero/vault.jpg',
-    caption: 'Motion study — vault sequence',
+    treatment: 'none',
+    src: '/hero/vault.jpg',
+    caption: 'Vault study',
     alt: '',
   },
 
