@@ -67,7 +67,7 @@ export default async function ProjectPage({
       `data-field-page` marks this as the element that paints the page ground,
       not just a section within one.
     */
-    <div data-field={project.field} data-field-page>
+    <div className="project-page" data-field={project.field} data-field-page>
       {/*
         The case study opens on the same spread as every other interior page:
         the intro copy, the project name as the wordmark, and the hero media
