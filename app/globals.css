@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �������
+  Text links are set back by tone and resolve to the sanctioned hover ���������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5375,16 +5375,18 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .pill-wide { min-width: min(100%, 320px); }
 .pill:disabled { cursor: wait; opacity: .6; }
 
-.home-plate, .editorial-footer { --section-curve: clamp(36px, 6vw, 88px); position: relative; padding: clamp(56px, 7vw, 120px) var(--page-gutter); isolation: isolate; border-radius: 0; }
+.home-plate, .editorial-footer { --section-curve: clamp(73px, 14.6vw, 179px); position: relative; padding: clamp(56px, 7vw, 120px) var(--page-gutter); isolation: isolate; border-radius: 0; }
 /* Curves extend into the previous section's reserved bottom space, not its content. */
 .home-plate { padding-bottom: calc(clamp(56px, 7vw, 120px) + var(--section-curve)); }
 .home-plate:not(.opening-plate)::before, .editorial-footer::before {
-  content: ''; position: absolute; inset: calc(1px - var(--section-curve)) 0 auto;
-  height: var(--section-curve); background: inherit; pointer-events: none;
-  border-radius: 72% 28% 0 0 / 100% 100% 0 0;
+  content: ''; position: absolute; right: 0; bottom: calc(100% - 1px);
+  width: clamp(180px, 36vw, 440px); aspect-ratio: 540 / 219;
+  background: inherit; pointer-events: none;
+  mask: url('/section-curl-isolated.png') center / 100% 100% no-repeat;
+  transform: scaleY(-1);
 }
-.capabilities-plate::before, .editorial-footer::before {
-  border-radius: 28% 72% 0 0 / 100% 100% 0 0;
+.home-plate.capabilities-plate::before, .editorial-footer::before {
+  left: 0; right: auto; transform: scale(-1);
 }
 #main > [data-home-plate][data-stack-ready] { position: sticky; top: var(--plate-top, 0px); }
 .opening-plate { background: var(--brand-blue); color: var(--brand-navy); padding-top: 28px; padding-bottom: calc(52px + var(--section-curve)); }
