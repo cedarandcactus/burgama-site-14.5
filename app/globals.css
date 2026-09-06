@@ -5502,11 +5502,19 @@ body:has(.project-page) .mobile-nav:not([hidden]),
 .detail-toggle::before, .detail-toggle::after { border-radius: 999px; }
 
 :root { --print-blue: #3155b5; }
-html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> .opening-plate),
-.opening-plate, .editorial-footer, .header-inner {
+.opening-plate, .editorial-footer {
   background: var(--print-blue); color: var(--brand-white);
 }
-.site-header .mobile-nav:not([hidden]) { background: var(--print-blue); color: var(--brand-white); }
+html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> .opening-plate),
+.site-header .header-inner, .site-header .mobile-nav:not([hidden]),
+body:has(.project-page) .site-header .header-inner,
+body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
+  background: var(--brand-navy); color: var(--brand-white);
+}
+.site-header {
+  --button-hover-bg: var(--brand-white);
+  --button-hover-ink: var(--brand-navy);
+}
 .capabilities-plate { background: color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-blue)); color: var(--brand-navy); }
 .opening-copy h1, .section-intro h2, .capabilities-intro h2,
 .studio-plate h2, .footer-invitation h2, .editorial-page-heading h1 {
