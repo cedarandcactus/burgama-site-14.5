@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover ���������������������
+  Text links are set back by tone and resolve to the sanctioned hover �����������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5528,15 +5528,15 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 }
 .home-plate, .editorial-footer, .header-inner, [data-field-page] {
   --deboss-surface: var(--field-bg, var(--brand-white));
-  --deboss-fill: color-mix(in srgb, var(--deboss-surface) 86%, var(--brand-navy));
-  --deboss-cut: color-mix(in srgb, var(--brand-navy) 65%, transparent);
+  --deboss-fill: color-mix(in srgb, var(--deboss-surface) 78%, var(--brand-white));
+  --deboss-cut: color-mix(in srgb, var(--brand-navy) 45%, transparent);
   --deboss-rim: color-mix(in srgb, var(--brand-white) 55%, transparent);
 }
 .opening-plate, .editorial-footer, .header-inner { --deboss-surface: var(--print-blue); }
 .capabilities-plate { --deboss-surface: color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-blue)); }
 .studio-plate, #main [data-field-page]:not(.project-page) {
   --deboss-surface: var(--brand-navy);
-  --deboss-fill: color-mix(in srgb, var(--brand-navy) 92%, var(--brand-blue));
+  --deboss-fill: color-mix(in srgb, var(--brand-navy) 78%, var(--brand-blue));
   --deboss-rim: color-mix(in srgb, var(--brand-blue) 40%, transparent);
 }
 body:has(.project-page) .header-inner, .project-page .editorial-footer { --deboss-surface: var(--project-accent); }
