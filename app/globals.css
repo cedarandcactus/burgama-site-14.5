@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �������������������������
+  Text links are set back by tone and resolve to the sanctioned hover ���������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5534,6 +5534,32 @@ body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
   .opening-copy h1, .footer-invitation h2 { background: none; -webkit-text-fill-color: CanvasText; text-shadow: none; }
   .pill, .project-link-arrow { border-color: ButtonText; box-shadow: none; text-shadow: none; }
   .header-brand .brand-lockup, .footer-identity .brand-lockup { filter: none; color: CanvasText; }
+}
+
+#main:has(> .opening-plate) {
+  --section-motif-width: clamp(88px, 13vw, 180px);
+  --section-motif-height: clamp(22px, 3vw, 40px);
+}
+#main > .home-plate:not(.opening-plate)::before,
+#main:has(> .opening-plate) > .editorial-footer::before {
+  content: '';
+  position: absolute;
+  top: calc(1px - var(--section-motif-height));
+  left: var(--motif-position, 50%);
+  width: var(--section-motif-width);
+  height: var(--section-motif-height);
+  border-radius: 999px 999px 0 0;
+  background: inherit;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+#main > .opening-plate { border-top-left-radius: clamp(32px, 6vw, 80px); }
+#main > .featured-plate { --motif-position: 50%; }
+#main > .capabilities-plate { --motif-position: 78%; }
+#main > .studio-plate { --motif-position: 22%; }
+#main:has(> .opening-plate) > .editorial-footer {
+  border-radius: 0 0 clamp(32px, 6vw, 80px) clamp(32px, 6vw, 80px);
 }
 
 @media (min-width: 1500px) {
