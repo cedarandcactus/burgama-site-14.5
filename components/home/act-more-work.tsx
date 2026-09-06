@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import { useEffect, useRef } from 'react'
 import { gsap, createActContext, motionScale } from '@/lib/motion'
 

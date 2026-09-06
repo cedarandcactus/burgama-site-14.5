@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import { CategoryCluster } from '@/components/category-cluster'
 import { Dingbat } from '@/components/dingbat'
 import { Reveal } from '@/components/reveal'

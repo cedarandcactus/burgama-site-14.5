@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import { BrandMark } from '@/components/brand-mark'
 import { ModularButton } from '@/components/modular-button'
 import { FooterUpdates } from '@/components/footer-updates'

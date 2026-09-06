@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import { notFound } from 'next/navigation'
 import { CategoryCluster } from '@/components/category-cluster'
 import { Dingbat } from '@/components/dingbat'

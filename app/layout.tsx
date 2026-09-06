@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { CornerShell } from '@/components/corner-shell'
 import { SurfaceEffects } from '@/components/surface-effects'
+import { PageTransition } from '@/components/page-transition'
 import './globals.css'
 
 const pangram = localFont({
@@ -39,10 +40,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${pangram.variable} ${cenura.variable} bg-background`}>
       <body className="bg-background text-foreground font-sans antialiased">
-        <a href="#main" className="skip-link">Skip to content</a>
-        <CornerShell />
-        <main id="main" tabIndex={-1}>{children}</main>
-        <SurfaceEffects />
+        <PageTransition>
+          <a href="#main" className="skip-link">Skip to content</a>
+          <CornerShell />
+          <main id="main" tabIndex={-1}>{children}</main>
+          <SurfaceEffects />
+        </PageTransition>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

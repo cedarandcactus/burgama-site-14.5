@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import { PageHero } from '@/components/page-hero'
 import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'

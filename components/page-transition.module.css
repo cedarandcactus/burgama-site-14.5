@@ -1,0 +1,104 @@
+@property --curtain-opening {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+.content { display: contents; }
+.overlay {
+  --wash-coral: #f77967;
+  --wash-pink: #ee9dcc;
+  --wash-violet: #8064cb;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  isolation: isolate;
+  pointer-events: none;
+  animation: fail-open 0s 5s forwards;
+}
+.overlay[data-hydrated='true'] { pointer-events: auto; animation-delay: 7s; }
+.curtain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--brand-navy);
+  color: var(--brand-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mask-image: radial-gradient(circle at center, transparent max(0px, calc(var(--curtain-opening) - 45px)), #000 var(--curtain-opening));
+}
+.wash {
+  position: absolute;
+  width: 210vmax;
+  height: 210vmax;
+  background:
+    radial-gradient(ellipse at 50% 50%, var(--brand-yellow) 0%, transparent 24%),
+    conic-gradient(from 30deg, var(--wash-coral), var(--wash-pink), var(--wash-violet), var(--brand-blue), var(--brand-yellow), var(--wash-coral));
+  border-radius: 50%;
+  transform: scale(.015) rotate(-55deg);
+  opacity: 0;
+  animation: wash-unfurl 1600ms steps(12, end) 180ms both;
+}
+.logo { position: relative; display: flex; align-items: center; justify-content: center; animation: logo-arrive 240ms ease-out both; }
+.symbol:global(.burgama-mark) {
+  display: block;
+  width: clamp(96px, 16vw, 170px);
+  height: clamp(96px, 16vw, 170px);
+  color: var(--brand-white);
+  background: currentColor;
+  mask: url('/burgama-symbol.svg') center / contain no-repeat;
+  animation: hand-turn 1750ms steps(15, end) infinite;
+  transform-origin: 50% 50%;
+}
+.grain {
+  position: absolute;
+  inset: -12%;
+  background-image: url('/textures/transition-grain.svg');
+  background-size: 160px 160px;
+  opacity: .24;
+  mix-blend-mode: soft-light;
+  animation: print-jitter 450ms steps(3, end) infinite;
+  pointer-events: none;
+}
+.skip {
+  position: absolute;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  right: 24px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 10px 18px;
+  color: var(--brand-white);
+  background: var(--brand-navy);
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.skip:focus-visible { outline: 2px solid var(--brand-white); outline-offset: 5px; }
+.overlay[data-phase='covering'] .curtain { animation: cover-in 320ms ease-out both; }
+.overlay[data-kind='navigation'] .wash { animation-duration: 650ms; animation-delay: 0ms; }
+.overlay[data-phase='revealing'] { pointer-events: none; }
+.overlay[data-phase='revealing'] .curtain { animation: open-out 880ms cubic-bezier(.65,0,.25,1) forwards; }
+.overlay[data-phase='revealing'] .logo { animation: logo-depart 300ms ease-in forwards; }
+.overlay[data-phase='revealing'] .skip { opacity: 0; pointer-events: none; }
+
+@keyframes hand-turn { to { transform: rotate(360deg); } }
+@keyframes logo-arrive { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
+@keyframes logo-depart { to { opacity: 0; transform: scale(.78); } }
+@keyframes wash-unfurl {
+  0% { transform: scale(.015) rotate(-55deg); opacity: 0; }
+  14% { opacity: 1; }
+  65% { transform: scale(.65) rotate(12deg); opacity: 1; }
+  100% { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+@keyframes print-jitter { 0% { transform: translate(0, 0); } 33% { transform: translate(-3%, 2%); } 66% { transform: translate(2%, -2%); } 100% { transform: translate(-1%, 3%); } }
+@keyframes cover-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes open-out { from { --curtain-opening: 0px; opacity: 1; } 75% { opacity: 1; } to { --curtain-opening: 150vmax; opacity: 0; } }
+@keyframes fail-open { to { visibility: hidden; pointer-events: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .overlay .wash, .overlay .grain, .overlay .symbol, .overlay .logo { animation: none; }
+  .overlay .wash { transform: none; opacity: 0; }
+  .overlay[data-phase='revealing'] .curtain { animation: reduced-fade 100ms linear forwards; }
+  .overlay[data-phase='covering'] .curtain { animation: none; }
+}
+@keyframes reduced-fade { to { opacity: 0; } }

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import Image from 'next/image'
 import type { CSSProperties } from 'react'
 import type { Project } from '@/lib/projects'
