@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �����������������������
+  Text links are set back by tone and resolve to the sanctioned hover �������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5508,65 +5508,15 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 }
 .site-header .mobile-nav:not([hidden]) { background: var(--print-blue); color: var(--brand-white); }
 .capabilities-plate { background: color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-blue)); color: var(--brand-navy); }
-.home-plate, .editorial-footer, .header-inner, [data-field-page] {
-  --emboss-light: color-mix(in srgb, var(--brand-white) 72%, transparent);
-  --emboss-shadow: color-mix(in srgb, var(--brand-navy) 28%, transparent);
-  --emboss-edge: color-mix(in srgb, currentColor 38%, transparent);
-}
-.studio-plate, #main [data-field-page]:not(.project-page) {
-  --emboss-light: color-mix(in srgb, var(--brand-blue) 38%, transparent);
-  --emboss-shadow: color-mix(in srgb, var(--brand-navy) 85%, transparent);
-}
 .opening-copy h1, .section-intro h2, .capabilities-intro h2,
 .studio-plate h2, .footer-invitation h2, .editorial-page-heading h1 {
-  text-shadow: 0 -1px 1px var(--emboss-shadow), 0 1px 0 var(--emboss-light);
-}
-.opening-plate, .editorial-footer, .header-inner {
-  --emboss-shadow: color-mix(in srgb, var(--brand-navy) 80%, transparent);
-  --emboss-light: color-mix(in srgb, var(--brand-blue) 75%, transparent);
-  --emboss-edge: color-mix(in srgb, var(--brand-navy) 60%, transparent);
-}
-.home-plate, .editorial-footer, .header-inner, [data-field-page] {
-  --deboss-surface: var(--field-bg, var(--brand-white));
-  --deboss-fill: color-mix(in srgb, var(--deboss-surface) 78%, var(--brand-white));
-  --deboss-cut: color-mix(in srgb, var(--brand-navy) 45%, transparent);
-  --deboss-rim: color-mix(in srgb, var(--brand-white) 55%, transparent);
-}
-.opening-plate, .editorial-footer, .header-inner { --deboss-surface: var(--print-blue); }
-.capabilities-plate { --deboss-surface: color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-blue)); }
-.studio-plate, #main [data-field-page]:not(.project-page) {
-  --deboss-surface: var(--brand-navy);
-  --deboss-fill: color-mix(in srgb, var(--brand-navy) 78%, var(--brand-blue));
-  --deboss-rim: color-mix(in srgb, var(--brand-blue) 40%, transparent);
-}
-body:has(.project-page) .header-inner, .project-page .editorial-footer { --deboss-surface: var(--project-accent); }
-.opening-copy h1, .section-intro h2, .capabilities-intro h2,
-.studio-plate h2, .footer-invitation h2, .editorial-page-heading h1 {
-  color: var(--deboss-fill);
-  background: none;
-  -webkit-text-fill-color: currentColor;
-  text-shadow: -1px -1.5px 1px var(--deboss-cut), 0 1.5px .5px var(--deboss-rim);
-}
-.header-brand .brand-lockup, .footer-identity .brand-lockup {
-  color: var(--deboss-fill);
-  filter: drop-shadow(-.5px -1.5px .7px var(--deboss-cut)) drop-shadow(.5px 1px .3px var(--deboss-rim));
-}
-@media (prefers-contrast: more) {
-  .opening-copy h1, .section-intro h2, .capabilities-intro h2,
-  .studio-plate h2, .footer-invitation h2, .editorial-page-heading h1,
-  .header-brand .brand-lockup, .footer-identity .brand-lockup { color: inherit; text-shadow: none; filter: none; }
-}
-.pill, .project-link-arrow {
-  border-color: var(--emboss-edge, currentColor);
-  background: color-mix(in srgb, var(--brand-navy) 8%, transparent);
   color: inherit;
-  box-shadow: inset 2px 3px 5px var(--emboss-shadow), inset -1px -1px 2px var(--emboss-light), 0 1px 0 var(--emboss-light);
-  text-shadow: 0 1px 1px var(--emboss-shadow);
-  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+  text-shadow: none;
 }
-.pill:hover, .project-tile:hover .project-link-arrow { text-shadow: none; }
-.pill:active, .project-tile:active .project-link-arrow {
-  box-shadow: inset 1px 2px 3px var(--emboss-shadow), inset -1px -1px 1px var(--emboss-light);
+.header-brand .brand-lockup, .footer-identity .brand-lockup { color: inherit; filter: none; }
+.pill, .project-link-arrow, .pill:active, .project-tile:active .project-link-arrow {
+  box-shadow: none;
+  text-shadow: none;
 }
 .section-outro, .capabilities-rows details, .archive-list > a,
 .page-hero-columns, .index, .footer-navigation, .case-spec-row {

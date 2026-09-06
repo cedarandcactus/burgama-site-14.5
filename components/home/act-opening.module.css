@@ -7,17 +7,15 @@
   padding-bottom: 48px;
   background: var(--brand-yellow);
   color: var(--brand-navy);
-  --emboss-light: color-mix(in srgb, var(--brand-white) 65%, transparent);
-  --emboss-shadow: color-mix(in srgb, var(--brand-navy) 25%, transparent);
-  --emboss-edge: transparent;
+  isolation: isolate;
 }
 
 .artwork {
   position: absolute;
-  inset: -12%;
-  z-index: -1;
+  inset: -22%;
+  z-index: 0;
   pointer-events: none;
-  animation: pattern-drift 28s ease-in-out infinite alternate;
+  animation: pattern-drift 12s ease-in-out infinite alternate;
   will-change: transform;
 }
 
@@ -25,6 +23,8 @@
 .hero[data-paused='true'] .artwork { animation-play-state: paused; }
 
 .layout:global(.opening-layout) {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -37,7 +37,7 @@
   font-size: clamp(3.2rem, 7vw, 8.5rem);
   color: var(--brand-navy);
   -webkit-text-fill-color: currentColor;
-  text-shadow: 0 1px 0 color-mix(in srgb, var(--brand-white) 65%, transparent);
+  text-shadow: none;
 }
 .hero :global(.opening-bottom) { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 32px; }
 .hero :global(.opening-bottom p) { max-width: 40ch; }
@@ -58,9 +58,9 @@
 .motionControl:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 @keyframes pattern-drift {
-  0% { transform: translate(-2%, -2%) rotate(-4deg) scale(1.05); }
-  50% { transform: translate(2%, -1%) rotate(2deg) scale(1.12); }
-  100% { transform: translate(1%, 3%) rotate(5deg) scale(1.05); }
+  0% { transform: translate(-5%, -3%) rotate(-8deg) scale(1.05); }
+  50% { transform: translate(4%, -2%) rotate(1deg) scale(1.16); }
+  100% { transform: translate(2%, 5%) rotate(8deg) scale(1.05); }
 }
 
 @media (max-width: 600px) {
