@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �����������
+  Text links are set back by tone and resolve to the sanctioned hover �������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5489,6 +5489,18 @@ body:has(.project-page) .mobile-nav:not([hidden]),
 .contact-actions .pill { --button-hover-bg: var(--brand-white); --button-hover-ink: var(--brand-navy); }
 .icontrol { border-radius: 50%; border: 1px solid currentColor; background: transparent; color: inherit; }
 .mblur-y, .mblur-x { filter: none; }
+
+:root { --rule-radius: 8px; }
+.section-outro,
+.capabilities-rows details,
+.archive-list > a,
+.page-hero-columns,
+.index { border-top-left-radius: var(--rule-radius); border-top-right-radius: var(--rule-radius); }
+.footer-navigation,
+.case-spec-row,
+.capabilities-rows details:last-child,
+.archive-list > a:last-child { border-bottom-left-radius: var(--rule-radius); border-bottom-right-radius: var(--rule-radius); }
+.detail-toggle::before, .detail-toggle::after { border-radius: 999px; }
 
 @media (min-width: 1500px) {
   .opening-bottom { flex-direction: row; align-items: flex-start; }
