@@ -5538,7 +5538,7 @@ body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
 
 #main:has(> .opening-plate) {
   --section-motif-width: 100%;
-  --section-motif-height: clamp(36px, 7vw, 88px);
+  --section-motif-height: clamp(18px, 3.5vw, 44px);
 }
 #main > .home-plate:not(.opening-plate)::before,
 #main:has(> .opening-plate) > .editorial-footer::before {
