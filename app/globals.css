@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover ���������
+  Text links are set back by tone and resolve to the sanctioned hover �����������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5389,6 +5389,37 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
   left: 0; right: auto; transform: scale(-1);
 }
 #main > [data-home-plate][data-stack-ready] { position: sticky; top: var(--plate-top, 0px); }
+
+/* The outgoing color cuts into the incoming plate using the same original logo stroke. */
+#main > [data-home-plate]:not(.opening-plate) {
+  --curl-mirror: 1;
+  --curl-gap: 0px;
+  padding-top: calc(clamp(56px, 7vw, 120px) + var(--section-curve) * .7);
+}
+#main > .featured-plate { --previous-surface: var(--brand-blue); }
+#main > .capabilities-plate[data-home-plate] { --previous-surface: var(--brand-white); --curl-mirror: -1; }
+#main > .studio-plate { --previous-surface: var(--brand-yellow); }
+#main > .editorial-footer[data-home-plate] { --previous-surface: var(--brand-navy); --curl-mirror: -1; }
+#main > [data-home-plate]:not(.opening-plate)::before,
+#main > [data-home-plate]:not(.opening-plate)::after {
+  content: ''; position: absolute; left: auto; right: 0; bottom: auto;
+  width: clamp(180px, 36vw, 440px); aspect-ratio: 540 / 219;
+  pointer-events: none; mask: url('/section-curl-isolated.png') center / 100% 100% no-repeat;
+}
+#main > [data-home-plate]:not(.opening-plate)::before {
+  top: calc(var(--section-curve) * -.7); z-index: 1;
+  background: inherit;
+  transform: translateY(calc(var(--curl-gap) * -1)) scale(var(--curl-mirror), -1);
+}
+#main > [data-home-plate]:not(.opening-plate)::after {
+  top: calc(var(--section-curve) * -.3); z-index: 0;
+  background: var(--previous-surface);
+  transform: translateY(var(--curl-gap)) scaleX(var(--curl-mirror));
+}
+#main > .capabilities-plate[data-home-plate]::before, #main > .capabilities-plate[data-home-plate]::after,
+#main > .editorial-footer[data-home-plate]::before, #main > .editorial-footer[data-home-plate]::after {
+  left: 0; right: auto;
+}
 .opening-plate { background: var(--brand-blue); color: var(--brand-navy); padding-top: 28px; padding-bottom: calc(52px + var(--section-curve)); }
 .opening-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 44px; max-width: var(--page-max); margin-inline: auto; }
 .opening-copy { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; }
