@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover ���������������
+  Text links are set back by tone and resolve to the sanctioned hover �����������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5501,6 +5501,50 @@ body:has(.project-page) .mobile-nav:not([hidden]),
 .capabilities-rows details:last-child,
 .archive-list > a:last-child { border-bottom-width: var(--rule-width); border-bottom-left-radius: var(--rule-radius); border-bottom-right-radius: var(--rule-radius); }
 .detail-toggle::before, .detail-toggle::after { border-radius: 999px; }
+
+.home-plate, .editorial-footer, .header-inner, [data-field-page] {
+  --emboss-light: color-mix(in srgb, var(--brand-white) 72%, transparent);
+  --emboss-shadow: color-mix(in srgb, var(--brand-navy) 28%, transparent);
+  --emboss-edge: color-mix(in srgb, currentColor 38%, transparent);
+}
+.studio-plate, #main [data-field-page]:not(.project-page) {
+  --emboss-light: color-mix(in srgb, var(--brand-blue) 38%, transparent);
+  --emboss-shadow: color-mix(in srgb, var(--brand-navy) 85%, transparent);
+}
+.opening-copy h1, .section-intro h2, .capabilities-intro h2,
+.studio-plate h2, .footer-invitation h2, .editorial-page-heading h1 {
+  text-shadow: -1px -1px 0 var(--emboss-light), 1px 1.5px 1px var(--emboss-shadow);
+}
+.header-brand .brand-lockup, .footer-identity .brand-lockup {
+  filter: drop-shadow(-.7px -.7px .3px var(--emboss-light)) drop-shadow(1px 1.5px .6px var(--emboss-shadow));
+}
+.footer-identity .brand-lockup {
+  color: color-mix(in srgb, var(--brand-navy) 42%, var(--project-accent, var(--brand-blue)));
+  filter: drop-shadow(-1px -1px .3px var(--emboss-light)) drop-shadow(1.5px 2px 1px var(--emboss-shadow));
+}
+.pill, .project-link-arrow {
+  border-color: var(--emboss-edge, currentColor);
+  box-shadow: -1px -1px 1px var(--emboss-light), 1px 2px 2px var(--emboss-shadow), inset 1px 1px 1px var(--emboss-light), inset -1px -1px 1px var(--emboss-shadow);
+  text-shadow: 0 1px 0 var(--emboss-light);
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.pill:hover, .project-tile:hover .project-link-arrow { text-shadow: none; }
+.pill:active, .project-tile:active .project-link-arrow {
+  box-shadow: inset 1px 2px 3px var(--emboss-shadow), inset -1px -1px 1px var(--emboss-light);
+}
+.section-outro, .capabilities-rows details, .archive-list > a,
+.page-hero-columns, .index {
+  border-top-color: var(--emboss-edge, var(--rule));
+  box-shadow: inset 0 1px 0 var(--emboss-light);
+}
+.footer-navigation, .case-spec-row {
+  border-bottom-color: var(--emboss-edge, var(--rule));
+  box-shadow: 0 1px 0 var(--emboss-light);
+}
+@media (forced-colors: active) {
+  .pill, .project-link-arrow { border-color: ButtonText; box-shadow: none; text-shadow: none; }
+  .header-brand .brand-lockup, .footer-identity .brand-lockup { filter: none; color: CanvasText; }
+}
 
 @media (min-width: 1500px) {
   .opening-bottom { flex-direction: row; align-items: flex-start; }
