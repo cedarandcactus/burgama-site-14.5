@@ -9,7 +9,7 @@ export function ActCapabilities() {
   return (
     <section className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
       <div className="capabilities-intro"><h2 id="capabilities-heading" className="font-serif">a broad range.<br />one close team.</h2><p>Strategy, design, and marketing under one roof. We bring the right disciplines together, without putting layers between you and the people doing the work.</p></div>
-      <div className="capabilities-rows">{capabilities.map(item => <details key={item.title}><summary><span className="font-serif">{item.title}</span><span className="detail-toggle" aria-hidden="true" /></summary><p>{item.body}</p></details>)}</div>
+      <div className="capabilities-grid">{capabilities.map(item => <article key={item.title}><h3 className="font-serif text-balance">{item.title}</h3><p>{item.body}</p></article>)}</div>
     </section>
   )
 }

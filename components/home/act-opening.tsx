@@ -1,27 +1,17 @@
-'use client'
-
-import { LandscapeScene } from './landscape-scene'
-import { useState } from 'react'
 import { ModularButton } from '@/components/modular-button'
-import styles from './act-opening.module.css'
+import styles from './home-page.module.css'
 
 export function ActOpening() {
-  const [paused, setPaused] = useState(false)
-
   return (
-    <section className={`home-plate opening-plate ${styles.hero}`} data-home-plate aria-labelledby="opening-title" data-paused={paused}>
-      <LandscapeScene paused={paused} />
-      <div className={`opening-layout ${styles.layout}`}>
-        <div className="opening-copy">
-          <h1 id="opening-title" className="font-serif">marketing solutions for founders and startups in austin and beyond.</h1>
-          <div className="opening-bottom">
-            <p>We&apos;re a creative and marketing studio working across brand, digital, and campaign work. Thoughtful decisions, a clear direction, and a distinct point of view.</p>
-            <ModularButton href="/studio">learn more</ModularButton>
-          </div>
+    <section className={styles.hero} aria-labelledby="opening-title">
+      <div className={styles.heroContent}>
+        <p className={styles.eyebrow}>Independent creative & marketing studio</p>
+        <h1 id="opening-title" className="font-serif text-balance">marketing solutions for founders and startups in austin and beyond.</h1>
+        <p className={styles.heroDescription}>We&apos;re a creative and marketing studio working across brand, digital, and campaign work. Thoughtful decisions, a clear direction, and a distinct point of view.</p>
+        <div className={styles.heroActions}>
+          <ModularButton href="/work">explore the work</ModularButton>
+          <ModularButton href="/contact">let&apos;s talk</ModularButton>
         </div>
-        <button type="button" className={styles.motionControl} onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label="Pause landscape animation">
-          {paused ? 'play scene' : 'pause scene'}
-        </button>
       </div>
     </section>
   )

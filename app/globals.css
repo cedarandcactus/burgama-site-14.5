@@ -5555,8 +5555,9 @@ body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
 }
 body .pill, body .project-link-arrow, body .icontrol { border-radius: 999px; }
 
-body .site-header .header-inner,
-body .site-header .mobile-nav,
+body .site-header .header-inner { border-radius: 999px; }
+body .site-header .mobile-nav { border-radius: 24px; }
+
 body .updates-content input,
 body .opening-art,
 body .project-tile-image,
