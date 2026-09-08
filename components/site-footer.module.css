@@ -10,22 +10,13 @@
   margin-top: clamp(64px, 8vw, 120px);
 }
 .home { max-width: 1340px; margin-inline: auto; }
-.pattern {
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 24px 24px 0 0;
-  background: var(--brand-yellow);
-  color: var(--brand-navy);
-  padding-block: 16px;
+.work {
+  --button-hover-bg: var(--brand-white);
+  --button-hover-ink: var(--brand-navy);
+  background: var(--brand-navy);
+  color: var(--brand-white);
+  border-radius: 0;
 }
-.pattern span {
-  flex: 0 0 clamp(72px, 10vw, 144px);
-  height: clamp(64px, 9vw, 128px);
-  background: currentColor;
-  mask: url('/burgama-symbol.svg') center / contain no-repeat;
-}
-.pattern span:nth-child(even) { transform: rotate(180deg); }
 .content {
   max-width: 1440px;
   margin-inline: auto;

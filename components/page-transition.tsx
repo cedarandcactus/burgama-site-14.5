@@ -128,10 +128,13 @@ export function PageTransition({ children }: { children: ReactNode }) {
     later(finish, 6000)
   }, [changePhase, clearTimers, finish, later, navigate])
 
+  const transitionPath = destination.current?.href.split(/[?#]/)[0] ?? pathname
+  const workTransition = transitionPath === '/work' || transitionPath.startsWith('/work/')
+
   return (
     <TransitionContext.Provider value={begin}>
       <div ref={content} className={styles.content}>{children}</div>
-      {active && <div key={sequence} className={styles.overlay} data-phase={phase} data-kind={sequence === 0 ? 'intro' : 'navigation'} data-hydrated={hydrated} data-page-transition="">
+      {active && <div key={sequence} className={styles.overlay} data-work={workTransition} data-phase={phase} data-kind={sequence === 0 ? 'intro' : 'navigation'} data-hydrated={hydrated} data-page-transition="">
         <div className={styles.curtain} aria-hidden="true">
           <div className={styles.wash} />
           <div className={styles.grain} />

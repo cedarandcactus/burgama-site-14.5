@@ -12,18 +12,20 @@ const RATIO: Record<MediaItem['ratio'], string> = {
 export function MediaFrame({
   item,
   className = '',
+  priority = false,
 }: {
   item: MediaItem
   className?: string
+  priority?: boolean
 }) {
   if (!item.src) return null
   return (
     <figure className={`case-media ${className}`}>
       <div className="case-media-frame" style={{ aspectRatio: RATIO[item.ratio] }}>
-        <img src={item.src} alt={item.label} loading="lazy" decoding="async" />
+        <img src={item.src} alt={item.label} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
       </div>
 
-      <figcaption className="artifact-caption">{item.label}</figcaption>
+      <figcaption className="artifact-caption"><span>{item.label}</span><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={`View full-size image: ${item.label} (opens in a new tab)`}>view full size ↗</a></figcaption>
     </figure>
   )
 }

@@ -5452,27 +5452,6 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 #main [data-field-page] { --field-bg: var(--brand-navy); --field-bg-raised: var(--brand-navy); --field-ink: var(--brand-white); --field-ink-soft: var(--brand-blue); background: var(--brand-navy); color: var(--brand-white); margin-top: 0; padding-top: 0; }
 .case-module-body, .case-summary, .page-hero-column-body { font-family: var(--font-pangram); font-weight: 500; font-size: clamp(1.0625rem, 1.65vw, 1.35rem); line-height: 1.55; hyphens: none; text-align: left; }
 .case-module-title, .page-hero-column-title { color: inherit; font-size: clamp(1.5rem, 2.5vw, 2.5rem); text-transform: lowercase; }
-html:has(.project-page) {
-  --project-tint: var(--brand-blue);
-  --project-ground: color-mix(in srgb, var(--project-tint) 12%, var(--brand-white));
-  --project-accent: color-mix(in srgb, var(--project-tint) 28%, var(--brand-white));
-  background: var(--project-ground);
-}
-html:has(.project-page:is([data-field='rust'], [data-field='pine'])) { --project-tint: var(--brand-yellow); }
-html:has(.project-page[data-field='paper']) { --project-tint: var(--brand-white); }
-body:has(.project-page), #main:has(> .project-page) { background: var(--project-ground); color: var(--brand-navy); }
-#main .project-page[data-field-page] {
-  --field-bg: var(--project-ground);
-  --field-bg-raised: var(--project-accent);
-  --field-ink: var(--brand-navy);
-  --field-ink-soft: color-mix(in srgb, var(--brand-navy) 78%, var(--project-ground));
-  --button-hover-bg: var(--brand-navy);
-  --button-hover-ink: var(--brand-white);
-  background: var(--field-bg); color: var(--field-ink);
-}
-body:has(.project-page) .header-inner,
-body:has(.project-page) .mobile-nav:not([hidden]),
-.project-page .editorial-footer { background: var(--project-accent); color: var(--brand-navy); }
 .case-spec-label { color: var(--field-ink-soft); font-weight: 600; }
 .case-spec-value { color: inherit; }
 .case-quote { font-family: var(--font-pangram); font-weight: 500; font-style: normal; }
@@ -5506,9 +5485,7 @@ body:has(.project-page) .mobile-nav:not([hidden]),
   background: var(--print-blue); color: var(--brand-white);
 }
 html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> .opening-plate),
-.site-header .header-inner, .site-header .mobile-nav:not([hidden]),
-body:has(.project-page) .site-header .header-inner,
-body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
+.site-header .header-inner, .site-header .mobile-nav:not([hidden]) {
   background: var(--brand-navy); color: var(--brand-white);
 }
 .site-header {

@@ -4,12 +4,9 @@ import { ModularButton } from '@/components/modular-button'
 import { FooterUpdates } from '@/components/footer-updates'
 import styles from '@/components/site-footer.module.css'
 
-export function SiteFooter({ home = false }: { home?: boolean }) {
+export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
   return (
-    <footer className={`${styles.footer} ${home ? styles.home : ''}`}>
-      <div className={styles.pattern} aria-hidden="true">
-        {Array.from({ length: 10 }, (_, index) => <span key={index} />)}
-      </div>
+    <footer className={`${styles.footer} ${home ? styles.home : ''} ${work ? styles.work : ''}`}>
       <div className={styles.content}>
         <div className={styles.invitation}>
           <h2 className="font-serif text-balance">something in mind?<br />let&apos;s make it happen.</h2>

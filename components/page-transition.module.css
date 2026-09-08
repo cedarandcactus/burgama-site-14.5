@@ -14,6 +14,10 @@
   animation: fail-open 0s 5s forwards;
 }
 .overlay[data-hydrated='true'] { pointer-events: auto; animation-delay: 7s; }
+.overlay[data-work='true'] {
+  --brand-yellow: var(--brand-white);
+}
+.overlay[data-work='true'] .wash { background: var(--brand-white); }
 .curtain {
   position: absolute;
   inset: 0;

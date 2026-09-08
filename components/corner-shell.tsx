@@ -37,7 +37,7 @@ export function CornerShell() {
   if (pathname.startsWith('/lot-2046')) return null
 
   return (
-    <header ref={header} className="site-header" data-menu-open={open}>
+    <header ref={header} className="site-header" data-menu-open={open} data-work={pathname === '/work' || pathname.startsWith('/work/')}>
       <div className="header-inner">
         <Link href="/" aria-label="Burgama home" className="header-brand"><span className="brand-lockup"><BurgamaMark /></span></Link>
         <nav className="desktop-nav" aria-label="Primary">

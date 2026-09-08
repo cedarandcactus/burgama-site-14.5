@@ -1,159 +1,58 @@
 import type { Metadata } from 'next'
 import Link from '@/components/transition-link'
 import { notFound } from 'next/navigation'
-import { CategoryCluster } from '@/components/category-cluster'
-import { Dingbat } from '@/components/dingbat'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
-import { PageHero } from '@/components/page-hero'
-import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
-import { getProject, projects } from '@/lib/projects'
+import { getProject, getPublishedProjects, getRelatedProjects } from '@/lib/projects'
 
+export const dynamicParams = false
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }))
+  return getPublishedProjects().map(project => ({ slug: project.slug }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const project = getProject(slug)
-  if (!project) return { title: 'Project' }
+  if (!project) return { title: 'Project not found', robots: { index: false } }
   return {
     title: project.title,
     description: project.summary,
-    openGraph: project.heroMedia.src
-      ? { images: [{ url: project.heroMedia.src, alt: project.heroMedia.label }] }
-      : undefined,
+    openGraph: project.heroMedia.src ? { images: [{ url: project.heroMedia.src, alt: project.heroMedia.label }] } : undefined,
   }
 }
 
-export default async function ProjectPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const project = getProject(slug)
   if (!project) notFound()
+  const related = getRelatedProjects(project)
+  const parent = project.parentSlug ? getProject(project.parentSlug) : undefined
 
-  const next = getProject(project.nextProjectSlug) ?? projects[0]
-  /* Its position in the archive, so its dingbat matches the /work index. */
-  const nextIndex = projects.findIndex((p) => p.id === next.id)
+  return <div className="portfolio-detail">
+    <header className="portfolio-width portfolio-detail-heading">
+      <nav className="portfolio-breadcrumb" aria-label="Breadcrumb"><Link href="/work">← all work</Link>{parent && <><span aria-hidden="true">/</span><Link href={`/work/${parent.slug}`}>{parent.title}</Link></>}</nav>
+      <p className="portfolio-eyebrow">{project.collection === 'case-study' ? 'case study' : project.collection === 'featured' ? 'featured collaboration' : 'from the collection'}</p>
+      <h1 className="font-serif text-balance">{project.title}</h1>
+      <div className="portfolio-detail-intro"><p className="portfolio-tagline">{project.tagline}</p><div><p>{project.summary}</p><p className="portfolio-scope">{project.services.join(' / ')}</p></div></div>
+      {project.status && <p className="portfolio-note">{project.status}</p>}
+      {project.period && <p className="portfolio-period">{project.period}</p>}
+    </header>
 
-  const spec = [
-    { label: 'Client', value: project.client },
-    { label: 'Period', value: project.year },
-    { label: 'Scope', value: project.services.join(', ') },
-    { label: 'Role', value: project.role },
-    ...(project.collaborators.length
-      ? [{ label: 'Collaborators', value: project.collaborators.join(', ') }]
-      : []),
-  ]
+    <article className="portfolio-width portfolio-story">
+      {project.heroMedia.src && <div className="portfolio-detail-hero"><MediaFrame item={project.heroMedia} priority /></div>}
+      <ProjectModules modules={project.contentModules} />
+      {(project.source || project.note || project.credits.length > 0) && <section className="portfolio-source" aria-label="Project notes and attribution">
+        {project.source && <div><h2 className="font-serif">sources & context.</h2><p>{project.source}</p></div>}
+        {project.note && <p>{project.note}</p>}
+        {project.credits.map(credit => <p key={credit.role}>{credit.role}: {credit.name}</p>)}
+      </section>}
+      {project.links.length > 0 && <nav aria-label="Live project and film links" className="portfolio-external-links">{project.links.map(link => <a key={link.href} className="pill pill-small" href={link.href} target="_blank" rel="noopener noreferrer">{link.label} <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>)}</nav>}
+    </article>
 
-  return (
-    /*
-      THE PROJECT'S OWN GROUND.
-
-      One `data-field` on the wrapper is the whole mechanism. Every component
-      inside already reads `--field-bg` / `--field-ink` rather than a global
-      colour, so the hero, spec rows, media frames, buttons and footer all
-      retune themselves — and because `FrostFieldProvider` reads the active
-      field's resolved tokens rather than a hardcoded map, the shell and the
-      mobile console pick up the same palette with no per-project code.
-
-      `data-field-page` marks this as the element that paints the page ground,
-      not just a section within one.
-    */
-    <div className="project-page" data-field={project.field} data-field-page>
-      {/*
-        The case study opens on the same spread as every other interior page:
-        the intro copy, the project name as the wordmark, and the hero media
-        contained in the ink panel. Client and year are NOT repeated as
-        labels here — they are already stated as rows in the spec list below.
-      */}
-      <PageHero
-        wordmark={project.title}
-        intro={project.introCopy}
-        introAsTagline
-        panel={project.heroMedia.src ? <MediaFrame item={project.heroMedia} /> : undefined}
-      />
-
-      {/* `case-lead` trims the section's own nav clearance — the spread above
-          already provides it. */}
-      <article className="wide case case-lead">
-        {/* The summary is a paragraph, not a titled section. */}
-        <Reveal as="section" aria-label="Summary" className="case-module-body">
-          <p>{project.summary}</p>
-        </Reveal>
-
-        <Reveal as="section" aria-label="Project information" className="case-spec">
-          {spec.map((row) => (
-            <div key={row.label} className="case-spec-row">
-              <span className="case-spec-label">{row.label}</span>
-              <span className="case-spec-value">{row.value}</span>
-            </div>
-          ))}
-        </Reveal>
-
-        <ProjectModules modules={project.contentModules} />
-
-        <Reveal as="section" aria-label="Outcome" className="case-module">
-          <h2 className="case-module-title">What changed once the work was live</h2>
-          <div className="case-module-body">
-            {project.outcomes.map((outcome) => (
-              <p key={outcome}>{outcome}</p>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal as="section" aria-label="Credits" className="case-module">
-          <h2 className="case-module-title">The people who made it</h2>
-          <div className="case-module-body">
-            {project.credits.map((credit) => (
-              <p key={credit.role}>
-                {credit.role} — {credit.name}
-              </p>
-            ))}
-            {project.externalUrl ? (
-              <p>
-                <a href={project.externalUrl} target="_blank" rel="noreferrer">
-                  {project.externalLabel ?? 'Visit the live work'}
-                </a>
-              </p>
-            ) : null}
-          </div>
-        </Reveal>
-
-        {/*
-          The next project is one more row of the same index used on /work, so
-          leaving a case study returns you to the archive language.
-        */}
-        <section aria-label="Next project" className="artifact-index">
-          <Link
-            href={`/work/${next.slug}`}
-            aria-label={`Next project: ${next.title}`}
-            className="artifact-index-row"
-          >
-            {/*
-              Rebuilt to match the /work row exactly, which the comment above
-              already claimed but was no longer true: it still had the word
-              "Next" in the dingbat slot (now glyph-sized), dot-joined
-              disciplines and a year. The dingbat carries this project's real
-              position in the archive, so the row is literally the same row.
-              "Next project" is still announced via the section and link
-              aria-labels, so nothing is lost by dropping the word.
-            */}
-            <Dingbat n={nextIndex + 1} className="artifact-index-num" />
-            <span className="artifact-index-client">{next.client}</span>
-            <CategoryCluster items={next.disciplines} />
-          </Link>
-        </section>
-      </article>
-
-      <SiteFooter />
-    </div>
-  )
+    <section className="portfolio-width portfolio-related" aria-labelledby="related-title">
+      <div className="portfolio-section-heading"><h2 id="related-title" className="font-serif">keep looking.</h2><Link href="/work" className="pill pill-small">back to all work</Link></div>
+      <div className="portfolio-related-grid">{related.map(item => <Link key={item.id} href={`/work/${item.slug}`} className="portfolio-related-link"><span>{item.collection === 'case-study' ? 'case study' : item.disciplines.join(' / ')}</span><h3 className="font-serif">{item.title}</h3><span aria-hidden="true">↗</span></Link>)}</div>
+    </section>
+    <SiteFooter work />
+  </div>
 }
