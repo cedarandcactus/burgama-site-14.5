@@ -18,8 +18,8 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: var(--brand-navy);
-  color: var(--brand-white);
+  background: var(--brand-yellow);
+  color: var(--brand-navy);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,9 +30,7 @@
   width: 210vmax;
   height: 210vmax;
   background:
-    radial-gradient(ellipse at 57% 43%, var(--brand-yellow) 0%, var(--brand-yellow) 8%, transparent 35%),
-    radial-gradient(ellipse at 38% 58%, var(--brand-blue) 12%, transparent 58%),
-    var(--brand-navy);
+    radial-gradient(ellipse at 57% 43%, color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-white)) 0%, var(--brand-yellow) 42%, color-mix(in srgb, var(--brand-yellow) 94%, var(--brand-navy)) 100%);
   border-radius: 50%;
   transform: scale(.015) rotate(-55deg);
   opacity: 0;
@@ -43,7 +41,7 @@
   display: block;
   width: clamp(72px, 10vw, 112px);
   height: clamp(72px, 10vw, 112px);
-  color: var(--brand-white);
+  color: var(--brand-navy);
   background: currentColor;
   mask: url('/burgama-symbol.svg') center / contain no-repeat;
   animation: hand-turn 1600ms steps(20, end) 120ms both;
@@ -66,7 +64,7 @@
   border: 0;
   border-radius: 4px;
   padding: 10px 12px;
-  color: var(--brand-white);
+  color: var(--brand-navy);
   background: transparent;
   text-decoration: underline;
   text-underline-offset: 5px;
@@ -75,7 +73,7 @@
   line-height: 1.5;
   cursor: pointer;
 }
-.skip:focus-visible { outline: 2px solid var(--brand-white); outline-offset: 5px; }
+.skip:focus-visible { outline: 2px solid var(--brand-navy); outline-offset: 5px; }
 .overlay[data-phase='covering'] .curtain { animation: cover-in 320ms ease-out both; }
 .overlay[data-kind='navigation'] .wash { animation-duration: 650ms; animation-delay: 0ms; }
 .overlay[data-phase='revealing'] { pointer-events: none; }
