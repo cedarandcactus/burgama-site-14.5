@@ -47,6 +47,9 @@
 }
 .letter {
   display: inline-block;
+  flex-shrink: 0;
+  padding: .2em .12em .3em;
+  margin: -.2em -.12em -.3em;
   color: var(--brand-navy);
   -webkit-mask-image: linear-gradient(#000, #000), url('/site-texture.webp');
   mask-image: linear-gradient(#000, #000), url('/site-texture.webp');
