@@ -1,0 +1,37 @@
+.section {
+  color: var(--brand-navy);
+  background: var(--brand-white);
+  padding-block: 44px 12px;
+  overflow: hidden;
+}
+.heading { display: flex; align-items: center; justify-content: space-between; max-width: 1340px; margin-inline: auto; padding-inline: clamp(8px, 2vw, 32px); }
+.heading p { font-size: 14px; font-weight: 300; }
+.toggle { display: inline-flex; align-items: center; gap: 10px; border: 0; background: transparent; color: inherit; font: inherit; font-size: 14px; min-height: 44px; cursor: pointer; }
+.toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 4px; }
+.window { overflow: hidden; padding-block: 24px; mask-image: linear-gradient(to right, transparent, var(--brand-navy) 10%, var(--brand-navy) 90%, transparent); }
+.track { display: flex; width: max-content; animation: drift 100s linear infinite; }
+.group { display: flex; align-items: center; gap: 72px; flex: 0 0 auto; margin: 0; padding: 0 72px 0 0; list-style: none; }
+.logo { flex: 0 0 168px; width: 168px; height: 84px; display: flex; align-items: center; justify-content: center; opacity: .4; transition: opacity 250ms ease; }
+.logo img { width: 100%; height: 100%; object-fit: contain; }
+.symbol { flex-basis: 64px; width: 64px; height: 68px; }
+.script { flex-basis: 140px; width: 140px; height: 72px; }
+.illustration { flex-basis: 72px; width: 72px; height: 96px; }
+.logo:hover { opacity: .8; }
+.section[data-paused='true'] .track, .section:hover .track, .section:focus-within .track { animation-play-state: paused; }
+@keyframes drift { to { transform: translateX(-50%); } }
+@media (max-width: 699px) {
+  .section { padding-block: 24px 0; }
+  .window { padding-block: 16px; }
+  .group { gap: 44px; padding-right: 44px; }
+  .logo { flex-basis: 132px; width: 132px; height: 64px; }
+  .symbol { flex-basis: 48px; width: 48px; height: 56px; }
+  .script { flex-basis: 112px; width: 112px; height: 60px; }
+  .illustration { flex-basis: 56px; width: 56px; height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track { animation: none; width: 100%; }
+  .window { mask-image: none; }
+  .group { flex-wrap: wrap; justify-content: center; width: 100%; padding-right: 0; gap: 32px; }
+  .group[aria-hidden='true'], .toggle { display: none; }
+  .logo { transition: none; }
+}
