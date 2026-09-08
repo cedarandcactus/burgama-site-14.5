@@ -27,14 +27,11 @@
 }
 .wash {
   position: absolute;
-  width: 210vmax;
-  height: 210vmax;
+  inset: 0;
   background:
     radial-gradient(ellipse at 57% 43%, color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-white)) 0%, var(--brand-yellow) 42%, color-mix(in srgb, var(--brand-yellow) 94%, var(--brand-navy)) 100%);
-  border-radius: 50%;
-  transform: scale(.015) rotate(-55deg);
   opacity: 0;
-  animation: wash-unfurl 1600ms steps(12, end) 180ms both;
+  animation: wash-unfurl 1400ms cubic-bezier(.22,1,.36,1) 180ms both;
 }
 .logo {
   position: relative;
@@ -59,8 +56,9 @@
   mask-position: center, calc(var(--letter-index) * -43px) center;
   -webkit-mask-composite: source-out;
   mask-composite: subtract;
-  animation: letter-stamp 520ms steps(5, end) both;
-  animation-delay: calc(160ms + var(--letter-index) * 125ms);
+  will-change: transform, opacity;
+  animation: letter-stamp 620ms cubic-bezier(.22,1,.36,1) both;
+  animation-delay: calc(160ms + var(--letter-index) * 85ms);
   transform-origin: 50% 80%;
 }
 .overlay[data-kind='navigation'] .letter {
@@ -72,25 +70,20 @@
   .letter { animation-name: letter-rise; }
 }
 @keyframes letter-stamp {
-  0% { opacity: 0; transform: translateX(.3em) rotate(-12deg) scale(.8); }
-  20% { opacity: 1; }
-  60% { transform: translateX(-.035em) rotate(3deg) scale(1.04); }
-  100% { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translate3d(.14em, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes letter-rise {
-  0% { opacity: 0; transform: translateY(.65em) rotate(9deg); }
-  20% { opacity: 1; }
-  65% { transform: translateY(-.045em) rotate(-3deg); }
-  100% { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translate3d(0, .22em, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 .grain {
   position: absolute;
-  inset: -12%;
+  inset: 0;
   background-image: url('/site-texture.webp');
   background-size: 768px 768px;
   opacity: .38;
   mix-blend-mode: soft-light;
-  animation: print-jitter 600ms steps(3, end) infinite;
   pointer-events: none;
 }
 .skip {
@@ -118,14 +111,11 @@
   100% { transform: rotate(342deg); }
 }
 @keyframes logo-arrive { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
-@keyframes logo-depart { to { opacity: 0; transform: scale(.78); } }
+@keyframes logo-depart { to { opacity: 0; } }
 @keyframes wash-unfurl {
-  0% { transform: scale(.015) rotate(-55deg); opacity: 0; }
-  14% { opacity: 1; }
-  65% { transform: scale(.65) rotate(12deg); opacity: 1; }
-  100% { transform: scale(1) rotate(45deg); opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-@keyframes print-jitter { 0% { transform: translate(0, 0); } 33% { transform: translate(-3px, 2px); } 66% { transform: translate(2px, -2px); } 100% { transform: translate(-1px, 3px); } }
 @keyframes cover-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes open-out { from { --curtain-opening: 0px; opacity: 1; } 75% { opacity: 1; } to { --curtain-opening: 150vmax; opacity: 0; } }
 @keyframes fail-open { to { visibility: hidden; pointer-events: none; } }
