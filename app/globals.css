@@ -5549,13 +5549,23 @@ body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
   width: var(--section-motif-width);
   height: var(--section-motif-height);
   background: inherit;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100 C80 100 105 48 220 48 C290 48 310 64 350 64 C420 64 425 2 500 2 C575 2 580 64 650 64 C690 64 710 48 780 48 C895 48 920 100 1000 100 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
   pointer-events: none;
   z-index: 2;
 }
-#main > .opening-plate { border-top-left-radius: clamp(32px, 6vw, 80px); }
-#main:has(> .opening-plate) > .editorial-footer {
-  border-radius: 0 0 clamp(32px, 6vw, 80px) clamp(32px, 6vw, 80px);
+body .site-header .header-inner,
+body .site-header .mobile-nav,
+body .pill,
+body .project-link-arrow,
+body .icontrol,
+body .updates-content input,
+body .opening-art,
+body .project-tile-image,
+body .case-media-frame,
+body .case-media-frame img,
+#main > .opening-plate,
+#main .editorial-footer {
+  border-radius: 0;
 }
 
 @media (min-width: 1500px) {
