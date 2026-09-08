@@ -45,7 +45,13 @@
 .column :global(.footer-updates) { width: 100%; font-size: 16px; }
 .column :global(.footer-updates summary) { font-family: var(--font-pangram), sans-serif; font-size: 16px; line-height: 1.55; }
 .column :global(.updates-content) { width: 100%; min-width: 0; max-width: 100%; }
-.column :global(.updates-content input) { width: 100%; background: var(--brand-white); color: var(--brand-navy); }
+.column :global(.updates-content input) { width: 100%; min-height: 48px; padding: 12px 20px; border: 1px solid currentColor; border-radius: 999px; background: var(--brand-white); color: var(--brand-navy); font-family: var(--font-pangram), sans-serif; font-size: 16px; }
+.column :global(.footer-updates summary) { display: inline-flex; border: 1px solid currentColor; border-radius: 999px; padding: 10px 20px; cursor: pointer; list-style: none; }
+.column :global(.footer-updates summary::-webkit-details-marker) { display: none; }
+.column :global(.updates-content) { border-radius: 24px; }
+.column :global(.updates-content button), .column :global(.updates-content label) { font-family: var(--font-pangram), sans-serif; font-size: 16px; }
+.column :global(.updates-content button) { border-radius: 999px; }
+.footer .column h3 { font-family: var(--font-pangram), sans-serif; font-size: 20px; font-weight: 500; line-height: 1.4; }
 .column :global(.updates-content a) { text-decoration: underline; }
 .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; padding-top: 64px; }
 .bottom p { font-size: 14px; line-height: 1.5; font-weight: 300; }

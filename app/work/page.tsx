@@ -33,7 +33,14 @@ export default function WorkPage() {
     </section>
     <section id="more-work" className="portfolio-width portfolio-archive" aria-labelledby="archive-title">
       <div className="portfolio-section-heading"><h2 id="archive-title" className="font-serif">archive of work.</h2></div>
-      <WorkIndex projects={archive.map(({ id, slug, title, disciplines }) => ({ id, slug, title, disciplines }))} />
+      <WorkIndex projects={archive.map(({ id, slug, title, disciplines, period, heroMedia, contentModules }) => {
+        const media = [heroMedia, ...contentModules.flatMap(module => {
+          if (module.type === 'media' || module.type === 'mediaSplit') return [module.item]
+          if (module.type === 'mediaPair' || module.type === 'mediaGrid') return module.items
+          return []
+        })].filter((item, index, items) => item.src && items.findIndex(other => other.src === item.src) === index).slice(0, 4)
+        return { id, slug, title, disciplines, year: period?.match(/\b(?:19|20)\d{2}\b/g)?.filter((year, index, years) => years.indexOf(year) === index).join('–'), media }
+      })} />
     </section>
     <SiteFooter work />
   </>
