@@ -10,7 +10,7 @@ const labels: Record<string, string> = { All: 'all work', Brand: 'branding', Web
 
 export function WorkIndex({ projects }: { projects: Entry[] }) {
   const [discipline, setDiscipline] = useState<Discipline | 'All'>('All')
-  const visible = projects.filter(project => discipline === 'All' || project.disciplines.includes(discipline))
+  const visible = projects.filter(project => discipline === 'All' || (project.disciplines ?? []).includes(discipline))
   return <div className="portfolio-browser">
     <div role="group" aria-label="Filter work by discipline" className="portfolio-filters">
       {filters.map(filter => <button key={filter} type="button" aria-pressed={discipline === filter} aria-controls="portfolio-results" className="pill pill-small" onClick={() => setDiscipline(filter)}>{labels[filter]}</button>)}
