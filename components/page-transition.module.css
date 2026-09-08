@@ -50,6 +50,15 @@
 }
 .letter {
   display: inline-block;
+  color: var(--brand-navy);
+  -webkit-mask-image: linear-gradient(#000, #000), url('/site-texture.webp');
+  mask-image: linear-gradient(#000, #000), url('/site-texture.webp');
+  -webkit-mask-size: 100% 100%, 280px 280px;
+  mask-size: 100% 100%, 280px 280px;
+  -webkit-mask-position: center, calc(var(--letter-index) * -43px) center;
+  mask-position: center, calc(var(--letter-index) * -43px) center;
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
   animation: letter-stamp 520ms steps(5, end) both;
   animation-delay: calc(160ms + var(--letter-index) * 125ms);
   transform-origin: 50% 80%;
