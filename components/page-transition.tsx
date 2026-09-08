@@ -1,8 +1,7 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState, useTransition, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, useTransition, type ReactNode, type CSSProperties } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { BurgamaMark } from '@/components/burgama-mark'
 import styles from './page-transition.module.css'
 
 type Destination = { href: string; replace?: boolean; scroll?: boolean }
@@ -124,7 +123,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     clearTimers()
     setSequence(value => value + 1)
     changePhase('covering')
-    later(navigate, 520)
+    later(navigate, 900)
     // A failed or interrupted route must never leave the site behind a curtain.
     later(finish, 6000)
   }, [changePhase, clearTimers, finish, later, navigate])
@@ -136,9 +135,13 @@ export function PageTransition({ children }: { children: ReactNode }) {
         <div className={styles.curtain} aria-hidden="true">
           <div className={styles.wash} />
           <div className={styles.grain} />
-          <div className={styles.logo}><BurgamaMark className={styles.symbol} /></div>
+          <div className={styles.logo}>
+            {'burgama'.split('').map((letter, index) => (
+              <span className={styles.letter} key={index} style={{ '--letter-index': index } as CSSProperties}>{letter}</span>
+            ))}
+          </div>
         </div>
-        <button ref={skipButton} type="button" className={`${styles.skip} font-sans`} onClick={skip}>skip animation</button>
+        <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip introduction" />
       </div>}
       <noscript><style>{`[data-page-transition] { display: none !important; }`}</style></noscript>
     </TransitionContext.Provider>

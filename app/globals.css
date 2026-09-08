@@ -5553,11 +5553,10 @@ body:has(.project-page) .site-header .mobile-nav:not([hidden]) {
   pointer-events: none;
   z-index: 2;
 }
+body .pill, body .project-link-arrow, body .icontrol { border-radius: 999px; }
+
 body .site-header .header-inner,
 body .site-header .mobile-nav,
-body .pill,
-body .project-link-arrow,
-body .icontrol,
 body .updates-content input,
 body .opening-art,
 body .project-tile-image,
