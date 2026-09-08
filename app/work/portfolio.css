@@ -45,7 +45,8 @@ body .site-header[data-work='true'] .mobile-nav:not([hidden]) {
 .portfolio-section-heading > p { font-size: 16px; font-weight: 300; max-width: 34ch; }
 .portfolio .portfolio-section { padding-bottom: clamp(72px, 8vw, 128px); }
 .portfolio-featured-grid { gap: 56px 32px; }
-body .portfolio .project-tile-image { border-radius: 20px; background: var(--work-surface); aspect-ratio: 4 / 3; }
+body .portfolio .project-tile-image { border-radius: 20px; background: transparent; }
+.portfolio-featured-grid { align-items: start; }
 .portfolio .project-tile-image img { object-fit: contain; object-position: center; }
 .portfolio .project-tile-caption { align-items: flex-start; }
 .portfolio .project-tile-caption h3 { font-size: clamp(30px, 3vw, 46px); line-height: 1.1; text-wrap: balance; }
@@ -77,6 +78,7 @@ body .portfolio .project-tile-image { border-radius: 20px; background: var(--wor
 .portfolio-search { width: min(100%, 280px); }
 .portfolio-search input { width: 100%; min-height: 44px; border: 0; border-bottom: 1px solid var(--work-line); border-radius: 0; background: transparent; color: var(--work-ink); font-family: var(--font-pangram); font-size: 16px; padding: 8px 4px; }
 .portfolio-search input::placeholder { color: var(--work-soft); opacity: 1; }
+.portfolio-library { padding-top: 32px; }
 .portfolio-library-entry { display: flex; align-items: center; gap: 32px; padding-block: 28px; border-top: 0; text-decoration: none; }
 .portfolio-library-image { position: relative; flex: 0 0 180px; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 12px; background: var(--work-surface); }
 .portfolio-library-image img { object-fit: contain; }

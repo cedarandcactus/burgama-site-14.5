@@ -1,5 +1,4 @@
 import Link from '@/components/transition-link'
-import Image from 'next/image'
 import type { CSSProperties } from 'react'
 import type { Project } from '@/lib/projects'
 
@@ -9,8 +8,8 @@ export function ProjectCard({ project, className = '', style }: {
 }) {
   return (
     <Link href={`/work/${project.slug}`} className={`project-tile ${className}`} style={style}>
-      {project.heroMedia.src && <div className="project-tile-image"><Image src={project.heroMedia.src} alt={project.heroMedia.label} fill sizes="(min-width: 700px) 46vw, 92vw" /></div>}
-      <div className="project-tile-caption"><div><h3 className="font-serif">{project.title.toLowerCase()}</h3><p>{project.disciplines.join(' / ')}</p></div><span className="project-link-arrow" aria-hidden="true">↗</span></div>
+      {project.heroMedia.src && <div className="project-tile-image"><img src={project.heroMedia.src} alt={project.heroMedia.label} loading="lazy" decoding="async" /></div>}
+      <div className="project-tile-caption"><div><h3 className="font-serif">{project.title.toLowerCase()}</h3><ul className="project-category-pills" aria-label="Categories">{project.disciplines.map(discipline => <li key={discipline}>{discipline.toLowerCase()}</li>)}</ul></div><span className="project-link-arrow" aria-hidden="true">↗</span></div>
     </Link>
   )
 }

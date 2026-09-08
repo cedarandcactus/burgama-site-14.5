@@ -5391,9 +5391,12 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .section-intro > p { max-width: 33ch; font-size: var(--t-body); line-height: 1.5; }
 .featured-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px 28px; }
 .project-tile { display: block; color: inherit; text-decoration: none; min-width: 0; }
-.project-tile-image { position: relative; aspect-ratio: 1.45; border-radius: 22px; overflow: hidden; background: var(--brand-blue); }
-.project-tile-image img { object-fit: cover; object-position: top; transition: transform 500ms ease; }
-.project-tile:hover .project-tile-image img { transform: scale(1.025); }
+.project-tile-image { position: relative; border-radius: 22px; overflow: hidden; }
+.project-tile-image img { display: block; width: 100%; height: auto; }
+.project-tile-image img { object-fit: contain; object-position: center; }
+.project-category-pills { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 12px 0 0; margin: 0; }
+.project-category-pills li { border: 1px solid currentColor; border-radius: 999px; padding: 5px 14px; font-size: 14px; line-height: 1.4; font-weight: 300; }
+.project-tile:hover .project-tile-image img { transform: none; }
 .project-tile-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; }
 .project-tile-caption h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
 .project-tile-caption p { font-weight: 300; font-size: 14px; line-height: 1.5; padding-top: 8px; }

@@ -1,6 +1,3 @@
-'use client'
-
-import { useState } from 'react'
 import styles from './client-ticker.module.css'
 
 const logos = [
@@ -22,16 +19,8 @@ const logos = [
 ]
 
 export function ClientTicker() {
-  const [paused, setPaused] = useState(false)
-
   return (
-    <section className={styles.section} aria-label="Brands we have worked with" data-paused={paused}>
-      <div className={styles.heading}>
-        <p>good company, shared ambition.</p>
-        <button type="button" className={styles.toggle} onClick={() => setPaused(!paused)} aria-pressed={paused} aria-label={paused ? 'Resume logo ticker' : 'Pause logo ticker'}>
-          {paused ? 'play' : 'pause'}
-        </button>
-      </div>
+    <section className={styles.section} aria-label="Brands we have worked with">
       <div className={styles.window}>
         <div className={styles.track}>
           {[0, 1].map((copy) => (
