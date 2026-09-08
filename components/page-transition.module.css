@@ -6,9 +6,6 @@
 
 .content { display: contents; }
 .overlay {
-  --wash-coral: #f77967;
-  --wash-pink: #ee9dcc;
-  --wash-violet: #8064cb;
   position: fixed;
   inset: 0;
   z-index: 10000;
@@ -34,7 +31,7 @@
   height: 210vmax;
   background:
     radial-gradient(ellipse at 50% 50%, var(--brand-yellow) 0%, transparent 24%),
-    conic-gradient(from 30deg, var(--wash-coral), var(--wash-pink), var(--wash-violet), var(--brand-blue), var(--brand-yellow), var(--wash-coral));
+    conic-gradient(from 30deg, var(--brand-navy), var(--brand-blue), var(--brand-white), var(--brand-yellow), var(--brand-blue), var(--brand-navy));
   border-radius: 50%;
   transform: scale(.015) rotate(-55deg);
   opacity: 0;
@@ -54,9 +51,9 @@
 .grain {
   position: absolute;
   inset: -12%;
-  background-image: url('/textures/transition-grain.svg');
-  background-size: 160px 160px;
-  opacity: .24;
+  background-image: url('/site-texture.webp');
+  background-size: 768px 768px;
+  opacity: .48;
   mix-blend-mode: soft-light;
   animation: print-jitter 450ms steps(3, end) infinite;
   pointer-events: none;
