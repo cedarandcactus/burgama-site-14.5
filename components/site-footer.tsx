@@ -10,7 +10,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           <nav className={styles.links} aria-label="Footer"><Link href="/work">work</Link><Link href="/studio">studio</Link><Link href="/contact">contact</Link></nav>
           <div className={styles.details}><a href="mailto:hello@burgama.com">hello@burgama.com</a><p>Austin, Texas.<br />Working wherever you are.</p></div>
         </div>
-        <div className={styles.newsletter}><h2 className="font-serif bevel-display">Subscribe to<br />Newsletter</h2><FooterUpdates /></div>
+        <div className={styles.newsletter}><FooterUpdates /></div>
       </div>
       <Link href="/" className={`${styles.wordmark} font-serif bevel-display`} aria-label="Burgama home">burgama</Link>
       <div className={styles.bottom}><p>Independent by design.</p><p>© {new Date().getFullYear()} Burgama</p></div>

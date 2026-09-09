@@ -3,21 +3,25 @@
 .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1vw; align-items: start; }
 .contact { display: flex; flex-direction: column; gap: 40px; }
 .links { display: flex; flex-direction: column; align-items: flex-start; }
-.links a { font-family: var(--font-cenura); font-size: 6.7vw; line-height: .92; filter: url(#burgama-bevel); }
+.links a { font-family: var(--font-cenura); font-size: clamp(40px, 5.2vw, 88px); line-height: 1.06; filter: url(#burgama-bevel); }
 .footer a { color: inherit; text-decoration: none; }
-.footer a:hover { text-decoration: underline; text-underline-offset: 8px; }
+.footer a:hover { text-decoration: none; }
+.footer .links a, .footer .wordmark { filter: none; }
+.footer .links a:is(:hover, :focus-visible), .footer .wordmark:is(:hover, :focus-visible) { filter: url(#burgama-bevel); }
 .details { display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.5; }
 .newsletter { min-width: 0; }
-.footer .newsletter h2 { font-size: 8.4vw; line-height: .94; letter-spacing: -.03em; font-weight: 400; text-transform: none; text-align: right; }
-.newsletter :global(.footer-updates) { margin-top: 32px; font-size: 16px; width: 100%; }
-.newsletter :global(summary) { list-style: none; cursor: pointer; border: 1px solid currentColor; border-radius: 999px; padding: 12px 24px; display: inline-block; font-family: var(--font-pangram); font-size: 16px; }
+.footer .newsletter h2 { font-size: clamp(36px, 5.8vw, 100px); line-height: 1.04; letter-spacing: -.03em; font-weight: 400; text-transform: none; text-align: right; }
+.footer .newsletter :global(.footer-updates) { margin-top: 0; font-size: 16px; width: 100%; max-width: none; }
+.footer .newsletter :global(summary) { list-style: none; cursor: pointer; border: 0; border-radius: 0; padding: 0; display: block; color: inherit; background: transparent; text-decoration: none; }
+.footer .newsletter :global(summary h2) { margin: 0; filter: none; }
+.footer .newsletter :global(summary:is(:hover, :focus-visible) h2) { filter: url(#burgama-bevel); }
 .newsletter :global(summary::-webkit-details-marker) { display: none; }
 .footer .newsletter :global(.updates-content) { position: static; min-width: 0; max-width: none; width: 100%; background: transparent; color: inherit; border: none; border-radius: 24px; padding: 24px 0 0; box-shadow: none; }
 .newsletter :global(.updates-content p) { font-size: 14px; line-height: 1.5; }
 .newsletter :global(form) { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; }
 .footer .newsletter :global(.updates-content input) { width: 100%; min-height: 48px; padding: 12px 20px; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: inherit; font: inherit; }
-.newsletter :global(button.pill) { align-self: flex-start; font-family: var(--font-pangram); font-size: 16px; border: 1px solid currentColor; border-radius: 999px; padding: 12px 24px; color: inherit; background: transparent; }
-.newsletter :global(button.pill:hover) { background: var(--cyan-ink); color: var(--cyan-night); }
+.footer .newsletter :global(button.pill) { align-self: flex-start; font-family: var(--font-cenura); font-size: clamp(28px, 3vw, 56px); line-height: 1.1; min-height: 44px; border: 0; border-radius: 0; padding: 0; color: inherit; background: transparent; cursor: pointer; box-shadow: none; }
+.footer .newsletter :global(button.pill:is(:hover, :focus-visible)) { background: transparent; color: inherit; filter: url(#burgama-bevel); }
 .footer .wordmark { display: block; font-size: 28.2cqw; line-height: 1; letter-spacing: -.05em; padding: 12px 0 0; text-align: center; font-weight: 400; }
 .footer .wordmark:hover { text-decoration: none; }
 .bottom { display: flex; justify-content: space-between; gap: 24px; font-size: 14px; line-height: 1.5; padding-top: 24px; }
