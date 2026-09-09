@@ -69,7 +69,7 @@ export function CornerShell() {
     <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-menu-open={open} data-work={pathname.startsWith('/work')}>
       <div className="header-inner" inert={open}>
         <Link href="/" aria-label="Burgama home" className="header-brand"><span className="brand-lockup"><BurgamaMark /></span></Link>
-        <button ref={trigger} type="button" className="cyan-menu-trigger hamburger" aria-label="Open menu" aria-expanded={open} aria-controls="fullscreen-navigation" onClick={() => setOpen(true)}><span /><span /><span /></button>
+        <button ref={trigger} type="button" className="cyan-menu-trigger font-serif" aria-label="Open menu" aria-expanded={open} aria-controls="fullscreen-navigation" onClick={() => setOpen(true)}>menu</button>
       </div>
       <div ref={dialog} id="fullscreen-navigation" className="fullscreen-navigation" role="dialog" aria-modal={open ? true : undefined} aria-label="Site navigation" aria-hidden={!open} inert={!open} data-open={open}>
         <div className="menu-top">
