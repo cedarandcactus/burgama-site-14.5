@@ -1,4 +1,4 @@
-.section { color: var(--cyan-ink); background: var(--cyan-night); padding-block: 32px; overflow: hidden; }
+.section { color: var(--scroll-ink, var(--cyan-ink)); background: var(--scroll-bg, var(--cyan-night)); padding-block: 32px; overflow: hidden; }
 .window { overflow: hidden; mask-image: linear-gradient(to right, transparent, var(--brand-navy) 10%, var(--brand-navy) 90%, transparent); }
 .track { display: flex; width: max-content; animation: drift 100s linear infinite; }
 .group { display: flex; align-items: center; gap: 48px; flex: 0 0 auto; margin: 0; padding: 0 48px 0 0; list-style: none; }

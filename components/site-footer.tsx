@@ -4,7 +4,7 @@ import styles from '@/components/site-footer.module.css'
 import { BevelText } from '@/components/bevel-definitions'
 
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
-  return <footer className={styles.footer} data-home={home} data-work={work}>
+  return <footer className={styles.footer} data-home={home} data-work={work} data-scroll-palette={home ? 'footer' : undefined}>
     <div className={styles.content}>
       <div className={styles.columns}>
         <div className={styles.contact}>

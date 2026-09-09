@@ -1,5 +1,8 @@
 export function BevelText({ text }: { text: string }) {
-  return <span className="bevel-motion"><span className="bevel-rest">{text}</span><span className="bevel-shift" aria-hidden="true">{text}</span></span>
+  return <span className="bevel-motion">
+    <span className="bevel-rest"><span className="bevel-blue">{text}</span><span className="bevel-coral" aria-hidden="true">{text}</span></span>
+    <span className="bevel-shift" aria-hidden="true"><span className="bevel-blue">{text}</span><span className="bevel-coral">{text}</span></span>
+  </span>
 }
 
 export function BevelDefinitions() {
@@ -24,6 +27,21 @@ export function BevelDefinitions() {
         <feComposite in="body" in2="clippedShine" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="lit" />
         <feColorMatrix in="lit" type="matrix" values="0 0 0 0 0  0 0 0.784 0 0  0 0 0.804 0 0.125  0 0 0 1 0" result="blueOnly" />
         <feComposite in="blueOnly" in2="SourceAlpha" operator="in" />
+      </filter>)}
+      {[false, true].map(hover => <filter key={String(hover)} id={`burgama-bevel-coral${hover ? '-hover' : ''}`} x="-15%" y="-25%" width="130%" height="160%" colorInterpolationFilters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation={hover ? 4 : 6} result="heightMap" />
+        <feFlood floodColor="#31c8ef" result="cyanBody" />
+        <feComposite in="cyanBody" in2="SourceAlpha" operator="in" result="body" />
+        <feSpecularLighting in="heightMap" surfaceScale={hover ? 28 : 22} specularConstant="2" specularExponent="12" lightingColor="#ffffff" result="shine">
+          <feDistantLight azimuth={hover ? 315 : 85} elevation={hover ? 44 : 38} />
+        </feSpecularLighting>
+        <feColorMatrix in="shine" type="matrix" values="0 0 0 0 1  0 0 0 0 .65  0 0 0 0 .8  .333 .333 .333 0 0" result="pinkShine" />
+        <feMorphology in="SourceAlpha" operator="erode" radius="10" result="inset" />
+        <feComposite in="SourceAlpha" in2="inset" operator="out" result="edge" />
+        <feGaussianBlur in="edge" stdDeviation="2" result="softEdge" />
+        <feComposite in="pinkShine" in2="softEdge" operator="in" result="edgeShine" />
+        <feComposite in="edgeShine" in2="SourceAlpha" operator="in" result="clippedShine" />
+        <feMerge><feMergeNode in="body" /><feMergeNode in="clippedShine" /></feMerge>
       </filter>)}
     </defs>
   </svg>

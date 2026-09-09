@@ -1,3 +1,5 @@
+import { BevelText } from '@/components/bevel-definitions'
+
 const capabilities = [
   { title: 'brand & direction', body: 'Positioning, identity, messaging and art direction. A shared point of view, expressed clearly everywhere it appears.' },
   { title: 'digital & development', body: 'Websites, commerce and digital experiences. Designed to be useful, built to be used.' },
@@ -7,8 +9,8 @@ const capabilities = [
 
 export function ActCapabilities() {
   return (
-    <section className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
-      <div className="capabilities-intro"><h2 id="capabilities-heading" className="font-serif">a broad range.<br />one close team.</h2><p>From the first idea to what comes next. Brand, websites, campaigns, and the people to bring them together.</p></div>
+    <section className="home-plate capabilities-plate" data-home-plate data-scroll-palette="capabilities" aria-labelledby="capabilities-heading">
+      <div className="capabilities-intro"><h2 id="capabilities-heading" className="font-serif"><BevelText text={'a broad range.\none close team.'} /></h2><p>From the first idea to what comes next. Brand, websites, campaigns, and the people to bring them together.</p></div>
       <div className="capabilities-grid">{capabilities.map(item => <article key={item.title}><h3 className="font-serif text-balance">{item.title}</h3><p>{item.body}</p></article>)}</div>
     </section>
   )

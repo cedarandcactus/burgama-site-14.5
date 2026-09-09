@@ -1,4 +1,4 @@
-.footer { background: var(--cyan-night); color: var(--cyan-ink); font-family: var(--font-pangram), sans-serif; margin: 0; border-radius: 0; }
+.footer { background: var(--scroll-bg, var(--cyan-night)); color: var(--scroll-ink, var(--cyan-ink)); font-family: var(--font-pangram), sans-serif; margin: 0; border-radius: 0; }
 .content { padding: 3.2vw 5vw 24px; container-type: inline-size; }
 .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1vw; align-items: start; }
 .contact { display: flex; flex-direction: column; gap: 40px; }
@@ -9,11 +9,14 @@
 .footer .links a, .footer .wordmark { filter: none; }
 .footer :global(.bevel-motion) { display: inline-grid; vertical-align: top; white-space: pre-line; }
 .footer :global(.bevel-rest), .footer :global(.bevel-shift) { grid-area: 1 / 1; transition: opacity 650ms cubic-bezier(.22, 1, .36, 1); }
-.footer :global(.bevel-rest) { filter: url(#burgama-bevel); opacity: 1; }
-.footer :global(.bevel-shift) { filter: url(#burgama-bevel-hover); opacity: 0; pointer-events: none; }
+.footer :global(.bevel-rest) { filter: none; opacity: 1; }
+.footer :global(.bevel-shift) { filter: none; opacity: 0; pointer-events: none; }
 .footer :is(a, summary, button):is(:hover, :focus-visible) :global(.bevel-rest) { opacity: 0; }
 .footer :is(a, summary, button):is(:hover, :focus-visible) :global(.bevel-shift) { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .footer :global(.bevel-rest), .footer :global(.bevel-shift) { transition: none; } }
+.footer[data-home='true'] .details, .footer[data-home='true'] .bottom, .footer[data-home='true'] .newsletter :global(.updates-content) { color: var(--scroll-body, var(--cyan-ink)); }
+.footer[data-home='true'] .newsletter :global(button.pill) { color: var(--scroll-ink, var(--cyan-ink)); }
+.footer[data-home='true'] :focus-visible { outline-color: var(--scroll-body, var(--cyan-ink)); }
 .details { display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.5; }
 .newsletter { min-width: 0; }
 .footer .newsletter h2 { font-size: clamp(36px, 5.8vw, 100px); line-height: 1.04; letter-spacing: -.03em; font-weight: 400; text-transform: none; text-align: right; }

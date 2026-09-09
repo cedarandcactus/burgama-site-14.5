@@ -20,7 +20,7 @@ const logos = [
 
 export function ClientTicker() {
   return (
-    <section className={styles.section} aria-label="Brands we have worked with">
+    <section className={styles.section} data-scroll-palette="ticker" aria-label="Brands we have worked with">
       <div className={styles.window}>
         <div className={styles.track}>
           {[0, 1].map((copy) => (
