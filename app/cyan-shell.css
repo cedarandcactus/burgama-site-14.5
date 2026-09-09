@@ -1,0 +1,19 @@
+:root { --cyan-night: #000020; --cyan-ink: #00c8ed; --cyan-shade: #008ca8; }
+.bevel-display { color: var(--cyan-ink); filter: url(#burgama-bevel); }
+body .site-header.cyan-header { position: relative; inset: auto; width: 100%; max-width: none; padding: 24px 5%; margin: 0; background: var(--cyan-night); color: var(--cyan-ink); z-index: 60; }
+body .cyan-header .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 0; height: auto; min-height: 0; width: 100%; max-width: none; margin: 0; background: transparent; color: inherit; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; }
+body .cyan-header .header-brand { color: inherit; }
+body .cyan-header .header-brand .brand-lockup { display: block; font-size: 72px; line-height: 1; color: inherit; filter: url(#burgama-bevel-small); }
+body .cyan-header .header-brand svg { width: 1em; height: 1em; }
+body .cyan-header .cyan-menu-trigger { display: block; border: 0; border-radius: 0; background: transparent; color: inherit; padding: 8px 0; font-family: var(--font-cenura); font-weight: 400; font-size: 48px; line-height: 1.1; cursor: pointer; filter: url(#burgama-bevel-small); }
+body .cyan-header[data-home='true'] { padding-top: 36px; padding-bottom: 0; }
+body .cyan-header[data-home='true'] .header-brand .brand-lockup { font-size: clamp(100px, 12vw, 230px); }
+body .cyan-header[data-home='true'] .cyan-menu-trigger { font-size: clamp(48px, 5.5vw, 106px); }
+body .cyan-header .mobile-nav:not([hidden]) { position: absolute; top: 100%; right: 5%; left: auto; display: flex; flex-direction: column; gap: 12px; min-width: 260px; padding: 24px 32px; margin: 12px 0 0; border: 1px solid var(--cyan-ink); border-radius: 24px; background: var(--cyan-night); color: var(--cyan-ink); pointer-events: auto; }
+body .cyan-header .mobile-nav[hidden] { display: none; }
+body .cyan-header .mobile-nav a { color: inherit; text-decoration: none; font-family: var(--font-cenura); font-size: 40px; line-height: 1.4; }
+body .cyan-header a[aria-current='page'] { text-decoration: underline; text-underline-offset: 8px; }
+.cyan-header :focus-visible { outline: 2px solid var(--cyan-ink); outline-offset: 8px; }
+body:has(.cyan-header[data-home='true']) #main { padding-top: 0; }
+@media (max-width: 550px) { body .site-header.cyan-header { padding: 20px 5%; } body .cyan-header[data-home='true'] { padding-bottom: 0; } }
+@media (forced-colors: active) { .bevel-display, body .cyan-header .header-brand .brand-lockup, body .cyan-header .cyan-menu-trigger { filter: none; color: CanvasText; } }

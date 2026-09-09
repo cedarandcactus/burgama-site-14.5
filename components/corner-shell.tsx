@@ -37,16 +37,12 @@ export function CornerShell() {
   if (pathname.startsWith('/lot-2046')) return null
 
   return (
-    <header ref={header} className="site-header" data-menu-open={open} data-work={pathname === '/work' || pathname.startsWith('/work/')}>
+    <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-menu-open={open} data-work={pathname === '/work' || pathname.startsWith('/work/')}>
       <div className="header-inner">
         <Link href="/" aria-label="Burgama home" className="header-brand"><span className="brand-lockup"><BurgamaMark /></span></Link>
-        <nav className="desktop-nav" aria-label="Primary">
-          {destinations.slice(0, 2).map(item => <Link key={item.href} href={item.href} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>{item.label}</Link>)}
-          <Link href="/contact" className="pill pill-small" aria-current={pathname === '/contact' ? 'page' : undefined}>let&apos;s talk</Link>
-        </nav>
-        <button ref={trigger} type="button" className="pill pill-small mobile-menu-trigger" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? 'close' : 'menu'}</button>
+        <button ref={trigger} type="button" className="font-serif cyan-menu-trigger" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? 'close' : 'menu'}</button>
       </div>
-      <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile primary" hidden={!open} onBlur={event => {
+      <nav id="mobile-navigation" className="mobile-nav" aria-label="Primary" hidden={!open} onBlur={event => {
         if (!header.current?.contains(event.relatedTarget as Node | null)) setOpen(false)
       }}>
         {destinations.map(item => <Link key={item.href} href={item.href} onClick={() => setOpen(false)} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>{item.label}</Link>)}

@@ -1,8 +1,8 @@
-.section { color: var(--brand-navy); background: var(--brand-white); padding-block: 32px; overflow: hidden; }
+.section { color: var(--cyan-ink); background: var(--cyan-night); padding-block: 32px; overflow: hidden; }
 .window { overflow: hidden; mask-image: linear-gradient(to right, transparent, var(--brand-navy) 10%, var(--brand-navy) 90%, transparent); }
 .track { display: flex; width: max-content; animation: drift 100s linear infinite; }
 .group { display: flex; align-items: center; gap: 48px; flex: 0 0 auto; margin: 0; padding: 0 48px 0 0; list-style: none; }
-.logo { flex: 0 0 160px; width: 160px; height: 80px; display: flex; align-items: center; justify-content: center; opacity: .4; }
+.logo { flex: 0 0 160px; width: 160px; height: 80px; display: flex; align-items: center; justify-content: center; opacity: .85; filter: brightness(0) saturate(100%) invert(67%) sepia(90%) saturate(2158%) hue-rotate(144deg) brightness(96%) contrast(105%); }
 .logo img { width: 152px; height: 44px; object-fit: contain; }
 .symbol img { width: 60px; height: 60px; }
 .script img { width: 128px; height: 56px; }
