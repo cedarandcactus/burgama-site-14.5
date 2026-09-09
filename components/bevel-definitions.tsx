@@ -12,12 +12,13 @@ export function BevelDefinitions() {
           <feDistantLight azimuth="265" elevation="24" />
         </feDiffuseLighting>
         <feComposite in="sculpted" in2="SourceAlpha" operator="in" result="body" />
-        <feSpecularLighting in="heightMap" surfaceScale={depth} specularConstant="1.7" specularExponent="22" lightingColor={inverse ? '#00c8ed' : '#b6f6ff'} result="shine">
+        <feSpecularLighting in="heightMap" surfaceScale={depth} specularConstant="1.7" specularExponent="22" lightingColor="#00c8ed" result="shine">
           <feDistantLight azimuth="85" elevation="38" />
         </feSpecularLighting>
         <feComposite in="shine" in2="SourceAlpha" operator="in" result="clippedShine" />
         <feComposite in="body" in2="clippedShine" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="lit" />
-        <feComposite in="lit" in2="SourceAlpha" operator="in" />
+        <feColorMatrix in="lit" type="matrix" values="0 0 0 0 0  0 0 0.784 0 0  0 0 0.804 0 0.125  0 0 0 1 0" result="blueOnly" />
+        <feComposite in="blueOnly" in2="SourceAlpha" operator="in" />
       </filter>)}
     </defs>
   </svg>
