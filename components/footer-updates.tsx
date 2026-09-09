@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
+import { BevelText } from '@/components/bevel-definitions'
 
 export function FooterUpdates() {
   const id = useId()
@@ -17,9 +18,9 @@ export function FooterUpdates() {
     } catch { setState('error') }
   }
   return <details className="footer-updates">
-    <summary><h2 className="font-serif">Subscribe to<br />Newsletter</h2></summary>
+    <summary><h2 className="font-serif"><BevelText text={'Subscribe to\nNewsletter'} /></h2></summary>
     <div className="updates-content"><p className="caption">The mailing list isn&apos;t live yet. This form checks your address but does not save it or subscribe you. <a href="mailto:hello@burgama.com?subject=Studio%20updates">Email us about updates</a>.</p>
-      <form onSubmit={submit}><label htmlFor={id}>Email address</label><input id={id} name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={event => { setEmail(event.target.value); setState('idle') }} /><button className="pill pill-small" disabled={state === 'sending'}>{state === 'sending' ? 'checking…' : 'check address'}</button><p role="status">{state === 'received' ? 'Address checked. You have not been subscribed.' : state === 'error' ? 'Unable to check your address. Please try again.' : ''}</p></form>
+      <form onSubmit={submit}><label htmlFor={id}>Email address</label><input id={id} name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={event => { setEmail(event.target.value); setState('idle') }} /><button className="pill pill-small" disabled={state === 'sending'}><BevelText text={state === 'sending' ? 'checking…' : 'check address'} /></button><p role="status">{state === 'received' ? 'Address checked. You have not been subscribed.' : state === 'error' ? 'Unable to check your address. Please try again.' : ''}</p></form>
     </div>
   </details>
 }
