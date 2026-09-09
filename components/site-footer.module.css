@@ -22,4 +22,5 @@
 .footer .wordmark:hover { text-decoration: none; }
 .bottom { display: flex; justify-content: space-between; gap: 24px; font-size: 14px; line-height: 1.5; padding-top: 24px; }
 .footer :focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
-@media (max-width: 650px) { .content { padding-top: 40px; } .links a { font-size: 16vw; line-height: 1; } .columns { grid-template-columns: 1fr; gap: 64px; } .contact { gap: 28px; } .footer .newsletter h2 { text-align: left; font-size: 13vw; } .footer .wordmark { padding-top: 48px; } .bottom { flex-wrap: wrap; } }
+@media (min-width: 561px) and (max-width: 900px) { .contact { gap: 24px; } .details { gap: 8px; font-size: 14px; } .newsletter :global(.footer-updates) { margin-top: 24px; } }
+@media (max-width: 560px) { .content { padding-top: 40px; } .links a { font-size: 16vw; line-height: 1; } .columns { grid-template-columns: 1fr; gap: 64px; } .contact { gap: 28px; } .footer .newsletter h2 { text-align: left; font-size: 13vw; } .footer .wordmark { padding-top: 48px; } .bottom { flex-wrap: wrap; } }
