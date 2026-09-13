@@ -13,27 +13,20 @@
 .glassLens {
   position: fixed;
   z-index: 55;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  right: 12px;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: 12px;
   height: clamp(96px, 18vh, 180px);
   pointer-events: none;
   overflow: hidden;
   isolation: isolate;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--cyan-night) 12%, transparent),
-      color-mix(in srgb, var(--cyan-night) 82%, transparent)
-    );
-  border-top: 1px solid color-mix(in srgb, var(--cyan-ink) 30%, transparent);
-  box-shadow:
-    0 -1px 0 color-mix(in srgb, var(--cyan-ink) 12%, transparent),
-    0 -18px 36px color-mix(in srgb, var(--cyan-night) 22%, transparent);
-  opacity: var(--glass-opacity, .42);
-  backdrop-filter: blur(var(--glass-blur, 8px)) saturate(1.08);
-  -webkit-backdrop-filter: blur(var(--glass-blur, 8px)) saturate(1.08);
-  transition: opacity 180ms ease-out;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(var(--glass-blur, 5px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 5px));
+  transition: backdrop-filter 180ms ease-out, -webkit-backdrop-filter 180ms ease-out;
 }
 
 .glassLens::before,
@@ -51,8 +44,8 @@
   background: linear-gradient(
     90deg,
     transparent,
-    color-mix(in srgb, var(--cyan-ink) 48%, transparent) 22%,
-    color-mix(in srgb, var(--cyan-ink) 18%, transparent) 78%,
+    rgba(255, 255, 255, 0.7) 22%,
+    rgba(255, 255, 255, 0.25) 78%,
     transparent
   );
   opacity: var(--glass-edge-opacity, .55);
@@ -68,24 +61,26 @@
 
 @supports not (backdrop-filter: blur(1px)) {
   .glassLens {
-    background: color-mix(in srgb, var(--cyan-night) 88%, transparent);
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .glassLens {
-    opacity: .46;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     transition: none;
   }
 }
 
 @media (max-width: 699px) {
   .glassLens {
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: 12px;
     height: 104px;
-    backdrop-filter: blur(var(--glass-blur, 7px)) saturate(1.06);
-    -webkit-backdrop-filter: blur(var(--glass-blur, 7px)) saturate(1.06);
+    backdrop-filter: blur(var(--glass-blur, 5px));
+    -webkit-backdrop-filter: blur(var(--glass-blur, 5px));
   }
 }
 

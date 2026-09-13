@@ -13,8 +13,8 @@ export function SurfaceEffects() {
         aria-hidden="true"
         className={styles.glassLens}
         style={{
-          backdropFilter: 'blur(var(--glass-blur, 8px)) saturate(1.08)',
-          WebkitBackdropFilter: 'blur(var(--glass-blur, 8px)) saturate(1.08)',
+          backdropFilter: 'blur(var(--glass-blur, 5px))',
+          WebkitBackdropFilter: 'blur(var(--glass-blur, 5px))',
         }}
       />
     </>
