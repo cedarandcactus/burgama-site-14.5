@@ -87,6 +87,10 @@ export function useScrollVelocity() {
       if (next !== published) {
         published = next
         root.style.setProperty('--vel', String(next))
+        root.style.setProperty('--glass-blur', `${8 + next * 18}px`)
+        root.style.setProperty('--glass-opacity', String(0.42 + next * 0.2))
+        root.style.setProperty('--glass-edge-opacity', String(0.55 + next * 0.35))
+        root.style.setProperty('--glass-sheen-opacity', String(0.45 + next * 0.22))
       }
 
       /* Park only once the page has genuinely stopped moving, not merely
@@ -103,7 +107,6 @@ export function useScrollVelocity() {
     const wake = () => {
       if (!idle) return
       idle = false
-      last = window.scrollY
       frame = requestAnimationFrame(tick)
     }
 
@@ -114,6 +117,10 @@ export function useScrollVelocity() {
       if (frame) cancelAnimationFrame(frame)
       root.style.removeProperty('--vel')
       root.style.removeProperty('--vdir')
+      root.style.removeProperty('--glass-blur')
+      root.style.removeProperty('--glass-opacity')
+      root.style.removeProperty('--glass-edge-opacity')
+      root.style.removeProperty('--glass-sheen-opacity')
     }
   }, [])
 }

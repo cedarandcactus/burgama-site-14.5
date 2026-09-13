@@ -10,6 +10,86 @@
   opacity: .32;
 }
 
+.glassLens {
+  position: fixed;
+  z-index: 55;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: clamp(96px, 18vh, 180px);
+  pointer-events: none;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--cyan-night) 12%, transparent),
+      color-mix(in srgb, var(--cyan-night) 82%, transparent)
+    );
+  border-top: 1px solid color-mix(in srgb, var(--cyan-ink) 30%, transparent);
+  box-shadow:
+    0 -1px 0 color-mix(in srgb, var(--cyan-ink) 12%, transparent),
+    0 -18px 36px color-mix(in srgb, var(--cyan-night) 22%, transparent);
+  opacity: var(--glass-opacity, .42);
+  backdrop-filter: blur(var(--glass-blur, 8px)) saturate(1.08);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 8px)) saturate(1.08);
+  transition: opacity 180ms ease-out;
+}
+
+.glassLens::before,
+.glassLens::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  pointer-events: none;
+  content: '';
+}
+
+.glassLens::before {
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--cyan-ink) 48%, transparent) 22%,
+    color-mix(in srgb, var(--cyan-ink) 18%, transparent) 78%,
+    transparent
+  );
+  opacity: var(--glass-edge-opacity, .55);
+}
+
+.glassLens::after {
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--cyan-ink) 3%, transparent) 46%, transparent 100%);
+  mix-blend-mode: screen;
+  opacity: var(--glass-sheen-opacity, .45);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .glassLens {
+    background: color-mix(in srgb, var(--cyan-night) 88%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glassLens {
+    opacity: .46;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .glassLens {
+    height: 104px;
+    backdrop-filter: blur(var(--glass-blur, 7px)) saturate(1.06);
+    -webkit-backdrop-filter: blur(var(--glass-blur, 7px)) saturate(1.06);
+  }
+}
+
 @media (forced-colors: active), print {
-  .texture { display: none; }
+  .texture,
+  .glassLens { display: none; }
 }
