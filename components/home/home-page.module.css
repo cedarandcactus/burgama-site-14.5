@@ -1,4 +1,4 @@
-.page { --home-inset: 5vw; --home-space: clamp(80px, 10vw, 192px); background: var(--cyan-night); color: var(--cyan-ink); font-family: var(--font-pangram), sans-serif; }
+.page { --home-inset: 5vw; --home-space: clamp(80px, 10vw, 192px); background: var(--cyan-night); color: var(--cyan-ink); font-family: var(--font-pangram), sans-serif; text-align: center; }
 :global(html):has(.page), :global(body):has(.page), :global(#main):has(.page) { background: var(--cyan-night); color: var(--cyan-ink); }
 .hero { background: var(--scroll-bg, var(--cyan-night)); display: flex; align-items: flex-end; justify-content: center; min-height: calc(100svh - clamp(136px, 14vw, 266px)); padding: 80px 4vw 7vh; }
 .page .hero h1 { width: 100%; margin: 0; color: var(--cyan-ink); font-size: clamp(48px, 10.65vw, 240px); line-height: 1.1; font-weight: 400; letter-spacing: -.045em; text-align: center; text-transform: none; }
@@ -11,7 +11,7 @@
 .page :global(.project-tile) { width: 100%; margin: 0; color: inherit; }
 .page :global(.project-tile-image) { border: 2px solid var(--cyan-ink); border-radius: clamp(24px, 3vw, 56px); aspect-ratio: auto; background: transparent; overflow: hidden; }
 .page :global(.project-tile-image img) { display: block; position: static; inset: auto; width: 100%; height: auto; max-height: 75svh; opacity: 1; visibility: visible; object-fit: contain; transform: none; }
-.page :global(.project-tile-caption) { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 24px; }
+.page :global(.project-tile-caption) { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; padding-top: 24px; text-align: center; }
 .page :global(.project-tile-caption h3) { font-family: var(--font-pangram), sans-serif; font-size: clamp(20px, 2vw, 32px); line-height: 1.4; font-weight: 500; }
 .page :global(.project-category-pills) { font-family: var(--font-pangram), sans-serif; font-weight: 300; }
 .page :global(.project-link-arrow) { color: inherit; border-color: currentColor; }
@@ -19,14 +19,14 @@
 .page :global(.pill:hover) { background: var(--cyan-ink); color: var(--cyan-night); }
 .page :global(.section-outro) { display: flex; justify-content: center; margin-top: 56px; padding: 0; }
 .page :global(.capabilities-plate) { display: flex; flex-direction: column; gap: 72px; }
-.page :global(.capabilities-intro) { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
-.page :global(.capabilities-intro p) { max-width: 35ch; font-size: 18px; line-height: 1.5; }
-.page :global(.capabilities-grid) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
+.page :global(.capabilities-intro) { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; text-align: center; }
+.page :global(.capabilities-intro p) { max-width: 35ch; font-size: 18px; line-height: 1.5; text-align: center; }
+.page :global(.capabilities-grid) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; text-align: center; }
 .page :global(.capabilities-grid article) { display: flex; flex-direction: column; gap: 20px; }
 .page :global(.capabilities-grid h3) { font-family: var(--font-pangram); font-weight: 500; font-size: 22px; line-height: 1.4; }
 .page :global(.capabilities-grid p) { font-size: 16px; line-height: 1.5; }
 .page :global(.studio-plate) { display: flex; flex-direction: column; align-items: center; gap: 40px; text-align: center; }
 .page :global(.studio-description) { display: flex; flex-direction: column; align-items: center; gap: 32px; }
 .page :global(.studio-description p) { max-width: 44ch; font-size: 20px; line-height: 1.5; }
-@media (max-width: 900px) { .page :global(.capabilities-grid) { grid-template-columns: 1fr 1fr; } .page :global(.capabilities-intro) { flex-direction: column; align-items: flex-start; } }
+@media (max-width: 900px) { .page :global(.capabilities-grid) { grid-template-columns: 1fr 1fr; } .page :global(.capabilities-intro) { flex-direction: column; align-items: center; text-align: center; } }
 @media (max-width: 550px) { .hero { min-height: calc(85svh - 136px); padding: 80px 5vw 60px; } .page .hero h1 { font-size: 13vw; line-height: 1.12; } .hero h1 :global(.bevel-motion) { white-space: normal; } .page :global(.capabilities-grid) { grid-template-columns: 1fr; } .page :global(.section-intro) { padding-bottom: 40px; } .page :global(.project-tile-caption) { gap: 16px; } }
