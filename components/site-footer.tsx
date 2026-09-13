@@ -3,7 +3,7 @@ import { FooterUpdates } from '@/components/footer-updates'
 import styles from '@/components/site-footer.module.css'
 
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
-  return <footer className={styles.footer} data-home={home} data-work={work} data-scroll-palette={home ? 'footer' : undefined}>
+  return <footer className={styles.footer} data-home={home} data-work={work}>
     <div className={styles.content}>
       <div className={styles.columns}>
         <div className={styles.contact}>

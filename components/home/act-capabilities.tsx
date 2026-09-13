@@ -7,7 +7,7 @@ const capabilities = [
 
 export function ActCapabilities() {
   return (
-    <section className="home-plate capabilities-plate" data-home-plate data-scroll-palette="capabilities" aria-labelledby="capabilities-heading">
+    <section className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
       <div className="capabilities-intro"><h2 id="capabilities-heading" className="font-serif">a broad range.<br />one close team.</h2><p>From the first idea to what comes next. Brand, websites, campaigns, and the people to bring them together.</p></div>
       <div className="capabilities-grid">{capabilities.map(item => <article key={item.title}><h3 className="font-serif text-balance">{item.title}</h3><p>{item.body}</p></article>)}</div>
     </section>

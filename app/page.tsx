@@ -4,8 +4,7 @@ import { ActOpening } from '@/components/home/act-opening'
 import { ActWork } from '@/components/home/act-work'
 import { ClientTicker } from '@/components/home/client-ticker'
 import styles from '@/components/home/home-page.module.css'
-import { ScrollPalette } from '@/components/home/scroll-palette'
 
 export default function HomePage() {
-  return <div className={styles.page} data-homepage><ScrollPalette /><ActOpening /><ClientTicker /><ActWork /><ActCapabilities /><ActClose /></div>
+  return <div className={styles.page} data-homepage><ActOpening /><ClientTicker /><ActWork /><ActCapabilities /><ActClose /></div>
 }

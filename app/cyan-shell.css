@@ -1,7 +1,5 @@
 :root { --cyan-night: #000020; --cyan-ink: #00c8ed; --cyan-shade: #008ca8; }
-body .site-header.cyan-header[data-home='true'] { background: var(--scroll-bg, var(--cyan-night)); color: var(--scroll-ink, var(--cyan-ink)); }
-[data-scroll-palette] { --palette-progress: 0; }
-[data-scroll-palette] input::placeholder { color: inherit; opacity: .75; }
+body .site-header.cyan-header[data-home='true'] { background: var(--cyan-night); color: var(--cyan-ink); }
 body .site-header.cyan-header { position: relative; inset: auto; width: 100%; max-width: none; padding: 24px 5%; margin: 0; background: var(--cyan-night); color: var(--cyan-ink); z-index: 60; }
 body .cyan-header .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 0; height: auto; min-height: 0; width: 100%; max-width: none; margin: 0; background: transparent; color: inherit; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; }
 body .cyan-header .header-brand { color: inherit; }
