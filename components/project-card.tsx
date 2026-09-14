@@ -45,7 +45,14 @@ export function ProjectCard({ project, className = '', style }: {
             />
           </div>
         )}
-        <div className="project-tile-caption"><h3 className="font-serif">{project.title}</h3><span className="project-link-arrow" aria-hidden="true">↗</span></div>
+        <div className="project-tile-caption">
+          <div className="project-tile-copy">
+            <p className="project-tile-discipline">{project.disciplines.join(' · ')}</p>
+            <h3 className="font-serif">{project.title}</h3>
+            <p className="project-tile-summary">{project.summary}</p>
+          </div>
+          <span className="project-link-arrow" aria-hidden="true">↗</span>
+        </div>
       </div>
     </Link>
   )

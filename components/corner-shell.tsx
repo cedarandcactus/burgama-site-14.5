@@ -29,7 +29,7 @@ export function CornerShell() {
     let frame = 0
     function update() {
       frame = 0
-      header.current?.style.setProperty('--logo-turn', `${media.matches ? 0 : window.scrollY * .16}deg`)
+      header.current?.style.setProperty('--logo-turn', `${media.matches ? 0 : window.scrollY * .04}deg`)
     }
     function scroll() { if (!frame) frame = requestAnimationFrame(update) }
     update()
@@ -87,7 +87,10 @@ export function CornerShell() {
           aria-controls="primary-navigation"
           onClick={() => setOpen(value => !value)}
         >
-          <span className="cyan-menu-label">{open ? 'Close' : 'Menu'}</span>
+          <span className="cyan-menu-labels" aria-hidden="true">
+            <span className="cyan-menu-label cyan-menu-label-menu">Menu</span>
+            <span className="cyan-menu-label cyan-menu-label-close">Close</span>
+          </span>
         </button>
       </div>
     </header>

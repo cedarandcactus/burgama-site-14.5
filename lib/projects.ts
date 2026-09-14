@@ -107,23 +107,23 @@ const pair = (company: string, a: [string, string], b: [string, string]): Conten
 export const projects: Project[] = [
   project({
     slug: 'wagner-wealth', title: 'Wagner Wealth Management', collection: 'featured',
-    tagline: 'A composed identity for a personal practice.',
-    summary: 'An angular monogram, a restrained identity, and a website for a personal wealth-management practice.',
+    tagline: 'We shaped a personal practice into a precise, composed system.',
+    summary: 'We built an angular monogram, a restrained identity, and a measured website for Wagner Wealth Management.',
     disciplines: ['Brand', 'Web', 'Production'], services: ['Visual identity', 'Website', 'Founder film'],
     heroMedia: image('wagner-wealth', 'a093.jpg', 'Embossed business-card design mockup in Wagner’s plum colorway.', 'square'),
     contentModules: [
-      text('a personal practice, a precise identity.', 'We built the identity around an angular monogram and a deep plum palette. The system gives Wagner Wealth Management a consistent visual language across its digital presence and everyday touchpoints.'),
+      text('make the personal feel established.', 'We shaped the identity to give a personal wealth-management practice a clear, consistent presence. An angular monogram provides the recognizable center; a deep plum palette keeps the wider system composed rather than corporate.'),
       media('wagner-wealth', 'a090.jpg', 'The geometric monogram in the supplied plum colorway.'),
-      text('beyond the mark.', 'Card, letterhead, and apparel concepts extend the identity into a family of applications. These are design mockups, not photographs of manufactured items.'),
+      text('carry the idea beyond the mark.', 'We extended the monogram, color, and typography across card, letterhead, and apparel concepts so the identity could hold together at very different scales. These applications are design mockups, not photographs of manufactured items.'),
       pair('wagner-wealth', ['a094.jpg', 'Letterhead and correspondence design mockup.'], ['a095.jpg', 'Polo application shown as a design mockup.']),
-      text('a quieter digital presence.', 'The website carries the same visual language into service information and a consultation path. A founder film was developed as a companion to the practice’s story; its final export remains pending.'),
+      text('build a quieter digital presence.', 'We carried the same visual language into a website that organizes service information and leads toward a consultation. We also developed a founder film as a companion to the practice’s story; its final approved export remains pending.'),
       media('wagner-wealth', 'web-wagner.jpg', 'Website presentation for the advisory practice.'),
     ],
     links: [{ label: 'visit the website', href: 'https://www.wagnerwealthtx.com/' }],
     note: 'Founder film: supplied draft, final approved export pending. Website and identity work are presented here without investment-performance claims.',
   }),
   project({
-    slug: 'sidecar-spirits', title: 'Sidecar Spirits', collection: 'featured',
+    slug: 'sidecar-spirits', title: 'Sidecar Spirits', collection: 'archive',
     tagline: 'A richly drawn identity with a practical system.',
     summary: 'An illustrated emblem, expressive wordmark, and a family of colorways for Sidecar Spirits.',
     disciplines: ['Brand'], services: ['Visual identity', 'Logo system', 'Color and typography'],
@@ -134,7 +134,7 @@ export const projects: Project[] = [
     ],
   }),
   project({
-    slug: 'harvest-dating', title: 'Harvest Dating', collection: 'featured',
+    slug: 'harvest-dating', title: 'Harvest Dating', collection: 'archive',
     tagline: 'An identity rooted in intentional connection.',
     summary: 'An apple-and-heart symbol, expressive typography, and a plum-and-red palette connecting digital touchpoints.',
     disciplines: ['Brand'], services: ['Visual identity', 'App-icon applications', 'Social design system'],
@@ -152,31 +152,36 @@ export const projects: Project[] = [
   }),
   project({
     slug: 'go2bites', title: 'Go2Bites', collection: 'featured',
-    tagline: 'Making the product part of everyday life.',
-    summary: 'Product photography, everyday scenes, an online store, and a founder film telling one connected product story.',
+    tagline: 'We made the product story feel at home in everyday life.',
+    summary: 'We connected product and lifestyle photography, an online store, and a founder film into one clear Go2Bites story.',
     disciplines: ['Web', 'Photography', 'Production'], services: ['Website', 'Product and lifestyle photography', 'Founder film'],
     heroMedia: image('go2bites', 'a172.jpg', 'Five Go2Bites flavors photographed as a product range.'),
     contentModules: [
-      text('start with the product.', 'A clear view of the range establishes the packaging. Ingredient-led compositions then bring individual products into focus, giving each photograph a different job within the collection.'),
+      text('make the range easy to understand.', 'We started with direct product portraits that establish the full flavor range and keep the packaging legible. Ingredient-led compositions then give individual products their own focus, so every frame adds something instead of repeating the same package angle.'),
       media('go2bites', 'a153.jpg', 'Lemon Cashew Coconut with ingredients and packaging.'),
-      text('bring it into everyday life.', 'Kitchen and outdoor scenes place the product in recognizable settings. The sequence moves from product recognition to moments of use, rather than repeating the same package angle.'),
+      text('show where the product belongs.', 'We carried the range into kitchen and outdoor settings that feel recognizable and lived in. The sequence moves deliberately from product recognition to moments of use, making the product part of the day rather than an isolated studio object.'),
       pair('go2bites', ['a116.jpg', 'A kitchen scene places the product in a family setting.'], ['a165.jpg', 'An outdoor product moment.']),
       pair('go2bites', ['a129.jpg', 'Founder and product portrait from the supplied collection.'], ['a155.jpg', 'Package-in-hand detail from the photography sequence.']),
-      text('connect the pictures to the story.', 'The online store connects the photography with product discovery and shopping. A kitchen-set founder interview adds the person behind the brand to the experience.'),
+      text('turn the same story into a journey.', 'We built the online store around the same product-first hierarchy, connecting discovery, brand context, and shopping. A kitchen-set founder interview brings the person behind Go2Bites into that story, giving the still photography, commerce experience, and film a shared point of view.'),
       media('go2bites', 'web-go2bites.jpg', 'Go2Bites online store: product discovery, brand story, and shopping.'),
       media('go2bites', 'film-go2bites.jpg', 'Founder interview still from the supplied 110.4-second film.'),
     ],
     links: [{ label: 'visit the website', href: 'https://go2bites.com/' }, { label: 'watch the founder film', href: 'https://drive.google.com/file/d/1_p5yYQ7Zkrr1NM2VmrIDJyIDZzpTgRvj/view' }],
   }),
   project({
-    slug: 'cellinkey', title: 'CellinKey', tagline: 'A tactile world around the product.',
-    summary: 'Directional light, warm stone, and saturated sets give the skincare range a cohesive photographic character.',
+    slug: 'cellinkey', title: 'CellinKey', collection: 'featured',
+    tagline: 'We gave the product range a tactile world of its own.',
+    summary: 'We directed a cohesive image system for CellinKey through sculpted light, textured sets, product photography, and web presentation.',
     disciplines: ['Photography', 'Web'], services: ['Product photography', 'Website'],
     heroMedia: image('cellinkey', 'a000.jpg', 'The product range arranged in warm directional light.'),
-    contentModules: [text('light, texture, contrast.', 'The photography keeps the packaging prominent while varying the surrounding mood. Warm stone arrangements and saturated red sets create a tactile visual world around the range.'),
+    contentModules: [
+      text('build one world without repeating one frame.', 'We kept the packaging clear while changing the atmosphere around it. Directional light creates shape and depth; warm stone, suspended powder, foliage, and saturated color give each product a distinct setting inside one recognizable visual system.'),
       pair('cellinkey', ['a017.jpg', 'Product photographed with a suspended powder effect.'], ['a041.jpg', 'White pump bottle in a warm stone setting.']),
+      text('use contrast to give the range rhythm.', 'We moved between pale mineral arrangements, a saturated red set, and darker sculptural scenes. That contrast lets individual products hold their own while the lighting and set direction keep the full collection connected.'),
       pair('cellinkey', ['a052.jpg', 'White tube and foliage on a red set.'], ['a073.jpg', 'Blue bottle study with directional light and stone.']),
-      media('cellinkey', 'a088.jpg', 'Dark serum bottle in a sculptural setting.')],
+      media('cellinkey', 'a088.jpg', 'Dark serum bottle in a sculptural setting.'),
+      text('carry the character online.', 'We carried the same product-first hierarchy into the website presentation, using the photography to connect individual items back to one coherent range. The digital experience stays focused on the product rather than adding a competing visual layer.'),
+    ],
     links: [{ label: 'visit the website', href: 'https://www.cellinkeyskincare.com/' }],
   }),
   project({
@@ -204,11 +209,16 @@ export const projects: Project[] = [
     note: 'AI-generated site imagery is illustrative, not documentary photography of clients.',
   }),
   project({
-    slug: 'wurqly', title: 'Wurqly', tagline: 'A clear front door for field operations.',
-    summary: 'A product-focused website and vivid visual presentation for a field-service platform.',
+    slug: 'wurqly', title: 'Wurqly', collection: 'featured',
+    tagline: 'We turned a broad field-service platform into a clear front door.',
+    summary: 'We shaped Wurqly’s product positioning, vivid visual presentation, and website paths toward sales or signup.',
     disciplines: ['Web', 'Brand'], services: ['Website', 'Visual presentation'],
     heroMedia: image('wurqly', 'web-wurqly.jpg', 'Wurqly’s blue-and-dark website presentation.'),
-    contentModules: [text('clarity before complexity.', 'The website introduces the platform through work-order examples, service coverage, and organized feature information. Visitors can move from the broad proposition toward a sales conversation or signup.'), text('the scope.', 'This project presents the website and its visual direction. It does not claim development of the operational platform, insurance services, or payment functionality.')],
+    contentModules: [
+      text('clarity before complexity.', 'We shaped the opening proposition around what field teams need to understand first, then organized work-order examples, service coverage, and feature information into a more direct product story. The goal was a useful introduction, not an exhaustive tour of every operational detail.'),
+      text('build the path around intent.', 'We arranged the website so visitors can move from the broad proposition into practical examples, then choose a sales conversation or signup path. Direct hierarchy, vivid blue, and dark surfaces give those decisions a clear visual frame.'),
+      text('keep the scope honest.', 'We built the website and its visual presentation. This case study does not claim development of Wurqly’s operational platform, insurance services, or payment functionality.'),
+    ],
     links: [{ label: 'visit the website', href: 'https://wurqly.com/' }],
   }),
   project({
@@ -364,7 +374,11 @@ export function getPublishedProjects(collection?: PortfolioCollection) {
       return found ? [found] : []
     })
 }
-export const featuredProjects = getPublishedProjects('featured')
+const featuredProjectOrder = ['go2bites', 'cellinkey', 'wagner-wealth', 'wurqly'] as const
+export const featuredProjects = featuredProjectOrder.flatMap(slug => {
+  const item = getProject(slug)
+  return item?.collection === 'featured' ? [item] : []
+})
 export function getRelatedProjects(current: Project) {
   const published = getPublishedProjects()
   const siblings = published.filter(item => item.slug !== current.slug && (item.parentSlug === current.slug || (current.parentSlug && (item.slug === current.parentSlug || item.parentSlug === current.parentSlug))))
