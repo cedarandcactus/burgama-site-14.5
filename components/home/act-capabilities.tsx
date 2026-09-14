@@ -1,3 +1,8 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+import { gsap } from '@/lib/motion'
+
 const capabilities = [
   {
     label: 'Position and identity',
@@ -22,8 +27,41 @@ const capabilities = [
 ]
 
 export function ActCapabilities() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const cards = gsap.utils.toArray<HTMLElement>('[data-capability-card]', section)
+    const media = gsap.matchMedia()
+
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const tweens = cards.map(card => gsap.fromTo(card, {
+        xPercent: 42,
+        rotate: 1.5,
+        transformOrigin: 'center right',
+      }, {
+        xPercent: 0,
+        rotate: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 96%',
+          end: 'top 62%',
+          scrub: 0.65,
+          invalidateOnRefresh: true,
+        },
+      }))
+
+      return () => tweens.forEach(tween => tween.kill())
+    })
+
+    return () => media.revert()
+  }, [])
+
   return (
-    <section className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
+    <section ref={sectionRef} className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
       <div className="capabilities-shell">
         <div className="capabilities-intro">
           <h2 id="capabilities-heading" className="font-serif">Built wide.<br />Kept close.</h2>
@@ -31,7 +69,7 @@ export function ActCapabilities() {
         </div>
         <div className="capabilities-grid" role="list">
           {capabilities.map(item => (
-            <article key={item.title} role="listitem">
+            <article data-capability-card key={item.title} role="listitem">
               <p className="capability-label">{item.label}</p>
               <h3 className="font-serif text-balance">{item.title}</h3>
               <p className="capability-description">{item.body}</p>

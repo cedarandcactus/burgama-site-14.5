@@ -2241,7 +2241,7 @@
 
 /*
   Button proportions measured off the Eleken reference: 13px/500 label,
-  9px 16px padding, 10px radius, solid fill. Deliberately small �� the
+  9px 16px padding, 10px radius, solid fill. Deliberately small — the
   reference never scales its controls with the headings.
 */
 @utility action {
@@ -5371,9 +5371,11 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
   font-family: var(--font-cenura), sans-serif; font-size: clamp(1.5rem, 2.4vw, 2.125rem);
   font-weight: 400; line-height: 1.1; letter-spacing: -.025em;
   text-decoration: none; text-align: center; cursor: pointer;
-  transition: background-color 180ms ease, color 180ms ease;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
 }
-.pill:hover { background: var(--button-hover-bg, var(--brand-navy)); color: var(--button-hover-ink, var(--brand-white)); border-color: var(--button-hover-bg, var(--brand-navy)); }
+@media (hover: hover) and (pointer: fine) {
+  .pill:hover { background: transparent; color: inherit; border-color: currentColor; }
+}
   .pill-small { min-height: 44px; padding: 7px 30px; font-size: 22px; }
 .pill-wide { min-width: min(100%, 320px); }
 .pill:disabled { cursor: wait; opacity: .6; }

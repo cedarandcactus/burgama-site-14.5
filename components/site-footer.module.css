@@ -75,31 +75,27 @@
   transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
 }
 
-.emailButton:is(:hover, :focus-visible) {
-  transform: translateY(-2px);
-}
-
-.footer[data-work='false'] .emailButton:is(:hover, :focus-visible) {
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
-}
-
-.footer[data-work='true'] .emailButton:is(:hover, :focus-visible) {
-  color: var(--brand-white);
-  background: var(--brand-navy);
-}
-
 .footer[data-home='true'] .emailButton {
   width: min(100%, var(--control-basis-width));
   min-width: 0;
   color: var(--cyan-night);
   background: var(--cyan-ink);
-  border: 0;
+  border-color: var(--cyan-ink);
 }
 
-.footer[data-home='true'] .emailButton:is(:hover, :focus-visible) {
-  color: var(--cyan-night);
-  background: var(--cyan-shade);
+@media (hover: hover) and (pointer: fine) {
+  .footer[data-work='false'] .emailButton:hover,
+  .footer[data-home='true'] .emailButton:hover {
+    color: var(--cyan-ink);
+    background: transparent;
+    border-color: var(--cyan-ink);
+  }
+
+  .footer[data-work='true'] .emailButton:hover {
+    color: var(--brand-navy);
+    background: transparent;
+    border-color: var(--brand-navy);
+  }
 }
 
 .directory {

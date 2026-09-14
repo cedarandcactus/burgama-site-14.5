@@ -3,7 +3,7 @@
 import Link from '@/components/transition-link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { BurgamaMark } from '@/components/burgama-mark'
+import { BrandMark } from '@/components/brand-mark'
 
 const destinations = [
   { label: 'work', href: '/work' },
@@ -120,7 +120,7 @@ export function CornerShell() {
     >
       <div className="header-inner">
         <Link href="/" aria-label="Burgama home" className="header-brand" onClick={() => closeMenu()}>
-          <span className="brand-lockup"><BurgamaMark /></span>
+          <BrandMark withMark />
         </Link>
         <div
           id="primary-navigation"
