@@ -14,74 +14,126 @@
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: minmax(280px, .72fr) minmax(0, 1.28fr);
-  gap: clamp(16px, 2vw, 32px);
-  min-height: calc(100svh - 78px);
-  padding: 12px var(--home-inset) clamp(48px, 6vw, 92px);
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  --hero-subject-shift: 0%;
+  --hero-result-shift: -75%;
+  --hero-scale: 1;
+  --hero-tracking: -.052em;
+  --hero-hinge-scale: 1;
+  position: relative;
+  height: 360svh;
+  color: var(--kinetic-hero-ink);
+  background: var(--kinetic-hero-bg);
 }
 
-.heroCopy {
+.heroStage {
+  position: sticky;
+  top: 88px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: clamp(42px, 7vw, 104px);
-  min-width: 0;
-  padding: clamp(22px, 3vw, 48px) clamp(4px, 1.5vw, 24px) 4px 0;
+  justify-content: space-between;
+  gap: clamp(32px, 5vw, 72px);
+  width: 100%;
+  height: calc(100svh - 88px);
+  padding: clamp(28px, 4vw, 64px) var(--home-inset) clamp(30px, 4.5vw, 72px);
+  overflow: clip;
 }
 
 .page .hero h1 {
-  max-width: 8.2ch;
+  width: 100%;
   margin: 0;
   color: inherit;
-  font-size: clamp(68px, 8.4vw, 154px);
+  font-size: clamp(64px, 12.2vw, 196px);
   font-weight: 400;
-  line-height: .86;
-  letter-spacing: -.045em;
+  line-height: .82;
+  letter-spacing: var(--hero-tracking);
   text-align: left;
+  transform: scale(var(--hero-scale));
+  transform-origin: center;
+  transition:
+    letter-spacing 90ms var(--kinetic-hero-ease),
+    transform 90ms var(--kinetic-hero-ease);
+  will-change: transform, letter-spacing;
+}
+
+.kineticHeading {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(5px, .8vw, 14px);
+  width: 100%;
+}
+
+.heroWordWindow {
+  display: block;
+  width: 100%;
+  height: 1.02em;
+  overflow: clip;
+}
+
+.heroReel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  will-change: transform;
+}
+
+.heroSubjectReel {
+  transform: translate3d(0, var(--hero-subject-shift), 0);
+}
+
+.heroResultReel {
+  transform: translate3d(0, var(--hero-result-shift), 0);
+}
+
+.heroWord {
+  display: flex;
+  flex: 0 0 1.02em;
+  align-items: center;
+  width: 100%;
+  height: 1.02em;
+  overflow: clip;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.heroResultWindow,
+.heroResultWindow .heroWord {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.heroHinge {
+  align-self: center;
+  font-size: clamp(30px, 3.2vw, 54px);
+  line-height: 1;
+  letter-spacing: -.035em;
+  transform: scale(var(--hero-hinge-scale));
+  transition: transform 90ms var(--kinetic-hero-ease);
+  will-change: transform;
+}
+
+.heroStatic {
+  display: none;
 }
 
 .heroStatement {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(28px, 8vw, 128px);
+  width: 100%;
 }
 
 .heroStatement p {
-  max-width: 35ch;
+  max-width: 42ch;
   font-size: clamp(16px, 1.25vw, 20px);
   font-weight: 300;
   line-height: 1.5;
 }
 
-.heroMedia {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 560px;
-  margin: 0;
-  padding: clamp(14px, 1.4vw, 24px);
-  overflow: hidden;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
-  border: 0;
-  border-radius: clamp(20px, 2.2vw, 36px);
-  outline: none;
-}
-
-.heroMedia img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  flex: 1;
-  object-fit: cover;
-  object-position: center;
-  border-radius: clamp(10px, 1.2vw, 20px);
+.heroStatement :global(.pill) {
+  --button-hover-bg: var(--kinetic-hero-ink);
+  --button-hover-ink: var(--kinetic-hero-bg);
+  flex: none;
 }
 
 .page :global(.home-plate) {
@@ -326,14 +378,6 @@
 }
 
 @media (max-width: 900px) {
-  .hero {
-    grid-template-columns: minmax(250px, .8fr) minmax(0, 1.2fr);
-  }
-
-  .page .hero h1 {
-    font-size: clamp(62px, 9.5vw, 92px);
-  }
-
   .page :global(.capabilities-plate),
   .page :global(.studio-plate) {
     grid-template-columns: 1fr;
@@ -347,37 +391,35 @@
 
 @media (max-width: 699px) {
   .hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding: 18px 10px 70px;
+    height: 340svh;
   }
 
-  .heroCopy {
-    min-height: 390px;
-    gap: 42px;
-    padding: 18px 6px 30px;
+  .heroStage {
+    top: 76px;
+    height: calc(100svh - 76px);
+    padding: clamp(24px, 7vw, 44px) var(--home-inset) clamp(28px, 8vw, 48px);
   }
 
   .page .hero h1 {
-    max-width: 8ch;
-    margin-block: 0;
-    font-size: clamp(52px, 17vw, 68px);
-    line-height: .88;
+    font-size: clamp(52px, 15vw, 104px);
+  }
+
+  .kineticHeading {
+    gap: 5px;
+  }
+
+  .heroHinge {
+    font-size: clamp(27px, 8vw, 44px);
   }
 
   .heroStatement {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 20px;
   }
 
-  .heroMedia {
-    min-height: 0;
-    aspect-ratio: 4 / 5;
-    padding: 10px;
-    border-radius: 20px;
-  }
-
-  .heroMedia img {
-    border-radius: 11px;
+  .heroStatement p {
+    max-width: 33ch;
   }
 
   .page :global(.section-intro) {
@@ -437,10 +479,61 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero {
+    height: auto;
+  }
+
+  .heroStage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: calc(100svh - 88px);
+    overflow: visible;
+  }
+
+  .page .hero h1 {
+    font-size: clamp(42px, 6.4vw, 92px);
+    line-height: .92;
+    letter-spacing: -.045em;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .kineticHeading {
+    display: none;
+  }
+
+  .heroStatic {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 2vw, 28px);
+  }
+
+  .heroStaticPhrase {
+    display: block;
+    max-width: 16ch;
+  }
+
+  .heroStaticPhrase:nth-child(even) {
+    align-self: flex-end;
+    text-align: right;
+  }
+
   .page :global(.project-tile-image img),
   .page :global(.project-tile:hover .project-tile-image img),
   .page :global(.project-tile:focus-within .project-tile-image img) {
     transform: none;
     transition: none;
+  }
+}
+
+@media (max-width: 699px) and (prefers-reduced-motion: reduce) {
+  .heroStage {
+    min-height: calc(100svh - 76px);
+  }
+
+  .page .hero h1 {
+    font-size: clamp(36px, 11vw, 58px);
   }
 }
