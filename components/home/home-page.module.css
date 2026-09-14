@@ -71,7 +71,7 @@
   font-size: clamp(68px, 9.6vw, 138px);
   font-weight: 400;
   line-height: .92;
-  letter-spacing: -.052em;
+  letter-spacing: -.018em;
   text-align: left;
   text-wrap: balance;
 }
@@ -88,7 +88,8 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  column-gap: clamp(16px, 2vw, 32px);
   align-items: baseline;
   width: 100%;
   visibility: hidden;
@@ -665,7 +666,7 @@
     width: 100%;
     font-size: clamp(68px, 9.6vw, 138px);
     line-height: .92;
-    letter-spacing: -.052em;
+    letter-spacing: -.018em;
   }
 
   .kineticHeading {
@@ -681,7 +682,8 @@
 
   .heroStaticPhrase {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    column-gap: clamp(16px, 2vw, 32px);
     align-items: baseline;
     width: 100%;
   }
