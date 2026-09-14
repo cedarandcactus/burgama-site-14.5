@@ -82,7 +82,7 @@ export function ActOpening() {
           return `top top+=${stickyTop}`
         },
         end: 'bottom bottom',
-        scrub: 0.5,
+        scrub: true,
         invalidateOnRefresh: true,
       })
 
@@ -107,7 +107,6 @@ export function ActOpening() {
   return (
     <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-kinetic-hero="">
       <div ref={stageRef} className={styles.heroStage}>
-        <span className={styles.heroAtmosphere} aria-hidden="true" />
         <div className={styles.heroFrame}>
           <div className={styles.heroFrameContent}>
             <h1 id="opening-title" className="font-serif" aria-label={accessibleHeadline}>

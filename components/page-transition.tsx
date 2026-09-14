@@ -137,7 +137,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
       {active && <div key={sequence} className={styles.overlay} data-work={workTransition} data-phase={phase} data-kind={sequence === 0 ? 'intro' : 'navigation'} data-hydrated={hydrated} data-page-transition="">
         <div className={styles.curtain} aria-hidden="true">
           <div className={styles.wash} />
-          <div className={styles.grain} />
           <div className={styles.logo}>
             {'burgama'.split('').map((letter, index) => (
               <span className={styles.letter} key={index} style={{ '--letter-index': index } as CSSProperties}>{letter}</span>
