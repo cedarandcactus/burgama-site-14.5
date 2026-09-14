@@ -150,13 +150,13 @@
   --button-hover-bg: var(--cyan-night);
   --button-hover-ink: var(--brand-white);
   flex: none;
-  width: clamp(330px, 31vw, 400px);
+  width: min(100%, var(--control-basis-width));
   min-height: clamp(76px, 7vw, 94px);
-  padding: 14px 38px 17px;
+  padding: 15.5px 32px;
   color: var(--brand-white);
   background: var(--cyan-night);
   border: 0;
-  font-size: clamp(26px, 2.3vw, 34px);
+  font-size: clamp(26px, 2vw, 30px);
   line-height: 1;
 }
 
@@ -338,7 +338,7 @@
   --button-hover-bg: var(--cyan-ink);
   --button-hover-ink: var(--cyan-night);
   min-height: 50px;
-  padding: 9px 32px 11px;
+  padding: 10px 32px;
   color: inherit;
   background: transparent;
   border: 1px solid currentColor;
@@ -506,7 +506,7 @@
     align-self: stretch;
     width: 100%;
     min-height: 70px;
-    padding: 12px 24px 15px;
+    padding: 13.5px 24px;
     font-size: 26px;
   }
 
@@ -634,7 +634,7 @@
     align-self: auto;
     width: 250px;
     min-height: 56px;
-    padding: 8px 24px 10px;
+    padding: 9px 24px;
     font-size: 22px;
   }
 }

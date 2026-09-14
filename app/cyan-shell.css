@@ -2,6 +2,7 @@
   --cyan-night: #000020;
   --cyan-ink: #00c8ed;
   --cyan-shade: #008ca8;
+  --control-basis-width: clamp(18rem, 22vw, 20rem);
   --header-clearance: 62px;
   --hero-frame-inset: clamp(12px, 2.2vw, 30px);
   --hero-frame-radius: clamp(24px, 3vw, 42px);
@@ -25,7 +26,7 @@ body .cyan-header .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 236px;
+  width: var(--control-basis-width);
   max-width: min(100%, var(--page-max));
   height: auto;
   min-height: 44px;
@@ -169,7 +170,7 @@ body .cyan-header .header-nav {
 body .cyan-header .header-nav a {
   position: relative;
   flex: none;
-  padding: 7px 10px 8px;
+  padding: 7.5px 10px;
   color: inherit;
   border-radius: 999px;
   font-family: var(--font-cenura);
@@ -263,7 +264,6 @@ body .cyan-header[data-home='true'][data-condensed='false'] .cyan-menu-trigger {
 body .cyan-header .cyan-menu-labels {
   display: grid;
   min-width: 4.15ch;
-  transform: translateY(-1px);
 }
 
 body .cyan-header .cyan-menu-label {
@@ -331,7 +331,7 @@ body:has(.cyan-header[data-home='true']) #main {
 
   body .cyan-header .header-inner,
   body .cyan-header[data-home='true'][data-condensed='false'] .header-inner {
-    width: 210px;
+    width: 224px;
     max-width: 100%;
     min-height: 42px;
     padding: 2px 4px 2px 7px;
@@ -390,7 +390,7 @@ body:has(.cyan-header[data-home='true']) #main {
 @media (max-width: 380px) {
   body .cyan-header .header-inner,
   body .cyan-header[data-home='true'][data-condensed='false'] .header-inner {
-    width: 196px;
+    width: 210px;
   }
 
   body .cyan-header .header-nav a {
