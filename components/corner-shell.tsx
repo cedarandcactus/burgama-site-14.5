@@ -14,6 +14,8 @@ const destinations = [
 export function CornerShell() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [condensed, setCondensed] = useState(pathname !== '/')
+  const condensedRef = useRef(pathname !== '/')
   const trigger = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
 
@@ -22,39 +24,80 @@ export function CornerShell() {
     if (restoreFocus) trigger.current?.focus()
   }
 
-  useEffect(() => { setOpen(false) }, [pathname])
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const compactViewport = window.matchMedia('(max-width: 699px)')
+    const compactLandscape = window.matchMedia('(max-width: 900px) and (max-height: 520px)')
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frame = 0
+
+    function commitCondensed(next: boolean) {
+      if (condensedRef.current === next) return
+      if (!next && document.activeElement === trigger.current) {
+        header.current?.querySelector<HTMLAnchorElement>('.header-brand')?.focus()
+      }
+      condensedRef.current = next
+      setCondensed(next)
+      setOpen(false)
+    }
+
     function update() {
       frame = 0
-      header.current?.style.setProperty('--logo-turn', `${media.matches ? 0 : window.scrollY * .04}deg`)
+      const forcedCompact = pathname !== '/' || compactViewport.matches || compactLandscape.matches
+      const next = forcedCompact
+        ? true
+        : condensedRef.current
+          ? window.scrollY > 24
+          : window.scrollY > 72
+
+      commitCondensed(next)
+      header.current?.style.setProperty(
+        '--logo-turn',
+        `${reducedMotion.matches || !next ? 0 : window.scrollY * 0.04}deg`,
+      )
     }
-    function scroll() { if (!frame) frame = requestAnimationFrame(update) }
+
+    function scheduleUpdate() {
+      if (!frame) frame = window.requestAnimationFrame(update)
+    }
+
     update()
-    window.addEventListener('scroll', scroll, { passive: true })
-    media.addEventListener('change', update)
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate, { passive: true })
+    compactViewport.addEventListener('change', scheduleUpdate)
+    compactLandscape.addEventListener('change', scheduleUpdate)
+    reducedMotion.addEventListener('change', scheduleUpdate)
+
     return () => {
-      window.removeEventListener('scroll', scroll)
-      media.removeEventListener('change', update)
-      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+      compactViewport.removeEventListener('change', scheduleUpdate)
+      compactLandscape.removeEventListener('change', scheduleUpdate)
+      reducedMotion.removeEventListener('change', scheduleUpdate)
+      window.cancelAnimationFrame(frame)
     }
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     if (!open) return
+
     function onKey(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         event.preventDefault()
         closeMenu({ restoreFocus: true })
       }
     }
+
     function onPointerDown(event: PointerEvent) {
       if (!header.current?.contains(event.target as Node)) closeMenu()
     }
+
     document.addEventListener('keydown', onKey)
     document.addEventListener('pointerdown', onPointerDown)
+
     return () => {
       document.removeEventListener('keydown', onKey)
       document.removeEventListener('pointerdown', onPointerDown)
@@ -63,16 +106,35 @@ export function CornerShell() {
 
   if (pathname.startsWith('/lot-2046')) return null
 
+  const navigationVisible = !condensed || open
+
   return (
-    <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-menu-open={open} data-work={pathname.startsWith('/work')}>
+    <header
+      ref={header}
+      className="site-header cyan-header"
+      data-home={pathname === '/'}
+      data-condensed={condensed}
+      data-menu-open={open}
+      data-work={pathname.startsWith('/work')}
+    >
       <div className="header-inner">
         <Link href="/" aria-label="Burgama home" className="header-brand" onClick={() => closeMenu()}>
           <span className="brand-lockup"><BurgamaMark /></span>
         </Link>
-        <div id="primary-navigation" className="header-nav-shell" aria-hidden={!open} inert={!open}>
+        <div
+          id="primary-navigation"
+          className="header-nav-shell"
+          aria-hidden={!navigationVisible}
+          inert={!navigationVisible}
+        >
           <nav aria-label="Primary" className="header-nav">
-            {destinations.map(item => (
-              <Link key={item.href} href={item.href} onClick={() => closeMenu()} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>
+            {destinations.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => closeMenu()}
+                aria-current={pathname.startsWith(item.href) ? 'page' : undefined}
+              >
                 {item.label}
               </Link>
             ))}
@@ -85,7 +147,9 @@ export function CornerShell() {
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           aria-controls="primary-navigation"
-          onClick={() => setOpen(value => !value)}
+          aria-hidden={!condensed}
+          tabIndex={condensed ? 0 : -1}
+          onClick={() => setOpen((value) => !value)}
         >
           <span className="cyan-menu-labels" aria-hidden="true">
             <span className="cyan-menu-label cyan-menu-label-menu">Menu</span>

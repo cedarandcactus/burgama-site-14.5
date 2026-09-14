@@ -107,47 +107,52 @@ export function ActOpening() {
   return (
     <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-kinetic-hero="">
       <div ref={stageRef} className={styles.heroStage}>
-        <h1 id="opening-title" className="font-serif" aria-label={accessibleHeadline}>
-          <span ref={slideStackRef} className={styles.kineticHeading} aria-hidden="true">
-            {transformations.map(({ subject, result }) => (
-              <span className={styles.heroSlide} data-hero-slide="" key={subject}>
-                <span className={`${styles.heroPhraseLine} ${styles.heroSubjectLine}`}>
-                  <span className={styles.heroWordMask}>
-                    <span className={styles.heroAnimatedWord} data-hero-line="">{subject}</span>
+        <span className={styles.heroAtmosphere} aria-hidden="true" />
+        <div className={styles.heroFrame}>
+          <div className={styles.heroFrameContent}>
+            <h1 id="opening-title" className="font-serif" aria-label={accessibleHeadline}>
+              <span ref={slideStackRef} className={styles.kineticHeading} aria-hidden="true">
+                {transformations.map(({ subject, result }) => (
+                  <span className={styles.heroSlide} data-hero-slide="" key={subject}>
+                    <span className={`${styles.heroPhraseLine} ${styles.heroSubjectLine}`}>
+                      <span className={styles.heroWordMask}>
+                        <span className={styles.heroAnimatedWord} data-hero-line="">{subject}</span>
+                      </span>
+                    </span>
+                    <span className={`${styles.heroPhraseLine} ${styles.heroConnectorLine}`}>
+                      <span className={styles.heroWordMask}>
+                        <span className={styles.heroAnimatedWord} data-hero-line="">into</span>
+                      </span>
+                    </span>
+                    <span className={`${styles.heroPhraseLine} ${styles.heroResultLine}`}>
+                      <span className={styles.heroWordMask}>
+                        <span className={styles.heroAnimatedWord} data-hero-line="">{result}.</span>
+                      </span>
+                    </span>
                   </span>
-                </span>
-                <span className={`${styles.heroPhraseLine} ${styles.heroConnectorLine}`}>
-                  <span className={styles.heroWordMask}>
-                    <span className={styles.heroAnimatedWord} data-hero-line="">into</span>
-                  </span>
-                </span>
-                <span className={`${styles.heroPhraseLine} ${styles.heroResultLine}`}>
-                  <span className={styles.heroWordMask}>
-                    <span className={styles.heroAnimatedWord} data-hero-line="">{result}.</span>
-                  </span>
-                </span>
+                ))}
               </span>
-            ))}
-          </span>
-          <span className={styles.heroStatic} aria-hidden="true">
-            {transformations.map(({ subject, result }) => (
-              <span className={styles.heroStaticPhrase} key={subject}>
-                <span className={`${styles.heroStaticWord} ${styles.heroStaticSubject}`}>{subject}</span>
-                <span className={`${styles.heroStaticWord} ${styles.heroStaticConnector}`}>into</span>
-                <span className={`${styles.heroStaticWord} ${styles.heroStaticResult}`}>{result}.</span>
+              <span className={styles.heroStatic} aria-hidden="true">
+                {transformations.map(({ subject, result }) => (
+                  <span className={styles.heroStaticPhrase} key={subject}>
+                    <span className={`${styles.heroStaticWord} ${styles.heroStaticSubject}`}>{subject}</span>
+                    <span className={`${styles.heroStaticWord} ${styles.heroStaticConnector}`}>into</span>
+                    <span className={`${styles.heroStaticWord} ${styles.heroStaticResult}`}>{result}.</span>
+                  </span>
+                ))}
               </span>
-            ))}
-          </span>
-        </h1>
-        <div className={styles.heroLower}>
-          <div className={styles.heroProgress} aria-hidden="true">
-            <span className={styles.heroProgressRail}>
-              <span ref={progressFillRef} className={styles.heroProgressFill} />
-            </span>
-          </div>
-          <div className={styles.heroStatement}>
-            <p>We build brands, websites, and campaigns for people with something real to say.</p>
-            <ModularButton href="/work">view selected work</ModularButton>
+            </h1>
+            <div className={styles.heroLower}>
+              <div className={styles.heroProgress} aria-hidden="true">
+                <span className={styles.heroProgressRail}>
+                  <span ref={progressFillRef} className={styles.heroProgressFill} />
+                </span>
+              </div>
+              <div className={styles.heroStatement}>
+                <p>We build brands, websites, and campaigns for people with something real to say.</p>
+                <ModularButton href="/work">view selected work</ModularButton>
+              </div>
+            </div>
           </div>
         </div>
       </div>

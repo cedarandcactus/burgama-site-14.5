@@ -13,35 +13,110 @@
   background: var(--cyan-night);
 }
 
+:global(#main):has(.page) {
+  padding-top: 0;
+}
+
 .hero {
   position: relative;
   height: 380svh;
-  color: var(--kinetic-hero-ink);
-  background: var(--kinetic-hero-bg);
+  color: var(--brand-white);
+  background: var(--cyan-night);
 }
 
 .heroStage {
   position: sticky;
-  top: var(--header-clearance);
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  padding: var(--hero-frame-inset);
+  overflow: clip;
+  isolation: isolate;
+  background: var(--cyan-night);
+}
+
+.heroAtmosphere {
+  position: absolute;
+  inset: -14%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(128deg, color-mix(in srgb, var(--brand-white) 64%, var(--cyan-ink)) 0 13%, transparent 46%),
+    linear-gradient(18deg, var(--cyan-shade) 0%, var(--cyan-night) 48%, var(--cyan-ink) 100%);
+  filter: blur(clamp(30px, 5vw, 72px));
+  transform: scale(1.06);
+}
+
+.heroFrame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    128deg,
+    var(--cyan-night) 5%,
+    color-mix(in srgb, var(--cyan-night) 68%, var(--cyan-shade)) 43%,
+    var(--cyan-shade) 76%,
+    var(--cyan-ink) 118%
+  );
+  border: 4px solid var(--cyan-night);
+  border-radius: var(--hero-frame-radius);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--cyan-night) 30%, transparent);
+  isolation: isolate;
+}
+
+.heroFrame::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: clamp(88px, 8vw, 112px);
+  content: '';
+  background: linear-gradient(
+    108deg,
+    var(--brand-white) 0%,
+    color-mix(in srgb, var(--brand-white) 76%, var(--cyan-ink)) 58%,
+    color-mix(in srgb, var(--brand-white) 46%, var(--cyan-ink)) 100%
+  );
+  border-bottom: 1px solid color-mix(in srgb, var(--cyan-night) 18%, transparent);
+}
+
+.heroFrame::after {
+  position: absolute;
+  inset: 12% -18% -16% 30%;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(
+    108deg,
+    transparent 24%,
+    color-mix(in srgb, var(--cyan-ink) 30%, transparent) 51%,
+    transparent 74%
+  );
+  filter: blur(28px);
+  transform: skewX(-10deg);
+}
+
+.heroFrameContent {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(24px, min(4vw, 5svh), 64px);
+  gap: clamp(22px, min(3vw, 4svh), 48px);
   width: 100%;
-  height: calc(100svh - var(--header-clearance));
-  padding: clamp(24px, min(3.5vw, 5svh), 56px) var(--home-inset) clamp(26px, min(4vw, 6svh), 64px);
-  overflow: clip;
+  height: 100%;
+  padding: clamp(106px, min(10vw, 15svh), 150px) clamp(24px, 4.5vw, 72px) clamp(24px, min(3.5vw, 5svh), 52px);
 }
 
 .page .hero h1 {
-  width: 100%;
+  width: min(88%, 1180px);
   margin: 0;
   color: inherit;
-  font-size: clamp(72px, min(16.5vw, 20svh), 220px);
+  font-size: clamp(64px, min(10.5vw, 15svh), 172px);
   font-weight: 400;
-  line-height: .84;
+  line-height: .86;
   letter-spacing: -.052em;
   text-align: left;
+  text-wrap: balance;
 }
 
 .kineticHeading {
@@ -67,23 +142,20 @@
 .heroPhraseLine {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   width: 100%;
   height: .86em;
   min-width: 0;
   overflow: clip;
 }
 
-.heroSubjectLine {
+.heroSubjectLine,
+.heroResultLine {
   justify-content: flex-start;
 }
 
 .heroConnectorLine {
-  justify-content: center;
-  color: var(--cyan-shade);
-}
-
-.heroResultLine {
-  justify-content: flex-end;
+  color: color-mix(in srgb, var(--brand-white) 68%, var(--cyan-ink));
 }
 
 .heroWordMask {
@@ -122,10 +194,10 @@
 
 .heroProgressRail {
   display: block;
-  width: min(100%, 980px);
+  width: min(76%, 880px);
   height: clamp(4px, .4vw, 6px);
   overflow: hidden;
-  background: color-mix(in srgb, currentColor 24%, transparent);
+  background: color-mix(in srgb, currentColor 25%, transparent);
   border-radius: 999px;
 }
 
@@ -149,7 +221,8 @@
 }
 
 .heroStatement p {
-  max-width: 42ch;
+  max-width: 44ch;
+  margin: 0;
   font-size: clamp(16px, 1.25vw, 20px);
   font-weight: 300;
   line-height: 1.5;
@@ -157,8 +230,8 @@
 }
 
 .heroStatement :global(.pill) {
-  --button-hover-bg: var(--kinetic-hero-ink);
-  --button-hover-ink: var(--kinetic-hero-bg);
+  --button-hover-bg: var(--brand-white);
+  --button-hover-ink: var(--cyan-night);
   flex: none;
 }
 
@@ -460,22 +533,40 @@
     height: 350svh;
   }
 
-  .heroStage {
-    padding: clamp(20px, min(6vw, 4svh), 36px) var(--home-inset) clamp(24px, min(7vw, 5svh), 42px);
+  .heroFrame {
+    border-width: 3px;
+  }
+
+  .heroFrame::before {
+    height: 66px;
+  }
+
+  .heroFrameContent {
+    gap: 18px;
+    padding: 82px 18px 22px;
   }
 
   .page .hero h1 {
-    font-size: clamp(58px, min(18vw, 17svh), 124px);
+    width: 100%;
+    font-size: clamp(52px, min(17vw, 12svh), 78px);
+  }
+
+  .heroProgressRail {
+    width: min(88%, 520px);
   }
 
   .heroStatement {
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
+    gap: 16px;
   }
 
   .heroStatement p {
     max-width: 33ch;
+  }
+
+  .heroStatement :global(.pill) {
+    align-self: flex-end;
   }
 
   .page :global(.section-intro) {
@@ -539,13 +630,41 @@
 }
 
 @media (max-width: 380px) {
-  .page .hero h1 {
-    font-size: clamp(58px, min(21vw, 17svh), 72px);
+  .heroFrameContent {
+    padding-inline: 15px;
   }
 
-  .heroStage {
-    gap: 18px;
-    padding-inline: 14px;
+  .page .hero h1 {
+    font-size: clamp(49px, min(17vw, 12svh), 64px);
+  }
+
+  .heroStatement p {
+    font-size: 15px;
+  }
+
+  .heroStatement :global(.pill) {
+    min-height: 48px;
+    padding-inline: 26px;
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 700px) and (max-height: 620px) {
+  .heroFrame::before {
+    height: 72px;
+  }
+
+  .heroFrameContent {
+    gap: 14px;
+    padding: 84px 28px 20px;
+  }
+
+  .page .hero h1 {
+    font-size: clamp(52px, min(9.5vw, 13svh), 112px);
+  }
+
+  .heroLower {
+    gap: 10px;
   }
 
   .heroStatement p {
@@ -553,58 +672,44 @@
   }
 }
 
-@media (min-width: 700px) and (max-height: 620px) {
-  .heroStage {
-    gap: 18px;
-    padding-block: 18px 22px;
-  }
-
-  .page .hero h1 {
-    font-size: clamp(58px, min(13.5vw, 17svh), 140px);
-  }
-
-  .heroLower {
-    gap: 12px;
-  }
-
-  .heroStatement p {
-    font-size: 16px;
-  }
-}
-
 @media (max-width: 900px) and (max-height: 520px) and (orientation: landscape) {
-  .heroStage {
-    gap: 12px;
-    padding: 12px var(--home-inset) 14px;
+  .heroFrame::before {
+    height: 56px;
+  }
+
+  .heroFrameContent {
+    gap: 10px;
+    padding: 64px 20px 14px;
   }
 
   .page .hero h1 {
-    font-size: clamp(44px, min(10.5vw, 17svh), 88px);
+    font-size: clamp(38px, min(8vw, 11svh), 68px);
   }
 
   .heroLower {
-    gap: 8px;
+    gap: 7px;
   }
 
   .heroProgressRail {
-    width: min(72%, 520px);
+    width: min(68%, 480px);
   }
 
   .heroStatement {
     flex-direction: row;
     align-items: flex-end;
-    gap: 24px;
+    gap: 22px;
   }
 
   .heroStatement p {
-    max-width: 40ch;
+    max-width: 38ch;
     font-size: 14px;
   }
 
   .heroStatement :global(.pill) {
-    min-height: 44px;
-    padding-block: 7px 9px;
-    font-size: 21px;
+    align-self: auto;
+    min-height: 40px;
+    padding: 6px 24px 8px;
+    font-size: 19px;
   }
 }
 
@@ -617,11 +722,22 @@
     position: relative;
     top: auto;
     height: auto;
-    min-height: calc(100svh - var(--header-clearance));
-    overflow: visible;
+    min-height: 100svh;
+    overflow: clip;
+  }
+
+  .heroFrame {
+    height: auto;
+    min-height: calc(100svh - (2 * var(--hero-frame-inset)));
+  }
+
+  .heroFrameContent {
+    height: auto;
+    min-height: inherit;
   }
 
   .page .hero h1 {
+    width: 100%;
     font-size: clamp(52px, min(8vw, 14svh), 120px);
     line-height: .86;
     letter-spacing: -.052em;
@@ -649,19 +765,16 @@
     display: block;
     width: 100%;
     line-height: .86;
+    text-align: left;
   }
 
-  .heroStaticSubject {
+  .heroStaticSubject,
+  .heroStaticResult {
     text-align: left;
   }
 
   .heroStaticConnector {
-    color: var(--cyan-shade);
-    text-align: center;
-  }
-
-  .heroStaticResult {
-    text-align: right;
+    color: color-mix(in srgb, var(--brand-white) 68%, var(--cyan-ink));
   }
 
   .page :global(.project-tile-image img),
