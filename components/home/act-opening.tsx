@@ -136,7 +136,7 @@ export function ActOpening() {
             <div className={styles.heroLower}>
               <div className={styles.heroStatement}>
                 <p>We build brands, websites, and campaigns for people with something real to say.</p>
-                <ModularButton href="/work">view selected work</ModularButton>
+                <ModularButton href="/contact">contact us</ModularButton>
               </div>
             </div>
           </div>
