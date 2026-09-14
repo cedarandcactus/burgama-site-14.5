@@ -66,12 +66,10 @@ export const projects: Project[] = [
     tagline: 'A richly drawn identity with a practical system.',
     summary: 'An illustrated emblem, expressive wordmark, and a family of colorways for Sidecar Spirits.',
     disciplines: ['Brand'], services: ['Visual identity', 'Logo system', 'Color and typography'],
-    heroMedia: image('sidecar-spirits', 'sidecar-primary.jpg', 'Sidecar Spirits’ finished full-color primary emblem.', 'tall'),
+    heroMedia: image('sidecar-spirits', 'sidecar-gold.jpg', 'Sidecar Spirits’ finished gold-and-navy emblem.', 'tall'),
     contentModules: [
       text('character in every detail.', 'The illustrated emblem anchors the identity. Its detailed drawing and expressive lettering create a distinctive visual vocabulary, with navy, gold, orange, and bone forming the core palette.'),
-      pair('sidecar-spirits', ['sidecar-gold.jpg', 'Gold-and-navy emblem for limited-color applications.'], ['sidecar-orange.jpg', 'Orange-and-bone alternate from the finished identity system.']),
-      text('one identity. more ways to use it.', 'Full-color, two-color, and monochrome versions give the emblem room to work across different formats. Separate display, label, and body type roles keep the expressive direction practical.'),
-      pair('sidecar-spirits', ['sidecar-mono.jpg', 'Finished monochrome identity mark.'], ['sidecar-wordmark.jpg', 'The supplied wordmark with its establishment line.']),
+      text('one identity. more ways to use it.', 'A focused set of color and typography roles gives the expressive direction a practical structure across labels, print, and digital applications.'),
     ],
   }),
   project({
@@ -84,7 +82,7 @@ export const projects: Project[] = [
       text('a recognizable starting point.', 'We gave the idea of intentional dating a recognizable visual form. The apple-and-heart symbol is the central identifier, working alongside the Harvest wordmark and independently at smaller scales.'),
       media('harvest-dating', 'pdf-6-6.jpg', 'Logo construction documented in the brand guide.'),
       text('from logo to app icon.', 'The same symbol connects the primary identity, social stories, and app-icon mockups. Each application changes in scale and format while retaining the relationship between mark, color, and type.'),
-      pair('harvest-dating', ['pdf-6-8.jpg', 'Vertical social-story identity applications.'], ['pdf-6-10.jpg', 'App-icon identity mockup; not a developed application.']),
+      pair('harvest-dating', ['pdf-6-4.jpg', 'Primary identity and apple-heart mark from the supplied guide.'], ['pdf-6-10.jpg', 'App-icon identity mockup; not a developed application.']),
       text('a system with defined roles.', 'Headline, label, and body treatments establish a clear hierarchy. Plum, red, and supporting tones give different compositions a shared visual structure.'),
       pair('harvest-dating', ['pdf-6-14.jpg', 'Typography hierarchy from the supplied guide.'], ['pdf-6-17.jpg', 'The identity’s defined color palette.']),
     ],

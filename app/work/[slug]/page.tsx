@@ -34,7 +34,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return <div className="portfolio-detail">
     <header className="portfolio-width portfolio-detail-heading">
-      <nav className="portfolio-breadcrumb" aria-label="Breadcrumb"><Link href="/work">← All work</Link>{parent && <><span aria-hidden="true">/</span><Link href={`/work/${parent.slug}`}>{parent.title}</Link></>}</nav>
+      <nav className="portfolio-breadcrumb" aria-label="Breadcrumb"><Link href="/work">All work</Link>{parent && <><span aria-hidden="true">/</span><Link href={`/work/${parent.slug}`}>{parent.title}</Link></>}</nav>
       <h1 className="font-serif text-balance">{project.title}</h1>
       <div className="portfolio-detail-intro"><p className="portfolio-tagline">{project.tagline}</p><div><p>{project.summary}</p><p className="portfolio-scope">{project.services.join(' · ')}</p></div></div>
       {(project.status || project.period) && <div className="portfolio-meta">{project.status && <p>{project.status}</p>}{project.period && <p>{project.period}</p>}</div>}
@@ -48,7 +48,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         {project.note && <p>{project.note}</p>}
         {project.credits.map(credit => <p key={credit.role}>{credit.role}: {credit.name}</p>)}
       </section>}
-      {project.links.length > 0 && <nav aria-label="Live project and film links" className="portfolio-external-links">{project.links.map(link => <a key={link.href} className="pill pill-small" href={link.href} target="_blank" rel="noopener noreferrer">{sentenceCase(link.label)} <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>)}</nav>}
+      {project.links.length > 0 && <nav aria-label="Live project and film links" className="portfolio-external-links">{project.links.map(link => <a key={link.href} className="pill pill-small" href={link.href} target="_blank" rel="noopener noreferrer">{sentenceCase(link.label)}<span className="sr-only"> (opens in a new tab)</span></a>)}</nav>}
     </article>
 
     <section className="portfolio-width portfolio-related" aria-labelledby="related-title">

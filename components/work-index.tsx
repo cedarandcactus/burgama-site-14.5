@@ -19,8 +19,7 @@ export function WorkIndex({ projects }: { projects: Entry[] }) {
     <div id="portfolio-results" className="portfolio-library">
       {visible.map(project => <Link key={project.id} href={`/work/${project.slug}`} className="portfolio-library-entry">
         <div className="portfolio-library-copy"><h3 className="font-sans">{project.title}</h3>{project.year && <span>{project.year}</span>}</div>
-        <p className="archive-categories">{(project.disciplines ?? []).map(category => labels[category] ?? category).join(' · ')}</p>
-        {!!project.media?.length && <div className="archive-thumbnails">{project.media.map(item => <img key={item.src} src={item.src} alt={item.label} loading="lazy" decoding="async" />)}</div>}
+        <div className="archive-categories" aria-label="Project categories">{(project.disciplines ?? []).map(category => <span key={category}>{labels[category] ?? category}</span>)}</div>
       </Link>)}
       {visible.length === 0 && <button type="button" className="pill pill-small" onClick={() => setDiscipline('All')}>Show all work</button>}
     </div>
