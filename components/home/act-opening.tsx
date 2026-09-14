@@ -33,13 +33,16 @@ export function ActOpening() {
     const media = gsap.matchMedia()
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      const linesBySlide = slides.map(slide => gsap.utils.toArray<HTMLElement>('[data-hero-line]', slide))
       const timelineClock = { progress: 0 }
       const timeline = gsap.timeline({ paused: true })
 
-      gsap.set(slides, { autoAlpha: 0 })
-      gsap.set(slides[0], { autoAlpha: 1 })
-      linesBySlide.forEach((lines, index) => gsap.set(lines, { yPercent: index === 0 ? 0 : 115 }))
+      gsap.set(slides, {
+        autoAlpha: 0,
+        y: 20,
+        scale: 0.985,
+        transformOrigin: 'center center',
+      })
+      gsap.set(slides[0], { autoAlpha: 1, y: 0, scale: 1 })
 
       timeline.to(timelineClock, {
         progress: 1,
@@ -48,28 +51,31 @@ export function ActOpening() {
       }, 0)
 
       for (let index = 1; index < transformations.length; index += 1) {
-        const transitionStart = index - 0.6
-        const handoff = index - 0.3
+        const transitionStart = index - 0.62
+        const revealStart = index - 0.38
         const previousSlide = slides[index - 1]
         const nextSlide = slides[index]
-        const previousLines = linesBySlide[index - 1]
-        const nextLines = linesBySlide[index]
 
         timeline
-          .to(previousLines, {
-            yPercent: -115,
-            duration: 0.24,
-            stagger: 0.04,
+          .to(previousSlide, {
+            autoAlpha: 0,
+            y: -16,
+            scale: 0.99,
+            duration: 0.28,
             ease: 'power2.in',
           }, transitionStart)
-          .set(previousSlide, { autoAlpha: 0 }, handoff)
-          .set(nextSlide, { autoAlpha: 1 }, handoff)
-          .to(nextLines, {
-            yPercent: 0,
-            duration: 0.36,
-            stagger: 0.07,
+          .fromTo(nextSlide, {
+            autoAlpha: 0,
+            y: 20,
+            scale: 0.985,
+          }, {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.42,
             ease: 'power3.out',
-          }, handoff)
+            immediateRender: false,
+          }, revealStart)
       }
 
       const scrollTrigger = ScrollTrigger.create({
@@ -111,21 +117,9 @@ export function ActOpening() {
               <span ref={slideStackRef} className={styles.kineticHeading} aria-hidden="true">
                 {transformations.map(({ subject, result }) => (
                   <span className={styles.heroSlide} data-hero-slide="" key={subject}>
-                    <span className={`${styles.heroPhraseLine} ${styles.heroSubjectLine}`}>
-                      <span className={styles.heroWordMask}>
-                        <span className={styles.heroAnimatedWord} data-hero-line="">{subject}</span>
-                      </span>
-                    </span>
-                    <span className={`${styles.heroPhraseLine} ${styles.heroConnectorLine}`}>
-                      <span className={styles.heroWordMask}>
-                        <span className={styles.heroAnimatedWord} data-hero-line="">into</span>
-                      </span>
-                    </span>
-                    <span className={`${styles.heroPhraseLine} ${styles.heroResultLine}`}>
-                      <span className={styles.heroWordMask}>
-                        <span className={styles.heroAnimatedWord} data-hero-line="">{result}.</span>
-                      </span>
-                    </span>
+                    <span className={`${styles.heroPhraseLine} ${styles.heroSubjectLine}`}>{subject}</span>
+                    <span className={`${styles.heroPhraseLine} ${styles.heroConnectorLine}`}>into</span>
+                    <span className={`${styles.heroPhraseLine} ${styles.heroResultLine}`}>{result}.</span>
                   </span>
                 ))}
               </span>
