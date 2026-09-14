@@ -6,9 +6,10 @@ import { useEffect, useRef, useState } from 'react'
 import { BurgamaMark } from '@/components/burgama-mark'
 
 const destinations = [
-  { label: 'Work', href: '/work' },
-  { label: 'Studio', href: '/studio' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'work', href: '/work' },
+  { label: 'studio', href: '/studio' },
+  { label: 'ideas', href: '/ideas' },
+  { label: 'start a project', href: '/contact', action: true },
 ]
 
 export function CornerShell() {
@@ -132,6 +133,7 @@ export function CornerShell() {
               <Link
                 key={item.href}
                 href={item.href}
+                className={item.action ? 'header-contact' : undefined}
                 onClick={() => closeMenu()}
                 aria-current={pathname.startsWith(item.href) ? 'page' : undefined}
               >

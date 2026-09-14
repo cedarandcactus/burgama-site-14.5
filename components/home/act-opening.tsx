@@ -33,49 +33,42 @@ export function ActOpening() {
     const media = gsap.matchMedia()
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      const timelineClock = { progress: 0 }
       const timeline = gsap.timeline({ paused: true })
 
       gsap.set(slides, {
         autoAlpha: 0,
-        y: 20,
-        scale: 0.985,
+        yPercent: 16,
+        scale: 0.992,
+        force3D: true,
         transformOrigin: 'center center',
       })
-      gsap.set(slides[0], { autoAlpha: 1, y: 0, scale: 1 })
-
-      timeline.to(timelineClock, {
-        progress: 1,
-        duration: transformations.length,
-        ease: 'none',
-      }, 0)
+      gsap.set(slides[0], { autoAlpha: 1, yPercent: 0, scale: 1 })
 
       for (let index = 1; index < transformations.length; index += 1) {
-        const transitionStart = index - 0.62
-        const revealStart = index - 0.38
+        const transitionStart = index - 0.84
         const previousSlide = slides[index - 1]
         const nextSlide = slides[index]
 
         timeline
           .to(previousSlide, {
             autoAlpha: 0,
-            y: -16,
-            scale: 0.99,
-            duration: 0.28,
-            ease: 'power2.in',
+            yPercent: -14,
+            scale: 0.995,
+            duration: 0.86,
+            ease: 'power2.inOut',
           }, transitionStart)
           .fromTo(nextSlide, {
             autoAlpha: 0,
-            y: 20,
-            scale: 0.985,
+            yPercent: 16,
+            scale: 0.992,
           }, {
             autoAlpha: 1,
-            y: 0,
+            yPercent: 0,
             scale: 1,
-            duration: 0.42,
+            duration: 1.06,
             ease: 'power3.out',
             immediateRender: false,
-          }, revealStart)
+          }, transitionStart + 0.16)
       }
 
       const scrollTrigger = ScrollTrigger.create({
@@ -86,7 +79,7 @@ export function ActOpening() {
           return `top top+=${stickyTop}`
         },
         end: 'bottom bottom',
-        scrub: true,
+        scrub: 0.85,
         invalidateOnRefresh: true,
       })
 
@@ -135,8 +128,8 @@ export function ActOpening() {
             </h1>
             <div className={styles.heroLower}>
               <div className={styles.heroStatement}>
-                <p>We build brands, websites, and campaigns for people with something real to say.</p>
-                <ModularButton href="/contact">contact us</ModularButton>
+                <p>We shape identity, digital, and campaigns for organizations with something worth saying.</p>
+                <ModularButton href="/work">view selected work</ModularButton>
               </div>
             </div>
           </div>
