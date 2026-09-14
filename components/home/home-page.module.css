@@ -60,24 +60,24 @@
     var(--cyan-shade) 76%,
     var(--cyan-ink) 118%
   );
-  border: 4px solid var(--cyan-night);
+  border: 0;
   border-radius: var(--hero-frame-radius);
-  box-shadow: 0 18px 48px color-mix(in srgb, var(--cyan-night) 30%, transparent);
+  box-shadow: none;
   isolation: isolate;
 }
 
 .heroFrame::before {
   position: absolute;
   inset: 0 0 auto;
-  height: clamp(88px, 8vw, 112px);
+  height: clamp(108px, 11vw, 148px);
   content: '';
   background: linear-gradient(
-    108deg,
-    var(--brand-white) 0%,
-    color-mix(in srgb, var(--brand-white) 76%, var(--cyan-ink)) 58%,
-    color-mix(in srgb, var(--brand-white) 46%, var(--cyan-ink)) 100%
+    180deg,
+    color-mix(in srgb, var(--brand-white) 94%, var(--cyan-ink)) 0%,
+    color-mix(in srgb, var(--brand-white) 72%, var(--cyan-ink)) 42%,
+    color-mix(in srgb, var(--brand-white) 22%, transparent) 76%,
+    transparent 100%
   );
-  border-bottom: 1px solid color-mix(in srgb, var(--cyan-night) 18%, transparent);
 }
 
 .heroFrame::after {
@@ -216,12 +216,12 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: clamp(28px, 8vw, 128px);
+  gap: clamp(24px, 5vw, 72px);
   width: 100%;
 }
 
 .heroStatement p {
-  max-width: 44ch;
+  max-width: 38ch;
   margin: 0;
   font-size: clamp(16px, 1.25vw, 20px);
   font-weight: 300;
@@ -229,10 +229,23 @@
   text-wrap: pretty;
 }
 
-.heroStatement :global(.pill) {
-  --button-hover-bg: var(--brand-white);
-  --button-hover-ink: var(--cyan-night);
+.page .heroStatement :global(.pill) {
+  --button-hover-bg: var(--cyan-night);
+  --button-hover-ink: var(--brand-white);
   flex: none;
+  width: clamp(330px, 31vw, 400px);
+  min-height: clamp(76px, 7vw, 94px);
+  padding: 14px 38px 17px;
+  color: var(--cyan-night);
+  background: var(--brand-white);
+  border: 0;
+  font-size: clamp(26px, 2.3vw, 34px);
+  line-height: 1;
+}
+
+.page .heroStatement :global(.pill:hover) {
+  color: var(--brand-white);
+  background: var(--cyan-night);
 }
 
 .page :global(.home-plate) {
@@ -533,12 +546,8 @@
     height: 350svh;
   }
 
-  .heroFrame {
-    border-width: 3px;
-  }
-
   .heroFrame::before {
-    height: 66px;
+    height: 92px;
   }
 
   .heroFrameContent {
@@ -565,8 +574,12 @@
     max-width: 33ch;
   }
 
-  .heroStatement :global(.pill) {
-    align-self: flex-end;
+  .page .heroStatement :global(.pill) {
+    align-self: stretch;
+    width: 100%;
+    min-height: 70px;
+    padding: 12px 24px 15px;
+    font-size: 26px;
   }
 
   .page :global(.section-intro) {
@@ -642,10 +655,10 @@
     font-size: 15px;
   }
 
-  .heroStatement :global(.pill) {
-    min-height: 48px;
-    padding-inline: 26px;
-    font-size: 22px;
+  .page .heroStatement :global(.pill) {
+    min-height: 66px;
+    padding-inline: 22px;
+    font-size: 24px;
   }
 }
 
@@ -705,11 +718,12 @@
     font-size: 14px;
   }
 
-  .heroStatement :global(.pill) {
+  .page .heroStatement :global(.pill) {
     align-self: auto;
-    min-height: 40px;
-    padding: 6px 24px 8px;
-    font-size: 19px;
+    width: 250px;
+    min-height: 56px;
+    padding: 8px 24px 10px;
+    font-size: 22px;
   }
 }
 
