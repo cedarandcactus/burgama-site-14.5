@@ -2,17 +2,13 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { EditorialArtwork } from '@/components/editorial-artwork'
 import { SiteFooter } from '@/components/site-footer'
-import {
-  getIdeaReadingTime,
-  ideas,
-  type IdeaPost,
-} from '@/lib/editorial'
+import { getIdeaReadingTime, ideas, type IdeaPost } from '@/lib/editorial'
 import styles from './editorial.module.css'
 
-export function EditorialDetail({ idea }: { idea: IdeaPost }) {
-  const currentIndex = ideas.findIndex((candidate) => candidate.slug === idea.slug)
-  const previous = currentIndex > 0 ? ideas[currentIndex - 1] : undefined
-  const next = currentIndex < ideas.length - 1 ? ideas[currentIndex + 1] : undefined
+export function EditorialArticle({ idea }: { idea: IdeaPost }) {
+  const ideaIndex = ideas.findIndex((entry) => entry.slug === idea.slug)
+  const previousIdea = ideaIndex > 0 ? ideas[ideaIndex - 1] : undefined
+  const nextIdea = ideaIndex < ideas.length - 1 ? ideas[ideaIndex + 1] : undefined
 
   return (
     <div className={`${styles.detailRoot} font-sans`}>
@@ -30,7 +26,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
                   <span>Field note {idea.number}</span>
                   <span>{getIdeaReadingTime(idea)}</span>
                 </div>
-                <h1 className="font-serif text-balance">{idea.title}</h1>
+                <h1 className="font-serif">{idea.title}</h1>
               </div>
               <div className={styles.detailIntroduction}>
                 <p>{idea.metaDescription}</p>
@@ -42,19 +38,22 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
               </div>
             </div>
 
-            <EditorialArtwork visual={idea.visual} className={styles.detailArtwork} />
+            <EditorialArtwork
+              visual={idea.visual}
+              className={styles.detailArtwork}
+            />
           </div>
         </header>
 
         <div className={styles.articleShell}>
           <aside className={styles.articleRail} aria-label="Article details">
             <div>
-              <span>Focus</span>
-              <strong>{idea.targetKeyword}</strong>
+              <span>Topic</span>
+              <strong>{idea.categories.join(' · ')}</strong>
             </div>
             <div>
-              <span>Topics</span>
-              <strong>{idea.categories.join(' · ')}</strong>
+              <span>Reading time</span>
+              <strong>{getIdeaReadingTime(idea)}</strong>
             </div>
           </aside>
 
@@ -65,8 +64,10 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
               </p>
             ))}
 
-            <section className={styles.sourceBlock} aria-labelledby="sources-heading">
-              <h2 id="sources-heading" className="font-serif">Useful sources.</h2>
+            <section className={styles.sourceBlock} aria-labelledby="sources-title">
+              <h2 id="sources-title" className="font-serif">
+                Sources and references.
+              </h2>
               <ul>
                 {idea.sources.map((source) => (
                   <li key={source.href}>
@@ -86,25 +87,28 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
         </div>
 
         <nav className={styles.articleNavigation} aria-label="More ideas">
-          {previous ? (
-            <Link href={`/ideas/${previous.slug}`} className={styles.articleNavLink}>
+          {previousIdea ? (
+            <Link href={`/ideas/${previousIdea.slug}`} className={styles.articleNavLink}>
               <span className={styles.articleNavDirection}>
                 <ArrowLeft aria-hidden="true" strokeWidth={1.25} />
                 Previous note
               </span>
-              <strong className="font-serif">{previous.title}</strong>
+              <strong className="font-serif">{previousIdea.title}</strong>
             </Link>
           ) : (
             <span aria-hidden="true" />
           )}
-
-          <Link href={next ? `/ideas/${next.slug}` : '/ideas'} className={styles.articleNavLink}>
-            <span className={styles.articleNavDirection}>
-              {next ? 'Next note' : 'All ideas'}
-              <ArrowRight aria-hidden="true" strokeWidth={1.25} />
-            </span>
-            <strong className="font-serif">{next?.title ?? 'Return to the index'}</strong>
-          </Link>
+          {nextIdea ? (
+            <Link href={`/ideas/${nextIdea.slug}`} className={styles.articleNavLink}>
+              <span className={styles.articleNavDirection}>
+                Next note
+                <ArrowRight aria-hidden="true" strokeWidth={1.25} />
+              </span>
+              <strong className="font-serif">{nextIdea.title}</strong>
+            </Link>
+          ) : (
+            <span aria-hidden="true" />
+          )}
         </nav>
       </main>
       <SiteFooter />

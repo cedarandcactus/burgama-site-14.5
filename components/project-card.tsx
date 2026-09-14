@@ -1,39 +1,37 @@
-import Link from '@/components/transition-link'
+import { ArrowRight } from 'lucide-react'
 import type { CSSProperties } from 'react'
+import Link from '@/components/transition-link'
 import type { MediaRatio, Project } from '@/lib/projects'
 
-const fallbackAspectRatios: Record<MediaRatio, number> = {
-  wide: 3 / 2,
-  landscape: 16 / 9,
-  tall: 3 / 4,
-  square: 1,
-  full: 16 / 10,
+const aspectRatios: Record<MediaRatio, string> = {
+  wide: '16 / 9',
+  landscape: '4 / 3',
+  tall: '4 / 5',
+  square: '1 / 1',
+  full: '16 / 10',
 }
 
-export type ModuleShape = 'arch' | 'leaf-right' | 'leaf-left' | 'quarter' | 'bulb' | 'capsule' | 'terminal' | 'opposed'
-export function ProjectCard({ project, className = '', style }: {
-  project: Project; size?: 'feature' | 'medium' | 'wide' | 'compact'; shape?: ModuleShape; className?: string; style?: CSSProperties
-}) {
+const widthCaps: Record<MediaRatio, string> = {
+  wide: '1180px',
+  landscape: '980px',
+  tall: '640px',
+  square: '760px',
+  full: '1180px',
+}
+
+export function ProjectCard({ project }: { project: Project }) {
   const media = project.heroMedia
-  const aspectRatio = media.width && media.height
-    ? media.width / media.height
-    : fallbackAspectRatios[media.ratio]
-  const intrinsicMediaStyle = {
-    '--project-media-aspect': aspectRatio,
-    '--project-media-width-viewport': `${(aspectRatio * 72).toFixed(3)}svh`,
-    '--project-media-width-cap': `${Math.round(aspectRatio * 680)}px`,
+  const style = {
+    '--project-width': media.ratio === 'tall' ? 'min(76vw, 640px)' : 'min(94vw, 1180px)',
+    '--project-media-width-viewport': media.ratio === 'tall' ? '76vw' : '94vw',
+    '--project-media-width-cap': widthCaps[media.ratio],
+    '--project-media-aspect': aspectRatios[media.ratio],
   } as CSSProperties
 
   return (
-    <Link
-      href={`/work/${project.slug}`}
-      className={`project-tile ${className}`}
-      style={{ ...intrinsicMediaStyle, ...style }}
-      data-project={project.slug}
-      data-media-ratio={media.ratio}
-    >
-      <div className="project-tile-content">
-        {media.src && (
+    <Link className="project-tile" href={`/work/${project.slug}`}>
+      <article className="project-tile-content" style={style}>
+        {media.src ? (
           <div className="project-tile-image">
             <img
               src={media.src}
@@ -44,18 +42,25 @@ export function ProjectCard({ project, className = '', style }: {
               decoding="async"
             />
           </div>
-        )}
+        ) : null}
         <div className="project-tile-caption">
           <div className="project-tile-copy">
-            <ul className="project-tile-disciplines" aria-label="Project categories">
-              {project.disciplines.map(discipline => <li key={discipline}>{discipline}</li>)}
+            <ul
+              className="project-category-pills project-tile-disciplines"
+              aria-label="Project categories"
+            >
+              {project.disciplines.map((discipline) => (
+                <li key={discipline}>{discipline.toLowerCase()}</li>
+              ))}
             </ul>
-            <h3 className="font-serif">{project.title}</h3>
+            <h3 className="project-tile-title">{project.title}</h3>
             <p className="project-tile-summary">{project.summary}</p>
           </div>
-          <span className="project-link-arrow" aria-hidden="true">↗</span>
+          <span className="project-link-arrow" aria-hidden="true">
+            <ArrowRight strokeWidth={1.25} />
+          </span>
         </div>
-      </div>
+      </article>
     </Link>
   )
 }

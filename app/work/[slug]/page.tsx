@@ -1,66 +1,127 @@
 import type { Metadata } from 'next'
-import Link from '@/components/transition-link'
+import { ArrowRight } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
 import { SiteFooter } from '@/components/site-footer'
-import { getProject, getPublishedProjects, getRelatedProjects } from '@/lib/projects'
+import Link from '@/components/transition-link'
+import {
+  getProject,
+  getPublishedProjects,
+  getRelatedProjects,
+} from '@/lib/projects'
 
-function sentenceCase(value: string) {
-  return value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
-}
-
-export const dynamicParams = false
 export function generateStaticParams() {
-  return getPublishedProjects().map(project => ({ slug: project.slug }))
+  return getPublishedProjects().map((project) => ({ slug: project.slug }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
   const { slug } = await params
   const project = getProject(slug)
-  if (!project) return { title: 'Project not found', robots: { index: false } }
+
+  if (!project) return { title: 'Work' }
+
   return {
     title: project.title,
     description: project.summary,
-    openGraph: project.heroMedia.src ? { images: [{ url: project.heroMedia.src, alt: project.heroMedia.label }] } : undefined,
   }
 }
 
-export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function WorkDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
   const project = getProject(slug)
+
   if (!project) notFound()
-  const related = getRelatedProjects(project)
-  const parent = project.parentSlug ? getProject(project.parentSlug) : undefined
 
-  return <div className="portfolio-detail">
-    <header className="portfolio-width portfolio-detail-heading">
-      <nav className="portfolio-breadcrumb" aria-label="Breadcrumb">
-        <ol>
-          <li><Link href="/work">All work</Link></li>
-          {parent && <li><span className="portfolio-breadcrumb-separator" aria-hidden="true">/</span><Link href={`/work/${parent.slug}`}>{parent.title}</Link></li>}
-          <li><span className="portfolio-breadcrumb-separator" aria-hidden="true">/</span><span aria-current="page">{project.title}</span></li>
-        </ol>
-      </nav>
-      <h1 className="font-serif text-balance">{project.title}</h1>
-      <div className="portfolio-detail-intro"><p className="portfolio-tagline">{project.tagline}</p><div><p>{project.summary}</p><p className="portfolio-scope">{project.services.join(' · ')}</p></div></div>
-      {(project.status || project.period) && <div className="portfolio-meta">{project.status && <p>{project.status}</p>}{project.period && <p>{project.period}</p>}</div>}
-    </header>
+  const relatedProjects = getRelatedProjects(project)
 
-    <article className="portfolio-width portfolio-story">
-      {project.heroMedia.src && <div className="portfolio-detail-hero"><MediaFrame item={project.heroMedia} priority /></div>}
-      <ProjectModules modules={project.contentModules} />
-      {(project.source || project.note || project.credits.length > 0) && <section className="portfolio-source" aria-label="Project notes and attribution">
-        {project.source && <div><h2 className="font-serif">Sources & context.</h2><p>{project.source}</p></div>}
-        {project.note && <p>{project.note}</p>}
-        {project.credits.map(credit => <p key={credit.role}>{credit.role}: {credit.name}</p>)}
-      </section>}
-      {project.links.length > 0 && <nav aria-label="Live project and film links" className="portfolio-external-links">{project.links.map(link => <a key={link.href} className="pill pill-small" href={link.href} target="_blank" rel="noopener noreferrer">{sentenceCase(link.label)}<span className="sr-only"> (opens in a new tab)</span></a>)}</nav>}
-    </article>
+  return (
+    <>
+      <main id="main">
+        <header className="portfolio-detail-heading portfolio-width">
+          <nav className="portfolio-breadcrumb" aria-label="Breadcrumb">
+            <ol>
+              <li><Link href="/work">Work</Link></li>
+              <li className="portfolio-breadcrumb-separator" aria-hidden="true">/</li>
+              <li aria-current="page">{project.title}</li>
+            </ol>
+          </nav>
 
-    <section className="portfolio-width portfolio-related" aria-labelledby="related-title">
-      <div className="portfolio-section-heading"><h2 id="related-title" className="font-serif">Keep looking.</h2><Link href="/work" className="pill pill-small">Back to all work</Link></div>
-      <div className="portfolio-related-grid">{related.map(item => <Link key={item.id} href={`/work/${item.slug}`} className="portfolio-related-link"><h3 className="font-serif">{item.title}</h3><span aria-hidden="true">↗</span></Link>)}</div>
-    </section>
-    <SiteFooter work />
-  </div>
+          <h1 className="font-serif">{project.title}</h1>
+          <div className="portfolio-detail-intro">
+            <p className="portfolio-tagline">{project.tagline}</p>
+            <div>
+              <p>{project.summary}</p>
+              <p className="portfolio-scope">{project.services.join(' · ')}</p>
+              <div className="portfolio-meta">
+                <span>{project.disciplines.join(' · ')}</span>
+                {project.period ? <span>{project.period}</span> : null}
+                {project.status ? <span>{project.status}</span> : null}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {project.heroMedia.src ? (
+          <div className="portfolio-width">
+            <MediaFrame item={project.heroMedia} className="portfolio-detail-hero" priority />
+          </div>
+        ) : null}
+
+        <div className="portfolio-story portfolio-width">
+          <ProjectModules modules={project.contentModules} />
+
+          {project.source || project.note || project.credits.length > 0 ? (
+            <section className="portfolio-source" aria-labelledby="project-notes">
+              <h2 id="project-notes" className="font-serif">Project notes.</h2>
+              {project.source ? <p><strong>Source:</strong> {project.source}</p> : null}
+              {project.note ? <p>{project.note}</p> : null}
+              {project.credits.map((credit) => (
+                <p key={`${credit.role}-${credit.name}`}>
+                  <strong>{credit.role}:</strong> {credit.name}
+                </p>
+              ))}
+            </section>
+          ) : null}
+
+          {project.links.length > 0 ? (
+            <nav className="portfolio-external-links" aria-label="Project links">
+              {project.links.map((link) => (
+                <a href={link.href} className="pill pill-small" key={link.href} target="_blank" rel="noreferrer">
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          ) : null}
+        </div>
+
+        {relatedProjects.length > 0 ? (
+          <section className="portfolio-related portfolio-width" aria-labelledby="related-title">
+            <div className="portfolio-section-heading">
+              <h2 id="related-title" className="font-serif">More work.</h2>
+            </div>
+            <nav className="portfolio-related-grid" aria-label="More work">
+              {relatedProjects.map((related) => (
+                <Link href={`/work/${related.slug}`} className="portfolio-related-link" key={related.slug}>
+                  <span>{related.disciplines.join(' · ')}</span>
+                  <h3 className="font-serif">{related.title}</h3>
+                  <span aria-hidden="true">
+                    <ArrowRight strokeWidth={1.25} />
+                  </span>
+                </Link>
+              ))}
+            </nav>
+          </section>
+        ) : null}
+      </main>
+      <SiteFooter work />
+    </>
+  )
 }

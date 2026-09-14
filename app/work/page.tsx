@@ -1,48 +1,88 @@
 import type { Metadata } from 'next'
-import Link from '@/components/transition-link'
+import { ArrowRight } from 'lucide-react'
 import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
+import Link from '@/components/transition-link'
 import { WorkIndex } from '@/components/work-index'
-import { featuredProjects, getPublishedProjects } from '@/lib/projects'
+import {
+  featuredProjects,
+  getPublishedProjects,
+} from '@/lib/projects'
 
 export const metadata: Metadata = {
-  title: 'Work',
-  description: 'Explore Burgama’s portfolio: brand identities, websites, photography, production, and focused marketing case studies.',
+  title: 'Selected Work',
+  description: 'Brand, web, content, growth, and production work by Burgama.',
 }
 
 export default function WorkPage() {
   const studies = getPublishedProjects('case-study')
   const archive = getPublishedProjects('archive')
-  return <>
-    <header className="portfolio-intro portfolio-width">
-      <div className="portfolio-intro-heading"><h1 className="font-serif">The work.</h1><p>Brand systems, websites, content, and marketing built to move something forward. Start here, or dig through the archive.</p></div>
-      <nav className="portfolio-jumps" aria-label="Work sections"><a className="pill pill-small" href="#featured">Featured</a><a className="pill pill-small" href="#case-studies">Case studies</a><a className="pill pill-small" href="#more-work">Archive</a></nav>
-    </header>
-    <section id="featured" className="portfolio-width portfolio-section" aria-label="Featured collaborations">
-      <div className="featured-grid portfolio-featured-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
-    </section>
-    <section id="case-studies" className="portfolio-studies" aria-labelledby="studies-title">
-      <div className="portfolio-width">
-        <div className="portfolio-section-heading"><h2 id="studies-title" className="font-serif">Case studies.</h2></div>
-        <div className="portfolio-study-grid">
-          {studies.map(study => <Link key={study.id} href={`/work/${study.slug}`} className="portfolio-study">
-            <div className="portfolio-study-top"><h3 className="font-serif">{study.title}</h3><span className="project-link-arrow" aria-hidden="true">↗</span></div>
-            <p className="portfolio-study-summary">{study.summary}</p>
-          </Link>)}
-        </div>
-      </div>
-    </section>
-    <section id="more-work" className="portfolio-width portfolio-archive" aria-labelledby="archive-title">
-      <div className="portfolio-section-heading"><h2 id="archive-title" className="font-serif">Archive of work.</h2></div>
-      <WorkIndex projects={archive.map(({ id, slug, title, disciplines, period, heroMedia, contentModules }) => {
-        const media = [heroMedia, ...contentModules.flatMap(module => {
-          if (module.type === 'media' || module.type === 'mediaSplit') return [module.item]
-          if (module.type === 'mediaPair' || module.type === 'mediaGrid') return module.items
-          return []
-        })].filter((item, index, items) => item.src && items.findIndex(other => other.src === item.src) === index).slice(0, 4)
-        return { id, slug, title, disciplines, year: period?.match(/\b(?:19|20)\d{2}\b/g)?.filter((year, index, years) => years.indexOf(year) === index).join('–'), media }
-      })} />
-    </section>
-    <SiteFooter work />
-  </>
+
+  return (
+    <>
+      <main id="main">
+        <header className="portfolio-intro portfolio-width">
+          <div className="portfolio-intro-heading">
+            <h1 className="font-serif">Selected work.</h1>
+            <p>
+              Brand, web, content, growth, and production for organizations with
+              something worth saying.
+            </p>
+          </div>
+          <nav className="portfolio-jumps" aria-label="Work collections">
+            <Link href="#featured" className="pill pill-small">Featured</Link>
+            <Link href="#studies" className="pill pill-small">Focused studies</Link>
+            <Link href="#archive" className="pill pill-small">Archive</Link>
+          </nav>
+        </header>
+
+        <section id="featured" className="portfolio-section portfolio-width" aria-labelledby="featured-title">
+          <div className="portfolio-section-heading">
+            <h2 id="featured-title" className="font-serif">Full systems, built together.</h2>
+          </div>
+          <div className="portfolio-featured-grid">
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
+            ))}
+          </div>
+        </section>
+
+        <section id="studies" className="portfolio-studies" aria-labelledby="studies-title">
+          <div className="portfolio-width">
+            <div className="portfolio-section-heading">
+              <h2 id="studies-title" className="font-serif">Focused studies.</h2>
+              <p>Closer looks at a channel, campaign, or problem inside the wider work.</p>
+            </div>
+            <div className="portfolio-study-grid">
+              {studies.map((project) => (
+                <Link href={`/work/${project.slug}`} className="portfolio-study" key={project.slug}>
+                  <div className="portfolio-study-top">
+                    <div className="archive-categories" aria-label="Project categories">
+                      {project.disciplines.map((discipline) => (
+                        <span key={discipline}>{discipline}</span>
+                      ))}
+                    </div>
+                    <span className="project-link-arrow" aria-hidden="true">
+                      <ArrowRight strokeWidth={1.25} />
+                    </span>
+                  </div>
+                  <h3 className="font-serif">{project.title}</h3>
+                  <p className="portfolio-study-summary">{project.summary}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="archive" className="portfolio-archive portfolio-width" aria-labelledby="archive-title">
+          <div className="portfolio-section-heading">
+            <h2 id="archive-title" className="font-serif">The wider archive.</h2>
+            <p>Filter the published collection by discipline.</p>
+          </div>
+          <WorkIndex projects={archive} />
+        </section>
+      </main>
+      <SiteFooter work />
+    </>
+  )
 }

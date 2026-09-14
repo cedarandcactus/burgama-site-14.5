@@ -2,40 +2,23 @@
 
 import Link from '@/components/transition-link'
 import { useEffect, useRef } from 'react'
-import { gsap, createActContext, motionScale } from '@/lib/motion'
+import { createActContext, gsap, motionScale } from '@/lib/motion'
 
-/**
- * ACT IV — back to finished work.
- *
- * Returning to a real project after Research keeps the studies attached to
- * Burgama's actual output rather than letting the page drift into feeling like
- * a separate publication.
- *
- * Hiking Pony gets the one composition not used earlier: the image runs almost
- * to the boundaries of its surface, held off the edge by a small margin so the
- * surface still reads as a physical plate rather than a full-bleed band.
- *
- * MatchDay and AVRO follow as an asymmetric pair. Neither has photography in
- * the project yet, so they are presented as empty tonal wells at their real
- * proportions instead of being given generated imagery that would misrepresent
- * the work. The wells are honest placeholders, and the layout is already
- * correct for the day the real assets arrive.
- */
 export function ActMoreWork() {
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(
     () =>
       createActContext(root.current, ({ scope }) => {
-        const s = motionScale()
-
+        const scale = motionScale()
         const media = scope.querySelector('.well-media')
+
         if (media) {
           gsap.fromTo(
             media,
-            { yPercent: -3 * s },
+            { yPercent: -3 * scale },
             {
-              yPercent: 3 * s,
+              yPercent: 3 * scale,
               ease: 'none',
               scrollTrigger: {
                 trigger: scope.querySelector('.well'),
@@ -47,14 +30,9 @@ export function ActMoreWork() {
           )
         }
 
-        /*
-          The pair arrives with the two halves at slightly different rates —
-          a small horizontal drift apart rather than a matched fade, so they
-          read as two objects placed rather than one row appearing.
-        */
         gsap.fromTo(
           scope.querySelectorAll('.pair-item'),
-          { x: (i: number) => (i === 0 ? -18 * s : 18 * s) },
+          { x: (index: number) => (index === 0 ? -18 * scale : 18 * scale) },
           {
             x: 0,
             ease: 'none',
@@ -71,19 +49,17 @@ export function ActMoreWork() {
   )
 
   return (
-    <div
-      className="msurface msurface--more"
-      ref={root}
-      data-field="paper"
-      data-frame="contained"
-    >
-      <h2 className="sr-only">More work</h2>
+    <section className="msurface msurface--more" ref={root} data-field="paper" data-frame="contained">
+      <div className="more-work-intro">
+        <h2 className="font-serif">More work. Same standard.</h2>
+        <p>Websites, social systems, and content made to stay useful after launch.</p>
+      </div>
 
       <Link href="/work/hiking-pony" className="wcomp wcomp--edge">
         <div className="well well--brim">
           <img
             className="well-media"
-            src="/work/hiking-pony/cover.png"
+            src="/work/hiking-pony/web-hiking-pony.jpg"
             alt="The Hiking Pony website and product design"
             loading="lazy"
           />
@@ -95,30 +71,36 @@ export function ActMoreWork() {
       </Link>
 
       <div className="wpair">
-        {/*
-          Asymmetric on purpose: MatchDay takes the larger well and sits
-          lower, AVRO the narrower one set higher. Both are ongoing content
-          engagements, so pairing them is a real relationship rather than a
-          layout convenience.
-        */}
         <Link href="/work/matchday" className="pair-item pair-item--major">
-          <div className="well well--empty" aria-hidden="true" />
+          <div className="well">
+            <img
+              className="well-media"
+              src="/work/matchday/a112.jpg"
+              alt="MatchDay social media presentation"
+              loading="lazy"
+            />
+          </div>
           <div className="wcomp-caption">
             <span className="wcomp-name">MatchDay</span>
-            <span className="wcomp-scope">
-              Social, SEO, content, photography
-            </span>
+            <span className="wcomp-scope">Social, SEO, content, photography</span>
           </div>
         </Link>
 
         <Link href="/work/avro" className="pair-item pair-item--minor">
-          <div className="well well--empty" aria-hidden="true" />
+          <div className="well">
+            <img
+              className="well-media well-media--logo"
+              src="/client-logos/avro.webp"
+              alt="AVRO wordmark"
+              loading="lazy"
+            />
+          </div>
           <div className="wcomp-caption">
             <span className="wcomp-name">AVRO</span>
             <span className="wcomp-scope">Commercial, UGC, retail content</span>
           </div>
         </Link>
       </div>
-    </div>
+    </section>
   )
 }

@@ -1,20 +1,31 @@
+'use client'
+
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import Link from '@/components/transition-link'
-import type { ReactNode } from 'react'
 
 type Props = {
   children: ReactNode
-  tone?: 'default' | 'strong'
-  className?: string
+  href?: string
+  onClick?: () => void
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
+  disabled?: boolean
+  tone?: 'dark' | 'light'
   wide?: boolean
-} & (
-  | { href: string; onClick?: never; type?: never }
-  | { href?: never; onClick: () => void; type?: 'button' | 'submit' }
-)
+}
 
-export function ModularButton({ children, className = '', wide = false, href, onClick, type = 'button' }: Props) {
-  const cls = `pill ${wide ? 'pill-wide' : ''} ${className}`
-  if (href) return href.startsWith('mailto:') || href.startsWith('http')
-    ? <a href={href} className={cls}>{children}</a>
-    : <Link href={href} className={cls}>{children}</Link>
-  return <button type={type} onClick={onClick} className={cls}>{children}</button>
+export function ModularButton({
+  children,
+  href,
+  onClick,
+  type = 'button',
+  disabled,
+  wide = false,
+}: Props) {
+  const className = `pill modular-button${wide ? ' pill-wide' : ''}`
+
+  if (href) {
+    return <Link href={href} className={className}>{children}</Link>
+  }
+
+  return <button type={type} className={className} onClick={onClick} disabled={disabled}>{children}</button>
 }

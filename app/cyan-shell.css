@@ -352,6 +352,24 @@ body .cyan-header[data-menu-open='true'] .cyan-menu-trigger {
   border-color: var(--cyan-night);
 }
 
+body .modular-button {
+  min-height: 48px;
+  padding: 7px 25px;
+  border-color: var(--cyan-ink);
+  border-radius: 999px;
+  color: var(--cyan-night);
+  background: var(--cyan-ink);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body .modular-button:hover {
+    border-color: var(--cyan-ink);
+    color: var(--cyan-ink);
+    background: transparent;
+  }
+}
+
 body .cyan-header[data-work='true'][data-menu-open='true'] .cyan-menu-trigger {
   color: var(--brand-navy);
   background: var(--brand-white);

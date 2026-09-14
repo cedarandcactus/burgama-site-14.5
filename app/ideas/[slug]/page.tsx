@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { EditorialDetail } from '@/components/editorial-detail'
-import { getIdea, getPublishedIdeas } from '@/lib/editorial'
+import { getIdea, ideas } from '@/lib/editorial'
 
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return getPublishedIdeas().map(idea => ({ slug: idea.slug }))
+  return ideas.map((idea) => ({ slug: idea.slug }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -16,8 +16,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!idea) return { title: 'Idea not found', robots: { index: false } }
 
   return {
-    title: idea.title,
-    description: idea.dek,
+    title: { absolute: idea.metaTitle },
+    description: idea.metaDescription,
+    keywords: [idea.targetKeyword, ...idea.categories],
+    openGraph: {
+      title: idea.metaTitle,
+      description: idea.metaDescription,
+      type: 'article',
+    },
   }
 }
 
