@@ -189,12 +189,27 @@ body .portfolio .project-tile-image {
   min-width: 0;
 }
 
-.portfolio .project-tile-discipline {
+.portfolio .project-tile-disciplines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.portfolio .project-tile-disciplines li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 12px 6px;
+  color: var(--work-soft);
+  background: var(--work-surface);
+  border-radius: 999px;
+  font-family: var(--font-pangram), sans-serif;
   font-size: 14px;
   font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  line-height: 1;
 }
 
 .portfolio .project-tile-caption h3 {

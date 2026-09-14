@@ -20,32 +20,31 @@ export function ActOpening() {
   const heroRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const slideStackRef = useRef<HTMLSpanElement>(null)
-  const progressRailRef = useRef<HTMLSpanElement>(null)
+  const progressFillRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const hero = heroRef.current
     const stage = stageRef.current
     const slideStack = slideStackRef.current
-    const progressRail = progressRailRef.current
-    if (!hero || !stage || !slideStack || !progressRail) return
+    const progressFill = progressFillRef.current
+    if (!hero || !stage || !slideStack || !progressFill) return
 
     const slides = gsap.utils.toArray<HTMLElement>('[data-hero-slide]', slideStack)
-    const indicators = gsap.utils.toArray<HTMLElement>('[data-hero-indicator]', progressRail)
-    if (slides.length !== transformations.length || indicators.length !== transformations.length) return
+    if (slides.length !== transformations.length) return
 
     const media = gsap.matchMedia()
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
       const linesBySlide = slides.map(slide => gsap.utils.toArray<HTMLElement>('[data-hero-line]', slide))
-      const playhead = { value: 0 }
       const timeline = gsap.timeline({ paused: true })
 
       gsap.set(slides, { autoAlpha: 0 })
       gsap.set(slides[0], { autoAlpha: 1 })
+      gsap.set(progressFill, { scaleX: 0, transformOrigin: 'left center' })
       linesBySlide.forEach((lines, index) => gsap.set(lines, { yPercent: index === 0 ? 0 : 115 }))
 
-      timeline.to(playhead, {
-        value: transformations.length,
+      timeline.to(progressFill, {
+        scaleX: 1,
         duration: transformations.length,
         ease: 'none',
       }, 0)
@@ -75,17 +74,6 @@ export function ActOpening() {
           }, handoff)
       }
 
-      const updateIndicator = (progress: number) => {
-        const activeIndex = Math.min(
-          transformations.length - 1,
-          Math.max(0, Math.floor(progress * transformations.length + 0.3)),
-        )
-
-        indicators.forEach((indicator, index) => {
-          indicator.dataset.active = String(index === activeIndex)
-        })
-      }
-
       const scrollTrigger = ScrollTrigger.create({
         trigger: hero,
         animation: timeline,
@@ -96,11 +84,7 @@ export function ActOpening() {
         end: 'bottom bottom',
         scrub: 0.5,
         invalidateOnRefresh: true,
-        onRefresh: self => updateIndicator(self.progress),
-        onUpdate: self => updateIndicator(self.progress),
       })
-
-      updateIndicator(0)
 
       let orientationTimer: number | undefined
       const refreshAfterOrientation = () => {
@@ -157,15 +141,8 @@ export function ActOpening() {
         </h1>
         <div className={styles.heroLower}>
           <div className={styles.heroProgress} aria-hidden="true">
-            <span ref={progressRailRef} className={styles.heroProgressRail}>
-              {transformations.map(({ subject }, index) => (
-                <span
-                  className={styles.heroProgressTick}
-                  data-active={String(index === 0)}
-                  data-hero-indicator=""
-                  key={subject}
-                />
-              ))}
+            <span className={styles.heroProgressRail}>
+              <span ref={progressFillRef} className={styles.heroProgressFill} />
             </span>
           </div>
           <div className={styles.heroStatement}>
