@@ -20,14 +20,12 @@ export function ActOpening() {
   const heroRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const slideStackRef = useRef<HTMLSpanElement>(null)
-  const progressFillRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const hero = heroRef.current
     const stage = stageRef.current
     const slideStack = slideStackRef.current
-    const progressFill = progressFillRef.current
-    if (!hero || !stage || !slideStack || !progressFill) return
+    if (!hero || !stage || !slideStack) return
 
     const slides = gsap.utils.toArray<HTMLElement>('[data-hero-slide]', slideStack)
     if (slides.length !== transformations.length) return
@@ -36,15 +34,15 @@ export function ActOpening() {
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
       const linesBySlide = slides.map(slide => gsap.utils.toArray<HTMLElement>('[data-hero-line]', slide))
+      const timelineClock = { progress: 0 }
       const timeline = gsap.timeline({ paused: true })
 
       gsap.set(slides, { autoAlpha: 0 })
       gsap.set(slides[0], { autoAlpha: 1 })
-      gsap.set(progressFill, { scaleX: 0, transformOrigin: 'left center' })
       linesBySlide.forEach((lines, index) => gsap.set(lines, { yPercent: index === 0 ? 0 : 115 }))
 
-      timeline.to(progressFill, {
-        scaleX: 1,
+      timeline.to(timelineClock, {
+        progress: 1,
         duration: transformations.length,
         ease: 'none',
       }, 0)
@@ -142,11 +140,6 @@ export function ActOpening() {
               </span>
             </h1>
             <div className={styles.heroLower}>
-              <div className={styles.heroProgress} aria-hidden="true">
-                <span className={styles.heroProgressRail}>
-                  <span ref={progressFillRef} className={styles.heroProgressFill} />
-                </span>
-              </div>
               <div className={styles.heroStatement}>
                 <p>We build brands, websites, and campaigns for people with something real to say.</p>
                 <ModularButton href="/work">view selected work</ModularButton>

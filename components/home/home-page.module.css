@@ -61,14 +61,14 @@
   gap: clamp(22px, min(3vw, 4svh), 48px);
   width: 100%;
   height: 100%;
-  padding: clamp(106px, min(10vw, 15svh), 150px) clamp(24px, 4.5vw, 72px) clamp(24px, min(3.5vw, 5svh), 52px);
+  padding: clamp(132px, min(11vw, 18svh), 180px) clamp(24px, 4.5vw, 72px) clamp(24px, min(3.5vw, 5svh), 52px);
 }
 
 .page .hero h1 {
-  width: min(88%, 1180px);
+  width: min(94%, 1260px);
   margin: 0;
   color: inherit;
-  font-size: clamp(64px, min(10.5vw, 15svh), 172px);
+  font-size: clamp(76px, min(12.5vw, 17svh), 184px);
   font-weight: 400;
   line-height: .86;
   letter-spacing: -.052em;
@@ -136,37 +136,7 @@
 }
 
 .heroLower {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, min(2vw, 3svh), 28px);
   width: 100%;
-}
-
-.heroProgress {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.heroProgressRail {
-  display: block;
-  width: min(76%, 880px);
-  height: clamp(4px, .4vw, 6px);
-  overflow: hidden;
-  background: color-mix(in srgb, currentColor 25%, transparent);
-  border-radius: 999px;
-}
-
-.heroProgressFill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: currentColor;
-  border-radius: inherit;
-  transform: scaleX(0);
-  transform-origin: left center;
-  will-change: transform;
 }
 
 .heroStatement {
@@ -506,16 +476,12 @@
 
   .heroFrameContent {
     gap: 18px;
-    padding: 82px 18px 22px;
+    padding: clamp(118px, 18svh, 136px) 18px 22px;
   }
 
   .page .hero h1 {
     width: 100%;
-    font-size: clamp(52px, min(17vw, 12svh), 78px);
-  }
-
-  .heroProgressRail {
-    width: min(88%, 520px);
+    font-size: clamp(72px, min(15.5vw, 14svh), 96px);
   }
 
   .heroStatement {
@@ -602,7 +568,7 @@
   }
 
   .page .hero h1 {
-    font-size: clamp(49px, min(17vw, 12svh), 64px);
+    font-size: clamp(60px, 18vw, 68px);
   }
 
   .heroStatement p {
@@ -643,14 +609,6 @@
 
   .page .hero h1 {
     font-size: clamp(38px, min(8vw, 11svh), 68px);
-  }
-
-  .heroLower {
-    gap: 7px;
-  }
-
-  .heroProgressRail {
-    width: min(68%, 480px);
   }
 
   .heroStatement {
@@ -703,8 +661,7 @@
     letter-spacing: -.052em;
   }
 
-  .kineticHeading,
-  .heroProgress {
+  .kineticHeading {
     display: none;
   }
 
