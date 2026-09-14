@@ -11,7 +11,7 @@
 }
 
 .content {
-  padding: clamp(56px, 7vw, 112px) var(--page-gutter) 20px;
+  padding: clamp(72px, 9vw, 144px) var(--page-gutter) 20px;
   container-type: inline-size;
 }
 
@@ -24,15 +24,16 @@
 }
 
 .invitation {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
-  gap: clamp(40px, 9vw, 144px);
-  align-items: end;
-  padding-bottom: clamp(72px, 10vw, 160px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+  padding-bottom: clamp(88px, 11vw, 176px);
+  text-align: center;
 }
 
 .invitation h2 {
-  max-width: 9ch;
+  max-width: 10ch;
   margin: 0;
   font-size: clamp(64px, 9.5vw, 168px);
   font-weight: 400;
@@ -44,33 +45,38 @@
 .invitationAction {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 28px;
-  padding-bottom: .25em;
+  align-items: center;
+  gap: 30px;
 }
 
 .invitationAction p {
-  max-width: 36ch;
+  max-width: 43ch;
   font-size: clamp(17px, 1.35vw, 21px);
   font-weight: 300;
   line-height: 1.55;
+  text-wrap: pretty;
 }
 
 .emailButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  padding: 8px 24px 10px;
+  min-width: 196px;
+  min-height: 56px;
+  padding: 8px 32px 10px;
   color: inherit;
   background: transparent;
   border: 1px solid currentColor;
   border-radius: 999px;
   font-family: var(--font-cenura);
-  font-size: 26px;
+  font-size: 27px;
   line-height: 1;
   text-decoration: none;
-  transition: color 180ms ease, background-color 180ms ease;
+  transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.emailButton:is(:hover, :focus-visible) {
+  transform: translateY(-2px);
 }
 
 .footer[data-work='false'] .emailButton:is(:hover, :focus-visible) {
@@ -84,31 +90,32 @@
 }
 
 .directory {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: clamp(28px, 6vw, 96px);
-  align-items: end;
-  padding-block: 24px clamp(74px, 9vw, 140px);
-  border-top: 1px solid currentColor;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px 48px;
+  padding-bottom: clamp(72px, 9vw, 140px);
 }
 
 .links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px 24px;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(20px, 3vw, 46px);
 }
 
 .links a,
 .email {
   color: inherit;
   font-family: var(--font-cenura);
-  font-size: clamp(25px, 2.6vw, 42px);
+  font-size: clamp(27px, 2.5vw, 40px);
   line-height: 1;
   text-decoration: none;
 }
 
 .email {
-  justify-self: center;
+  margin-left: auto;
 }
 
 .location,
@@ -119,7 +126,7 @@
 }
 
 .location {
-  justify-self: end;
+  text-align: right;
 }
 
 .footer a:is(:hover, :focus-visible):not(.emailButton) {
@@ -160,26 +167,22 @@
 }
 
 @media (max-width: 900px) {
-  .invitation {
-    grid-template-columns: 1fr;
-    gap: 38px;
-  }
-
-  .invitationAction {
-    max-width: 560px;
-  }
-
   .directory {
-    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .links {
+    width: 100%;
+    justify-content: center;
   }
 
   .email {
-    justify-self: end;
+    margin-left: 0;
   }
 
   .location {
-    grid-column: 1 / -1;
-    justify-self: start;
+    text-align: left;
   }
 
   .identity {
@@ -195,49 +198,56 @@
 
 @media (max-width: 560px) {
   .content {
-    padding: 48px 16px 18px;
+    padding: 58px 16px 18px;
   }
 
   .invitation {
     gap: 30px;
-    padding-bottom: 76px;
+    padding-bottom: 88px;
   }
 
   .invitation h2 {
     font-size: clamp(58px, 19vw, 82px);
   }
 
-  .invitationAction {
-    gap: 24px;
-  }
-
   .emailButton {
-    width: 100%;
+    width: min(100%, 280px);
   }
 
   .directory {
-    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: nowrap;
     gap: 28px;
-    padding-bottom: 78px;
+    padding-bottom: 86px;
   }
 
   .links {
-    gap: 8px 18px;
+    gap: 22px;
   }
 
-  .links a,
+  .links a {
+    font-size: clamp(25px, 7.2vw, 30px);
+  }
+
   .email {
-    font-size: 29px;
+    font-size: 28px;
   }
 
-  .email,
   .location {
-    justify-self: auto;
+    text-align: center;
   }
 
   .footer .wordmark {
     font-size: 25vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emailButton {
+    transition: none;
+  }
+
+  .emailButton:is(:hover, :focus-visible) {
+    transform: none;
   }
 }

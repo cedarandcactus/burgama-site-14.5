@@ -87,7 +87,7 @@ export function CornerShell() {
           aria-controls="primary-navigation"
           onClick={() => setOpen(value => !value)}
         >
-          {open ? 'Close' : 'Menu'}
+          <span className="cyan-menu-label">{open ? 'Close' : 'Menu'}</span>
         </button>
       </div>
     </header>

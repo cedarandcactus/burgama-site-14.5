@@ -68,7 +68,9 @@
   overflow: hidden;
   color: var(--cyan-night);
   background: var(--cyan-ink);
+  border: 0;
   border-radius: clamp(20px, 2.2vw, 36px);
+  outline: none;
 }
 
 .heroMedia img {
@@ -149,8 +151,9 @@
   padding: clamp(18px, 3vw, 58px);
   overflow: hidden;
   background: color-mix(in srgb, var(--cyan-ink) 12%, var(--cyan-night));
-  border: 1px solid color-mix(in srgb, var(--cyan-ink) 70%, transparent);
+  border: 0;
   border-radius: clamp(18px, 2vw, 32px);
+  outline: none;
 }
 
 .page :global(.project-tile:nth-child(even) .project-tile-image) {
@@ -170,6 +173,12 @@
   opacity: 1;
   visibility: visible;
   transform: none;
+  transition: transform 420ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.page :global(.project-tile:hover .project-tile-image img),
+.page :global(.project-tile:focus-within .project-tile-image img) {
+  transform: scale(1.025);
 }
 
 .page :global(.project-tile-caption) {
@@ -190,8 +199,8 @@
 }
 
 .page :global(.project-link-arrow) {
-  width: 54px;
-  height: 36px;
+  width: 76px;
+  height: 38px;
   color: inherit;
   border-color: currentColor;
 }
@@ -199,8 +208,8 @@
 .page :global(.pill) {
   --button-hover-bg: var(--cyan-ink);
   --button-hover-ink: var(--cyan-night);
-  min-height: 48px;
-  padding: 9px 24px 11px;
+  min-height: 50px;
+  padding: 9px 32px 11px;
   color: inherit;
   background: transparent;
   border: 1px solid currentColor;
@@ -402,8 +411,8 @@
   }
 
   .page :global(.project-link-arrow) {
-    width: 48px;
-    height: 34px;
+    width: 64px;
+    height: 36px;
   }
 
   .page :global(.capabilities-grid) {
@@ -420,7 +429,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page :global(.project-tile-image img) {
+  .page :global(.project-tile-image img),
+  .page :global(.project-tile:hover .project-tile-image img),
+  .page :global(.project-tile:focus-within .project-tile-image img) {
+    transform: none;
     transition: none;
   }
 }

@@ -27,21 +27,16 @@ body .cyan-header .header-inner {
   overflow: hidden;
   color: var(--cyan-night);
   background: var(--cyan-ink);
-  border: 1px solid color-mix(in srgb, var(--cyan-night) 18%, transparent);
+  border: 0;
   border-radius: 999px;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--cyan-night) 14%, transparent);
+  box-shadow: none;
   pointer-events: auto;
-  transition: box-shadow 260ms ease, background-color 260ms ease, color 260ms ease;
-}
-
-body .cyan-header[data-menu-open='true'] .header-inner {
-  box-shadow: 0 12px 34px color-mix(in srgb, var(--cyan-night) 20%, transparent);
+  transition: background-color 260ms ease, color 260ms ease;
 }
 
 body .cyan-header[data-work='true'] .header-inner {
   color: var(--brand-white);
   background: var(--brand-navy);
-  border-color: color-mix(in srgb, var(--brand-white) 26%, transparent);
 }
 
 body .cyan-header .header-brand {
@@ -96,7 +91,7 @@ body .cyan-header .header-nav {
 body .cyan-header .header-nav a {
   position: relative;
   flex: none;
-  padding: 11px 12px 9px;
+  padding: 11px 17px 9px;
   color: inherit;
   border-radius: 999px;
   font-family: var(--font-cenura);
@@ -131,13 +126,12 @@ body .cyan-header[data-work='true'] .header-nav a[aria-current='page'] {
 }
 
 body .cyan-header .cyan-menu-trigger {
-  display: inline-flex;
+  display: inline-grid;
   flex: none;
-  align-items: center;
-  justify-content: center;
-  min-width: 82px;
+  place-items: center;
+  min-width: 92px;
   min-height: 50px;
-  padding: 6px 17px 8px;
+  padding: 0 18px;
   color: inherit;
   background: transparent;
   border: 0;
@@ -147,7 +141,13 @@ body .cyan-header .cyan-menu-trigger {
   font-weight: 400;
   line-height: 1;
   cursor: pointer;
+  text-align: center;
   transition: color 180ms ease, background-color 180ms ease;
+}
+
+body .cyan-header .cyan-menu-label {
+  display: block;
+  transform: translateY(-1px);
 }
 
 body .cyan-header .cyan-menu-trigger:is(:hover, :focus-visible),
@@ -197,9 +197,9 @@ body:has(.cyan-header) #main {
   }
 
   body .cyan-header .cyan-menu-trigger {
-    min-width: 64px;
+    min-width: 72px;
     min-height: 44px;
-    padding-inline: 10px;
+    padding-inline: 12px;
     font-size: 21px;
   }
 
@@ -215,8 +215,8 @@ body:has(.cyan-header) #main {
   }
 
   body .cyan-header .cyan-menu-trigger {
-    min-width: 58px;
-    padding-inline: 7px;
+    min-width: 68px;
+    padding-inline: 9px;
     font-size: 19px;
   }
 }

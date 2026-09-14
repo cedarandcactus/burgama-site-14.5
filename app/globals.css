@@ -2078,8 +2078,8 @@
   width: 100%;
   max-height: clamp(18rem, 50vh, 34rem);
   overflow: hidden;
-  outline: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
-  outline-offset: -1px;
+  border: 0;
+  outline: none;
   background-color: color-mix(in srgb, var(--ink) 3%, transparent);
 }
 
@@ -5363,7 +5363,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 
 .pill {
   display: inline-flex; align-items: center; justify-content: center;
-  min-height: 56px; width: fit-content; max-width: 100%; padding: 8px 30px;
+  min-height: 56px; width: fit-content; max-width: 100%; padding: 8px 38px;
   border: 1.5px solid currentColor; border-radius: 999px; background: transparent; color: inherit;
   font-family: var(--font-cenura), sans-serif; font-size: clamp(1.5rem, 2.4vw, 2.125rem);
   font-weight: 400; line-height: 1.1; letter-spacing: -.025em;
@@ -5371,7 +5371,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
   transition: background-color 180ms ease, color 180ms ease;
 }
 .pill:hover { background: var(--button-hover-bg, var(--brand-navy)); color: var(--button-hover-ink, var(--brand-white)); border-color: var(--button-hover-bg, var(--brand-navy)); }
-.pill-small { min-height: 44px; padding: 7px 24px; font-size: 22px; }
+  .pill-small { min-height: 44px; padding: 7px 30px; font-size: 22px; }
 .pill-wide { min-width: min(100%, 320px); }
 .pill:disabled { cursor: wait; opacity: .6; }
 
@@ -5400,7 +5400,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .project-tile-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; }
 .project-tile-caption h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
 .project-tile-caption p { font-weight: 300; font-size: 14px; line-height: 1.5; padding-top: 8px; }
-.project-link-arrow { display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 44px; border: 1px solid currentColor; border-radius: 999px; flex: none; font-size: 23px; }
+  .project-link-arrow { display: inline-flex; align-items: center; justify-content: center; width: 92px; height: 44px; border: 1px solid currentColor; border-radius: 999px; flex: none; font-size: 23px; }
 .project-tile:hover .project-link-arrow { background: var(--brand-navy); color: var(--brand-white); }
 .section-outro { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--rule); margin-top: 56px; padding-top: 32px; }
 .section-outro p { max-width: 32ch; font-size: var(--t-body); line-height: 1.5; }
@@ -5441,9 +5441,9 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .footer-identity .caption { font-size: 14px; line-height: 1.5; }
 
   .editorial-page-hero { padding-block: clamp(54px, 7vw, 112px) clamp(60px, 8vw, 128px); }
-  .editorial-page-heading { display: grid; grid-template-columns: minmax(280px, .82fr) minmax(0, 1.18fr); gap: clamp(40px, 10vw, 180px); align-items: start; }
-  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: none; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: -.045em; overflow-wrap: normal; white-space: nowrap; }
-  .page-intro { display: flex; flex-direction: column; gap: 24px; max-width: 48ch; padding-top: .35em; font-size: clamp(1.0625rem, 1.55vw, 1.45rem); font-weight: 300; line-height: 1.55; }
+  .editorial-page-heading { display: flex; flex-direction: column; align-items: center; gap: clamp(28px, 4vw, 56px); text-align: center; }
+  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: 10ch; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: -.045em; overflow-wrap: normal; text-wrap: balance; }
+  .page-intro { display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 56ch; font-size: clamp(1.0625rem, 1.55vw, 1.45rem); font-weight: 300; line-height: 1.55; text-align: center; }
   .page-intro.is-tagline { gap: 0; }
   .editorial-page-media { padding-top: 48px; }
 .portfolio-section { padding-bottom: 80px; }
@@ -5589,7 +5589,7 @@ body .case-media-frame img,
   .footer-identity .brand-lockup { font-size: 14vw; }
   .footer-invitation .pill { font-size: 24px; }
   .editorial-page-hero { padding-block: 40px; }
-  .editorial-page-heading { grid-template-columns: 1fr; gap: 28px; }
+  .editorial-page-heading { gap: 28px; }
   .editorial-page-heading h1 { font-size: 3.5rem; }
   .archive-list > a { grid-template-columns: 1fr auto; gap: 12px; }
   .archive-list > a > span:nth-child(2) { grid-row: 2; font-size: 14px; }
