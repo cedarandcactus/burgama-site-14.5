@@ -8,7 +8,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         <h2 className="font-serif">Have something worth making?</h2>
         <div className={styles.invitationAction}>
           <p>Bring us the idea, the problem, or the half-finished thought. We&apos;ll help make it clear and make it work.</p>
-          <a className={styles.emailButton} href="mailto:hello@burgama.com">Start a project</a>
+          <a className={styles.emailButton} href="mailto:hello@burgama.com">start a project</a>
         </div>
       </div>
       <div className={styles.directory}>

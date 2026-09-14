@@ -10,7 +10,7 @@ export function ActWork() {
         <p>Different problems. Same standard: make the work clear, useful, and hard to ignore.</p>
       </div>
       <div className="featured-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
-      <div className="section-outro"><ModularButton href="/work">Explore the work</ModularButton></div>
+      <div className="section-outro"><ModularButton href="/work">explore the work</ModularButton></div>
     </section>
   )
 }

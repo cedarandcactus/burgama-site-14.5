@@ -89,6 +89,19 @@
   background: var(--brand-navy);
 }
 
+.footer[data-home='true'] .emailButton {
+  width: min(100%, var(--control-basis-width));
+  min-width: 0;
+  color: var(--cyan-night);
+  background: var(--cyan-ink);
+  border: 0;
+}
+
+.footer[data-home='true'] .emailButton:is(:hover, :focus-visible) {
+  color: var(--cyan-night);
+  background: var(--cyan-shade);
+}
+
 .directory {
   display: flex;
   flex-wrap: wrap;

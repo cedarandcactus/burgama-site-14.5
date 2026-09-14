@@ -210,16 +210,17 @@ export const projects: Project[] = [
   }),
   project({
     slug: 'wurqly', title: 'Wurqly', collection: 'featured',
-    tagline: 'We turned a broad field-service platform into a clear front door.',
-    summary: 'We shaped Wurqly’s product positioning, vivid visual presentation, and website paths toward sales or signup.',
-    disciplines: ['Web', 'Brand'], services: ['Website', 'Visual presentation'],
+    tagline: 'We built Wurqly from positioning and identity through the full public website.',
+    summary: 'Positioning, brand identity, messaging, and a complete website built as one connected launch system.',
+    disciplines: ['Brand', 'Web', 'Content'], services: ['Positioning', 'Brand identity', 'Messaging and copy', 'Website strategy', 'Website design and development'],
     heroMedia: image('wurqly', 'web-wurqly.jpg', 'Wurqly’s blue-and-dark website presentation.'),
     contentModules: [
-      text('clarity before complexity.', 'We shaped the opening proposition around what field teams need to understand first, then organized work-order examples, service coverage, and feature information into a more direct product story. The goal was a useful introduction, not an exhaustive tour of every operational detail.'),
-      text('build the path around intent.', 'We arranged the website so visitors can move from the broad proposition into practical examples, then choose a sales conversation or signup path. Direct hierarchy, vivid blue, and dark surfaces give those decisions a clear visual frame.'),
-      text('keep the scope honest.', 'We built the website and its visual presentation. This case study does not claim development of Wurqly’s operational platform, insurance services, or payment functionality.'),
+      text('position the platform.', 'We clarified the audience, category, value proposition, and message hierarchy so the breadth of the product could become one focused public story.'),
+      text('build the brand.', 'We developed the identity system, typography, color, art direction, and brand language as one flexible toolkit for launch and growth.'),
+      text('make the website.', 'We shaped the information architecture, wrote the core site narrative, designed every key page, and built the responsive public website from first impression through the deeper product paths.'),
     ],
     links: [{ label: 'visit the website', href: 'https://wurqly.com/' }],
+    note: 'Burgama scope: positioning, messaging and copy, brand identity, and public website strategy, design, and development. The operational software product, insurance services, and payment functionality are not presented as Burgama-built.',
   }),
   project({
     slug: 'hiking-pony', title: 'Hiking Pony', tagline: 'Product discovery with an outdoor point of view.',
