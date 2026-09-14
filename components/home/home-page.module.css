@@ -27,29 +27,21 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 44px;
+  justify-content: center;
+  gap: clamp(42px, 7vw, 104px);
   min-width: 0;
   padding: clamp(22px, 3vw, 48px) clamp(4px, 1.5vw, 24px) 4px 0;
 }
 
-.eyebrow {
-  max-width: 24ch;
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 1.4;
-}
-
 .page .hero h1 {
   max-width: 8.2ch;
-  margin: auto 0;
+  margin: 0;
   color: inherit;
   font-size: clamp(68px, 8.4vw, 154px);
   font-weight: 400;
   line-height: .86;
   letter-spacing: -.045em;
   text-align: left;
-  text-transform: lowercase;
 }
 
 .heroStatement {
@@ -90,22 +82,6 @@
   border-radius: clamp(10px, 1.2vw, 20px);
 }
 
-.heroMedia figcaption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 14px 2px 0;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.35;
-}
-
-.heroMedia figcaption span:last-child {
-  font-weight: 300;
-  text-align: right;
-}
-
 .page :global(.home-plate) {
   max-width: none;
   margin: 0;
@@ -136,7 +112,6 @@
   font-weight: 400;
   line-height: .9;
   letter-spacing: -.04em;
-  text-transform: lowercase;
 }
 
 .page :global(.section-intro > p) {
@@ -212,22 +187,6 @@
   font-size: clamp(30px, 3.1vw, 52px);
   font-weight: 400;
   line-height: .95;
-}
-
-.page :global(.project-category-pills) {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-top: 11px;
-  font-family: var(--font-pangram), sans-serif;
-  font-weight: 300;
-}
-
-.page :global(.project-category-pills li) {
-  padding: 4px 10px;
-  font-size: 12px;
-  border: 1px solid currentColor;
-  border-radius: 999px;
 }
 
 .page :global(.project-link-arrow) {
@@ -321,7 +280,7 @@
 
 .page :global(.capabilities-grid p) {
   max-width: 34ch;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.5;
 }
@@ -377,13 +336,14 @@
   }
 
   .heroCopy {
-    min-height: 490px;
-    padding: 18px 6px 6px;
+    min-height: 390px;
+    gap: 42px;
+    padding: 18px 6px 30px;
   }
 
   .page .hero h1 {
     max-width: 8ch;
-    margin-block: auto;
+    margin-block: 0;
     font-size: clamp(52px, 17vw, 68px);
     line-height: .88;
   }
@@ -401,12 +361,6 @@
 
   .heroMedia img {
     border-radius: 11px;
-  }
-
-  .heroMedia figcaption {
-    gap: 10px;
-    padding: 11px 1px 1px;
-    font-size: 10px;
   }
 
   .page :global(.section-intro) {

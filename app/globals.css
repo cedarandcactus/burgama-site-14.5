@@ -5336,7 +5336,7 @@ body { padding-bottom: 0; font-weight: 500; font-synthesis: none; }
 p { hyphens: none; }
 body h1, body h2, body h3, body h4, body h5, body h6, .font-serif, .wordmark {
   font-family: var(--font-cenura), sans-serif; font-weight: 400; font-style: normal;
-  text-transform: lowercase; letter-spacing: -0.025em; line-height: 1.05;
+  letter-spacing: -0.025em; line-height: 1.05;
 }
 body strong, body b, body em { font-weight: 600; font-style: normal; }
 body i { font-style: normal; }
@@ -5366,7 +5366,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
   min-height: 56px; width: fit-content; max-width: 100%; padding: 8px 30px;
   border: 1.5px solid currentColor; border-radius: 999px; background: transparent; color: inherit;
   font-family: var(--font-cenura), sans-serif; font-size: clamp(1.5rem, 2.4vw, 2.125rem);
-  font-weight: 400; line-height: 1.1; letter-spacing: -.025em; text-transform: lowercase;
+  font-weight: 400; line-height: 1.1; letter-spacing: -.025em;
   text-decoration: none; text-align: center; cursor: pointer;
   transition: background-color 180ms ease, color 180ms ease;
 }
@@ -5442,7 +5442,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 
   .editorial-page-hero { padding-block: clamp(54px, 7vw, 112px) clamp(60px, 8vw, 128px); }
   .editorial-page-heading { display: grid; grid-template-columns: minmax(280px, .82fr) minmax(0, 1.18fr); gap: clamp(40px, 10vw, 180px); align-items: start; }
-  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: 7ch; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: -.045em; overflow-wrap: anywhere; }
+  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: none; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: -.045em; overflow-wrap: normal; white-space: nowrap; }
   .page-intro { display: flex; flex-direction: column; gap: 24px; max-width: 48ch; padding-top: .35em; font-size: clamp(1.0625rem, 1.55vw, 1.45rem); font-weight: 300; line-height: 1.55; }
   .page-intro.is-tagline { gap: 0; }
   .editorial-page-media { padding-top: 48px; }
@@ -5454,7 +5454,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .archive-list a:hover .archive-name { text-decoration: underline; text-underline-offset: 6px; }
 #main [data-field-page] { --field-bg: var(--brand-navy); --field-bg-raised: var(--brand-navy); --field-ink: var(--brand-white); --field-ink-soft: var(--brand-blue); background: var(--brand-navy); color: var(--brand-white); margin-top: 0; padding-top: 0; }
 .case-module-body, .case-summary, .page-hero-column-body { font-family: var(--font-pangram); font-weight: 500; font-size: clamp(1.0625rem, 1.65vw, 1.35rem); line-height: 1.55; hyphens: none; text-align: left; }
-.case-module-title, .page-hero-column-title { color: inherit; font-size: clamp(1.5rem, 2.5vw, 2.5rem); text-transform: lowercase; }
+  .case-module-title, .page-hero-column-title { color: inherit; font-size: clamp(1.5rem, 2.5vw, 2.5rem); }
 .case-spec-label { color: var(--field-ink-soft); font-weight: 600; }
 .case-spec-value { color: inherit; }
 .case-quote { font-family: var(--font-pangram); font-weight: 500; font-style: normal; }
@@ -5466,7 +5466,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .case-module .page-hero-columns { grid-template-columns: 1fr; }
 .case-module .page-hero-columns > div { padding: 0 0 24px; border: 0; }
 .case-module .page-hero-column-title { padding-bottom: 12px; }
-.contact-address-line { font-family: var(--font-cenura); font-weight: 400; font-size: clamp(1.6rem, 6vw, 6rem); text-transform: lowercase; overflow-wrap: anywhere; }
+  .contact-address-line { font-family: var(--font-cenura); font-weight: 400; font-size: clamp(1.6rem, 6vw, 6rem); overflow-wrap: anywhere; }
 .contact-actions { flex-wrap: wrap; }
 .contact-actions .pill { --button-hover-bg: var(--brand-white); --button-hover-ink: var(--brand-navy); }
 .icontrol { border-radius: 50%; border: 1px solid currentColor; background: transparent; color: inherit; }

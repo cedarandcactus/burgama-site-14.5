@@ -15,27 +15,25 @@ export default function WorkPage() {
   const archive = getPublishedProjects('archive')
   return <>
     <header className="portfolio-intro portfolio-width">
-      <p className="portfolio-eyebrow">Selected collaborations and focused studies</p>
-      <div className="portfolio-intro-heading"><h1 className="font-serif">the work.</h1><p>Identity, digital, photography, production, and ongoing marketing—organized by the work itself.</p></div>
-      <nav className="portfolio-jumps" aria-label="Work sections"><a className="pill pill-small" href="#featured">featured</a><a className="pill pill-small" href="#case-studies">case studies</a><a className="pill pill-small" href="#more-work">archive</a></nav>
+      <div className="portfolio-intro-heading"><h1 className="font-serif">The work.</h1><p>Brand systems, websites, content, and marketing built to move something forward. Start here, or dig through the archive.</p></div>
+      <nav className="portfolio-jumps" aria-label="Work sections"><a className="pill pill-small" href="#featured">Featured</a><a className="pill pill-small" href="#case-studies">Case studies</a><a className="pill pill-small" href="#more-work">Archive</a></nav>
     </header>
     <section id="featured" className="portfolio-width portfolio-section" aria-label="Featured collaborations">
       <div className="featured-grid portfolio-featured-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
     </section>
     <section id="case-studies" className="portfolio-studies" aria-labelledby="studies-title">
       <div className="portfolio-width">
-        <div className="portfolio-section-heading"><h2 id="studies-title" className="font-serif">case studies.</h2></div>
+        <div className="portfolio-section-heading"><h2 id="studies-title" className="font-serif">Case studies.</h2></div>
         <div className="portfolio-study-grid">
           {studies.map(study => <Link key={study.id} href={`/work/${study.slug}`} className="portfolio-study">
-            <div className="portfolio-study-top"><h3 className="font-serif">{study.title.toLowerCase()}</h3><span className="project-link-arrow" aria-hidden="true">↗</span></div>
+            <div className="portfolio-study-top"><h3 className="font-serif">{study.title}</h3><span className="project-link-arrow" aria-hidden="true">↗</span></div>
             <p className="portfolio-study-summary">{study.summary}</p>
-            <ul className="project-category-pills" aria-label="Categories">{study.disciplines.map(discipline => <li key={discipline}>{discipline.toLowerCase()}</li>)}</ul>
           </Link>)}
         </div>
       </div>
     </section>
     <section id="more-work" className="portfolio-width portfolio-archive" aria-labelledby="archive-title">
-      <div className="portfolio-section-heading"><h2 id="archive-title" className="font-serif">archive of work.</h2></div>
+      <div className="portfolio-section-heading"><h2 id="archive-title" className="font-serif">Archive of work.</h2></div>
       <WorkIndex projects={archive.map(({ id, slug, title, disciplines, period, heroMedia, contentModules }) => {
         const media = [heroMedia, ...contentModules.flatMap(module => {
           if (module.type === 'media' || module.type === 'mediaSplit') return [module.item]

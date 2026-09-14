@@ -1,14 +1,14 @@
 const capabilities = [
-  { title: 'brand & direction', body: 'Positioning, identity, messaging and art direction. A shared point of view, expressed clearly everywhere it appears.' },
-  { title: 'digital & development', body: 'Websites, commerce and digital experiences. Designed to be useful, built to be used.' },
-  { title: 'campaigns & content', body: 'Photography, production and content systems. A consistent story with room to meet the moment.' },
-  { title: 'marketing & growth', body: 'Search, social and ongoing creative partnerships. Keeping the right work in front of the right people.' },
+  { title: 'Brand & direction', body: 'Know what you stand for. Give it a look, a voice, and a system that holds.' },
+  { title: 'Digital & development', body: 'Websites and products that look right, work hard, and stay maintainable.' },
+  { title: 'Campaigns & content', body: 'Photography, production, and creative that keeps moving without losing the plot.' },
+  { title: 'Marketing & growth', body: 'Search, social, and ongoing support focused on traction—not noise.' },
 ]
 
 export function ActCapabilities() {
   return (
     <section className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
-      <div className="capabilities-intro"><h2 id="capabilities-heading" className="font-serif">a broad range.<br />one close team.</h2><p>From the first idea to what comes next. Brand, websites, campaigns, and the people to bring them together.</p></div>
+      <div className="capabilities-intro"><h2 id="capabilities-heading" className="font-serif">Built wide.<br />Kept close.</h2><p>Strategy, identity, digital, campaigns, and the people who connect them. One team stays with the work.</p></div>
       <div className="capabilities-grid">{capabilities.map(item => <article key={item.title}><h3 className="font-serif text-balance">{item.title}</h3><p>{item.body}</p></article>)}</div>
     </section>
   )

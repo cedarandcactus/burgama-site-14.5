@@ -6,84 +6,76 @@ import { SiteFooter } from '@/components/site-footer'
 
 export const metadata: Metadata = {
   title: 'Studio',
-  description:
-    'Burgama is a design-led creative studio working on identities, digital experiences, campaigns and systems.',
+  description: 'Burgama brings strategy, design, development, and marketing into one senior creative team.',
 }
 
-/*
-  Capabilities and approach carry no per-item `basis`/`tone` any more. Those
-  fields existed to size and fill the old sculptural cards; in the archive
-  language the grid and the rules do that work, so the data is just content.
-*/
 const CAPABILITIES = [
   {
-    title: 'Brand identity and direction',
-    body: 'Marks, type systems, colour, art direction and the guidelines that keep them coherent.',
+    title: 'Brand systems',
+    body: 'Positioning, naming, identity, voice, art direction, and the rules that make the whole thing recognizable.',
   },
   {
-    title: 'Digital design and development',
-    body: 'Sites, product surfaces and design systems, built as reusable components.',
+    title: 'Web & product',
+    body: 'Websites, commerce, and digital tools designed to work hard without becoming hard to run.',
   },
   {
-    title: 'Campaigns and content systems',
-    body: 'A kit of parts rather than a one-off layout, so every placement holds.',
+    title: 'Campaigns & content',
+    body: 'Photography, production, and flexible creative systems built for more than one launch day.',
   },
   {
-    title: 'Positioning and creative strategy',
-    body: 'The sentence the work answers to, agreed before anything is drawn.',
+    title: 'Ongoing marketing',
+    body: 'Search, social, and creative support that keeps the brand moving without turning up the noise.',
   },
 ]
 
-/* The four short principles, set as a ruled column row beneath the hero. */
 const PRINCIPLES = [
   {
-    title: 'Close collaboration',
-    body: 'Small, senior teams. No account layer between planning the work and making it.',
+    title: 'Work with the makers',
+    body: 'The people in the room are the people doing the work. Nothing gets diluted in transit.',
   },
   {
-    title: 'A point of view first',
-    body: 'The sentence the work answers to, agreed before anything is drawn.',
+    title: 'Find the point',
+    body: 'Before we design, we decide what matters. Every choice answers to that.',
   },
   {
-    title: 'Systems, not one-offs',
-    body: 'Every engagement leaves behind something reusable and documented.',
+    title: 'Build the system',
+    body: 'A logo is not a brand. A page is not a website. We make the parts work together.',
   },
   {
-    title: 'Austin, Texas',
-    body: 'Working wherever the project leads.',
+    title: 'Stay useful',
+    body: 'Launch is a checkpoint, not a vanishing act. We leave clear tools and can keep building.',
   },
 ]
 
 const APPROACH = [
   {
-    title: 'Discovery and positioning',
-    body: 'We agree on a clear direction before design begins: what the work needs to say, who it is for, and where it needs to go.',
+    title: 'Find the point',
+    body: 'Get the right people together. Ask the hard questions. Agree on what the work needs to do before deciding how it should look.',
   },
   {
-    title: 'Design and build',
-    body: 'The point of view becomes a system: modules, spacing, type and motion.',
+    title: 'Make the system',
+    body: 'Turn the direction into identity, type, layout, motion, code, and content that belong to the same idea.',
   },
   {
-    title: 'Launch and support',
-    body: 'Handover, documentation and the ongoing work of keeping a system recognisable.',
+    title: 'Put it to work',
+    body: 'Launch it, document it, and make sure the people carrying it forward can use it without us in the room.',
   },
 ]
 
 export default function StudioPage() {
   return (
     <>
-      {/* No `artifactId` — `studio-hero` is an empty placeholder slot. */}
       <PageHero
         wordmark="Studio"
         intro={[
-          'Burgama shapes identities and digital experiences for people with something meaningful to make, staying close from the first conversation through launch.',
-          'We work in small senior teams with no account layer between planning the work and making it. Every engagement starts from a point of view — the sentence the work answers to — and ends with a system somebody else can carry forward.',
+          'Some studios sell process. We stay close enough that the work gets better.',
+          'Burgama brings strategy, design, development, and marketing into one senior team. No relay race. No account layer. Just direct collaboration from the first question to launch.',
         ]}
       />
 
       <section aria-label="How we work" className="wide">
         <div className="page-hero-columns">
-          {PRINCIPLES.map((item) => (
+          {PRINCIPLES.map(item => (
             <div key={item.title}>
               <h2 className="page-hero-column-title">{item.title}</h2>
               <p className="page-hero-column-body">{item.body}</p>
@@ -93,26 +85,11 @@ export default function StudioPage() {
       </section>
 
       <div className="wide case">
-        {/*
-          Capabilities and Approach keep their headings: both are navigation
-          targets (/studio#capabilities, /studio#approach) linked from the nav
-          and footer, so the heading is functional, not decorative. The
-          anchor id sits on the plain section rather than the Reveal — Reveal
-          starts its child translated down, so scrolling landed on the
-          pre-animation position and the heading settled above the viewport.
-        */}
-        <section
-          id="capabilities"
-          aria-labelledby="capabilities-title"
-          className="scroll-mt-28"
-        >
+        <section id="capabilities" aria-labelledby="capabilities-title" className="scroll-mt-28">
           <Reveal className="case-module">
-            {/* Descriptive sentence, not a one-word section label. */}
-            <h2 id="capabilities-title" className="case-module-title">
-              The disciplines the studio works across
-            </h2>
+            <h2 id="capabilities-title" className="case-module-title">What we bring to the table.</h2>
             <div className="page-hero-columns columns-bare">
-              {CAPABILITIES.map((item) => (
+              {CAPABILITIES.map(item => (
                 <div key={item.title}>
                   <h3 className="page-hero-column-title">{item.title}</h3>
                   <p className="page-hero-column-body">{item.body}</p>
@@ -122,17 +99,11 @@ export default function StudioPage() {
           </Reveal>
         </section>
 
-        {/*
-          The approach is a sequence, so it reads as ruled rows — the same spec
-          list used on a case study — rather than as a row of equal cards.
-        */}
         <section id="approach" aria-labelledby="approach-title" className="scroll-mt-28">
           <Reveal className="case-module">
-            <h2 id="approach-title" className="case-module-title">
-              How a project moves from first conversation to launch
-            </h2>
+            <h2 id="approach-title" className="case-module-title">How an idea gets out into the world.</h2>
             <div className="case-spec">
-              {APPROACH.map((step) => (
+              {APPROACH.map(step => (
                 <div key={step.title} className="case-spec-row">
                   <span className="case-spec-label">{step.title}</span>
                   <span className="case-spec-value">{step.body}</span>
@@ -142,13 +113,6 @@ export default function StudioPage() {
           </Reveal>
         </section>
 
-        {/*
-          These were dot-separated inline text links, which at the current
-          body scale read as stray underlined prose rather than actions.
-
-          One group, so one tone and one geometry — no "primary vs secondary"
-          treatment. They differ only in label length, and therefore width.
-        */}
         <section aria-label="Elsewhere" className="contact-actions">
           <ModularButton href="/work">See the work</ModularButton>
           <ModularButton href="/contact">Start a project</ModularButton>

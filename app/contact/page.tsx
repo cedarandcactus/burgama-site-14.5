@@ -9,15 +9,10 @@ export const metadata: Metadata = {
   description: 'Start a project with Burgama.',
 }
 
-/*
-  Previously each item carried a flex `basis` so the cards tiled at uneven
-  widths. The ruled column grid handles arrangement now, so these are plain
-  strings.
-*/
 const INCLUDE = [
   'What you are making',
-  'Where it needs to go',
-  'Timing',
+  'What needs to change',
+  'When it matters',
   'Budget range',
   'Who is involved',
 ]
@@ -25,26 +20,15 @@ const INCLUDE = [
 export default function ContactPage() {
   return (
     <>
-      {/*
-        No `artifactId`: `contact-hero` has no `src` in the registry, so it
-        rendered an empty labelled placeholder panel taking up half the hero.
-        The reference has no such panel. The registry entry remains, so
-        passing the id back in restores it once there is a real asset.
-      */}
       <PageHero
         wordmark="Contact"
         intro={[
-          'Tell us what you are making and where it needs to go. One conversation, not a form funnel — write with as much or as little as you have and we will reply with a straight answer about fit.',
-          'We take on a small number of projects at a time so that each one gets the studio rather than a queue position. If the timing is wrong we will say so, and point you somewhere useful.',
+          'Have a project in mind? Send the unfinished version.',
+          'Tell us what you are making, what needs to change, and when it matters. We will reply with a straight answer about fit, timing, and next steps.',
         ]}
       />
 
       <div className="wide case">
-        {/*
-          No "Write to us" label: the email address is the largest thing in
-          this section and states its own purpose. The explanatory sentence
-          that sat under it is gone too — the hero copy already says it.
-        */}
         <section aria-label="Email the studio">
           <LiquidEmail />
         </section>
@@ -60,15 +44,8 @@ export default function ContactPage() {
           </div>
         </Reveal>
 
-        {/*
-          This heading STAYS. "What you are making / Where it needs to go /
-          Timing…" is a list of fragments that means nothing without it —
-          it carries information rather than labelling a section.
-        */}
         <Reveal as="section" aria-labelledby="include-title" className="case-module">
-          <h2 id="include-title" className="case-module-title">
-            What helps most when you first get in touch
-          </h2>
+          <h2 id="include-title" className="case-module-title">What helps us get to the point.</h2>
           <div className="case-spec">
             {INCLUDE.map((item) => (
               <div key={item} className="case-spec-row">

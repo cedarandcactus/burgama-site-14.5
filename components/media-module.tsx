@@ -1,6 +1,10 @@
 import { Reveal } from '@/components/reveal'
 import { type ContentModule, type MediaItem } from '@/lib/projects'
 
+function sentenceCase(value: string) {
+  return value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
+}
+
 const RATIO: Record<MediaItem['ratio'], string> = {
   wide: '3 / 2',
   landscape: '16 / 9',
@@ -24,8 +28,6 @@ export function MediaFrame({
       <div className="case-media-frame" data-media-ratio={item.ratio} style={{ aspectRatio: RATIO[item.ratio] }}>
         <img src={item.src} alt={item.label} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
       </div>
-
-      <figcaption className="artifact-caption"><span>{item.label}</span><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={`View full-size image: ${item.label} (opens in a new tab)`}>view full size ↗</a></figcaption>
     </figure>
   )
 }
@@ -45,7 +47,7 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
             return (
               <Reveal key={index} as="section" className="case-module">
                 {module.title ? (
-                  <h2 className="case-module-title">{module.title}</h2>
+                  <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
                 ) : null}
                 <div className="case-module-body">
                   {module.body.map((paragraph) => (
@@ -73,7 +75,7 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
           case 'mediaSplit':
             return (
               <Reveal key={index} className="case-module">
-                <h2 className="case-module-title">{module.title}</h2>
+                <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
                 <div className="case-module-body">
                   {module.body.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
@@ -107,11 +109,11 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
           case 'process':
             return (
               <Reveal key={index} as="section" className="case-module">
-                <h2 className="case-module-title">{module.title}</h2>
+                <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
                 <div className="page-hero-columns" style={{ border: 0, padding: 0 }}>
                   {module.steps.map((step) => (
-                    <div key={step.title}>
-                      <h3 className="page-hero-column-title">{step.title}</h3>
+                    <div key={sentenceCase(step.title)}>
+                      <h3 className="page-hero-column-title">{sentenceCase(step.title)}</h3>
                       <p className="page-hero-column-body">{step.body}</p>
                     </div>
                   ))}
