@@ -126,6 +126,7 @@
   height: clamp(4px, .4vw, 6px);
   overflow: hidden;
   background: color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 999px;
 }
 
 .heroProgressFill {
@@ -133,6 +134,7 @@
   width: 100%;
   height: 100%;
   background: currentColor;
+  border-radius: inherit;
   transform: scaleX(0);
   transform-origin: left center;
   will-change: transform;
