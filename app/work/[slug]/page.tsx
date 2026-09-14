@@ -34,7 +34,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return <div className="portfolio-detail">
     <header className="portfolio-width portfolio-detail-heading">
-      <nav className="portfolio-breadcrumb" aria-label="Breadcrumb"><Link href="/work">All work</Link>{parent && <><span aria-hidden="true">/</span><Link href={`/work/${parent.slug}`}>{parent.title}</Link></>}</nav>
+      <nav className="portfolio-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><Link href="/work">All work</Link></li>
+          {parent && <li><span className="portfolio-breadcrumb-separator" aria-hidden="true">/</span><Link href={`/work/${parent.slug}`}>{parent.title}</Link></li>}
+          <li><span className="portfolio-breadcrumb-separator" aria-hidden="true">/</span><span aria-current="page">{project.title}</span></li>
+        </ol>
+      </nav>
       <h1 className="font-serif text-balance">{project.title}</h1>
       <div className="portfolio-detail-intro"><p className="portfolio-tagline">{project.tagline}</p><div><p>{project.summary}</p><p className="portfolio-scope">{project.services.join(' · ')}</p></div></div>
       {(project.status || project.period) && <div className="portfolio-meta">{project.status && <p>{project.status}</p>}{project.period && <p>{project.period}</p>}</div>}

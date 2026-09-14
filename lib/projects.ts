@@ -1,7 +1,14 @@
 export type Tone = 'surface-1' | 'surface-2' | 'surface-3' | 'periwinkle'
 export type Discipline = 'Brand' | 'Web' | 'Marketing' | 'Content' | 'Production' | 'Growth' | 'Photography'
 export type MediaRatio = 'wide' | 'landscape' | 'tall' | 'square' | 'full'
-export type MediaItem = { label: string; ratio: MediaRatio; tone?: Tone; src?: string }
+export type MediaItem = {
+  label: string
+  ratio: MediaRatio
+  tone?: Tone
+  src?: string
+  width?: number
+  height?: number
+}
 export type ContentModule =
   | { type: 'text'; title?: string; body: string[] }
   | { type: 'media'; item: MediaItem }
@@ -33,12 +40,66 @@ export type Project = {
   note?: string
 }
 
+const imageDimensions: Record<string, readonly [width: number, height: number]> = {
+  'wagner-wealth/a090.jpg': [1225, 1800],
+  'wagner-wealth/a093.jpg': [1254, 1254],
+  'wagner-wealth/a094.jpg': [1448, 1086],
+  'wagner-wealth/a095.jpg': [1448, 1086],
+  'wagner-wealth/web-wagner.jpg': [1280, 720],
+  'sidecar-spirits/sidecar-gold.jpg': [981, 1469],
+  'sidecar-spirits/sidecar-mono.jpg': [981, 1469],
+  'sidecar-spirits/sidecar-orange.jpg': [981, 1469],
+  'sidecar-spirits/sidecar-primary.jpg': [981, 1469],
+  'sidecar-spirits/sidecar-wordmark.jpg': [533, 270],
+  'harvest-dating/pdf-6-4.jpg': [1800, 1258],
+  'harvest-dating/pdf-6-6.jpg': [1800, 1249],
+  'harvest-dating/pdf-6-8.jpg': [1800, 1258],
+  'harvest-dating/pdf-6-10.jpg': [1800, 1258],
+  'harvest-dating/pdf-6-14.jpg': [1800, 1255],
+  'harvest-dating/pdf-6-17.jpg': [1800, 1263],
+  'go2bites/a116.jpg': [1800, 1200],
+  'go2bites/a129.jpg': [1800, 1200],
+  'go2bites/a153.jpg': [1800, 1440],
+  'go2bites/a155.jpg': [1800, 1440],
+  'go2bites/a165.jpg': [1800, 1350],
+  'go2bites/a172.jpg': [1800, 1350],
+  'go2bites/film-go2bites.jpg': [619, 348],
+  'go2bites/web-go2bites.jpg': [1280, 720],
+  'cellinkey/a000.jpg': [1800, 1201],
+  'cellinkey/a017.jpg': [1800, 1201],
+  'cellinkey/a041.jpg': [1800, 1201],
+  'cellinkey/a052.jpg': [1800, 1201],
+  'cellinkey/a073.jpg': [1800, 1201],
+  'cellinkey/a088.jpg': [1800, 1201],
+  'matchday/a112.jpg': [914, 1800],
+  'matchday/a114.jpg': [923, 1800],
+  'hush-hush-tan/a109.jpg': [830, 1800],
+  'hush-hush-tan/a111.jpg': [1179, 1489],
+  '10-pillar-productions/web-10-pillar.jpg': [1280, 720],
+  'alh-senior-solutions/web-alh.jpg': [1280, 720],
+  'clement-senior-solutions/web-clement.jpg': [1280, 720],
+  'dr-saba-syed/web-dr-saba-syed.jpg': [1280, 720],
+  'hiking-pony/web-hiking-pony.jpg': [1280, 720],
+  'smoothsailing/web-smoothsailing.jpg': [1272, 716],
+  'turant/web-turant.jpg': [1280, 720],
+  'wurqly/web-wurqly.jpg': [1280, 720],
+}
+
 type Input = Omit<Project, 'id' | 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'> & Partial<Pick<Project, 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'>>
 const project = (input: Input): Project => ({
   id: input.slug, client: input.title, heroMedia: { label: '', ratio: 'full' },
   credits: [], links: [], collection: 'archive', ...input,
 })
-const image = (company: string, file: string, label: string, ratio: MediaRatio = 'wide'): MediaItem => ({ src: `/work/${company}/${file}`, label, ratio })
+const image = (company: string, file: string, label: string, ratio: MediaRatio = 'wide'): MediaItem => {
+  const dimensions = imageDimensions[`${company}/${file}`]
+  return {
+    src: `/work/${company}/${file}`,
+    label,
+    ratio,
+    width: dimensions?.[0],
+    height: dimensions?.[1],
+  }
+}
 const text = (title: string, ...body: string[]): ContentModule => ({ type: 'text', title, body })
 const media = (company: string, file: string, label: string, ratio: MediaRatio = 'wide'): ContentModule => ({ type: 'media', item: image(company, file, label, ratio) })
 const pair = (company: string, a: [string, string], b: [string, string]): ContentModule => ({ type: 'mediaPair', items: [image(company, ...a), image(company, ...b)] })

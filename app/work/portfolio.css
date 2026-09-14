@@ -133,8 +133,16 @@ body:has(.portfolio) #main {
 .portfolio .project-tile {
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-width: 0;
   text-decoration: none;
+}
+
+.portfolio .project-tile-content {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, var(--project-media-width-viewport), var(--project-media-width-cap));
+  min-width: 0;
 }
 
 body .portfolio .project-tile-image {
@@ -143,18 +151,13 @@ body .portfolio .project-tile-image {
   align-items: center;
   justify-content: center;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: var(--project-media-aspect);
   padding: 0;
   overflow: hidden;
   background: transparent;
   border: 0;
   border-radius: clamp(20px, 3vw, 34px);
   outline: none;
-}
-
-body .portfolio .project-tile[data-media-ratio='tall'] .project-tile-image,
-body .portfolio .project-tile[data-media-ratio='square'] .project-tile-image {
-  aspect-ratio: 4 / 3;
 }
 
 .portfolio .project-tile-image img {
@@ -167,10 +170,6 @@ body .portfolio .project-tile[data-media-ratio='square'] .project-tile-image {
   object-fit: cover;
   object-position: center;
   transform: none;
-}
-
-.portfolio .project-tile[data-project='sidecar-spirits'] .project-tile-image img {
-  object-position: center 60%;
 }
 
 .portfolio .project-tile-caption {
@@ -355,18 +354,39 @@ body .portfolio .project-tile[data-media-ratio='square'] .project-tile-image {
 }
 
 .portfolio-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px;
   padding-bottom: clamp(44px, 6vw, 82px);
   font-size: 16px;
   font-weight: 500;
 }
 
+.portfolio-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.portfolio-breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
 .portfolio-breadcrumb a {
   padding-block: 8px;
   text-underline-offset: 4px;
+}
+
+.portfolio-breadcrumb [aria-current='page'] {
+  color: var(--work-soft);
+}
+
+.portfolio-breadcrumb-separator {
+  padding-inline: 12px;
+  color: var(--work-soft);
 }
 
 .portfolio-detail-heading h1 {
@@ -416,6 +436,9 @@ body .portfolio .project-tile[data-media-ratio='square'] .project-tile-image {
 }
 
 .portfolio .case-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -426,7 +449,8 @@ body .portfolio .case-media-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   min-height: 0;
   padding: 0;
   overflow: hidden;
@@ -439,10 +463,10 @@ body .portfolio .case-media-frame {
 body .portfolio .case-media-frame img {
   position: static;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   max-width: 100%;
-  max-height: 100%;
+  max-height: min(78svh, 760px);
   object-fit: cover;
   object-position: center;
   border-radius: 0;
@@ -450,10 +474,6 @@ body .portfolio .case-media-frame img {
 
 .portfolio .portfolio-detail-hero {
   padding-bottom: clamp(28px, 5vw, 72px);
-}
-
-.portfolio .portfolio-detail-hero .case-media-frame {
-  max-height: 78svh;
 }
 
 .portfolio .case-module {
@@ -639,10 +659,8 @@ body .portfolio .case-media-frame img {
     grid-column: auto;
   }
 
-  body .portfolio .project-tile-image,
-  body .portfolio .project-tile[data-media-ratio='tall'] .project-tile-image,
-  body .portfolio .project-tile[data-media-ratio='square'] .project-tile-image {
-    aspect-ratio: 4 / 3;
+  body .portfolio .project-tile-image {
+    aspect-ratio: var(--project-media-aspect);
     padding: 0;
     border-radius: 20px;
   }

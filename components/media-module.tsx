@@ -5,14 +5,6 @@ function sentenceCase(value: string) {
   return value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
 }
 
-const RATIO: Record<MediaItem['ratio'], string> = {
-  wide: '3 / 2',
-  landscape: '16 / 9',
-  tall: '3 / 4',
-  square: '1 / 1',
-  full: '16 / 10',
-}
-
 export function MediaFrame({
   item,
   className = '',
@@ -23,10 +15,22 @@ export function MediaFrame({
   priority?: boolean
 }) {
   if (!item.src) return null
+  const intrinsicAspectRatio = item.width && item.height
+    ? `${item.width} / ${item.height}`
+    : 'auto'
+
   return (
     <figure className={`case-media ${className}`}>
-      <div className="case-media-frame" data-media-ratio={item.ratio} style={{ aspectRatio: RATIO[item.ratio] }}>
-        <img src={item.src} alt={item.label} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
+      <div className="case-media-frame" data-media-ratio={item.ratio} style={{ aspectRatio: intrinsicAspectRatio }}>
+        <img
+          src={item.src}
+          alt={item.label}
+          width={item.width}
+          height={item.height}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
+        />
       </div>
     </figure>
   )
