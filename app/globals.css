@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover ���������������������������
+  Text links are set back by tone and resolve to the sanctioned hover �����������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5303,9 +5303,9 @@ body:has(.lot-poster) > .mobile-console {
   radius from the other three.
 */
 :root {
-  --brand-navy: #03172a;
-  --brand-blue: #99bde5;
-  --brand-yellow: #ffe99a;
+  --brand-navy: #000020;
+  --brand-blue: #00c8ed;
+  --brand-yellow: #00c8ed;
   --brand-white: #f0f0f5;
   --paper: var(--brand-navy);
   --paper-raised: var(--brand-navy);
@@ -5440,12 +5440,12 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .footer-identity .brand-lockup { font-size: clamp(3rem, 10vw, 10rem); }
 .footer-identity .caption { font-size: 14px; line-height: 1.5; }
 
-.editorial-page-hero { padding-block: 70px 64px; }
-.editorial-page-heading { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
-.editorial-page-heading h1, .editorial-page-heading h2 { font-size: var(--t-display); overflow-wrap: anywhere; }
-.page-intro { display: flex; flex-direction: column; gap: 22px; max-width: 48ch; font-size: clamp(1.125rem, 2vw, 1.65rem); line-height: 1.5; }
-.page-intro.is-tagline { gap: 0; }
-.editorial-page-media { padding-top: 48px; }
+  .editorial-page-hero { padding-block: clamp(54px, 7vw, 112px) clamp(60px, 8vw, 128px); }
+  .editorial-page-heading { display: grid; grid-template-columns: minmax(280px, .82fr) minmax(0, 1.18fr); gap: clamp(40px, 10vw, 180px); align-items: start; }
+  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: 7ch; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: -.045em; overflow-wrap: anywhere; }
+  .page-intro { display: flex; flex-direction: column; gap: 24px; max-width: 48ch; padding-top: .35em; font-size: clamp(1.0625rem, 1.55vw, 1.45rem); font-weight: 300; line-height: 1.55; }
+  .page-intro.is-tagline { gap: 0; }
+  .editorial-page-media { padding-top: 48px; }
 .portfolio-section { padding-bottom: 80px; }
 .collection-title { font-size: clamp(2rem, 3vw, 3rem); padding-bottom: 32px; }
 .archive-list > a { display: grid; grid-template-columns: 1fr 1fr auto; gap: 24px; align-items: center; color: inherit; text-decoration: none; border-top: 1px solid var(--rule); padding-block: 24px; }

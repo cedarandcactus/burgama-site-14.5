@@ -15,7 +15,9 @@ export default function WorkPage() {
   const archive = getPublishedProjects('archive')
   return <>
     <header className="portfolio-intro portfolio-width">
-      <div className="portfolio-intro-heading"><h1 className="font-serif">the work.</h1></div>
+      <p className="portfolio-eyebrow">Selected collaborations and focused studies</p>
+      <div className="portfolio-intro-heading"><h1 className="font-serif">the work.</h1><p>Identity, digital, photography, production, and ongoing marketing—organized by the work itself.</p></div>
+      <nav className="portfolio-jumps" aria-label="Work sections"><a className="pill pill-small" href="#featured">featured</a><a className="pill pill-small" href="#case-studies">case studies</a><a className="pill pill-small" href="#more-work">archive</a></nav>
     </header>
     <section id="featured" className="portfolio-width portfolio-section" aria-label="Featured collaborations">
       <div className="featured-grid portfolio-featured-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
@@ -25,7 +27,8 @@ export default function WorkPage() {
         <div className="portfolio-section-heading"><h2 id="studies-title" className="font-serif">case studies.</h2></div>
         <div className="portfolio-study-grid">
           {studies.map(study => <Link key={study.id} href={`/work/${study.slug}`} className="portfolio-study">
-            <h3 className="font-serif">{study.title.toLowerCase()}</h3>
+            <div className="portfolio-study-top"><h3 className="font-serif">{study.title.toLowerCase()}</h3><span className="project-link-arrow" aria-hidden="true">↗</span></div>
+            <p className="portfolio-study-summary">{study.summary}</p>
             <ul className="project-category-pills" aria-label="Categories">{study.disciplines.map(discipline => <li key={discipline}>{discipline.toLowerCase()}</li>)}</ul>
           </Link>)}
         </div>

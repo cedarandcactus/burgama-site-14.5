@@ -79,7 +79,7 @@ export const projects: Project[] = [
     tagline: 'An identity rooted in intentional connection.',
     summary: 'An apple-and-heart symbol, expressive typography, and a plum-and-red palette connecting digital touchpoints.',
     disciplines: ['Brand'], services: ['Visual identity', 'App-icon applications', 'Social design system'],
-    heroMedia: image('harvest-dating', 'pdf-6-4.jpg', 'Harvest’s apple-and-heart mark paired with the wordmark.'),
+    heroMedia: image('harvest-dating', 'pdf-6-8.jpg', 'Harvest’s plum-and-red identity applied across three vertical social-story compositions.', 'wide'),
     contentModules: [
       text('a recognizable starting point.', 'We gave the idea of intentional dating a recognizable visual form. The apple-and-heart symbol is the central identifier, working alongside the Harvest wordmark and independently at smaller scales.'),
       media('harvest-dating', 'pdf-6-6.jpg', 'Logo construction documented in the brand guide.'),

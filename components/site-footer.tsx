@@ -12,8 +12,10 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         </div>
         <div className={styles.newsletter}><FooterUpdates /></div>
       </div>
-      <Link href="/" className={`${styles.wordmark} font-serif`} aria-label="Burgama home">burgama</Link>
-      <div className={styles.bottom}><p>Independent by design.</p><p>© {new Date().getFullYear()} Burgama</p></div>
+      <div className={styles.identity}>
+        <Link href="/" className={`${styles.wordmark} font-serif`} aria-label="Burgama home">burgama</Link>
+        <div className={styles.bottom}><p>Independent by design.</p><p>© {new Date().getFullYear()} Burgama</p></div>
+      </div>
     </div>
   </footer>
 }

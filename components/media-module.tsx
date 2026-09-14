@@ -21,7 +21,7 @@ export function MediaFrame({
   if (!item.src) return null
   return (
     <figure className={`case-media ${className}`}>
-      <div className="case-media-frame" style={{ aspectRatio: RATIO[item.ratio] }}>
+      <div className="case-media-frame" data-media-ratio={item.ratio} style={{ aspectRatio: RATIO[item.ratio] }}>
         <img src={item.src} alt={item.label} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
       </div>
 
