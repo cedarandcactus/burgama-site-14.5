@@ -36,13 +36,13 @@ export function ActOpening() {
     const media = gsap.matchMedia()
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      const wordsBySlide = slides.map(slide => gsap.utils.toArray<HTMLElement>('[data-hero-word]', slide))
+      const linesBySlide = slides.map(slide => gsap.utils.toArray<HTMLElement>('[data-hero-line]', slide))
       const playhead = { value: 0 }
       const timeline = gsap.timeline({ paused: true })
 
       gsap.set(slides, { autoAlpha: 0 })
       gsap.set(slides[0], { autoAlpha: 1 })
-      wordsBySlide.forEach((words, index) => gsap.set(words, { yPercent: index === 0 ? 0 : 115 }))
+      linesBySlide.forEach((lines, index) => gsap.set(lines, { yPercent: index === 0 ? 0 : 115 }))
 
       timeline.to(playhead, {
         value: transformations.length,
@@ -55,19 +55,19 @@ export function ActOpening() {
         const handoff = index - 0.3
         const previousSlide = slides[index - 1]
         const nextSlide = slides[index]
-        const previousWords = wordsBySlide[index - 1]
-        const nextWords = wordsBySlide[index]
+        const previousLines = linesBySlide[index - 1]
+        const nextLines = linesBySlide[index]
 
         timeline
-          .to(previousWords, {
+          .to(previousLines, {
             yPercent: -115,
             duration: 0.24,
-            stagger: 0.03,
+            stagger: 0.04,
             ease: 'power2.in',
           }, transitionStart)
           .set(previousSlide, { autoAlpha: 0 }, handoff)
           .set(nextSlide, { autoAlpha: 1 }, handoff)
-          .to(nextWords, {
+          .to(nextLines, {
             yPercent: 0,
             duration: 0.36,
             stagger: 0.07,
@@ -129,15 +129,17 @@ export function ActOpening() {
               <span className={styles.heroSlide} data-hero-slide="" key={subject}>
                 <span className={`${styles.heroPhraseLine} ${styles.heroSubjectLine}`}>
                   <span className={styles.heroWordMask}>
-                    <span className={styles.heroAnimatedWord} data-hero-word="">{subject}</span>
+                    <span className={styles.heroAnimatedWord} data-hero-line="">{subject}</span>
+                  </span>
+                </span>
+                <span className={`${styles.heroPhraseLine} ${styles.heroConnectorLine}`}>
+                  <span className={styles.heroWordMask}>
+                    <span className={styles.heroAnimatedWord} data-hero-line="">into</span>
                   </span>
                 </span>
                 <span className={`${styles.heroPhraseLine} ${styles.heroResultLine}`}>
-                  <span className={`${styles.heroWordMask} ${styles.heroConnectorMask}`}>
-                    <span className={styles.heroConnector} data-hero-word="">into</span>
-                  </span>
                   <span className={styles.heroWordMask}>
-                    <span className={styles.heroAnimatedWord} data-hero-word="">{result}.</span>
+                    <span className={styles.heroAnimatedWord} data-hero-line="">{result}.</span>
                   </span>
                 </span>
               </span>
@@ -145,7 +147,11 @@ export function ActOpening() {
           </span>
           <span className={styles.heroStatic} aria-hidden="true">
             {transformations.map(({ subject, result }) => (
-              <span className={styles.heroStaticPhrase} key={subject}>{subject} into {result}.</span>
+              <span className={styles.heroStaticPhrase} key={subject}>
+                <span className={`${styles.heroStaticWord} ${styles.heroStaticSubject}`}>{subject}</span>
+                <span className={`${styles.heroStaticWord} ${styles.heroStaticConnector}`}>into</span>
+                <span className={`${styles.heroStaticWord} ${styles.heroStaticResult}`}>{result}.</span>
+              </span>
             ))}
           </span>
         </h1>

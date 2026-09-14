@@ -37,9 +37,9 @@
   width: 100%;
   margin: 0;
   color: inherit;
-  font-size: clamp(56px, min(12.2vw, 18svh), 196px);
+  font-size: clamp(72px, min(16.5vw, 20svh), 220px);
   font-weight: 400;
-  line-height: .82;
+  line-height: .84;
   letter-spacing: -.052em;
   text-align: left;
 }
@@ -48,7 +48,7 @@
   position: relative;
   display: block;
   width: 100%;
-  height: 1.92em;
+  height: 2.58em;
 }
 
 .heroSlide {
@@ -56,7 +56,7 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  gap: .08em;
+  width: 100%;
   visibility: hidden;
 }
 
@@ -66,44 +66,40 @@
 
 .heroPhraseLine {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   width: 100%;
+  height: .86em;
   min-width: 0;
+  overflow: clip;
 }
 
 .heroSubjectLine {
   justify-content: flex-start;
 }
 
+.heroConnectorLine {
+  justify-content: center;
+  color: var(--cyan-shade);
+}
+
 .heroResultLine {
   justify-content: flex-end;
-  gap: clamp(10px, 1.4vw, 24px);
 }
 
 .heroWordMask {
   display: block;
-  padding-block: .04em .1em;
-  margin-block: -.04em -.1em;
+  max-width: 100%;
+  padding-block: .03em .11em;
+  margin-block: -.03em -.11em;
   overflow: clip;
 }
 
-.heroAnimatedWord,
-.heroConnector {
+.heroAnimatedWord {
   display: block;
-  line-height: 1;
+  max-width: 100%;
+  line-height: .86;
   white-space: nowrap;
   will-change: transform;
-}
-
-.heroConnectorMask {
-  flex: none;
-}
-
-.heroConnector {
-  font-family: var(--font-pangram), sans-serif;
-  font-size: .3em;
-  font-weight: 500;
-  letter-spacing: -.02em;
 }
 
 .heroStatic {
@@ -477,7 +473,7 @@
   }
 
   .page .hero h1 {
-    font-size: clamp(44px, min(15vw, 14svh), 86px);
+    font-size: clamp(58px, min(18vw, 17svh), 124px);
   }
 
   .heroStatement {
@@ -552,7 +548,7 @@
 
 @media (max-width: 380px) {
   .page .hero h1 {
-    font-size: clamp(40px, min(14.25vw, 13svh), 54px);
+    font-size: clamp(58px, min(21vw, 17svh), 72px);
   }
 
   .heroStage {
@@ -572,7 +568,7 @@
   }
 
   .page .hero h1 {
-    font-size: clamp(52px, min(10.5vw, 16svh), 120px);
+    font-size: clamp(58px, min(13.5vw, 17svh), 140px);
   }
 
   .heroLower {
@@ -591,7 +587,7 @@
   }
 
   .page .hero h1 {
-    font-size: clamp(40px, min(8.6vw, 16svh), 72px);
+    font-size: clamp(44px, min(10.5vw, 17svh), 88px);
   }
 
   .heroLower {
@@ -634,9 +630,9 @@
   }
 
   .page .hero h1 {
-    font-size: clamp(42px, min(6.4vw, 12svh), 92px);
-    line-height: .92;
-    letter-spacing: -.045em;
+    font-size: clamp(52px, min(8vw, 14svh), 120px);
+    line-height: .86;
+    letter-spacing: -.052em;
   }
 
   .kineticHeading,
@@ -647,16 +643,32 @@
   .heroStatic {
     display: flex;
     flex-direction: column;
-    gap: clamp(12px, 2vw, 28px);
+    gap: clamp(42px, 6vw, 96px);
+    width: 100%;
   }
 
   .heroStaticPhrase {
-    display: block;
-    max-width: 16ch;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
-  .heroStaticPhrase:nth-child(even) {
-    align-self: flex-end;
+  .heroStaticWord {
+    display: block;
+    width: 100%;
+    line-height: .86;
+  }
+
+  .heroStaticSubject {
+    text-align: left;
+  }
+
+  .heroStaticConnector {
+    color: var(--cyan-shade);
+    text-align: center;
+  }
+
+  .heroStaticResult {
     text-align: right;
   }
 
