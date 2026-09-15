@@ -295,10 +295,10 @@
 
 .linkColumn a > svg {
   flex: none;
-  width: 18px;
-  height: 18px;
-  opacity: .65;
-  stroke-width: 1.5;
+  width: 26px;
+  height: 26px;
+  opacity: 1;
+  stroke-width: 2.5;
   transition: transform 300ms cubic-bezier(.2, .8, .2, 1), opacity 200ms ease;
 }
 
