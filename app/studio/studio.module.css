@@ -92,6 +92,7 @@
 .portrait {
   aspect-ratio: 29 / 36;
   overflow: hidden;
+  border-radius: 24px;
   background: var(--palette-yellow-soft);
 }
 
