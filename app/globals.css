@@ -2275,7 +2275,7 @@ button.action:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
+  border: 2px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
   border-radius: var(--radius-module);
   padding: 0.5625rem 1rem;
   background: transparent;
