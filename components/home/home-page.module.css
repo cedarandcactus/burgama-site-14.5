@@ -240,6 +240,7 @@
 
 .page :global(.project-tile) {
   display: flex;
+  grid-column: 1 / -1;
   min-width: 0;
   align-items: center;
   color: inherit;
