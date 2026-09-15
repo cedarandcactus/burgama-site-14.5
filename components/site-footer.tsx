@@ -222,7 +222,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
 
   return (
     <div ref={rootRef} className={styles.ending} data-site-ending="">
-      <section ref={leadRef} className={styles.lead} aria-labelledby={titleId} data-footer-lead="">
+      <section ref={leadRef} className={styles.lead} aria-labelledby={titleId} data-footer-lead="" data-nav-surface={home ? 'frost' : undefined}>
         <div className={styles.leadViewport}>
           <h2 id={titleId} className={styles.headline} aria-label={headline}>
             <span ref={trackRef} className={styles.track} aria-hidden="true">
@@ -238,7 +238,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         </div>
       </section>
       <div className={styles.footerFrame}>
-        <footer className={styles.footer} data-home={home} data-work={work}>
+        <footer className={styles.footer} data-home={home} data-work={work} data-nav-surface={home ? 'ink' : undefined}>
           <FooterFilm />
           <div className={styles.content}>
             <div className={styles.topRow}>

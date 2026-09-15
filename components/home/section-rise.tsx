@@ -5,6 +5,7 @@ export function SectionRise({ surface }: { surface: 'work' | 'studio' }) {
     <svg
       className={styles.sectionRise}
       data-surface={surface}
+      data-nav-surface="frost"
       viewBox="0 0 1000 100"
       preserveAspectRatio="none"
       aria-hidden="true"

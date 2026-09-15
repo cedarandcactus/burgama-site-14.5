@@ -4,7 +4,7 @@ import { featuredProjects } from '@/lib/projects'
 
 export function ActWork() {
   return (
-    <section id="selected-work" className="home-plate featured-plate" data-home-plate aria-labelledby="featured-title">
+    <section id="selected-work" className="home-plate featured-plate" data-home-plate data-nav-surface="frost" aria-labelledby="featured-title">
       <div className="section-intro">
         <h2 id="featured-title" className="font-serif">A few good<br />collaborations.</h2>
         <p>Different problems. Same standard: make the work clear, useful, and hard to ignore.</p>

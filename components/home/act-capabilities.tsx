@@ -58,7 +58,7 @@ export function ActCapabilities() {
   }, [])
 
   return (
-    <section id="capabilities" ref={sectionRef} className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
+    <section id="capabilities" ref={sectionRef} className="home-plate capabilities-plate" data-home-plate data-nav-surface="ink" aria-labelledby="capabilities-heading">
       <div className="capabilities-shell" data-capabilities-shell>
         <div className="capabilities-intro">
           <h2 id="capabilities-heading" className="font-serif">Built wide.<br />Kept close.</h2>

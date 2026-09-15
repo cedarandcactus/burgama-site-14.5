@@ -1,12 +1,12 @@
 .section {
-  color: var(--palette-soft-white);
+  color: var(--palette-powder);
   padding-block: 4px 20px;
   overflow: clip;
 }
 
 .section:focus-visible {
   background: transparent;
-  color: var(--palette-soft-white);
+  color: var(--palette-powder);
   outline: 1px solid currentColor;
   outline-offset: -4px;
 }
@@ -38,16 +38,21 @@
   height: 80px;
 }
 
-.logo img {
+.artwork {
+  display: block;
+  flex: none;
   width: 152px;
   height: 44px;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
+  background: currentColor;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
 }
 
-.symbol img { width: 60px; height: 60px; }
-.script img { width: 128px; height: 56px; }
-.illustration img { width: 64px; height: 72px; }
+.symbol .artwork { width: 60px; height: 60px; }
+.script .artwork { width: 128px; height: 56px; }
+.illustration .artwork { width: 64px; height: 72px; }
 
 .section[data-animated='true'] .group {
   overflow: visible;
@@ -97,7 +102,7 @@
   .window { height: 112px; }
   .group { gap: 28px; }
   .logo { flex-basis: 120px; width: 120px; height: 60px; }
-  .logo img { max-width: 116px; max-height: 60px; }
+  .artwork { max-width: 116px; max-height: 60px; }
   .glass {
     width: 28%;
     -webkit-backdrop-filter: blur(14px) saturate(155%);

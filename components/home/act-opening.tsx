@@ -97,7 +97,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
   }, [headlineIndex])
 
   return (
-    <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-cinematic-hero="">
+    <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-cinematic-hero="" data-nav-surface="ink">
       <div ref={mediaRef} className={styles.heroMedia}>
         <HeroFilm />
       </div>

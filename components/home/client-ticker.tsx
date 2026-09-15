@@ -90,7 +90,7 @@ export function ClientTicker() {
         return {
           offset: progress * travelFraction,
           offsetDistance: `${progress * 100}%`,
-          opacity: clarity * 0.88,
+          opacity: clarity,
         }
       })
       frames.push({ offset: 1, offsetDistance: '100%', opacity: 0 })
@@ -147,7 +147,12 @@ export function ClientTicker() {
         <ul ref={groupRef} className={styles.group}>
           {logos.map((logo) => (
             <li className={`${styles.logo} ${styles[logo.shape]}`} key={logo.file}>
-              <img src={`/client-logos/${logo.file}.${logo.format ?? 'webp'}`} alt={logo.name} width={180} height={80} decoding="async" draggable={false} />
+              <span
+                className={styles.artwork}
+                role="img"
+                aria-label={logo.name}
+                style={{ maskImage: `url('/client-logos/${logo.file}.${logo.format ?? 'webp'}')` }}
+              />
             </li>
           ))}
         </ul>

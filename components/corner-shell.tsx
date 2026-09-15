@@ -2,6 +2,7 @@
 
 import Link from '@/components/transition-link'
 import { NavProjectForm } from '@/components/nav-project-form'
+import { useHeaderGlass } from '@/hooks/use-header-glass'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
@@ -21,6 +22,8 @@ export function CornerShell() {
   const trigger = useRef<HTMLButtonElement>(null)
   const projectTrigger = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
+
+  useHeaderGlass(header, pathname, projectOpen)
 
   function closeMenu({ restoreFocus = false } = {}) {
     const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(document.activeElement)
@@ -139,7 +142,7 @@ export function CornerShell() {
     <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-condensed={condensed} data-menu-open={open} data-project-open={projectOpen} data-work={pathname.startsWith('/work')}>
       <div className="header-inner" data-lenis-prevent={projectOpen || undefined}>
         <Link className="cyan-header-mark-link" href="/" aria-label="Home">
-          <span className="cyan-header-mark" aria-hidden="true" />
+          <span className="cyan-header-mark" data-glass-ink aria-hidden="true" />
         </Link>
         <button
           ref={trigger}
@@ -153,19 +156,19 @@ export function CornerShell() {
           onClick={() => projectOpen ? closeProject({ restoreFocus: true }) : setOpen((value) => !value)}
         >
           <span className="cyan-menu-labels" aria-hidden="true">
-            <span className="cyan-menu-label cyan-menu-label-menu">Menu</span>
-            <span className="cyan-menu-label cyan-menu-label-close">Close</span>
+            <span className="cyan-menu-label cyan-menu-label-menu" data-glass-ink>Menu</span>
+            <span className="cyan-menu-label cyan-menu-label-close" data-glass-ink>Close</span>
           </span>
         </button>
         <div id="primary-navigation" className="header-nav-shell" aria-hidden={!navigationVisible} inert={!navigationVisible}>
           <nav aria-label="Primary" className="header-nav">
             {destinations.map((item) => (
               <Link key={item.href} href={item.href} onClick={() => closeMenu()} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>
-                {item.label}
+                <span data-glass-ink>{item.label}</span>
               </Link>
             ))}
             <button ref={projectTrigger} type="button" className="header-contact" onClick={openProject} aria-expanded={projectOpen} aria-controls="nav-project-enquiry">
-              start a project
+              <span data-glass-ink>start a project</span>
             </button>
           </nav>
         </div>
