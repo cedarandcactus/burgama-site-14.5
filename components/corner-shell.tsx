@@ -20,8 +20,14 @@ export function CornerShell() {
   const header = useRef<HTMLElement>(null)
 
   function closeMenu({ restoreFocus = false } = {}) {
+    const navigationHasFocus = header.current
+      ?.querySelector('.header-nav')
+      ?.contains(document.activeElement)
+
+    if (restoreFocus || (condensedRef.current && navigationHasFocus)) {
+      trigger.current?.focus({ preventScroll: true })
+    }
     setOpen(false)
-    if (restoreFocus) trigger.current?.focus()
   }
 
   useEffect(() => {
@@ -36,8 +42,10 @@ export function CornerShell() {
 
     function commitCondensed(next: boolean) {
       if (condensedRef.current === next) return
-      if (!next && document.activeElement === trigger.current) {
-        header.current?.querySelector<HTMLAnchorElement>('.header-nav a')?.focus()
+      const activeElement = document.activeElement
+      const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(activeElement)
+      if ((next && navigationHasFocus) || (!next && activeElement === trigger.current)) {
+        header.current?.querySelector<HTMLAnchorElement>('.cyan-header-mark-link')?.focus({ preventScroll: true })
       }
       condensedRef.current = next
       setCondensed(next)
@@ -121,6 +129,22 @@ export function CornerShell() {
         <Link className="cyan-header-mark-link" href="/" aria-label="Home">
           <span className="cyan-header-mark" aria-hidden="true" />
         </Link>
+        <button
+          ref={trigger}
+          type="button"
+          className="cyan-menu-trigger font-serif"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          aria-controls="primary-navigation"
+          aria-hidden={!condensed}
+          tabIndex={condensed ? 0 : -1}
+          onClick={() => setOpen((value) => !value)}
+        >
+          <span className="cyan-menu-labels" aria-hidden="true">
+            <span className="cyan-menu-label cyan-menu-label-menu">Menu</span>
+            <span className="cyan-menu-label cyan-menu-label-close">Close</span>
+          </span>
+        </button>
         <div
           id="primary-navigation"
           className="header-nav-shell"
@@ -141,22 +165,6 @@ export function CornerShell() {
             ))}
           </nav>
         </div>
-        <button
-          ref={trigger}
-          type="button"
-          className="cyan-menu-trigger font-serif"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          aria-controls="primary-navigation"
-          aria-hidden={!condensed}
-          tabIndex={condensed ? 0 : -1}
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className="cyan-menu-labels" aria-hidden="true">
-            <span className="cyan-menu-label cyan-menu-label-menu">Menu</span>
-            <span className="cyan-menu-label cyan-menu-label-close">Close</span>
-          </span>
-        </button>
       </div>
     </header>
   )
