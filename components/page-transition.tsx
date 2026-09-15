@@ -1,22 +1,22 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState, useTransition, type ReactNode, type CSSProperties } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, useTransition, type ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import styles from './page-transition.module.css'
 
 type Destination = { href: string; replace?: boolean; scroll?: boolean }
-type Phase = 'intro' | 'idle' | 'covering' | 'covered' | 'revealing'
+type Phase = 'idle' | 'covering' | 'covered' | 'revealing'
 const TransitionContext = createContext<((destination: Destination) => void) | null>(null)
 export const usePageTransition = () => useContext(TransitionContext)
 
 export function PageTransition({ children }: { children: ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
-  const [phase, setPhase] = useState<Phase>('intro')
+  const [phase, setPhase] = useState<Phase>('idle')
   const [sequence, setSequence] = useState(0)
   const [hydrated, setHydrated] = useState(false)
   const [pending, startTransition] = useTransition()
-  const phaseRef = useRef<Phase>('intro')
+  const phaseRef = useRef<Phase>('idle')
   const destination = useRef<Destination | null>(null)
   const sent = useRef(false)
   const content = useRef<HTMLDivElement>(null)
@@ -49,7 +49,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     if (phaseRef.current === 'idle' || phaseRef.current === 'revealing') return
     clearTimers()
     changePhase('revealing')
-    later(finish, reduced.current ? 120 : 900)
+    later(finish, reduced.current ? 0 : 540)
   }, [changePhase, clearTimers, finish, later])
   const navigate = useCallback(() => {
     const target = destination.current
@@ -73,7 +73,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
     media.addEventListener('change', onMotion)
     window.addEventListener('popstate', onHistory)
     document.addEventListener('visibilitychange', onVisibility)
-    later(reveal, media.matches ? 0 : 1750)
     return () => {
       clearTimers()
       media.removeEventListener('change', onMotion)
@@ -87,7 +86,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     previousPath.current = pathname
     if (changed && !destination.current) finish()
     else if (destination.current && sent.current && !pending && phase === 'covered') {
-      later(reveal, reduced.current ? 0 : 150)
+      later(reveal, 0)
     }
   }, [pathname, pending, phase, finish, later, reveal])
 
@@ -102,6 +101,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     document.body.style.overflow = 'hidden'
     if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`
     const onKey = (event: KeyboardEvent) => {
+      if (event.isComposing || event.keyCode === 229) return
       if (event.key === 'Escape') { event.preventDefault(); skip() }
       if (event.key === 'Tab') { event.preventDefault(); skipButton.current?.focus() }
     }
@@ -116,17 +116,23 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
   const begin = useCallback((target: Destination) => {
     if (phaseRef.current !== 'idle') return
+    focusAfter.current = true
+    clearTimers()
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      startTransition(() => {
+        if (target.replace) router.replace(target.href, { scroll: target.scroll })
+        else router.push(target.href, { scroll: target.scroll })
+      })
+      return
+    }
     destination.current = target
     sent.current = false
-    focusAfter.current = true
-    if (reduced.current) { later(finish, 6000); navigate(); return }
-    clearTimers()
     setSequence(value => value + 1)
     changePhase('covering')
-    later(navigate, 900)
+    later(navigate, 380)
     // A failed or interrupted route must never leave the site behind a curtain.
     later(finish, 6000)
-  }, [changePhase, clearTimers, finish, later, navigate])
+  }, [changePhase, clearTimers, finish, later, navigate, router])
 
   const transitionPath = destination.current?.href.split(/[?#]/)[0] ?? pathname
   const workTransition = transitionPath === '/work' || transitionPath.startsWith('/work/')
@@ -134,16 +140,11 @@ export function PageTransition({ children }: { children: ReactNode }) {
   return (
     <TransitionContext.Provider value={begin}>
       <div ref={content} className={styles.content}>{children}</div>
-      {active && <div key={sequence} className={styles.overlay} data-work={workTransition} data-phase={phase} data-kind={sequence === 0 ? 'intro' : 'navigation'} data-hydrated={hydrated} data-page-transition="">
+      {active && <div key={sequence} className={styles.overlay} data-work={workTransition} data-phase={phase} data-direction={sequence % 2 === 0 ? 'left' : 'right'} data-hydrated={hydrated} data-page-transition="">
         <div className={styles.curtain} aria-hidden="true">
-          <div className={styles.wash} />
-          <div className={styles.logo}>
-            {'burgama'.split('').map((letter, index) => (
-              <span className={styles.letter} key={index} style={{ '--letter-index': index } as CSSProperties}>{letter}</span>
-            ))}
-          </div>
+          <div className={styles.logo}>burgama</div>
         </div>
-        <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip introduction" />
+        <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip page transition" />
       </div>}
       <noscript><style>{`[data-page-transition] { display: none !important; }`}</style></noscript>
     </TransitionContext.Provider>

@@ -31,19 +31,11 @@ html:has(.cyan-header) {
 }
 
 html:has(.cyan-header[data-home='true']) {
-  --header-control-height: 44px;
-  --header-shell-padding: 4px;
-  --header-shell-inline-padding: 16px;
-  --header-toggle-width: 7rem;
-  --header-symbol-size: 38px;
-}
-
-@media (max-width: 699px) {
-  html:has(.cyan-header[data-home='true']) {
-    --header-control-height: 48px;
-    --header-toggle-width: 7.5rem;
-    --header-symbol-size: 40px;
-  }
+  --header-control-height: 48px;
+  --header-shell-padding: 6px;
+  --header-shell-inline-padding: 18px;
+  --header-toggle-width: 8rem;
+  --header-symbol-size: 40px;
 }
 
 body .site-header.cyan-header {

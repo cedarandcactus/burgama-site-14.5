@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { CornerShell } from '@/components/corner-shell'
+import { PageTransition } from '@/components/page-transition'
 import './globals.css'
 import './cyan-shell.css'
 
@@ -40,11 +41,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${pangram.variable} ${cenura.variable} bg-background`}>
       <body className="bg-background text-foreground font-sans antialiased">
-        <>
+        <PageTransition>
           <a href="#main" className="skip-link">Skip to content</a>
           <CornerShell />
           <main id="main" tabIndex={-1}>{children}</main>
-        </>
+        </PageTransition>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

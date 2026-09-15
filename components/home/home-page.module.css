@@ -3,7 +3,7 @@
   --home-space: clamp(58px, 6.5vw, 104px);
   --home-text: clamp(17px, 1.45vw, 22px);
   --home-title: clamp(50px, 7.9vw, 124px);
-  --home-rise: clamp(48px, 6vw, 88px);
+  --home-rise: clamp(80px, 10vw, 144px);
   color: var(--palette-soft-white);
   background: var(--palette-navy);
 }
@@ -158,12 +158,20 @@
   pointer-events: none;
 }
 
-.sectionRise[data-surface='work'] {
-  color: var(--cyan-ink);
+.sectionRise[data-direction='left'] {
+  transform: scaleX(-1);
 }
 
-.sectionRise[data-surface='studio'] {
-  color: var(--palette-yellow-soft);
+.sectionRise[data-surface='powder'] {
+  color: var(--palette-powder);
+}
+
+.sectionRise[data-surface='powder-deep'] {
+  color: var(--palette-powder-deep);
+}
+
+.sectionRise[data-surface='navy'] {
+  color: var(--palette-navy);
 }
 
 .tickerSection {
@@ -691,7 +699,7 @@
 @media (max-width: 699px) {
   .page {
     --home-space: clamp(48px, 13vw, 74px);
-    --home-rise: clamp(24px, 8vw, 40px);
+    --home-rise: clamp(48px, 14vw, 80px);
   }
 
   .heroMedia {
@@ -806,7 +814,8 @@
 }
 
 .introduction {
-  padding: clamp(64px, 8vw, 112px) var(--home-inset) clamp(48px, 6vw, 80px);
+  position: relative;
+  padding: clamp(56px, 7vw, 96px) var(--home-inset) calc(var(--home-rise) + clamp(48px, 6vw, 80px));
   color: var(--palette-navy);
   background: var(--palette-powder);
   scroll-margin-top: 24px;
@@ -859,9 +868,9 @@
 
 .capabilities {
   position: relative;
-  padding: 0 var(--home-inset) calc(var(--home-rise) + clamp(64px, 7vw, 96px));
+  padding: clamp(40px, 5vw, 64px) var(--home-inset) calc(var(--home-rise) + clamp(48px, 6vw, 80px));
   color: var(--palette-navy);
-  background: var(--palette-powder);
+  background: var(--palette-powder-deep);
   isolation: isolate;
   overflow: clip;
 }
@@ -962,12 +971,9 @@
   margin-top: 32px;
 }
 
-.capabilities .sectionRise[data-surface='work'] {
-  color: var(--palette-navy);
-}
-
 .selectedWork {
-  padding-block: clamp(64px, 7vw, 100px) clamp(72px, 9vw, 128px);
+  position: relative;
+  padding-block: clamp(56px, 6vw, 88px) calc(var(--home-rise) + clamp(48px, 6vw, 80px));
   color: var(--palette-powder);
   background: var(--palette-navy);
   overflow: clip;

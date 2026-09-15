@@ -1,5 +1,6 @@
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
+import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
 export function ActIntroduction() {
@@ -10,6 +11,7 @@ export function ActIntroduction() {
         <p>We&apos;re an independent creative and marketing studio in Austin. The people you meet are the people making your work.</p>
         <ModularButton href="/studio">a little about us</ModularButton>
       </Reveal>
+      <SectionRise surface="powder-deep" direction="left" />
     </section>
   )
 }

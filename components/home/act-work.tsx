@@ -2,6 +2,7 @@ import { ProjectCard } from '@/components/project-card'
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
 import { WorkReel } from '@/components/home/work-reel'
+import { SectionRise } from '@/components/home/section-rise'
 import { featuredProjects } from '@/lib/projects'
 import styles from './home-page.module.css'
 
@@ -15,6 +16,7 @@ export function ActWork() {
         {featuredProjects.map(project => <ProjectCard key={project.id} project={project} concise />)}
       </WorkReel>
       <div className={styles.workAction}><ModularButton href="/work">all our work</ModularButton></div>
+      <SectionRise surface="powder" direction="left" />
     </section>
   )
 }

@@ -10,7 +10,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Selected Work',
-  description: 'Brand, web, content, growth, and production work by Burgama.',
+  description: 'Packaging redesign, photography, branding, websites, and marketing work by Burgama.',
 }
 
 export default function WorkPage() {
@@ -24,7 +24,7 @@ export default function WorkPage() {
           <div className="portfolio-intro-heading">
             <h1 className="font-serif">selected work.</h1>
             <p>
-              Brand, web, content, growth, and production for organizations with
+              Packaging, photography, branding, websites, and marketing for organizations with
               something worth saying.
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function WorkPage() {
               {studies.map((project) => (
                 <Link href={`/work/${project.slug}`} className="portfolio-study" key={project.slug}>
                   <div className="archive-categories" aria-label="Project categories">
-                    {project.disciplines.map((discipline) => (
+                    {(project.categories ?? project.disciplines).map((discipline) => (
                       <span key={discipline}>{discipline.toLowerCase()}</span>
                     ))}
                   </div>

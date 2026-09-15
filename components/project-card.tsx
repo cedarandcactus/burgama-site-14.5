@@ -57,7 +57,7 @@ export function ProjectCard({
               className="project-category-pills project-tile-disciplines"
               aria-label="Project categories"
             >
-              {project.disciplines.map((discipline) => (
+              {(project.categories ?? project.disciplines).map((discipline) => (
                 <li key={discipline}>{discipline.toLowerCase()}</li>
               ))}
             </ul>

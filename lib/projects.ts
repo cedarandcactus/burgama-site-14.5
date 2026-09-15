@@ -1,5 +1,5 @@
 export type Tone = 'surface-1' | 'surface-2' | 'surface-3' | 'periwinkle'
-export type Discipline = 'Brand' | 'Web' | 'Marketing' | 'Content' | 'Production' | 'Growth' | 'Photography'
+export type Discipline = 'Brand' | 'Web' | 'Marketing' | 'Content' | 'Production' | 'Growth' | 'Photography' | 'Packaging'
 export type MediaRatio = 'wide' | 'landscape' | 'tall' | 'square' | 'full'
 export type MediaItem = {
   label: string
@@ -27,6 +27,7 @@ export type Project = {
   summary: string
   tagline: string
   disciplines: Discipline[]
+  categories?: string[]
   services: string[]
   heroMedia: MediaItem
   thumbnailMedia?: MediaItem
@@ -112,7 +113,8 @@ export const projects: Project[] = [
     slug: 'wagner-wealth', title: 'Wagner Wealth Management', collection: 'featured',
     tagline: 'We shaped a personal practice into a precise, composed system.',
     summary: 'We built an angular monogram, a restrained identity, and a measured website for Wagner Wealth Management.',
-    disciplines: ['Brand', 'Web', 'Production'], services: ['Visual identity', 'Website', 'Founder film'],
+    categories: ['Website'],
+    disciplines: ['Web', 'Brand', 'Production'], services: ['Website', 'Visual identity', 'Founder film'],
     heroMedia: image('wagner-wealth', 'a093.jpg', 'Embossed business-card design mockup in Wagner’s plum colorway.', 'square'),
     thumbnailMedia: {
       src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/A_dense_layered_3D_composition_202606012258_web.png-iYJDPqey04ri7dx9KMCoPWcPIJQuR7.jpeg',
@@ -164,7 +166,8 @@ export const projects: Project[] = [
     slug: 'go2bites', title: 'Go2Bites', collection: 'featured',
     tagline: 'We made the product story feel at home in everyday life.',
     summary: 'We connected product and lifestyle photography, an online store, and a founder film into one clear Go2Bites story.',
-    disciplines: ['Web', 'Photography', 'Production'], services: ['Website', 'Product and lifestyle photography', 'Founder film'],
+    categories: ['Packaging photography'],
+    disciplines: ['Photography', 'Web', 'Production'], services: ['Packaging photography', 'Lifestyle photography', 'Website', 'Founder film'],
     heroMedia: image('go2bites', 'a172.jpg', 'Five Go2Bites flavors photographed as a product range.'),
     contentModules: [
       text('make the range easy to understand.', 'We started with direct product portraits that establish the full flavor range and keep the packaging legible. Ingredient-led compositions then give individual products their own focus, so every frame adds something instead of repeating the same package angle.'),
@@ -182,7 +185,8 @@ export const projects: Project[] = [
     slug: 'cellinkey', title: 'CellinKey', collection: 'featured',
     tagline: 'We gave the product range a tactile world of its own.',
     summary: 'We directed a cohesive image system for CellinKey through sculpted light, textured sets, product photography, and web presentation.',
-    disciplines: ['Photography', 'Web'], services: ['Product photography', 'Website'],
+    categories: ['Packaging photography'],
+    disciplines: ['Photography', 'Web'], services: ['Packaging photography', 'Website'],
     heroMedia: image('cellinkey', 'a000.jpg', 'The product range arranged in warm directional light.'),
     thumbnailMedia: {
       src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Poolside%20Mockup%20_%20Spaced%20Out.png-kAK4mJIdLez54vWnl9Z0Scrnx8otYj.jpeg',
@@ -250,8 +254,9 @@ export const projects: Project[] = [
     slug: 'hiking-pony', title: 'Hiking Pony', collection: 'featured', period: '2025',
     tagline: 'A functional coffee range, built to travel from sachet to shelf.',
     summary: 'A scalable packaging system and digital extension for an Austin-born functional coffee brand.',
-    disciplines: ['Brand', 'Web'],
-    services: ['Packaging design', 'Packaging architecture', 'SKU rollout', 'Production artwork', '3D mockups', 'Website'],
+    categories: ['Packaging redesign'],
+    disciplines: ['Packaging', 'Brand', 'Web'],
+    services: ['Packaging redesign', 'Packaging architecture', 'SKU rollout', 'Production artwork', '3D mockups', 'Website'],
     heroMedia: image('hiking-pony', 'packaging-range.jpg', 'Front-and-back Hiking Pony coffee pouches in Latte, Mocha, and Sweet Cream flavors.'),
     contentModules: [
       text('one system, built to scale.', 'Hiking Pony needed to carry its existing identity from single-serve sachets into a larger retail format without losing the brand’s outdoor character or functional message. We translated the system into 10-serving pouches with a repeatable architecture for changing flavor names, product weights, and serving details.'),

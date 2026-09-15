@@ -1,118 +1,119 @@
-@property --curtain-opening {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
+.content {
+  display: contents;
 }
 
-.content { display: contents; }
 .overlay {
+  --sweep-origin: 100%;
   position: fixed;
   inset: 0;
   z-index: 10000;
   isolation: isolate;
   pointer-events: none;
-  animation: fail-open 0s 5s forwards;
+  animation: fail-open 0s 7s forwards;
 }
-.overlay[data-hydrated='true'] { pointer-events: auto; animation-delay: 7s; }
-.overlay[data-work='true'] {
-  --brand-yellow: var(--brand-white);
+
+.overlay[data-hydrated='true'] {
+  pointer-events: auto;
 }
-.overlay[data-work='true'] .wash { background: var(--brand-white); }
+
+.overlay[data-direction='left'] {
+  --sweep-origin: 0%;
+}
+
 .curtain {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  background: var(--brand-yellow);
-  color: var(--brand-navy);
   display: flex;
   align-items: center;
   justify-content: center;
-  mask-image: radial-gradient(circle at center, transparent max(0px, calc(var(--curtain-opening) - 45px)), #000 var(--curtain-opening));
+  overflow: hidden;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+  clip-path: ellipse(160% 140% at var(--sweep-origin) 50%);
 }
-.wash {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 57% 43%, color-mix(in srgb, var(--brand-yellow) 88%, var(--brand-white)) 0%, var(--brand-yellow) 42%, color-mix(in srgb, var(--brand-yellow) 94%, var(--brand-navy)) 100%);
-  opacity: 0;
-  animation: wash-unfurl 1400ms cubic-bezier(.22,1,.36,1) 180ms both;
+
+.overlay[data-work='true'] .curtain {
+  color: var(--brand-navy);
+  background: var(--brand-white);
 }
+
 .logo {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  font-family: var(--font-cenura);
-  font-size: clamp(100px, 20vw, 360px);
+  padding: .15em;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(64px, 20vw, 280px);
   font-weight: 400;
   line-height: 1;
   letter-spacing: normal;
-  color: var(--brand-navy);
+  animation: logo-arrive 300ms 60ms ease-out both;
 }
-.letter {
-  display: inline-block;
-  flex-shrink: 0;
-  padding: .2em .12em .3em;
-  margin: -.2em -.12em -.3em;
-  color: var(--brand-navy);
-  will-change: transform, opacity;
-  animation: letter-stamp 620ms cubic-bezier(.22,1,.36,1) both;
-  animation-delay: calc(160ms + var(--letter-index) * 85ms);
-  transform-origin: 50% 80%;
-}
-.overlay[data-kind='navigation'] .letter {
-  animation-duration: 320ms;
-  animation-delay: calc(70ms + var(--letter-index) * 75ms);
-}
-@media (max-width: 699px) {
-  .logo { font-size: 23vw; }
-  .letter { animation-name: letter-rise; }
-}
-@keyframes letter-stamp {
-  from { opacity: 0; transform: translate3d(.14em, 0, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-@keyframes letter-rise {
-  from { opacity: 0; transform: translate3d(0, .22em, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
-}
+
 .skip {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  border: 0;
   padding: 0;
-  color: var(--brand-navy);
+  border: 0;
   background: transparent;
   cursor: default;
 }
-.skip:focus-visible { outline: 2px solid var(--brand-navy); outline-offset: 5px; }
-.overlay[data-phase='covering'] .curtain { animation: cover-in 320ms ease-out both; }
-.overlay[data-kind='navigation'] .wash { animation-duration: 650ms; animation-delay: 0ms; }
-.overlay[data-phase='revealing'] { pointer-events: none; }
-.overlay[data-phase='revealing'] .curtain { animation: open-out 880ms cubic-bezier(.65,0,.25,1) forwards; }
-.overlay[data-phase='revealing'] .logo { animation: logo-depart 300ms ease-in forwards; }
-.overlay[data-phase='revealing'] .skip { opacity: 0; pointer-events: none; }
 
-@keyframes hand-turn {
-  0%, 8% { transform: rotate(-18deg); }
-  72% { transform: rotate(326deg); }
-  100% { transform: rotate(342deg); }
+.skip:focus-visible {
+  outline: 2px solid var(--palette-navy);
+  outline-offset: -6px;
 }
-@keyframes logo-arrive { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
-@keyframes logo-depart { to { opacity: 0; } }
-@keyframes wash-unfurl {
-  from { opacity: 0; }
-  to { opacity: 1; }
+
+.overlay[data-phase='covering'] .curtain {
+  animation: sweep-cover 380ms cubic-bezier(.65, 0, .35, 1) both;
 }
-@keyframes cover-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes open-out { from { --curtain-opening: 0px; opacity: 1; } 75% { opacity: 1; } to { --curtain-opening: 150vmax; opacity: 0; } }
-@keyframes fail-open { to { visibility: hidden; pointer-events: none; } }
+
+.overlay[data-phase='revealing'] {
+  pointer-events: none;
+}
+
+.overlay[data-phase='revealing'] .curtain {
+  animation: sweep-reveal 520ms cubic-bezier(.65, 0, .25, 1) forwards;
+}
+
+.overlay[data-phase='revealing'] .logo {
+  animation: logo-depart 200ms ease-in forwards;
+}
+
+.overlay[data-phase='revealing'] .skip {
+  pointer-events: none;
+}
+
+@keyframes sweep-cover {
+  from { clip-path: ellipse(160% 140% at var(--sweep-origin) 245%); }
+  to { clip-path: ellipse(160% 140% at var(--sweep-origin) 50%); }
+}
+
+@keyframes sweep-reveal {
+  from { clip-path: ellipse(160% 140% at var(--sweep-origin) 50%); }
+  to { clip-path: ellipse(160% 140% at var(--sweep-origin) -145%); }
+}
+
+@keyframes logo-arrive {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes logo-depart {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes fail-open {
+  to { visibility: hidden; pointer-events: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .overlay .wash, .overlay .letter, .overlay .logo { animation: none; }
-  .overlay .wash { transform: none; opacity: 0; }
-  .overlay[data-phase='revealing'] .curtain { animation: reduced-fade 100ms linear forwards; }
-  .overlay[data-phase='covering'] .curtain { animation: none; }
+  .overlay {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .overlay .curtain,
+  .overlay .logo {
+    animation: none;
+  }
 }
-@keyframes reduced-fade { to { opacity: 0; } }

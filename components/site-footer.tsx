@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
+import { SectionRise } from '@/components/home/section-rise'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from '@/components/site-footer.module.css'
 
@@ -22,8 +23,6 @@ const navigationGroups = [
     label: 'The studio',
     links: [
       { label: 'Ideas', href: '/ideas' },
-      { label: 'Our approach', href: '/studio#small-title' },
-      { label: 'The people', href: '/studio#team-title' },
       { label: 'Contact', href: '/contact' },
     ],
   },
@@ -236,8 +235,9 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             </span>
           </h2>
         </div>
+        {home && <SectionRise surface="navy" />}
       </section>
-      <div className={styles.footerFrame}>
+      <div className={styles.footerFrame} data-home={home}>
         <footer className={styles.footer} data-home={home} data-work={work} data-nav-surface={home ? 'ink' : undefined}>
           <FooterFilm />
           <div className={styles.content}>
@@ -260,7 +260,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                     <ArrowUpRight />
                   </span>
                 </a>
-                <p>Strategy, design, digital, and growth. One team, working with yours.</p>
               </div>
               <div className={styles.utilities}>
                 <div className={styles.navigation}>
@@ -268,35 +267,28 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                     <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
                       {group.links.map((link) => (
                         <Link key={link.href} href={link.href}>
-                          <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
-                          <ArrowUpRight aria-hidden="true" />
+                          {link.label}
                         </Link>
                       ))}
                     </nav>
                   ))}
                 </div>
-                <div className={styles.addressColumn} data-footer-group="">
-                  <p className={styles.groupLabel}>Mailing address</p>
-                  <address className={styles.address}>
-                    <span>701 Tillery St #12</span>
-                    <span>Mailbox #289</span>
-                    <span>Austin, TX 78702</span>
-                  </address>
-                </div>
               </div>
             </div>
+            <address className={styles.address} aria-label="Mailing address" data-footer-group="">
+              701 Tillery St #12, Mailbox #289, Austin, TX 78702
+            </address>
             <div className={styles.identityReveal} data-footer-identity-reveal="">
               <div className={styles.identity} data-footer-identity="">
                 <Link href="/" className={styles.wordmark} aria-label="burgama home">burgama</Link>
               </div>
             </div>
             <div className={styles.bottomRow}>
-              <p>© {new Date().getFullYear()} burgama. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} burgama</p>
               <nav className={styles.legalLinks} aria-label="Legal">
                 <Link href="/privacy">Privacy</Link>
                 <Link href="/terms">Terms</Link>
               </nav>
-              <p className={styles.credit}>Working wherever you are.</p>
             </div>
           </div>
         </footer>

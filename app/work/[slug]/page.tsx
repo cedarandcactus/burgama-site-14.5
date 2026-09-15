@@ -118,7 +118,7 @@ export default async function WorkDetailPage({
             <nav className="portfolio-related-grid" aria-label="More work">
               {relatedProjects.map((related) => (
                 <Link href={`/work/${related.slug}`} className="portfolio-related-link" key={related.slug}>
-                  <span>{related.disciplines.join(' · ')}</span>
+                  <span>{(related.categories ?? related.disciplines).join(' · ')}</span>
                   <h3 className="font-serif">{related.title}</h3>
                 </Link>
               ))}

@@ -106,7 +106,7 @@ export function ActCapabilities() {
         {capabilities.map((item) => <CapabilityCard key={item.title} capability={item} />)}
       </div>
       <div className={styles.capabilitiesAction}><ModularButton href="/contact">let&apos;s talk</ModularButton></div>
-      <SectionRise surface="work" />
+      <SectionRise surface="navy" />
     </section>
   )
 }
