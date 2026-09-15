@@ -87,9 +87,7 @@ export function WorkReel({ children, count }: { children: ReactNode; count: numb
       </div>
       <div className={styles.reelControls}>
         <div className={styles.reelPosition}>
-          <span className={styles.reelCount} aria-live="polite" aria-atomic="true">
-            <span className="sr-only">Project </span>{String(active + 1).padStart(2, '0')}<span aria-hidden="true"> / </span><span className="sr-only"> of </span>{String(count).padStart(2, '0')}
-          </span>
+          <span className="sr-only" aria-live="polite" aria-atomic="true">Project {active + 1} of {count}</span>
           <div className={styles.reelProgress} aria-hidden="true"><span style={{ width: `${((active + 1) / count) * 100}%` }} /></div>
         </div>
         <div className={styles.reelArrows}>

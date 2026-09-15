@@ -822,25 +822,6 @@
   text-align: center;
 }
 
-.studioPortraits {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 8px;
-}
-
-.studioPortraits img {
-  width: clamp(56px, 6vw, 76px);
-  height: clamp(56px, 6vw, 76px);
-  object-fit: cover;
-  object-position: center 36%;
-  border: 3px solid var(--palette-powder);
-  border-radius: 50%;
-}
-
-.studioPortraits img + img {
-  margin-left: -12px;
-}
-
 .introduction h2,
 .workIntro h2 {
   margin: 0;
@@ -906,10 +887,6 @@
   background: var(--palette-navy);
 }
 
-.capabilityCard:nth-child(2) {
-  background: var(--palette-navy-raised);
-}
-
 .capabilityCard h3 {
   margin: 0;
   font-size: clamp(44px, 5vw, 68px);
@@ -917,30 +894,66 @@
   line-height: 1.08;
 }
 
-.capabilityCard p {
-  max-width: 28ch;
-  margin: 18px 0 0;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
+.capabilityServices {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.capabilityCard ul {
+.serviceTabs {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
-.capabilityCard li {
-  padding: 7px 14px;
-  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+.serviceTabs button {
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 0;
   border-radius: 999px;
+  color: var(--palette-powder);
+  background: var(--palette-navy-raised);
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.3;
+  cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+.serviceTabs button[aria-selected='true'] {
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+}
+
+.serviceDetails {
+  min-height: 4.5em;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.serviceDetails p {
+  max-width: 36ch;
+  margin: 0;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: inherit;
+  text-wrap: pretty;
+}
+
+.serviceDetails [role='tabpanel']:not([hidden]) {
+  animation: service-detail-enter 260ms ease both;
+}
+
+.serviceTabs button:focus-visible,
+.serviceDetails [role='tabpanel']:focus-visible {
+  outline: 2px solid var(--palette-powder);
+  outline-offset: 4px;
+}
+
+@keyframes service-detail-enter {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .capabilitiesAction {
@@ -1061,12 +1074,18 @@
 }
 
 .page .workTrack :global(.project-link-arrow) {
-  width: 44px;
+  width: clamp(112px, 12vw, 168px);
   height: 44px;
-  padding: 11px;
-  border: 1px solid transparent;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 999px;
   color: var(--palette-navy);
   background: var(--palette-powder);
+}
+
+.page .workTrack :global(.project-link-arrow svg) {
+  width: 24px;
+  height: 24px;
 }
 
 .reelControls {
@@ -1081,28 +1100,22 @@
 .reelPosition {
   display: flex;
   align-items: center;
-  gap: 20px;
   flex: 1;
-  max-width: 240px;
-}
-
-.reelCount {
-  flex: none;
-  font-size: 13px;
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
+  max-width: 160px;
 }
 
 .reelProgress {
-  height: 2px;
+  height: 4px;
   flex: 1;
   overflow: hidden;
-  background: color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 999px;
+  background: var(--palette-navy-raised);
 }
 
 .reelProgress span {
   display: block;
   height: 100%;
+  border-radius: inherit;
   background: currentColor;
   transition: width 400ms ease;
 }
@@ -1114,20 +1127,26 @@
 
 .reelArrows button {
   display: grid;
-  width: 44px;
+  width: clamp(112px, 12vw, 168px);
   height: 44px;
   place-items: center;
-  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-  border-radius: 50%;
-  color: inherit;
-  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
   cursor: pointer;
-  transition: background-color 180ms ease;
+  transition: color 180ms ease, background-color 180ms ease;
 }
 
 .reelArrows button[aria-disabled='true'] {
-  opacity: 0.35;
+  color: var(--palette-powder);
+  background: var(--palette-navy-raised);
   cursor: default;
+}
+
+.reelArrows button:focus-visible {
+  outline: 2px solid var(--palette-powder);
+  outline-offset: 4px;
 }
 
 .workAction {
@@ -1137,21 +1156,25 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .heroStatement :global(.pill:hover),
+  .workAction :global(.pill:hover),
+  .page .workTrack :global(.project-tile:hover .project-link-arrow),
+  .reelArrows button:not([aria-disabled='true']):hover {
+    color: var(--palette-navy);
+    background: var(--palette-powder-deep);
+    border-color: transparent;
+  }
+
   .introduction :global(.pill:hover),
   .capabilities :global(.pill:hover) {
-    color: var(--palette-navy);
-    background: transparent;
-    border-color: var(--palette-navy);
-  }
-
-  .page .workTrack :global(.project-tile:hover .project-link-arrow) {
     color: var(--palette-powder);
-    background: transparent;
-    border-color: currentColor;
+    background: var(--palette-navy-raised);
+    border-color: transparent;
   }
 
-  .reelArrows button:not([aria-disabled='true']):hover {
-    background: var(--palette-navy-raised);
+  .serviceTabs button:not([aria-selected='true']):hover {
+    color: var(--palette-navy);
+    background: var(--palette-powder-deep);
   }
 }
 
@@ -1200,26 +1223,34 @@
   }
 
   .page .workTrack :global(.project-link-arrow) {
-    width: 40px;
-    height: 40px;
-    padding: 10px;
+    width: 88px;
+    height: 44px;
+    padding: 10px 20px;
   }
 
   .reelControls {
     margin-top: 24px;
-    gap: 24px;
+    gap: 20px;
   }
 
   .reelPosition {
-    max-width: 180px;
-    gap: 12px;
+    max-width: 120px;
+  }
+
+  .reelArrows button {
+    width: clamp(88px, 18vw, 112px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reelProgress span,
-  .reelArrows button {
+  .reelArrows button,
+  .serviceTabs button {
     transition: none;
+  }
+
+  .serviceDetails [role='tabpanel']:not([hidden]) {
+    animation: none;
   }
 }
 
