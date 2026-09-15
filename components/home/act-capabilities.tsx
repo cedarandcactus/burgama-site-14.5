@@ -3,6 +3,7 @@
 import type { CSSProperties } from 'react'
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/motion'
+import { SectionRise } from '@/components/home/section-rise'
 
 const capabilities = [
   {
@@ -78,6 +79,7 @@ export function ActCapabilities() {
           ))}
         </div>
       </div>
+      <SectionRise surface="studio" />
     </section>
   )
 }

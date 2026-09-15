@@ -23,8 +23,7 @@ const logos = [
 
 function logoPath(width: number, height: number) {
   const center = height * 0.5
-  const rise = Math.min(28, height * 0.16)
-  return `M ${width + 100} ${center - rise} C ${width * 0.65} ${center - rise}, ${width * 0.35} ${center + rise}, -100 ${center + rise}`
+  return `M ${width + 100} ${center} L -100 ${center}`
 }
 
 export function ClientTicker() {

@@ -3,12 +3,14 @@
   --home-space: clamp(62px, 7vw, 112px);
   --home-text: clamp(17px, 1.45vw, 22px);
   --home-title: clamp(54px, 8.4vw, 132px);
+  --home-rise: clamp(48px, 6vw, 88px);
   color: var(--palette-soft-white);
   background: var(--palette-navy);
 }
 
 .hero {
   position: relative;
+  padding-bottom: calc(var(--home-rise) + 32px);
   overflow: clip;
   isolation: isolate;
   background: var(--palette-navy);
@@ -74,8 +76,8 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  min-height: calc(100svh - clamp(176px, 15vw, 220px));
-  padding: clamp(116px, 10vw, 152px) var(--home-inset) clamp(64px, 7vw, 104px);
+  min-height: 100svh;
+  padding: clamp(144px, 20svh, 224px) var(--home-inset) clamp(72px, 10svh, 112px);
 }
 
 .heroFrameContent {
@@ -84,13 +86,13 @@
   min-width: 0;
   margin-inline: auto;
   flex-direction: column;
-  gap: clamp(28px, 3.4vw, 52px);
+  gap: clamp(48px, 6vw, 88px);
 }
 
 .heroFrame h1 {
   display: grid;
   margin: 0;
-  font-size: clamp(42px, 5.65vw, 100px);
+  font-size: clamp(3.25rem, calc(9.3vw - 1.375rem), 7.75rem);
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: normal;
@@ -99,6 +101,7 @@
 .heroHeadlineVariant {
   grid-area: 1 / 1;
   min-width: 0;
+  text-wrap: balance;
   visibility: hidden;
 }
 
@@ -107,7 +110,7 @@
 }
 
 .heroHeadlineLine {
-  display: block;
+  display: inline;
 }
 
 .heroWord {
@@ -136,6 +139,25 @@
 .heroClients {
   position: relative;
   z-index: 1;
+}
+
+.sectionRise {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: calc(var(--home-rise) + 1px);
+  pointer-events: none;
+}
+
+.sectionRise[data-surface='work'] {
+  color: var(--cyan-ink);
+}
+
+.sectionRise[data-surface='studio'] {
+  color: var(--palette-yellow-soft);
 }
 
 .tickerSection {
@@ -350,6 +372,7 @@
 .page :global(.capabilities-plate) {
   position: relative;
   display: block;
+  padding-bottom: calc(var(--home-space) + var(--home-rise));
   overflow: clip;
   min-height: 0;
   color: var(--palette-navy);
@@ -661,6 +684,7 @@
 @media (max-width: 699px) {
   .page {
     --home-space: clamp(52px, 14vw, 80px);
+    --home-rise: clamp(24px, 8vw, 40px);
   }
 
   .heroMedia {
@@ -673,28 +697,18 @@
   }
 
   .heroFrame {
-    min-height: calc(100svh - 80px);
-    padding-top: 100px;
-    padding-bottom: 48px;
-  }
-
-  .heroFrameContent {
-    gap: 32px;
+    padding-top: clamp(128px, 20svh, 160px);
+    padding-bottom: 72px;
   }
 
   .heroFrame h1 {
-    font-size: clamp(32px, 10.55vw, 66px);
-    line-height: 1.06;
-  }
-
-  .heroHeadlineLine {
-    display: inline;
+    font-size: clamp(2.5rem, calc(1.25rem + 6vw), 3.25rem);
   }
 
   .heroStatement {
     align-items: flex-start;
     flex-direction: column;
-    gap: 24px;
+    gap: 36px;
   }
 
   .heroStatement p {

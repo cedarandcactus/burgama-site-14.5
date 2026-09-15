@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { ModularButton } from '@/components/modular-button'
 import { HeroFilm } from '@/components/home/hero-film'
+import { SectionRise } from '@/components/home/section-rise'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
@@ -131,6 +132,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
         </div>
       </div>
       <div className={styles.heroClients}>{children}</div>
+      <SectionRise surface="work" />
     </section>
   )
 }
