@@ -79,6 +79,8 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'alh-senior-solutions/web-alh.jpg': [1280, 720],
   'clement-senior-solutions/web-clement.jpg': [1280, 720],
   'dr-saba-syed/web-dr-saba-syed.jpg': [1280, 720],
+  'hiking-pony/packaging-range.jpg': [1920, 1280],
+  'hiking-pony/sweet-cream-packaging.jpg': [1920, 1280],
   'hiking-pony/web-hiking-pony.jpg': [1280, 720],
   'smoothsailing/web-smoothsailing.jpg': [1272, 716],
   'turant/web-turant.jpg': [1280, 720],
@@ -223,12 +225,23 @@ export const projects: Project[] = [
     note: 'Burgama scope: positioning, messaging and copy, brand identity, and public website strategy, design, and development. The operational software product, insurance services, and payment functionality are not presented as Burgama-built.',
   }),
   project({
-    slug: 'hiking-pony', title: 'Hiking Pony', tagline: 'Product discovery with an outdoor point of view.',
-    summary: 'An online shopping experience connecting the coffee range, brand story, and everyday rituals.',
-    disciplines: ['Web', 'Photography'], services: ['Website', 'Photography'],
-    heroMedia: image('hiking-pony', 'web-hiking-pony.jpg', 'Hiking Pony website and product-range presentation.'),
-    contentModules: [text('an outdoor point of view.', 'The site connects an outdoor visual direction with product-led sections, ingredient information, recipes, and retail links. Navigation brings the product range and the brand story together.'), text('website selection.', 'This page presents the supplied website capture. The separate photography collection is not reproduced here while individual selections await source access.')],
+    slug: 'hiking-pony', title: 'Hiking Pony', collection: 'featured', period: '2025',
+    tagline: 'A functional coffee range, built to travel from sachet to shelf.',
+    summary: 'A scalable packaging system and digital extension for an Austin-born functional coffee brand.',
+    disciplines: ['Brand', 'Web'],
+    services: ['Packaging design', 'Packaging architecture', 'SKU rollout', 'Production artwork', '3D mockups', 'Website'],
+    heroMedia: image('hiking-pony', 'packaging-range.jpg', 'Front-and-back Hiking Pony coffee pouches in Latte, Mocha, and Sweet Cream flavors.'),
+    contentModules: [
+      text('one system, built to scale.', 'Hiking Pony needed to carry its existing identity from single-serve sachets into a larger retail format without losing the brand’s outdoor character or functional message. We translated the system into 10-serving pouches with a repeatable architecture for changing flavor names, product weights, and serving details.'),
+      media('hiking-pony', 'sweet-cream-packaging.jpg', 'Front and back of the berry Sweet Cream collagen coffee pouch.'),
+      text('make the function easy to find.', 'A clear top-of-pack line brings collagen, protein, MCTs, and preservative-free messaging into immediate view. The front balances the Hiking Pony mark, flavor, product format, origin details, and preparation cue, while the back organizes the brand story, directions, nutrition panel, ingredients, dietary badges, and QR touchpoint.'),
+      text('four flavors, one architecture.', 'The packaging framework was prepared across Latte, Mocha, Sweet Cream, and Peppermint Mocha. Shared placement and typography make the range recognizable as one family, while flavor-led color gives each SKU a distinct shelf presence.'),
+      text('ready for production.', 'The rollout included single-serve and multi-pack pouch layouts, production-ready mechanical artwork, and 3D product mockups. The result is a flexible system designed to hold together across pouch sizes and product lines.'),
+      media('hiking-pony', 'web-hiking-pony.jpg', 'Hiking Pony website with product-led navigation and the coffee range.'),
+      text('from shelf to screen.', 'The website extends the same product story through the full coffee range, ingredient information, recipes, retail links, and brand narrative. The QR touchpoint on pack gives the physical system a direct route into that digital experience.'),
+    ],
     links: [{ label: 'visit the website', href: 'https://hikingpony.com/' }],
+    note: 'The range presentation shown here features Latte, Mocha, and Sweet Cream. The broader packaging architecture also included Peppermint Mocha.',
   }),
   project({
     slug: 'smoothsailing', title: 'Smoothsailing Sustainability', tagline: 'A broad consultancy. A clear structure.',
@@ -375,7 +388,7 @@ export function getPublishedProjects(collection?: PortfolioCollection) {
       return found ? [found] : []
     })
 }
-const featuredProjectOrder = ['go2bites', 'cellinkey', 'wagner-wealth', 'wurqly'] as const
+const featuredProjectOrder = ['hiking-pony', 'go2bites', 'cellinkey', 'wagner-wealth', 'wurqly'] as const
 export const featuredProjects = featuredProjectOrder.flatMap(slug => {
   const item = getProject(slug)
   return item?.collection === 'featured' ? [item] : []
