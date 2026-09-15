@@ -7,7 +7,7 @@ import { FooterFilm } from '@/components/footer-film'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from '@/components/site-footer.module.css'
 
-const headline = 'ready for what comes next'
+const headline = 'Ready for what comes next'
 const words = headline.split(' ')
 
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
@@ -166,40 +166,40 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           <div className={styles.content}>
             <div className={styles.topRow}>
               <div className={styles.invitation}>
-                <h2>let&apos;s start something.</h2>
+                <h2>Let&apos;s start something.</h2>
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
                   <span>hello@burgama.com</span>
                   <span className={styles.emailArrow} aria-hidden="true"><ArrowUpRight /></span>
                 </a>
                 <p>Bring the idea. We&apos;ll bring the people to make it happen.</p>
               </div>
-              <nav className={styles.linkColumn} aria-label="Explore Burgama">
-                <Link href="/#capabilities">services</Link>
-                <Link href="/work">work</Link>
-                <Link href="/studio">about</Link>
+              <nav className={styles.linkColumn} aria-label="Explore burgama">
+                <Link href="/#capabilities">Services</Link>
+                <Link href="/work">Work</Link>
+                <Link href="/studio">About</Link>
               </nav>
               <nav className={styles.linkColumn} aria-label="Inside the studio">
-                <Link href="/ideas">ideas</Link>
-                <Link href="/studio#small-title">our approach</Link>
-                <Link href="/studio#team-title">the people</Link>
+                <Link href="/ideas">Ideas</Link>
+                <Link href="/studio#small-title">Our approach</Link>
+                <Link href="/studio#team-title">The people</Link>
               </nav>
-              <div className={styles.linkColumn}>
+              <div className={`${styles.linkColumn} ${styles.addressColumn}`}>
                 <address className={styles.address}>
                   701 Tillery St #12<br />
                   Mailbox #289<br />
                   Austin, TX 78702
                 </address>
-                <Link href="/contact">contact</Link>
+                <Link href="/contact">Contact</Link>
               </div>
             </div>
             <div className={styles.identity} data-footer-identity="">
-              <Link href="/" className={styles.wordmark} aria-label="Burgama home">burgama</Link>
+              <Link href="/" className={styles.wordmark} aria-label="burgama home">burgama</Link>
             </div>
             <div className={styles.bottomRow}>
-              <p>© {new Date().getFullYear()} Burgama. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} burgama. All rights reserved.</p>
               <nav className={styles.legalLinks} aria-label="Legal">
-                <Link href="/privacy">privacy</Link>
-                <Link href="/terms">terms</Link>
+                <Link href="/privacy">Privacy</Link>
+                <Link href="/terms">Terms</Link>
               </nav>
               <p className={styles.credit}>Working wherever you are.</p>
             </div>
