@@ -114,6 +114,13 @@ export const projects: Project[] = [
     summary: 'We built an angular monogram, a restrained identity, and a measured website for Wagner Wealth Management.',
     disciplines: ['Brand', 'Web', 'Production'], services: ['Visual identity', 'Website', 'Founder film'],
     heroMedia: image('wagner-wealth', 'a093.jpg', 'Embossed business-card design mockup in Wagner’s plum colorway.', 'square'),
+    thumbnailMedia: {
+      src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/A_dense_layered_3D_composition_202606012258_web.png-iYJDPqey04ri7dx9KMCoPWcPIJQuR7.jpeg',
+      label: 'Layered three-dimensional Wagner monograms with metallic plum surfaces and soft mauve lighting.',
+      ratio: 'wide',
+      width: 2752,
+      height: 1536,
+    },
     contentModules: [
       text('make the personal feel established.', 'We shaped the identity to give a personal wealth-management practice a clear, consistent presence. An angular monogram provides the recognizable center; a deep plum palette keeps the wider system composed rather than corporate.'),
       media('wagner-wealth', 'a090.jpg', 'The geometric monogram in the supplied plum colorway.'),
