@@ -5,7 +5,7 @@
   --control-basis-width: clamp(18rem, 22vw, 20rem);
   --header-control-height: 44px;
   --header-shell-padding: 8px;
-  --header-shell-inline-padding: 16px;
+  --header-shell-inline-padding: 24px;
   --header-control-gap: 8px;
   --header-link-gap: 4px;
   --header-link-width: 4.75rem;
