@@ -1,135 +1,102 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { ModularButton } from '@/components/modular-button'
 import { HeroFilm } from '@/components/home/hero-film'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
-const transformations = [
-  { subject: 'ideas', result: 'identities' },
-  { subject: 'stories', result: 'motion' },
-  { subject: 'strategy', result: 'systems' },
-  { subject: 'attention', result: 'action' },
-] as const
+const headlineLines = [
+  'we turn what makes you',
+  'different into brands',
+  'the right people remember.',
+]
 
-const accessibleHeadline = transformations
-  .map(({ subject, result }) => `${subject} into ${result}.`)
-  .join(' ')
-
-export function ActOpening() {
+export function ActOpening({ children }: { children: ReactNode }) {
   const heroRef = useRef<HTMLElement>(null)
-  const stageRef = useRef<HTMLDivElement>(null)
-  const slideStackRef = useRef<HTMLSpanElement>(null)
+  const mediaRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const frostRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const hero = heroRef.current
-    const stage = stageRef.current
-    const slideStack = slideStackRef.current
-    if (!hero || !stage || !slideStack) return
+    const film = mediaRef.current
+    const content = contentRef.current
+    const frost = frostRef.current
+    if (!hero || !film || !content || !frost) return
 
-    const slides = gsap.utils.toArray<HTMLElement>('[data-hero-slide]', slideStack)
-    if (slides.length !== transformations.length) return
+    const media = gsap.matchMedia(hero)
+    let disposed = false
 
-    const media = gsap.matchMedia()
+    media.add({
+      motion: '(prefers-reduced-motion: no-preference)',
+      desktop: '(min-width: 700px)',
+    }, (context) => {
+      if (!context.conditions?.motion) return
+      const desktop = context.conditions.desktop
+      const words = hero.querySelectorAll('[data-hero-word]')
 
-    media.add('(prefers-reduced-motion: no-preference)', () => {
-      const timeline = gsap.timeline({ paused: true })
-
-      gsap.set(slides, {
-        autoAlpha: 1,
-        y: 0,
-        yPercent: 110,
-        force3D: true,
-      })
-      gsap.set(slides[0], { yPercent: 0 })
-
-      for (let index = 1; index < transformations.length; index += 1) {
-        const transitionStart = index - 1
-        const previousSlide = slides[index - 1]
-        const nextSlide = slides[index]
-
-        timeline
-          .to(previousSlide, {
-            y: 0,
-            yPercent: -110,
-            duration: 0.72,
-            ease: 'power2.inOut',
-          }, transitionStart)
-          .fromTo(nextSlide, {
-            y: 0,
-            yPercent: 110,
-          }, {
-            y: 0,
-            yPercent: 0,
-            duration: 0.72,
-            ease: 'power2.inOut',
-            immediateRender: false,
-          }, transitionStart)
-      }
-
-      const scrollTrigger = ScrollTrigger.create({
-        trigger: hero,
-        animation: timeline,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1.15,
-        invalidateOnRefresh: true,
+      gsap.from(words, {
+        yPercent: 28,
+        opacity: 0,
+        filter: `blur(${desktop ? 9 : 6}px)`,
+        duration: 1.05,
+        stagger: 0.028,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity,filter',
       })
 
-      let orientationTimer: number | undefined
-      const refreshAfterOrientation = () => {
-        window.clearTimeout(orientationTimer)
-        orientationTimer = window.setTimeout(() => ScrollTrigger.refresh(), 180)
-      }
-      window.addEventListener('orientationchange', refreshAfterOrientation)
-
-      return () => {
-        window.removeEventListener('orientationchange', refreshAfterOrientation)
-        window.clearTimeout(orientationTimer)
-        scrollTrigger.kill()
-        timeline.kill()
-      }
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.85,
+          invalidateOnRefresh: true,
+        },
+      })
+        .to(film, { y: desktop ? 96 : 40, ease: 'none', duration: 1 }, 0)
+        .to(content, { y: desktop ? -48 : -18, ease: 'none', duration: 1 }, 0)
+        .to(frost, { opacity: 1, ease: 'none', duration: 0.7 }, 0)
     })
 
-    return () => media.revert()
+    document.fonts.ready.then(() => {
+      if (!disposed) ScrollTrigger.refresh()
+    })
+
+    return () => {
+      disposed = true
+      media.revert()
+    }
   }, [])
 
   return (
-    <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-kinetic-hero="">
-      <div ref={stageRef} className={styles.heroStage}>
+    <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-cinematic-hero="">
+      <div ref={mediaRef} className={styles.heroMedia}>
         <HeroFilm />
-        <div className={styles.heroFrame}>
-          <div className={styles.heroFrameContent}>
-            <h1 id="opening-title" className="font-serif" aria-label={accessibleHeadline}>
-              <span ref={slideStackRef} className={styles.kineticHeading} aria-hidden="true">
-                {transformations.map(({ subject, result }) => (
-                  <span className={styles.heroSlide} data-hero-slide="" key={subject}>
-                    <span className={`${styles.heroPhraseLine} ${styles.heroSubjectLine}`}>{subject}</span>
-                    <span className={`${styles.heroPhraseLine} ${styles.heroConnectorLine}`}>into</span>
-                    <span className={`${styles.heroPhraseLine} ${styles.heroResultLine}`}>{result}.</span>
+      </div>
+      <div ref={frostRef} className={styles.heroFrost} aria-hidden="true" />
+      <div className={styles.heroFrame}>
+        <div ref={contentRef} className={styles.heroFrameContent}>
+          <h1 id="opening-title" className="font-serif" aria-label={headlineLines.join(' ')}>
+            {headlineLines.map((line, index) => (
+              <span key={line} className={styles.heroHeadlineLine} aria-hidden="true">
+                {line.split(' ').map((word, wordIndex) => (
+                  <span key={`${word}-${wordIndex}`}>
+                    <span className={styles.heroWord} data-hero-word="">{word}</span>{' '}
                   </span>
                 ))}
+                {index < headlineLines.length - 1 ? ' ' : null}
               </span>
-              <span className={styles.heroStatic} aria-hidden="true">
-                {transformations.map(({ subject, result }) => (
-                  <span className={styles.heroStaticPhrase} key={subject}>
-                    <span className={`${styles.heroStaticWord} ${styles.heroStaticSubject}`}>{subject}</span>
-                    <span className={`${styles.heroStaticWord} ${styles.heroStaticConnector}`}>into</span>
-                    <span className={`${styles.heroStaticWord} ${styles.heroStaticResult}`}>{result}.</span>
-                  </span>
-                ))}
-              </span>
-            </h1>
-            <div className={styles.heroLower}>
-              <div className={styles.heroStatement}>
-                <p>We shape identity, digital, and campaigns for organizations with something worth saying.</p>
-                <ModularButton href="/work">view selected work</ModularButton>
-              </div>
-            </div>
+            ))}
+          </h1>
+          <div className={styles.heroStatement}>
+            <p>a creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
+            <ModularButton href="/work">view selected work</ModularButton>
           </div>
         </div>
       </div>
+      <div className={styles.heroClients}>{children}</div>
     </section>
   )
 }

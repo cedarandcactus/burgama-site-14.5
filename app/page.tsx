@@ -6,5 +6,5 @@ import { ClientTicker } from '@/components/home/client-ticker'
 import styles from '@/components/home/home-page.module.css'
 
 export default function HomePage() {
-  return <div className={styles.page} data-homepage><ActOpening /><ClientTicker /><ActWork /><ActCapabilities /><ActClose /></div>
+  return <div className={styles.page} data-homepage><ActOpening><ClientTicker /></ActOpening><ActWork /><ActCapabilities /><ActClose /></div>
 }
