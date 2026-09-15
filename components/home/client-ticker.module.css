@@ -13,7 +13,7 @@
 
 .window {
   position: relative;
-  height: clamp(120px, 10vw, 150px);
+  height: clamp(112px, 9.4vw, 140px);
   overflow: hidden;
 }
 
@@ -21,7 +21,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 36px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -41,8 +41,8 @@
 .artwork {
   display: block;
   flex: none;
-  width: 152px;
-  height: 44px;
+  width: 144px;
+  height: 42px;
   background: currentColor;
   mask-size: contain;
   mask-position: center;
@@ -50,9 +50,9 @@
   mask-mode: alpha;
 }
 
-.symbol .artwork { width: 60px; height: 60px; }
-.script .artwork { width: 128px; height: 56px; }
-.illustration .artwork { width: 64px; height: 72px; }
+.symbol .artwork { width: 56px; height: 56px; }
+.script .artwork { width: 120px; height: 52px; }
+.illustration .artwork { width: 60px; height: 68px; }
 
 .section[data-animated='true'] .group {
   overflow: visible;
@@ -99,10 +99,10 @@
 
 @media (max-width: 699px) {
   .section { padding-block: 0 16px; }
-  .window { height: 112px; }
-  .group { gap: 28px; }
+  .window { height: 104px; }
+  .group { gap: 24px; }
   .logo { flex-basis: 120px; width: 120px; height: 60px; }
-  .artwork { max-width: 116px; max-height: 60px; }
+  .artwork { max-width: 110px; max-height: 56px; }
   .glass {
     width: 28%;
     -webkit-backdrop-filter: blur(14px) saturate(155%);

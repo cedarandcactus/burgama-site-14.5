@@ -76,8 +76,8 @@ export function ClientTicker() {
       const measurement = document.createElementNS('http://www.w3.org/2000/svg', 'path')
       measurement.setAttribute('d', path)
       const pathLength = measurement.getTotalLength()
-      const spacing = width < 700 ? 170 : 220
-      const speed = width < 700 ? 26 : 34
+      const spacing = width < 700 ? 152 : 196
+      const speed = width < 700 ? 30 : 39
       const duration = Math.max(logos.length * spacing, pathLength + spacing) / speed * 1000
       const travelFraction = pathLength / speed * 1000 / duration
       const elapsedTime = typeof phase === 'number' ? phase / previousDuration * duration : 0
