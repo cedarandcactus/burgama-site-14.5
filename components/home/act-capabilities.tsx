@@ -6,22 +6,18 @@ import { gsap } from '@/lib/motion'
 
 const capabilities = [
   {
-    label: 'Position and identity',
     title: 'Brand & direction',
     body: 'We find the useful truth, then turn it into a distinct identity and a system your team can actually use.',
   },
   {
-    label: 'Websites and products',
     title: 'Digital & development',
     body: 'We design and build digital experiences that feel considered, work hard, and stay maintainable.',
   },
   {
-    label: 'Stories in motion',
     title: 'Campaigns & content',
     body: 'We create the ideas, imagery, and production systems that keep a brand moving without losing the plot.',
   },
   {
-    label: 'Traction over noise',
     title: 'Marketing & growth',
     body: 'We connect search, social, and ongoing support to the outcomes that matter—not activity for its own sake.',
   },
@@ -34,43 +30,27 @@ export function ActCapabilities() {
     const section = sectionRef.current
     if (!section) return
 
-    const shell = section.querySelector<HTMLElement>('[data-capabilities-shell]')
     const cards = gsap.utils.toArray<HTMLElement>('[data-capability-card]', section)
     const media = gsap.matchMedia()
 
     media.add('(min-width: 700px) and (prefers-reduced-motion: no-preference)', () => {
-      const entrance = shell ? gsap.fromTo(shell, {
-        xPercent: 10,
+      const cardTweens = cards.map((card, index) => gsap.fromTo(card, {
+        xPercent: 10 + index * 2,
+        opacity: 0.35,
       }, {
         xPercent: 0,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 96%',
-          end: 'top 58%',
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      }) : undefined
-
-      const cardTweens = cards.map(card => gsap.fromTo(card, {
-        xPercent: 18,
-      }, {
-        xPercent: 0,
+        opacity: 1,
         ease: 'none',
         scrollTrigger: {
           trigger: card,
-          start: 'top 94%',
-          end: 'top 68%',
-          scrub: 0.8,
+          start: 'top 96%',
+          end: 'top 72%',
+          scrub: 0.65,
           invalidateOnRefresh: true,
         },
       }))
 
-      return () => {
-        entrance?.kill()
-        cardTweens.forEach(tween => tween.kill())
-      }
+      return () => cardTweens.forEach(tween => tween.kill())
     })
 
     return () => media.revert()
@@ -92,7 +72,6 @@ export function ActCapabilities() {
               role="listitem"
               style={{ '--card-index': index } as CSSProperties}
             >
-              <p className="capability-label">{item.label}</p>
               <h3 className="font-serif text-balance">{item.title}</h3>
               <p className="capability-description">{item.body}</p>
             </article>
