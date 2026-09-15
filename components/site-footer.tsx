@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useId, useRef } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
 import { gsap, ScrollTrigger } from '@/lib/motion'
@@ -159,28 +160,46 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           </h2>
         </div>
       </section>
-      <footer className={styles.footer} data-home={home} data-work={work}>
-        <FooterFilm />
-        <div className={styles.content}>
-          <div className={styles.invitation}>
-            <p>Bring us the idea, the problem, or the half-finished thought. We&apos;ll help make it clear and make it work.</p>
-            <a className={styles.emailButton} href="mailto:hello@burgama.com">start a project</a>
+      <div className={styles.footerFrame}>
+        <footer className={styles.footer} data-home={home} data-work={work}>
+          <FooterFilm />
+          <div className={styles.content}>
+            <div className={styles.topRow}>
+              <div className={styles.invitation}>
+                <h2>let&apos;s start something.</h2>
+                <a className={styles.emailButton} href="mailto:hello@burgama.com">
+                  <span>hello@burgama.com</span>
+                  <span className={styles.emailArrow} aria-hidden="true"><ArrowUpRight /></span>
+                </a>
+                <p>Bring the idea. We&apos;ll bring the people to make it happen.</p>
+              </div>
+              <nav className={styles.linkColumn} aria-label="Explore Burgama">
+                <Link href="/#capabilities">services</Link>
+                <Link href="/work">work</Link>
+                <Link href="/studio">about</Link>
+              </nav>
+              <nav className={styles.linkColumn} aria-label="Inside the studio">
+                <Link href="/ideas">ideas</Link>
+                <Link href="/studio#small-title">our approach</Link>
+                <Link href="/studio#team-title">the people</Link>
+              </nav>
+              <div className={styles.linkColumn}>
+                <p className={styles.location}>austin, texas</p>
+                <p className={styles.availability}>Working wherever you are.</p>
+                <Link href="/contact">contact</Link>
+              </div>
+            </div>
+            <div className={styles.identity} data-footer-identity="">
+              <Link href="/" className={styles.wordmark} aria-label="Burgama home">burgama</Link>
+            </div>
+            <div className={styles.bottomRow}>
+              <p>© {new Date().getFullYear()} Burgama. All rights reserved.</p>
+              <a href="mailto:hello@burgama.com">hello@burgama.com</a>
+              <p className={styles.credit}>Independent by design.</p>
+            </div>
           </div>
-          <div className={styles.directory}>
-            <nav className={styles.links} aria-label="Footer">
-              <Link href="/work">work</Link>
-              <Link href="/studio">about</Link>
-              <Link href="/ideas">ideas</Link>
-              <Link href="/contact">contact</Link>
-            </nav>
-            <a className={styles.email} href="mailto:hello@burgama.com">hello@burgama.com</a>
-            <p className={styles.location}>Austin, Texas<br />Working wherever you are</p>
-          </div>
-          <div className={styles.identity} data-footer-identity="">
-            <Link href="/" className={styles.wordmark} aria-label="Burgama home">burgama</Link>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   )
 }

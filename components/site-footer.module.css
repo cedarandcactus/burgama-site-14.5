@@ -78,10 +78,17 @@
   will-change: transform;
 }
 
+.footerFrame {
+  padding: 10px;
+  background: var(--palette-powder);
+}
+
 .footer {
   position: relative;
   isolation: isolate;
+  overflow: clip;
   margin: 0;
+  border-radius: clamp(24px, 2vw, 42px);
   color: var(--palette-powder);
   background: var(--palette-navy);
 }
@@ -120,137 +127,132 @@
 }
 
 .scrim {
-  background: linear-gradient(180deg, rgb(1 19 41 / 45%) 0%, rgb(1 19 41 / 12%) 42%, rgb(1 19 41 / 40%) 100%);
+  background: linear-gradient(180deg, rgb(1 19 41 / 62%) 0%, rgb(1 19 41 / 22%) 48%, rgb(1 19 41 / 48%) 100%);
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  min-height: max(720px, 100svh);
-  padding: clamp(120px, 13vw, 208px) var(--page-gutter) 20px;
+  min-height: clamp(560px, 45vw, 1100px);
+  padding: clamp(32px, 3vw, 72px) clamp(24px, 2vw, 52px);
   container-type: inline-size;
 }
 
-.invitation,
-.directory,
-.identity {
+.topRow {
+  display: grid;
+  grid-template-columns: 1.95fr .85fr .95fr .9fr;
+  gap: clamp(16px, 2vw, 48px);
   width: 100%;
-  max-width: var(--page-max);
-  margin-inline: auto;
 }
 
 .invitation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  margin-bottom: auto;
-  padding-bottom: clamp(100px, 12vw, 190px);
-  text-align: center;
+  min-width: 0;
+  padding-right: clamp(8px, 3vw, 64px);
 }
 
-.invitation p {
-  max-width: 36ch;
-  margin: 0;
+.invitation h2 {
+  margin: 0 0 24px;
   color: inherit;
-  font-size: clamp(20px, 1.7vw, 26px);
-  font-weight: 500;
-  line-height: 1.45;
-  text-wrap: pretty;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(30px, 3vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: normal;
 }
 
 .footer .emailButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: min(100%, var(--control-basis-width));
-  min-height: 52px;
-  padding: 10px 28px;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
-  border: 1.5px solid var(--palette-powder);
-  border-radius: 999px;
-  font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(23px, 2vw, 28px);
-  font-weight: 400;
-  line-height: 1;
-  text-decoration: none;
-  transition: color 180ms ease, background-color 180ms ease;
-}
-
-.playback {
-  position: absolute;
-  z-index: 1;
-  top: 24px;
-  right: var(--page-gutter);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 84px;
-  min-height: 44px;
-  padding: 10px 16px;
-  color: var(--palette-powder);
-  background: rgb(1 19 41 / 65%);
-  border: 1px solid rgb(175 200 242 / 45%);
-  border-radius: 999px;
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.directory {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 28px 48px;
-  padding-bottom: clamp(48px, 6vw, 96px);
+  gap: 16px;
+  min-height: 64px;
+  width: 100%;
+  padding: 8px 8px 8px clamp(20px, 1.6vw, 38px);
+  border: 1px solid rgb(175 200 242 / 18%);
+  border-radius: 999px;
+  color: var(--palette-powder);
+  background: rgb(175 200 242 / 12%);
+  font-family: var(--font-pangram), sans-serif;
+  font-size: clamp(17px, 1.65vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 180ms ease;
 }
 
-.links {
+.emailArrow {
   display: flex;
-  flex-wrap: wrap;
+  flex: none;
   align-items: center;
-  gap: clamp(20px, 2.5vw, 40px);
+  justify-content: center;
+  width: clamp(48px, 3.6vw, 80px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
 }
 
-.links a,
-.email {
+.emailArrow svg {
+  width: 48%;
+  height: 48%;
+  stroke-width: 1.5;
+  transition: transform 180ms ease;
+}
+
+.invitation p {
+  max-width: 34ch;
+  margin: 22px 0 0;
+  color: inherit;
+  font-size: clamp(14px, 1vw, 19px);
+  font-weight: 500;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.linkColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(12px, 1vw, 22px);
+  min-width: 0;
+  padding-left: clamp(16px, 1.2vw, 28px);
+  border-left: 1px solid rgb(175 200 242 / 30%);
+}
+
+.linkColumn a,
+.linkColumn .location {
+  margin: 0;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(27px, 2.4vw, 38px);
+  font-size: clamp(24px, 2.2vw, 46px);
   font-weight: 400;
   line-height: 1;
   text-decoration: none;
 }
 
-.email {
-  margin-left: auto;
-}
-
-.location {
-  margin: 0;
+.linkColumn .availability {
+  max-width: 16ch;
+  margin: 0 0 4px;
   color: inherit;
-  font-size: 15px;
-  font-weight: 300;
+  font-size: clamp(13px, 1vw, 19px);
+  font-weight: 500;
   line-height: 1.5;
-  text-align: right;
 }
 
 .identity {
-  display: block;
+  width: 100%;
+  margin-top: auto;
+  padding-top: clamp(100px, 10vw, 240px);
 }
 
 .footer .wordmark {
   display: block;
   width: 100%;
   min-width: 0;
-  padding-bottom: .1em;
+  padding-bottom: .13em;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: min(25.6cqw, 450px);
+  font-size: 25.6cqw;
   font-weight: 400;
   line-height: .78;
   letter-spacing: normal;
@@ -259,7 +261,29 @@
   white-space: nowrap;
 }
 
-.footer a:is(:hover, :focus-visible):not(.emailButton) {
+.bottomRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  padding-top: 28px;
+  font-size: clamp(12px, .85vw, 17px);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.bottomRow p,
+.bottomRow a {
+  margin: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.bottomRow .credit {
+  margin-left: auto;
+}
+
+.footer a:is(:hover, :focus-visible):not(.emailButton, .wordmark) {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: .16em;
@@ -271,33 +295,72 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .emailButton:hover {
-    color: var(--palette-powder);
-    background: var(--palette-navy);
+  .footer .emailButton:hover {
+    background: rgb(175 200 242 / 22%);
   }
 
-  .playback:hover {
-    background: var(--palette-navy);
+  .emailButton:hover .emailArrow svg {
+    transform: translate(2px, -2px);
   }
 }
 
-@media (max-width: 1000px) {
-  .directory {
-    justify-content: center;
-    text-align: center;
+@media (max-width: 1100px) {
+  .topRow {
+    grid-template-columns: 1.75fr .85fr .95fr .95fr;
+    gap: 16px;
   }
 
-  .links {
+  .invitation {
+    padding-right: 0;
+  }
+
+  .footer .emailButton {
+    gap: 8px;
+    min-height: 56px;
+    padding-left: 16px;
+    font-size: 16px;
+  }
+
+  .emailArrow {
+    width: 38px;
+  }
+}
+
+@media (max-width: 749px) {
+  .topRow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px 16px;
+  }
+
+  .invitation {
+    grid-column: 1 / -1;
+    max-width: 480px;
+  }
+
+  .invitation h2 {
+    font-size: clamp(34px, 6vw, 48px);
+  }
+
+  .footer .emailButton {
+    min-height: 64px;
+    font-size: 20px;
+  }
+
+  .emailArrow {
+    width: 48px;
+  }
+
+  .identity {
+    padding-top: 90px;
+  }
+
+  .bottomRow {
+    gap: 10px 20px;
+  }
+
+  .bottomRow .credit {
     width: 100%;
-    justify-content: center;
-  }
-
-  .email {
     margin-left: 0;
-  }
-
-  .location {
-    text-align: left;
   }
 }
 
@@ -314,62 +377,45 @@
     max-width: 10ch;
   }
 
-  .content {
-    min-height: 90svh;
-    padding-top: 124px;
-  }
-
-  .invitation {
-    padding-bottom: 100px;
-  }
-
-  .invitation p {
-    max-width: 31ch;
-    font-size: 20px;
-  }
-
   .poster,
   .video {
     object-position: 58% center;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 450px) {
+  .footerFrame {
+    padding: 8px;
+  }
+
   .content {
-    padding-inline: 20px;
-    padding-bottom: 20px;
+    padding: 32px 20px;
   }
 
-  .emailButton {
-    max-width: 280px;
+  .topRow {
+    column-gap: 12px;
   }
 
-  .directory {
+  .linkColumn {
+    gap: 14px;
+    padding-left: 10px;
+  }
+
+  .linkColumn a,
+  .linkColumn .location {
+    font-size: 23px;
+  }
+
+  .bottomRow {
     flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 28px;
-    padding-bottom: 76px;
-  }
-
-  .links {
-    gap: clamp(12px, 3.5vw, 20px);
-  }
-
-  .links a {
-    font-size: clamp(25px, 7.2vw, 30px);
-  }
-
-  .email {
-    font-size: 28px;
-  }
-
-  .location {
-    text-align: center;
+    align-items: flex-start;
+    padding-top: 24px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .emailButton,
+  .emailArrow svg,
   .video {
     transition: none;
   }
