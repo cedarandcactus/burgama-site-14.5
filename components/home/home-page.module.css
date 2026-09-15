@@ -16,44 +16,78 @@
 
 .heroStage {
   position: sticky;
-  top: 106px;
-  height: calc(100svh - 106px);
+  top: 0;
+  height: 100svh;
   min-height: 560px;
   overflow: hidden;
   isolation: isolate;
 }
 
-.heroStage::before,
-.heroStage::after {
-  content: '';
+.heroFilm {
   position: absolute;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
+  background: var(--palette-navy);
 }
 
-.heroStage::before {
-  right: -12vw;
-  bottom: -35%;
-  width: min(58vw, 820px);
-  aspect-ratio: 0.82;
-  border-radius: 58% 42% 48% 52% / 44% 60% 40% 56%;
-  background: var(--palette-yellow-soft);
-  transform: rotate(-18deg);
+.heroPoster,
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
-.heroStage::after {
-  right: clamp(22px, 7vw, 110px);
-  top: 20%;
-  width: clamp(56px, 8vw, 124px);
-  aspect-ratio: 1;
-  border-radius: 52% 48% 62% 38% / 44% 58% 42% 56%;
-  background: var(--palette-butter);
-  transform: rotate(16deg);
+.heroVideo {
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.heroVideo[data-visible='true'] {
+  opacity: 1;
+}
+
+.heroFilm::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--palette-navy) 22%, transparent), color-mix(in srgb, var(--palette-navy) 36%, transparent) 55%, color-mix(in srgb, var(--palette-navy) 68%, transparent));
+}
+
+.heroPlayback {
+  position: absolute;
+  z-index: 1;
+  top: 100px;
+  right: var(--home-inset);
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-radius: 50%;
+  color: var(--palette-soft-white);
+  background: color-mix(in srgb, var(--palette-navy) 35%, transparent);
+  cursor: pointer;
+}
+
+.heroPlayback svg {
+  width: 16px;
+  height: 16px;
+}
+
+.heroPlayback:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
 
 .heroFrame {
   height: 100%;
-  padding: 0 var(--home-inset) clamp(22px, 3.4vw, 52px);
+  padding: 106px var(--home-inset) clamp(22px, 3.4vw, 52px);
 }
 
 .heroFrameContent {
@@ -134,7 +168,7 @@
   max-width: 38ch;
   margin: 0;
   font-size: clamp(16px, 1.35vw, 21px);
-  font-weight: 300;
+  font-weight: 500;
   line-height: 1.45;
   letter-spacing: -0.018em;
 }
@@ -821,6 +855,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .heroVideo,
+  .heroPlayback {
+    display: none;
+  }
+
   .hero {
     min-height: auto;
   }

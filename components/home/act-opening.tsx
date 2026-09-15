@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { ModularButton } from '@/components/modular-button'
+import { HeroFilm } from '@/components/home/hero-film'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
@@ -37,6 +38,7 @@ export function ActOpening() {
 
       gsap.set(slides, {
         autoAlpha: 1,
+        y: 0,
         yPercent: 110,
         force3D: true,
       })
@@ -49,13 +51,16 @@ export function ActOpening() {
 
         timeline
           .to(previousSlide, {
+            y: 0,
             yPercent: -110,
             duration: 0.72,
             ease: 'power2.inOut',
           }, transitionStart)
           .fromTo(nextSlide, {
+            y: 0,
             yPercent: 110,
           }, {
+            y: 0,
             yPercent: 0,
             duration: 0.72,
             ease: 'power2.inOut',
@@ -93,6 +98,7 @@ export function ActOpening() {
   return (
     <section ref={heroRef} className={styles.hero} aria-labelledby="opening-title" data-kinetic-hero="">
       <div ref={stageRef} className={styles.heroStage}>
+        <HeroFilm />
         <div className={styles.heroFrame}>
           <div className={styles.heroFrameContent}>
             <h1 id="opening-title" className="font-serif" aria-label={accessibleHeadline}>
