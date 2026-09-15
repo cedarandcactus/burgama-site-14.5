@@ -129,8 +129,7 @@ body .cyan-header[data-home='true'][data-glass-theme='frost'] {
 body .cyan-header[data-home='true'] .header-inner {
   --glass-opacity: 92%;
   isolation: isolate;
-  transform: translate(var(--glass-shift-x, 0px), var(--glass-shift-y, 0px)) rotate(var(--glass-tilt, 0deg));
-  transform-origin: 0 50%;
+  transform: none;
   background: transparent;
   box-shadow:
     0 9px 26px -14px color-mix(in srgb, var(--palette-navy) 35%, transparent),
@@ -139,6 +138,11 @@ body .cyan-header[data-home='true'] .header-inner {
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   backdrop-filter: blur(18px) saturate(145%);
   transition: width var(--header-motion), height var(--header-motion), border-radius var(--header-motion);
+}
+
+body .cyan-header[data-home='true']:not([data-menu-open='true']):not([data-project-open='true']) .header-inner {
+  border-radius: var(--glass-round-a, 30px) var(--glass-round-b, 30px) var(--glass-round-a, 30px) var(--glass-round-b, 30px) / 50%;
+  transition: width var(--header-motion), height var(--header-motion), border-radius 120ms linear;
 }
 
 body .cyan-header[data-home='true'][data-glass-theme='ink']:not([data-menu-open='true']):not([data-project-open='true']) .header-inner {

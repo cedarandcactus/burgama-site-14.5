@@ -95,7 +95,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     function update() {
       frame = 0
       if (disposed) return
-      // Read the fixed layout anchor, never the rotated shell's bounding box.
+      // The shell stays fixed; only its corner silhouette and surface paint change.
       const headerBounds = header!.getBoundingClientRect()
       const left = headerBounds.left + shell!.offsetLeft
       const top = headerBounds.top + shell!.offsetTop
@@ -144,27 +144,17 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
 
       const proximity = crossing ? Math.max(0, 1 - Math.abs(crossing.distance) / (height + 90)) : 0
       const strength = proximity * proximity * (3 - 2 * proximity)
-      const angle = !motion.matches && crossing ? Math.max(-6, Math.min(6, crossing.slope)) * strength : 0
-      const rotation = new DOMMatrix().translate(0, height / 2).rotate(angle).translate(0, -height / 2)
-      const corners = [[0, 0], [width, 0], [width, height], [0, height]].map(([x, y]) => new DOMPoint(x, y).matrixTransform(rotation))
-      const headerStyle = getComputedStyle(header!)
-      const safeTop = Math.max(4, Number.parseFloat(headerStyle.paddingTop) || 0)
-      const safeLeft = Math.max(4, Number.parseFloat(headerStyle.paddingLeft) || 0)
-      const safeRight = Math.max(4, Number.parseFloat(headerStyle.paddingRight) || 0)
-      const shiftY = Math.max(0, safeTop - top - Math.min(...corners.map(point => point.y)))
-      const minX = left + Math.min(...corners.map(point => point.x))
-      const maxX = left + Math.max(...corners.map(point => point.x))
-      const shiftX = minX < safeLeft ? safeLeft - minX : Math.min(0, window.innerWidth - safeRight - maxX)
-      shell!.style.setProperty('--glass-tilt', `${angle.toFixed(3)}deg`)
-      shell!.style.setProperty('--glass-shift-x', `${shiftX.toFixed(3)}px`)
-      shell!.style.setProperty('--glass-shift-y', `${shiftY.toFixed(3)}px`)
+      const lean = !motion.matches && crossing ? Math.max(-1, Math.min(1, crossing.slope / 10)) * strength : 0
+      const radius = Math.min(height / 2, 30)
+      shell!.style.setProperty('--glass-round-a', `${(radius + lean * 22).toFixed(3)}px`)
+      shell!.style.setProperty('--glass-round-b', `${(radius - lean * 22).toFixed(3)}px`)
 
       if (!crossing) {
         clearPaint()
         return
       }
       const { curve, matrix } = crossing
-      const screenToShell = new DOMMatrix().translate(left + shiftX, top + shiftY).multiply(rotation).inverse()
+      const screenToShell = new DOMMatrix().translate(left, top).inverse()
       const projected = screenToShell.multiply(matrix)
       const oldInk = isLight(curve.base) ? navy : powder
       const newInk = isLight(curve.fill) ? navy : powder
@@ -221,7 +211,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       delete header.dataset.glassTheme
       delete header.dataset.glassSurface
       header.style.removeProperty('--header-surface')
-      for (const property of ['--glass-tilt', '--glass-shift-x', '--glass-shift-y']) shell.style.removeProperty(property)
+      for (const property of ['--glass-round-a', '--glass-round-b']) shell.style.removeProperty(property)
       window.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', refresh)
       document.removeEventListener('visibilitychange', scheduleUpdate)

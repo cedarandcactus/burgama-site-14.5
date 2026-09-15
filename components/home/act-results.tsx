@@ -1,19 +1,20 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/motion'
-import { homeCurvePoint } from '@/lib/home-curve'
+import { homeCurveExtensionLength, homeSlopePath } from '@/lib/home-curve'
 import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
 const results = [
-  { value: '130+', spoken: '130 plus', metric: 'businesses worked with', surface: 'yellow-soft', next: 'soft-coral', direction: 'right' },
-  { value: '20m', spoken: '20 million', metric: 'annual ad impressions', surface: 'soft-coral', next: 'powder', direction: 'left' },
-  { value: '65', spoken: '65', metric: 'countries with active clients', surface: 'powder', next: 'powder-deep', direction: 'right' },
+  { phrase: '130+ businesses worked with', surface: 'yellow-soft', next: 'soft-coral', direction: 'right' },
+  { phrase: '20 million annual ad impressions', surface: 'soft-coral', next: 'powder', direction: 'left' },
+  { phrase: '65 countries with active clients', surface: 'powder', next: 'powder-deep', direction: 'right' },
 ] as const
 
 export function ActResults() {
   const sectionRef = useRef<HTMLElement>(null)
+  const id = useId().replace(/:/g, '')
 
   useEffect(() => {
     const section = sectionRef.current
@@ -23,43 +24,55 @@ export function ActResults() {
     let frame = 0
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      const groups = [...section.querySelectorAll<HTMLElement>('[data-result]')]
-      groups.forEach((group, index) => {
-        const band = group.closest<HTMLElement>('[data-impact-band]')!
+      const bands = [...section.querySelectorAll<HTMLElement>('[data-impact-band]')]
+      bands.forEach((band, index) => {
+        const svg = band.querySelector<SVGSVGElement>('[data-impact-ribbon]')!
+        const path = svg.querySelector<SVGPathElement>('defs path')!
+        const text = svg.querySelector<SVGTextElement>('text')!
+        const copies = [...svg.querySelectorAll<SVGTextPathElement>('textPath')]
         const progress = { value: 0 }
-        let width = 0
-        let rise = 0
-        let travel = 0
-        const measure = () => {
-          width = band.clientWidth
-          rise = band.querySelector('svg')?.getBoundingClientRect().height ?? 80
-          const gutter = Number.parseFloat(getComputedStyle(band).paddingLeft)
-          const available = Math.max(0, (width - group.offsetWidth) / 2 - gutter)
-          travel = Math.min(0.14, available / width)
-        }
+        let period = 0
+        let entrance = 0
+        band.dataset.ribbonReady = 'true'
+
         const render = () => {
-          const point = homeCurvePoint(0.5 - travel * (1 - progress.value))
-          const destination = homeCurvePoint(0.5)
-          const direction = results[index].direction === 'left' ? -1 : 1
-          group.style.transform = `translate3d(${(point.x - destination.x) * width * direction}px, ${(point.y - destination.y) * rise}px, 0)`
+          const direction = results[index].direction === 'left' ? 1 : -1
+          const offset = (progress.value - 0.5) * period * direction
+          copies.forEach((copy, copyIndex) => {
+            copy.setAttribute('startOffset', String(entrance + (copyIndex - 2) * period + offset))
+          })
         }
+        const measure = () => {
+          const width = band.clientWidth
+          const height = band.clientHeight
+          const rise = band.querySelector<SVGSVGElement>('[data-nav-curve]')!.getBoundingClientRect().height
+          const fontSize = Number.parseFloat(getComputedStyle(text).fontSize)
+          period = text.getComputedTextLength() + fontSize * 1.4
+          const extension = Math.max(width, period) * 3
+          const baseline = height - rise - Math.max(22, fontSize * 0.36)
+          svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
+          path.setAttribute('d', homeSlopePath(width, rise, baseline, extension, results[index].direction))
+          entrance = results[index].direction === 'left' ? extension : homeCurveExtensionLength(width, rise, extension)
+          render()
+        }
+
         measure()
-        gsap.fromTo(progress, { value: 0 }, {
+        gsap.to(progress, {
           value: 1,
           ease: 'none',
           onUpdate: render,
           scrollTrigger: {
             trigger: band,
             start: 'top bottom',
-            end: 'center 55%',
-            scrub: 0.45,
+            end: 'bottom top',
+            scrub: 0.35,
             onRefreshInit: measure,
             onRefresh: render,
             invalidateOnRefresh: true,
           },
         })
       })
-      return () => groups.forEach(group => group.style.removeProperty('transform'))
+      return () => bands.forEach(band => { delete band.dataset.ribbonReady })
     })
 
     const refresh = () => {
@@ -87,16 +100,20 @@ export function ActResults() {
 
   return (
     <section ref={sectionRef} className={styles.results} aria-labelledby="results-heading">
+      <h2 id="results-heading" className="sr-only">a little of the impact.</h2>
       {results.map((result, index) => (
-        <div className={styles.impactBand} key={result.value} data-impact-band={result.surface} data-nav-surface="frost">
-          {index === 0 && <h2 id="results-heading" className="font-serif">a little of the impact.</h2>}
-          <dl className={styles.result} data-result="">
-            <dt className={styles.resultMetric}>{result.metric}</dt>
-            <dd className={styles.resultNumber}>
-              <span aria-hidden="true">{result.value}</span>
-              <span className="sr-only">{result.spoken}</span>
-            </dd>
-          </dl>
+        <div className={styles.impactBand} key={result.surface} data-impact-band={result.surface} data-nav-surface="frost">
+          <h3 className={styles.impactPhrase}>{result.phrase}</h3>
+          <svg className={styles.impactRibbon} data-impact-ribbon="" aria-hidden="true" focusable="false">
+            <defs>
+              <path id={`impact-${id}-${index}`} d={homeSlopePath(1440, 144, 160, 6000, result.direction)} />
+            </defs>
+            {Array.from({ length: 5 }, (_, copy) => (
+              <text key={copy}>
+                <textPath href={`#impact-${id}-${index}`}>{result.phrase}</textPath>
+              </text>
+            ))}
+          </svg>
           <SectionRise surface={result.next} direction={result.direction} />
         </div>
       ))}

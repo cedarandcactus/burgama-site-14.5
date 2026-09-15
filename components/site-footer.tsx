@@ -85,16 +85,14 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       const height = lead.clientHeight
       const rise = root.querySelector<SVGSVGElement>('[data-footer-lead] > svg')?.getBoundingClientRect().height ?? 100
       text.style.removeProperty('font-size')
-      const naturalSize = Number.parseFloat(getComputedStyle(text).fontSize)
-      const naturalWidth = text.getComputedTextLength()
-      text.style.fontSize = `${naturalSize * Math.min(1, width * 0.88 / Math.max(1, naturalWidth))}px`
-      const extension = width + 160
-      const d = homeCurvePath(width, rise, height - rise - 64, extension)
+      const textWidth = text.getComputedTextLength()
+      const extension = Math.max(width, textWidth) + 160
+      const d = homeCurvePath(width, rise, height - rise - 48, extension)
       const leftLength = homeCurveExtensionLength(width, rise, extension)
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
       path.setAttribute('d', d)
-      curveDestination = leftLength + width * 0.05
-      curveEntrance = curveDestination + width * 0.14
+      curveDestination = leftLength + Math.min(width * 0.05, width * 0.94 - textWidth)
+      curveEntrance = leftLength + width * 0.42
     }
     const measureWordmark = () => {
       const wordmark = root.querySelector<HTMLElement>('[data-footer-wordmark]')
@@ -136,7 +134,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             id: `footer-roll-${titleId}`,
             trigger: lead,
             start: home ? 'top bottom' : 'top top',
-            end: home ? 'center 55%' : () => `+=${Math.max(600, Math.min(1300, track.scrollWidth * 0.55))}`,
+            end: home ? 'bottom 35%' : () => `+=${Math.max(600, Math.min(1300, track.scrollWidth * 0.55))}`,
             onRefreshInit: measureCurve,
             pin: !home,
             // Page wrappers use transforms, which change the containing block for fixed pins.

@@ -122,8 +122,9 @@
 }
 
 .ending[data-home='true'] .lead {
+  --ending-title-size: clamp(58px, 8.6vw, 124px);
   height: auto;
-  min-height: clamp(300px, 32vw, 480px);
+  min-height: clamp(340px, 36vw, 560px);
   padding-bottom: var(--home-rise);
   background: var(--palette-powder-deep);
 }
@@ -133,7 +134,7 @@
 }
 
 .ending[data-home='true'] .curvedHeadline {
-  font-size: clamp(64px, 9.2vw, 144px);
+  font-size: clamp(76px, 11vw, 164px);
 }
 
 .footer {

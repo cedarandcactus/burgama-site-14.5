@@ -9,6 +9,13 @@ export function homeCurvePoint(progress: number) {
   }
 }
 
+export function homeSlopePath(width: number, rise: number, top = 0, extension = 0, direction: 'left' | 'right' = 'right') {
+  if (direction === 'right') return homeCurvePath(width, rise, top, extension)
+  const bottom = top + rise
+  const rightEnd = bottom + extension * (1 - shoulder.y1) * rise / (shoulder.x1 * width)
+  return `M ${-extension} ${top} L 0 ${top} C ${width * (1 - shoulder.x2)} ${top + rise * shoulder.y2} ${width * (1 - shoulder.x1)} ${top + rise * shoulder.y1} ${width} ${bottom} L ${width + extension} ${rightEnd}`
+}
+
 export function homeCurveExtensionLength(width: number, rise: number, extension: number) {
   return Math.hypot(extension, extension * (1 - shoulder.y1) * rise / (shoulder.x1 * width))
 }
