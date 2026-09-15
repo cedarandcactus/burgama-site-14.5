@@ -41,6 +41,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${pangram.variable} ${cenura.variable} bg-background`}>
       <body className="bg-background text-foreground font-sans antialiased">
+        <noscript><style>{'.reveal { opacity: 1 !important; transform: none !important; }'}</style></noscript>
         <PageTransition>
           <a href="#main" className="skip-link">Skip to content</a>
           <CornerShell />

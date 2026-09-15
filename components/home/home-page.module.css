@@ -179,8 +179,8 @@
   color: var(--palette-yellow-soft);
 }
 
-.sectionRise[data-surface='soft-coral'] {
-  color: var(--palette-soft-coral);
+.sectionRise[data-surface='blue-mid'] {
+  color: var(--palette-blue-mid);
 }
 
 .tickerSection {
@@ -865,8 +865,7 @@
 }
 
 .heroStatement :global(.pill),
-.workAction :global(.pill),
-.capabilityCard :global(.pill) {
+.workAction :global(.pill) {
   color: var(--palette-navy);
   background: var(--palette-powder);
 }
@@ -885,64 +884,107 @@
   overflow: clip;
 }
 
-.capabilitiesGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 20px;
+.processInner {
   width: min(100%, 1120px);
   margin-inline: auto;
 }
 
-.capabilityCard {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  min-width: 0;
-  min-height: clamp(360px, 32vw, 440px);
-  padding: clamp(48px, 4.5vw, 64px) clamp(28px, 3.6vw, 48px);
-  border-radius: 28px;
-  color: var(--palette-powder);
+.processHeading {
+  margin: 0 0 32px;
+  font-size: clamp(44px, 6vw, 80px);
+  line-height: 1.05;
   text-align: center;
 }
 
-.cardContour {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  fill: var(--palette-navy);
-  pointer-events: none;
-  overflow: visible;
+.processList {
+  display: flex;
+  flex-direction: column;
 }
 
-.capabilityCard h3 {
-  margin: 0;
-  font-size: clamp(44px, 5vw, 68px);
+.processRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 20px 28px;
+  border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.processWord {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: clamp(100px, 14vw, 176px);
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(48px, 7.6vw, 108px);
   font-weight: 400;
-  line-height: 1.08;
 }
 
-.capabilityCard p {
-  max-width: 34ch;
+.processWord h3 {
+  margin: 0;
+  font: inherit;
+  line-height: 1.2;
+}
+
+.processRow p {
+  max-width: 36ch;
   margin: 0;
   font-size: clamp(16px, 1.4vw, 19px);
-  font-weight: 500;
   line-height: 1.6;
   text-wrap: pretty;
 }
 
-.capabilityCard :global(.pill) {
-  flex: none;
-  margin-top: auto;
+.processRibbon { display: none; }
+
+.processRow[data-process-ready='true'] .processRibbon {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: currentColor;
+  font: inherit;
+  pointer-events: none;
 }
 
-.capabilityCard :global(.pill:focus-visible) {
-  outline: 2px solid var(--palette-powder);
-  outline-offset: 5px;
+.processRow[data-process-ready='true'] h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.processAction {
+  display: flex;
+  justify-content: center;
+  padding-top: 28px;
+}
+
+.processAction :global(.pill) {
+  color: var(--palette-powder);
+  background: var(--palette-navy);
+}
+
+.processAction :global(.pill:is(:hover, :focus-visible)) {
+  color: var(--palette-navy);
+  border-color: currentColor;
+  background: transparent;
+}
+
+@media (min-width: 700px) {
+  .processRow {
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(32px, 5vw, 80px);
+    padding-block: 24px;
+  }
+
+  .processWord { flex: 1.5; }
+  .processRow p { flex: 1; }
 }
 
 .results {
@@ -967,7 +1009,7 @@
 }
 
 .impactBand[data-impact-band='yellow-soft'] { background: var(--palette-yellow-soft); }
-.impactBand[data-impact-band='soft-coral'] { background: var(--palette-soft-coral); }
+.impactBand[data-impact-band='blue-mid'] { color: var(--palette-powder); background: var(--palette-blue-mid); }
 .impactBand[data-impact-band='powder'] { background: var(--palette-powder); }
 
 .impactPhrase {
@@ -1208,7 +1250,6 @@
 @media (hover: hover) and (pointer: fine) {
   .heroStatement :global(.pill:hover),
   .workAction :global(.pill:hover),
-  .capabilityCard :global(.pill:hover),
   .page .workTrack :global(.project-tile:hover .project-link-prompt),
   .reelArrows button:not([aria-disabled='true']):hover {
     color: var(--palette-powder);
@@ -1230,17 +1271,6 @@
 
   .introduction h2 {
     font-size: clamp(40px, 10.8vw, 64px);
-  }
-
-  .capabilitiesGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .capabilityCard {
-    min-height: 276px;
-    border-radius: 24px;
-    row-gap: 24px;
   }
 
   .workIntro h2 {

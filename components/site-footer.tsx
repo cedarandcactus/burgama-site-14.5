@@ -4,7 +4,7 @@ import { useEffect, useId, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
-import { BurgamaMark } from '@/components/burgama-mark'
+import { Reveal } from '@/components/reveal'
 import { ProjectEnquiryForm } from '@/components/nav-project-form'
 import { SectionRise } from '@/components/home/section-rise'
 import { gsap, ScrollTrigger } from '@/lib/motion'
@@ -17,7 +17,7 @@ const navigationGroups = [
   {
     label: 'Explore',
     links: [
-      { label: 'Services', href: '/#capabilities' },
+      { label: 'How we work', href: '/#capabilities' },
       { label: 'Work', href: '/work' },
       { label: 'About', href: '/studio' },
     ],
@@ -304,11 +304,11 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         </div>
         {home && <SectionRise surface="powder" />}
       </section>
-      {home && <section className={styles.enquiry} data-inline-enquiry="" data-nav-surface="frost" aria-label="Start a project">
-        <div className={styles.enquiryInner}>
+      {home && <section id="start-a-project" className={styles.enquiry} data-inline-enquiry="" data-nav-surface="frost" aria-label="Start a project">
+        <Reveal className={styles.enquiryInner}>
           <ProjectEnquiryForm variant="inline" />
           <noscript><style>{'[data-inline-enquiry] form { display: none; }'}</style><p>Email <a href="mailto:hello@burgama.com">hello@burgama.com</a> to start a project.</p></noscript>
-        </div>
+        </Reveal>
         <SectionRise surface="navy" direction="left" />
       </section>}
       <div className={styles.footerFrame} data-home={home}>
@@ -317,7 +317,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           <div className={styles.content}>
             <div className={styles.topRow}>
               <div className={styles.invitation} data-footer-invitation="">
-                <Link href="/" className={styles.symbolLink} aria-label="burgama home"><BurgamaMark /></Link>
                 {!home && <h2 aria-label="Let’s make your mark.">
                   <span className={styles.titleLine} aria-hidden="true">
                     <span data-footer-title-word="">let&apos;s</span>{' '}

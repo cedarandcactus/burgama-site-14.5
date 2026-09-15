@@ -26,40 +26,8 @@ export function CornerShell() {
 
   useHeaderGlass(header, pathname)
 
-  useEffect(() => {
-    const element = header.current
-    if (!element) return
-    let currentFooter: Element | null = null
-    let visible = false
-    delete element.dataset.footerVisible
-    const commit = (next: boolean) => {
-      if (visible === next) return
-      visible = next
-      element.dataset.footerVisible = String(next)
-    }
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target === currentFooter) commit(entry.isIntersecting && entry.intersectionRect.height > 0)
-      }
-    }, { threshold: 0 })
-    const connect = () => {
-      const footer = document.querySelector('[data-site-footer]')
-      if (footer === currentFooter) return
-      observer.disconnect()
-      currentFooter = footer
-      commit(false)
-      if (footer) observer.observe(footer)
-    }
-    connect()
-    const content = document.querySelector('main')
-    const mutations = new MutationObserver(connect)
-    if (content) mutations.observe(content, { childList: true, subtree: true })
-    return () => {
-      observer.disconnect()
-      mutations.disconnect()
-      delete element.dataset.footerVisible
-    }
-  }, [pathname])
+  const [symbolVisible, setSymbolVisible] = useState(false)
+  const symbolVisibleRef = useRef(false)
 
   function closeMenu({ restoreFocus = false } = {}) {
     const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(document.activeElement)
@@ -122,7 +90,12 @@ export function CornerShell() {
       const forcedCompact = pathname !== '/' || compactViewport.matches || compactLandscape.matches
       const next = forcedCompact ? true : window.scrollY > (condensedRef.current ? 24 : 72)
       commitCondensed(next)
-      header.current?.style.setProperty('--logo-turn', `${reducedMotion.matches || !next ? 0 : window.scrollY * 0.04}deg`)
+      const nextSymbol = window.scrollY > (symbolVisibleRef.current ? 4 : 12)
+      if (nextSymbol !== symbolVisibleRef.current) {
+        symbolVisibleRef.current = nextSymbol
+        setSymbolVisible(nextSymbol)
+      }
+      header.current?.style.setProperty('--logo-turn', `${reducedMotion.matches || !nextSymbol ? 0 : window.scrollY * 0.04}deg`)
       header.current?.style.setProperty('--header-viewport-height', `${window.visualViewport?.height ?? window.innerHeight}px`)
     }
 
@@ -175,11 +148,15 @@ export function CornerShell() {
   const menuTriggerVisible = condensed || projectOpen
 
   return (
-    <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-condensed={condensed} data-menu-open={open} data-project-open={projectOpen} data-work={pathname.startsWith('/work')}>
+    <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-brand={symbolVisible ? 'symbol' : 'wordmark'} data-condensed={condensed} data-menu-open={open} data-project-open={projectOpen} data-work={pathname.startsWith('/work')}>
       <div className="header-inner" data-lenis-prevent={projectOpen || undefined}>
         <Link className="cyan-header-mark-link" href="/" aria-label="Home">
           <span className="cyan-header-mark" data-glass-ink aria-hidden="true" />
-          <span className="cyan-header-wordmark" data-glass-ink aria-hidden="true">burgama</span>
+          <span className="cyan-header-wordmark" aria-hidden="true">
+            {Array.from('burgama').map((letter, index) => (
+              <span key={index} data-glass-ink style={{ animationDelay: `${index * 35}ms` }}>{letter}</span>
+            ))}
+          </span>
         </Link>
         <button
           ref={trigger}

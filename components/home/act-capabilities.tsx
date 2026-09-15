@@ -1,102 +1,128 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { homeCardPath, homeSlopeSample } from '@/lib/home-curve'
+import { useEffect, useId, useRef } from 'react'
+import { homeCurveExtensionLength, homeSlopePath } from '@/lib/home-curve'
+import { gsap, ScrollTrigger } from '@/lib/motion'
 import { ModularButton } from '@/components/modular-button'
+import { Reveal } from '@/components/reveal'
 import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
-const capabilities = [
-  {
-    title: 'creative.',
-    description: 'We find what makes your business distinct, then bring it to life through identity, websites, and imagery.',
-    accessibleAction: 'Our creative approach',
-  },
-  {
-    title: 'marketing.',
-    description: 'We connect strategy, content, and campaigns to reach the right people—and keep learning from what works.',
-    accessibleAction: 'Our marketing approach',
-  },
+const process = [
+  { title: 'understand', description: 'Your business, your audience, what needs to change. We turn the right questions into a focused brief.' },
+  { title: 'shape', description: 'Find the direction. Align the strategy, the message, and the creative around what makes you distinct.' },
+  { title: 'make', description: 'Bring it into the world. Identity, websites, and content, built to work together.' },
+  { title: 'improve', description: 'Launch, listen, refine. We measure what matters and build on what works.' },
 ]
-
-function CapabilityCard({ capability, index }: { capability: typeof capabilities[number]; index: number }) {
-  return (
-    <article className={styles.capabilityCard} data-capability-card>
-      <svg className={styles.cardContour} viewBox="0 0 550 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path d={homeCardPath(550, 400,
-          { left: index ? 0.4 : 0.05, right: index ? 1 : 0.4, tangent: 0.15, proximity: index ? 0.45 : 0.9 },
-          { left: index ? 0.4 : 1, right: index ? 0.05 : 0.4, tangent: -0.15, proximity: index ? 0.9 : 0.45 },
-        )} />
-      </svg>
-      <h3 className="font-serif">{capability.title}</h3>
-      <p>{capability.description}</p>
-      <ModularButton href="/studio">
-        <span aria-hidden="true">our approach</span>
-        <span className="sr-only">{capability.accessibleAction}</span>
-      </ModularButton>
-    </article>
-  )
-}
 
 export function ActCapabilities() {
   const sectionRef = useRef<HTMLElement>(null)
+  const id = useId().replace(/:/g, '')
 
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    const cards = [...section.querySelectorAll<HTMLElement>('[data-capability-card]')]
-    const incoming = section.previousElementSibling?.querySelector<SVGSVGElement>('[data-nav-curve]')
-    const outgoing = section.querySelector<SVGSVGElement>('[data-nav-curve]')
-    if (!incoming || !outgoing) return
-    let frame = 0
+    const media = gsap.matchMedia(section)
     let disposed = false
+    let frame = 0
 
-    function measure() {
-      frame = 0
-      if (disposed) return
-      for (const card of cards) {
-        const rect = card.getBoundingClientRect()
-        const sampleEdge = (curve: SVGSVGElement, top: boolean) => {
-          const bounds = curve.getBoundingClientRect()
-          const direction = curve.dataset.direction === 'left' ? 'left' : 'right'
-          const sample = (x: number) => homeSlopeSample(x - bounds.left, bounds.width, bounds.height, direction)
-          const center = sample(rect.left + rect.width / 2)
-          const distance = top ? rect.top - bounds.top - center.y : bounds.top + center.y - rect.bottom
-          return {
-            left: sample(rect.left).y / bounds.height,
-            right: sample(rect.right).y / bounds.height,
-            tangent: center.tangent,
-            proximity: 1 / (1 + Math.max(0, distance) / (rect.height * 0.85)),
-          }
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const rows = [...section.querySelectorAll<HTMLElement>('[data-process-row]')]
+      rows.forEach((row, index) => {
+        const svg = row.querySelector<SVGSVGElement>('svg')!
+        const path = svg.querySelector<SVGPathElement>('defs path')!
+        const text = svg.querySelector<SVGTextElement>('text')!
+        const copy = svg.querySelector<SVGTextPathElement>('textPath')!
+        const direction = index % 2 ? 'left' : 'right'
+        const progress = { value: 0 }
+        let origin = 0
+        let travel = 0
+        row.dataset.processReady = 'true'
+
+        const render = () => {
+          copy.setAttribute('startOffset', String(origin + (progress.value - 0.5) * travel * (index % 2 ? 1 : -1)))
         }
-        const svg = card.querySelector('svg')!
-        svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`)
-        svg.querySelector('path')!.setAttribute('d', homeCardPath(rect.width, rect.height, sampleEdge(incoming!, true), sampleEdge(outgoing!, false)))
-      }
-    }
+        const measure = () => {
+          const width = svg.clientWidth
+          const height = svg.clientHeight
+          if (!width || !height) return
+          const fontSize = parseFloat(getComputedStyle(text).fontSize)
+          const rise = Math.min(64, width * 0.08)
+          const extension = width
+          svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
+          path.setAttribute('d', homeSlopePath(width, rise, (height - rise + fontSize * 0.65) / 2, extension, direction))
+          const textWidth = text.getComputedTextLength()
+          origin = (direction === 'left' ? extension : homeCurveExtensionLength(width, rise, extension)) + (width - textWidth) / 2
+          travel = Math.max(0, Math.min(width * 0.35, width - textWidth - 16))
+          render()
+        }
+        measure()
+        gsap.to(progress, {
+          value: 1,
+          ease: 'none',
+          onUpdate: render,
+          scrollTrigger: {
+            trigger: row,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.4,
+            onRefreshInit: measure,
+            onRefresh: render,
+          },
+        })
+        gsap.from(row.querySelector('p'), {
+          y: 18,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: row, start: 'top 85%', once: true },
+        })
+      })
+      return () => rows.forEach(row => { delete row.dataset.processReady })
+    })
+
     const refresh = () => {
-      if (!disposed && !frame) frame = requestAnimationFrame(measure)
+      if (disposed) return
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => ScrollTrigger.refresh())
     }
-    const observer = new ResizeObserver(refresh)
-    for (const element of [section, incoming, outgoing, ...cards]) observer.observe(element)
-    measure()
+    let width = section.clientWidth
+    const resize = new ResizeObserver(() => {
+      if (width === section.clientWidth) return
+      width = section.clientWidth
+      refresh()
+    })
+    resize.observe(section)
     document.fonts.ready.then(refresh)
     document.fonts.addEventListener('loadingdone', refresh)
-    window.addEventListener('resize', refresh, { passive: true })
     return () => {
       disposed = true
       cancelAnimationFrame(frame)
-      observer.disconnect()
+      resize.disconnect()
       document.fonts.removeEventListener('loadingdone', refresh)
-      window.removeEventListener('resize', refresh)
+      media.revert()
     }
   }, [])
 
   return (
     <section id="capabilities" ref={sectionRef} className={styles.capabilities} data-nav-surface="frost" aria-labelledby="capabilities-heading">
-      <h2 id="capabilities-heading" className="sr-only">two sides of one studio</h2>
-      <div className={styles.capabilitiesGrid}>
-        {capabilities.map((item, index) => <CapabilityCard key={item.title} capability={item} index={index} />)}
+      <div className={styles.processInner}>
+        <Reveal><h2 id="capabilities-heading" className={styles.processHeading}>how we work</h2></Reveal>
+        <div className={styles.processList}>
+          {process.map((step, index) => (
+            <article key={step.title} className={styles.processRow} data-process-row aria-labelledby={`process-${id}-${index}-heading`}>
+              <div className={styles.processWord}>
+                <h3 id={`process-${id}-${index}-heading`}>{step.title}</h3>
+                <svg className={styles.processRibbon} aria-hidden="true" focusable="false">
+                  <defs><path id={`process-${id}-${index}`} /></defs>
+                  <text><textPath href={`#process-${id}-${index}`}>{step.title}</textPath></text>
+                </svg>
+              </div>
+              <p>{step.description}</p>
+            </article>
+          ))}
+        </div>
+        <Reveal className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>
       </div>
       <SectionRise surface="navy" />
     </section>

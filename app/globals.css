@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �����������������������������������
+  Text links are set back by tone and resolve to the sanctioned hover �������������������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5312,8 +5312,9 @@ body:has(.lot-poster) > .mobile-console {
   --palette-yellow-soft: #f8e7a8;
   --palette-yellow-deep: var(--palette-powder);
   --palette-soft-white: #f7f2e8;
-  --palette-soft-coral: #e89b8f;
-  --palette-brick: #b8452c;
+  --palette-blue-mid: #2d5380;
+  --palette-soft-coral: var(--palette-blue-mid);
+  --palette-brick: var(--palette-navy-raised);
   --brand-navy: var(--palette-navy);
   --brand-blue: var(--palette-powder);
   --brand-yellow: var(--palette-butter);

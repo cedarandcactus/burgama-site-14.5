@@ -178,7 +178,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     const refresh = () => { backgrounds.clear(); scheduleUpdate() }
     const resize = new ResizeObserver(refresh)
     const state = new MutationObserver(scheduleUpdate)
-    state.observe(header, { attributes: true, attributeFilter: ['data-menu-open', 'data-project-open', 'data-condensed', 'data-footer-visible'] })
+    state.observe(header, { attributes: true, attributeFilter: ['data-menu-open', 'data-project-open', 'data-condensed', 'data-brand'] })
     resize.observe(shell)
     for (const region of regions) resize.observe(region)
     update()

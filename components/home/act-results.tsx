@@ -7,8 +7,8 @@ import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
 const results = [
-  { phrase: '130+ businesses worked with', surface: 'yellow-soft', next: 'soft-coral', direction: 'right' },
-  { phrase: '20 million annual ad impressions', surface: 'soft-coral', next: 'powder', direction: 'left' },
+  { phrase: '130+ businesses worked with', surface: 'yellow-soft', next: 'blue-mid', direction: 'right' },
+  { phrase: '20 million annual ad impressions', surface: 'blue-mid', next: 'powder', direction: 'left' },
   { phrase: '65 countries with active clients', surface: 'powder', next: 'powder-deep', direction: 'right' },
 ] as const
 
@@ -102,7 +102,7 @@ export function ActResults() {
     <section ref={sectionRef} className={styles.results} aria-labelledby="results-heading">
       <h2 id="results-heading" className="sr-only">a little of the impact.</h2>
       {results.map((result, index) => (
-        <div className={styles.impactBand} key={result.surface} data-impact-band={result.surface} data-nav-surface="frost">
+        <div className={styles.impactBand} key={result.surface} data-impact-band={result.surface} data-nav-surface={result.surface === 'blue-mid' ? 'ink' : 'frost'}>
           <h3 className={styles.impactPhrase}>{result.phrase}</h3>
           <svg className={styles.impactRibbon} data-impact-ribbon="" aria-hidden="true" focusable="false">
             <defs>

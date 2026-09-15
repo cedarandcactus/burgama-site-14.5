@@ -150,23 +150,6 @@
   margin-inline: auto;
 }
 
-.footer .symbolLink {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  margin-bottom: 24px;
-  color: inherit;
-  border-radius: 18px;
-}
-
-.symbolLink :global(.burgama-mark) {
-  width: 64px;
-  height: 64px;
-  background: currentColor;
-  mask: url('/burgama-symbol.svg') center / contain no-repeat;
-}
-
 .footer {
   position: relative;
   isolation: isolate;
@@ -274,9 +257,9 @@
   padding: 6px 6px 6px 18px;
   border: 1px solid var(--palette-powder);
   border-radius: 999px;
-  color: var(--palette-navy);
+  color: var(--palette-powder);
   -webkit-text-fill-color: currentColor;
-  background: var(--palette-powder);
+  background: transparent;
   font-family: var(--font-cenura), sans-serif;
   font-size: clamp(18px, 1.7vw, 23px);
   font-weight: 400;
@@ -322,8 +305,14 @@
   height: 36px;
   overflow: hidden;
   border-radius: 999px;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+}
+
+.footer .emailButton:is(:hover, :focus-visible, :active) {
   color: var(--palette-powder);
-  background: var(--palette-navy);
+  border-color: currentColor;
+  background: transparent;
 }
 
 .emailArrow svg {
@@ -352,7 +341,7 @@
 
 .navigation {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(max-content, 1.35fr) minmax(0, 1fr);
   width: min(100%, 360px);
   margin: 0;
   gap: clamp(24px, 3vw, 56px);
@@ -638,7 +627,7 @@
   }
 
   .navigation {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(max-content, 1.35fr) minmax(0, 1fr);
     gap: 24px;
   }
 
