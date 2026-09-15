@@ -38,10 +38,6 @@ export default function StudioPage() {
   return (
     <div className={styles.page}>
       <section className={styles.hero} aria-labelledby="about-title">
-        <div className={styles.heroMeta}>
-          <p>Independent creative and marketing studio</p>
-          <p>Austin, Texas · Working wherever you are</p>
-        </div>
         <h1 id="about-title" className={`${styles.title} font-serif`}>about</h1>
         <p className={styles.intro}>
           Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.
@@ -50,8 +46,7 @@ export default function StudioPage() {
 
       <section className={styles.teamSection} aria-labelledby="team-title">
         <Reveal className={styles.sectionHeading}>
-          <p className={styles.sectionLabel}>The team</p>
-          <h2 id="team-title" className="font-serif">The people in the room make the work.</h2>
+          <h2 id="team-title" className="font-serif">the people in the room make the work.</h2>
         </Reveal>
 
         <ul className={styles.teamGrid}>
@@ -78,9 +73,8 @@ export default function StudioPage() {
 
       <section aria-labelledby="small-title">
         <Reveal className={styles.smallSection}>
-          <p className={styles.sectionLabel}>Small by design</p>
           <h2 id="small-title" className="font-serif">
-            Ideas stay sharper when they do not get passed down a line.
+            ideas stay sharper when they do not get passed down a line.
           </h2>
           <p>
             The same people who frame the problem carry the work through strategy, design, build, and growth. No account layer. No handoff to a separate delivery team.
@@ -89,8 +83,8 @@ export default function StudioPage() {
       </section>
 
       <section className={styles.actions} aria-label="Next steps">
-        <ModularButton href="/work">See the work</ModularButton>
-        <ModularButton href="/contact">Start a project</ModularButton>
+        <ModularButton href="/work">see the work</ModularButton>
+        <ModularButton href="/contact">start a project</ModularButton>
       </section>
 
       <SiteFooter />

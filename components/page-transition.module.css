@@ -46,7 +46,7 @@
   font-size: clamp(100px, 20vw, 360px);
   font-weight: 400;
   line-height: 1;
-  letter-spacing: -.045em;
+  letter-spacing: normal;
   color: var(--brand-navy);
 }
 .letter {

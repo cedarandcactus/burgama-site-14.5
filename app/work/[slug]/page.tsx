@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
 import { SiteFooter } from '@/components/site-footer'
 import Link from '@/components/transition-link'
@@ -56,16 +55,25 @@ export default async function WorkDetailPage({
 
           <h1 className="font-serif">{project.title}</h1>
           <div className="portfolio-detail-intro">
-            <p className="portfolio-tagline">{project.tagline}</p>
-            <div>
-              <p>{project.summary}</p>
-              <p className="portfolio-scope">{project.services.join(' · ')}</p>
-              <div className="portfolio-meta">
-                <span>{project.disciplines.join(' · ')}</span>
-                {project.period ? <span>{project.period}</span> : null}
-                {project.status ? <span>{project.status}</span> : null}
+            <p className="portfolio-detail-summary">{project.summary}</p>
+            <dl className="portfolio-facts">
+              <div>
+                <dt>Services</dt>
+                <dd>{project.services.join(', ')}</dd>
               </div>
-            </div>
+              {project.period ? (
+                <div>
+                  <dt>Timeline</dt>
+                  <dd>{project.period}</dd>
+                </div>
+              ) : null}
+              {project.status ? (
+                <div>
+                  <dt>Status</dt>
+                  <dd>{project.status}</dd>
+                </div>
+              ) : null}
+            </dl>
           </div>
         </header>
 
@@ -112,9 +120,6 @@ export default async function WorkDetailPage({
                 <Link href={`/work/${related.slug}`} className="portfolio-related-link" key={related.slug}>
                   <span>{related.disciplines.join(' · ')}</span>
                   <h3 className="font-serif">{related.title}</h3>
-                  <span aria-hidden="true">
-                    <CircularArrowIcon />
-                  </span>
                 </Link>
               ))}
             </nav>

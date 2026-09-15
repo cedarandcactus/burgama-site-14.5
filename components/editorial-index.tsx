@@ -7,7 +7,7 @@ export function EditorialIndex() {
   return (
     <div className={styles.indexPage}>
       <header className={styles.indexHero} aria-labelledby="ideas-title">
-        <h1 id="ideas-title" className="font-serif">Ideas.</h1>
+        <h1 id="ideas-title" className="font-serif">ideas.</h1>
         <p>Practical notes from the work on websites, ecommerce, search, and the systems around them.</p>
       </header>
 

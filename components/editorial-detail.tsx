@@ -17,9 +17,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
     <div className={styles.detailPage}>
       <header className={styles.articleHero}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/ideas">Ideas</Link>
-          <span aria-hidden="true">/</span>
-          <span aria-current="page">{idea.categories[0]}</span>
+          <Link href="/ideas">back to ideas</Link>
         </nav>
 
         <div className={styles.articleHeading}>

@@ -2241,7 +2241,7 @@
 
 /*
   Button proportions measured off the Eleken reference: 13px/500 label,
-  9px 16px padding, 10px radius, solid fill. Deliberately small �� the
+  9px 16px padding, 10px radius, solid fill. Deliberately small ��� the
   reference never scales its controls with the headings.
 */
 @utility action {
@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover ��������������������������������
+  Text links are set back by tone and resolve to the sanctioned hover ���������������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5339,7 +5339,8 @@ body { padding-bottom: 0; font-weight: 500; font-synthesis: none; }
 p { hyphens: none; }
 body h1, body h2, body h3, body h4, body h5, body h6, .font-serif, .wordmark {
   font-family: var(--font-cenura), sans-serif; font-weight: 400; font-style: normal;
-  letter-spacing: -0.025em; line-height: 1.05;
+  font-kerning: normal; font-feature-settings: 'kern' 1;
+  letter-spacing: normal; line-height: 1.05;
 }
 body strong, body b, body em { font-weight: 600; font-style: normal; }
 body i { font-style: normal; }
@@ -5367,9 +5368,9 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .pill {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 56px; width: fit-content; max-width: 100%; padding: 8px 38px;
-  border: 1.5px solid currentColor; border-radius: 999px; background: transparent; color: inherit;
+  border: 1.5px solid transparent; border-radius: 999px; background: color-mix(in srgb, currentColor 12%, transparent); color: inherit;
   font-family: var(--font-cenura), sans-serif; font-size: clamp(1.5rem, 2.4vw, 2.125rem);
-  font-weight: 400; line-height: 1.1; letter-spacing: -.025em;
+  font-weight: 400; line-height: 1.1; letter-spacing: normal;
   text-decoration: none; text-align: center; cursor: pointer;
   transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
 }
@@ -5400,7 +5401,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .project-tile-image img { display: block; width: 100%; height: auto; }
 .project-tile-image img { object-fit: contain; object-position: center; }
 .project-category-pills { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 12px 0 0; margin: 0; }
-.project-category-pills li { border: 1px solid currentColor; border-radius: 999px; padding: 5px 14px; font-size: 14px; line-height: 1.4; font-weight: 300; }
+.project-category-pills li { border: 0; border-radius: 999px; padding: 5px 14px; background: color-mix(in srgb, currentColor 10%, transparent); font-size: 14px; line-height: 1.4; font-weight: 300; }
 .project-tile:hover .project-tile-image img { transform: none; }
 .project-tile-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; }
 .project-tile-caption h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
@@ -5448,7 +5449,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 
   .editorial-page-hero { padding-block: clamp(54px, 7vw, 112px) clamp(60px, 8vw, 128px); }
   .editorial-page-heading { display: flex; flex-direction: column; align-items: center; gap: clamp(28px, 4vw, 56px); text-align: center; }
-  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: 10ch; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: -.045em; overflow-wrap: normal; text-wrap: balance; }
+  .editorial-page-heading h1, .editorial-page-heading h2 { max-width: 10ch; font-size: clamp(4.5rem, 12vw, 13rem); line-height: .82; letter-spacing: normal; overflow-wrap: normal; text-wrap: balance; }
   .page-intro { display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 56ch; font-size: clamp(1.0625rem, 1.55vw, 1.45rem); font-weight: 300; line-height: 1.55; text-align: center; }
   .page-intro.is-tagline { gap: 0; }
   .editorial-page-media { padding-top: 48px; }
@@ -5475,7 +5476,33 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
   .contact-address-line { font-family: var(--font-cenura); font-weight: 400; font-size: clamp(1.6rem, 6vw, 6rem); overflow-wrap: anywhere; }
 .contact-actions { flex-wrap: wrap; }
 .contact-actions .pill { --button-hover-bg: var(--brand-white); --button-hover-ink: var(--brand-navy); }
-.icontrol { border-radius: 50%; border: 1px solid currentColor; background: transparent; color: inherit; }
+.contact-prompt-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contact-prompt-list li {
+  display: flex;
+  align-items: baseline;
+  gap: .75rem;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  line-height: 1.45;
+}
+.contact-prompt-list li::before {
+  content: '';
+  width: .55rem;
+  height: .55rem;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+}
+.icontrol { border-radius: 50%; border: 1px solid transparent; background: color-mix(in srgb, currentColor 12%, transparent); color: inherit; }
+@media (hover: hover) and (pointer: fine) {
+  .icontrol:hover { border-color: currentColor; background: transparent; }
+}
 .mblur-y, .mblur-x { filter: none; }
 
 .section-outro,
@@ -5597,6 +5624,7 @@ body .case-media-frame img,
   .editorial-page-hero { padding-block: 40px; }
   .editorial-page-heading { gap: 28px; }
   .editorial-page-heading h1 { font-size: 3.5rem; }
+  .contact-prompt-list { grid-template-columns: 1fr; }
   .archive-list > a { grid-template-columns: 1fr auto; gap: 12px; }
   .archive-list > a > span:nth-child(2) { grid-row: 2; font-size: 14px; }
   .archive-list > a > span:last-child { grid-column: 2; grid-row: 1; }

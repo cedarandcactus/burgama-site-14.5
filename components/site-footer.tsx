@@ -5,7 +5,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
   return <footer className={styles.footer} data-home={home} data-work={work}>
     <div className={styles.content}>
       <div className={styles.invitation}>
-        <h2 className="font-serif">Have something worth making?</h2>
+        <h2 className="font-serif">have something worth making?</h2>
         <div className={styles.invitationAction}>
           <p>Bring us the idea, the problem, or the half-finished thought. We&apos;ll help make it clear and make it work.</p>
           <a className={styles.emailButton} href="mailto:hello@burgama.com">start a project</a>

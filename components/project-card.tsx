@@ -19,7 +19,13 @@ const widthCaps: Record<MediaRatio, string> = {
   full: '1180px',
 }
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({
+  project,
+  showArrow = true,
+}: {
+  project: Project
+  showArrow?: boolean
+}) {
   const media = project.heroMedia
   const style = {
     '--project-width': media.ratio === 'tall' ? 'min(76vw, 640px)' : 'min(94vw, 1180px)',
@@ -56,9 +62,11 @@ export function ProjectCard({ project }: { project: Project }) {
             <h3 className="project-tile-title">{project.title}</h3>
             <p className="project-tile-summary">{project.summary}</p>
           </div>
-          <span className="project-link-arrow" aria-hidden="true">
-            <CircularArrowIcon />
-          </span>
+          {showArrow ? (
+            <span className="project-link-arrow" aria-hidden="true">
+              <CircularArrowIcon />
+            </span>
+          ) : null}
         </div>
       </article>
     </Link>

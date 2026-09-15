@@ -6,7 +6,7 @@ import type { Discipline, Project } from '@/lib/projects'
 
 type Entry = Pick<Project, 'id' | 'slug' | 'title' | 'disciplines'> & { year?: string; media?: Project['heroMedia'][] }
 const filters: (Discipline | 'All')[] = ['All', 'Brand', 'Web', 'Photography', 'Marketing', 'Content', 'Production', 'Growth']
-const labels: Record<string, string> = { All: 'All work', Brand: 'Brand', Web: 'Web', Photography: 'Photography', Marketing: 'Marketing', Content: 'Content', Production: 'Production', Growth: 'Search' }
+const labels: Record<string, string> = { All: 'all work', Brand: 'brand', Web: 'web', Photography: 'photography', Marketing: 'marketing', Content: 'content', Production: 'production', Growth: 'search' }
 
 export function WorkIndex({ projects }: { projects: Entry[] }) {
   const [discipline, setDiscipline] = useState<Discipline | 'All'>('All')

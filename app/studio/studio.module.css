@@ -23,26 +23,12 @@
   padding-block: clamp(3rem, 6vw, 6rem) clamp(5rem, 9vw, 9rem);
 }
 
-.heroMeta {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 2rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.45;
-}
-
-.heroMeta p:last-child {
-  text-align: right;
-}
-
 .title {
   margin-left: -0.035em;
   font-size: clamp(7rem, 22vw, 25rem);
   font-weight: 400;
   line-height: 0.62;
-  letter-spacing: -0.055em;
+  letter-spacing: normal;
 }
 
 .intro {
@@ -60,28 +46,18 @@
 }
 
 .sectionHeading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 3rem;
   padding-bottom: clamp(2.5rem, 5vw, 5rem);
 }
 
 .sectionHeading h2 {
   max-width: 11ch;
+  margin-left: auto;
   font-size: clamp(3.5rem, 7vw, 7.5rem);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: normal;
   text-align: right;
   text-wrap: balance;
-}
-
-.sectionLabel {
-  flex: none;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.4;
 }
 
 .teamGrid {
@@ -122,7 +98,7 @@
   font-size: clamp(2.25rem, 4vw, 4rem);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.035em;
+  letter-spacing: normal;
 }
 
 .personHeading p {
@@ -143,7 +119,7 @@
 
 .smallSection {
   display: grid;
-  grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1.2fr) minmax(16rem, 0.55fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.55fr);
   align-items: start;
   gap: clamp(2rem, 5vw, 6rem);
   padding-block: clamp(6rem, 11vw, 11rem);
@@ -154,7 +130,7 @@
   font-size: clamp(3.25rem, 6.5vw, 7rem);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: normal;
   text-wrap: balance;
 }
 
@@ -175,7 +151,7 @@
 .actions :global(.modular-button) {
   color: var(--cyan-ink);
   background: var(--cyan-night);
-  border-color: var(--cyan-night);
+  border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -197,7 +173,7 @@
   }
 
   .smallSection {
-    grid-template-columns: minmax(7rem, 0.35fr) 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.8fr);
   }
 
   .smallSection > p:last-child {
@@ -211,15 +187,6 @@
     min-height: calc(100svh - var(--header-clearance));
     gap: 3.5rem;
     padding-block: 2.5rem 5rem;
-  }
-
-  .heroMeta {
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .heroMeta p:last-child {
-    text-align: left;
   }
 
   .title {
@@ -237,13 +204,11 @@
   }
 
   .sectionHeading {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
     padding-bottom: 2.5rem;
   }
 
   .sectionHeading h2 {
+    margin-left: 0;
     font-size: clamp(3.5rem, 17vw, 5.25rem);
     text-align: left;
   }

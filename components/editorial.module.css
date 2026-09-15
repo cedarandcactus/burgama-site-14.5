@@ -27,7 +27,7 @@
   font-size: clamp(5.4rem, 20vw, 15rem);
   font-weight: 400;
   line-height: 0.74;
-  letter-spacing: -0.07em;
+  letter-spacing: normal;
 }
 
 .indexHero > p {
@@ -91,6 +91,7 @@
   font-size: 0.74rem;
   font-weight: 500;
   line-height: 1;
+  text-transform: lowercase;
 }
 
 .ideaEntry .categoryPill {
@@ -103,7 +104,7 @@
   font-size: clamp(2.8rem, 6.7vw, 7rem);
   font-weight: 400;
   line-height: 0.86;
-  letter-spacing: -0.06em;
+  letter-spacing: normal;
   overflow-wrap: anywhere;
 }
 
@@ -154,7 +155,7 @@
   font-size: clamp(3.8rem, 9vw, 10rem);
   font-weight: 400;
   line-height: 0.84;
-  letter-spacing: -0.064em;
+  letter-spacing: normal;
   overflow-wrap: anywhere;
 }
 
@@ -197,7 +198,7 @@
   font-size: clamp(2rem, 4.6vw, 4.4rem);
   font-weight: 400;
   line-height: 0.98;
-  letter-spacing: -0.045em;
+  letter-spacing: normal;
 }
 
 .internalLink {
@@ -276,7 +277,7 @@
   font-size: clamp(1.9rem, 3.5vw, 3.7rem);
   font-weight: 400;
   line-height: 0.94;
-  letter-spacing: -0.045em;
+  letter-spacing: normal;
 }
 
 .ideaLink:focus-visible,

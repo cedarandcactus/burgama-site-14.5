@@ -49,6 +49,9 @@ body:has(.portfolio) #main {
 }
 
 .portfolio .pill {
+  color: var(--work-ink);
+  background: var(--work-surface);
+  border-color: transparent;
   font-family: var(--font-cenura);
 }
 
@@ -76,7 +79,7 @@ body:has(.portfolio) #main {
 .portfolio-intro-heading h1 {
   font-size: clamp(82px, 15vw, 228px);
   line-height: .76;
-  letter-spacing: -.045em;
+  letter-spacing: normal;
   text-wrap: balance;
 }
 
@@ -99,6 +102,12 @@ body:has(.portfolio) #main {
 .portfolio-filters .pill {
   min-height: 44px;
   padding: 8px 26px;
+}
+
+.portfolio-jumps .pill {
+  color: var(--work-bg);
+  background: var(--work-ink);
+  border-color: transparent;
 }
 
 .portfolio-section-heading {
@@ -215,6 +224,7 @@ body .portfolio .project-tile-image {
   padding: 5px 12px 6px;
   color: var(--work-soft);
   background: var(--work-surface);
+  border: 0;
   border-radius: 999px;
   font-family: var(--font-pangram), sans-serif;
   font-size: 14px;
@@ -254,38 +264,12 @@ body .portfolio .project-tile-image {
   padding: 5px 12px 6px;
   color: var(--work-soft);
   background: var(--work-surface);
+  border: 0;
   border-radius: 999px;
   font-family: var(--font-pangram), sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
-}
-
-.portfolio .project-link-arrow {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  color: inherit;
-  background: transparent;
-  border: 0;
-  border-radius: 50%;
-}
-
-.portfolio .project-link-arrow svg {
-  width: 100%;
-  height: 100%;
-  transition: transform 180ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .portfolio .project-tile:hover .project-link-arrow {
-    color: var(--work-ink);
-    background: transparent;
-    border-color: var(--work-ink);
-  }
 }
 
 .portfolio-studies {
@@ -314,15 +298,7 @@ body .portfolio .project-tile-image {
   text-decoration: none;
   border: 0;
   border-radius: 20px;
-  transition: background-color 180ms ease, transform 180ms ease;
-}
-
-.portfolio-study-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px;
-  width: 100%;
+  transition: background-color 180ms ease;
 }
 
 .portfolio-study h3 {
@@ -342,15 +318,6 @@ body .portfolio .project-tile-image {
 .portfolio-study:focus-visible {
   color: var(--brand-navy);
   background: var(--brand-blue);
-  transform: translateY(-6px);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .portfolio-study:hover .project-link-arrow {
-    color: var(--brand-navy);
-    background: transparent;
-    border-color: var(--brand-navy);
-  }
 }
 
 .portfolio-archive {
@@ -360,7 +327,7 @@ body .portfolio .project-tile-image {
 .portfolio-filters .pill[aria-pressed='true'] {
   color: var(--work-bg);
   background: var(--work-ink);
-  border-color: var(--work-ink);
+  border-color: transparent;
 }
 
 .portfolio-browser {
@@ -453,41 +420,48 @@ body .portfolio .project-tile-image {
   padding-block: 0 38px;
   font-size: clamp(58px, 10vw, 164px);
   line-height: .82;
-  letter-spacing: -.04em;
+  letter-spacing: normal;
 }
 
 .portfolio-detail-intro {
   display: grid;
-  grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr);
   gap: clamp(36px, 9vw, 150px);
+  align-items: start;
 }
 
-.portfolio-detail-intro .portfolio-tagline {
-  max-width: 24ch;
-  font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(30px, 3.5vw, 52px);
-  line-height: .95;
-}
-
-.portfolio-detail-intro > div > p:first-child {
+.portfolio-detail-summary {
   max-width: 52ch;
-  font-size: clamp(17px, 1.55vw, 22px);
+  font-size: clamp(20px, 2vw, 30px);
   font-weight: 300;
+  line-height: 1.45;
+  text-wrap: pretty;
 }
 
-.portfolio-detail-intro .portfolio-scope {
-  padding-top: 24px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.portfolio-meta {
+.portfolio-facts {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 28px;
-  padding-top: 24px;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+}
+
+.portfolio-facts > div {
+  display: grid;
+  grid-template-columns: minmax(72px, .35fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.portfolio-facts dt {
+  color: var(--work-soft);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.portfolio-facts dd {
+  margin: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 300;
+  line-height: 1.45;
 }
 
 .portfolio-story {
@@ -630,6 +604,13 @@ body .portfolio .case-media-frame img {
   text-decoration: none;
   background: var(--work-surface);
   border-radius: 18px;
+  transition: background-color 180ms ease;
+}
+
+.portfolio-related-link > span {
+  color: var(--work-soft);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .portfolio-related-link h3 {
@@ -637,18 +618,9 @@ body .portfolio .case-media-frame img {
   line-height: .95;
 }
 
-.portfolio-related-link > span:last-child {
-  display: inline-flex;
-  width: 48px;
-  height: 48px;
-  align-items: center;
-  justify-content: center;
-}
-
-.portfolio-related-link svg {
-  width: 100%;
-  height: 100%;
-  transition: transform 180ms ease;
+.portfolio-related-link:hover,
+.portfolio-related-link:focus-visible {
+  background: var(--brand-blue);
 }
 
 .portfolio-related-link:hover h3,
@@ -735,11 +707,6 @@ body .portfolio .case-media-frame img {
 
   .portfolio .project-tile-caption h3 {
     font-size: 34px;
-  }
-
-  .portfolio .project-link-arrow {
-    width: 64px;
-    min-height: 36px;
   }
 
   .portfolio-study {
