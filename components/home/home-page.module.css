@@ -354,61 +354,73 @@
   display: block;
   overflow: clip;
   min-height: 0;
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--cyan-night);
+  background: var(--cyan-ink);
 }
 
 .page :global(.capabilities-shell) {
   display: grid;
-  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
   align-items: start;
-  gap: clamp(38px, 6vw, 92px);
+  gap: clamp(42px, 5vw, 78px);
   width: min(100%, 1520px);
   margin-inline: auto;
 }
 
 .page :global(.capabilities-intro) {
   position: sticky;
-  top: 106px;
+  top: 112px;
   display: flex;
+  min-width: 0;
   flex-direction: column;
-  gap: 28px;
+  gap: clamp(28px, 3.5vw, 48px);
+  padding-bottom: 24px;
+}
+
+.page :global(.capabilities-intro h2) {
+  max-width: 7.5ch;
 }
 
 .page :global(.capabilities-intro p) {
-  max-width: 34ch;
+  max-width: 31ch;
   margin: 0;
   font-size: var(--home-text);
   font-weight: 300;
-  line-height: 1.5;
+  line-height: 1.48;
+  letter-spacing: -0.018em;
 }
 
 .page :global(.capabilities-grid) {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: clamp(18px, 2vw, 28px);
+  gap: clamp(16px, 1.6vw, 24px);
 }
 
 .page :global(.capability-card) {
   position: sticky;
-  top: calc(84px + var(--card-index, 0) * 14px);
+  top: calc(92px + var(--card-index, 0) * 12px);
+  display: flex;
   overflow: hidden;
-  min-height: clamp(390px, 42vw, 620px);
-  padding: clamp(28px, 4vw, 54px);
-  border-radius: clamp(24px, 3vw, 44px);
+  min-height: clamp(360px, 36vw, 530px);
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(40px, 7vw, 96px);
+  padding: clamp(32px, 3.6vw, 52px);
+  border-radius: clamp(24px, 2.5vw, 38px);
   color: var(--cyan-ink);
   background: var(--cyan-night);
+  transform-origin: center right;
   will-change: transform, opacity;
 }
 
 .page :global(.capability-card h3) {
-  max-width: 9ch;
+  max-width: 11ch;
   margin: 0;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(42px, 7vw, 112px);
+  font-size: clamp(48px, 6.5vw, 102px);
   font-weight: 400;
-  line-height: 0.84;
+  line-height: 0.86;
   letter-spacing: normal;
   overflow-wrap: normal;
   word-break: normal;
@@ -416,14 +428,12 @@
 }
 
 .page :global(.capability-description) {
-  position: absolute;
-  right: clamp(28px, 4vw, 54px);
-  bottom: clamp(28px, 4vw, 54px);
-  max-width: 29ch;
-  margin: 0;
-  font-size: clamp(16px, 1.25vw, 19px);
+  max-width: 39ch;
+  margin: 0 0 0 auto;
+  font-size: clamp(17px, 1.35vw, 21px);
   font-weight: 300;
-  line-height: 1.5;
+  line-height: 1.48;
+  letter-spacing: -0.012em;
 }
 
 .page :global(.msurface--more) {
@@ -620,15 +630,30 @@
 @media (max-width: 1024px) {
   .page :global(.capabilities-shell) {
     grid-template-columns: 1fr;
+    gap: clamp(44px, 7vw, 68px);
   }
 
   .page :global(.capabilities-intro) {
     position: relative;
     top: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+    align-items: end;
+    gap: clamp(28px, 6vw, 64px);
+    padding-bottom: 0;
   }
 
   .page :global(.capabilities-intro p) {
-    max-width: 44ch;
+    max-width: 36ch;
+    padding-bottom: 0.3em;
+  }
+
+  .page :global(.capability-card) {
+    min-height: clamp(390px, 52vw, 500px);
+  }
+
+  .page :global(.capability-card h3) {
+    font-size: clamp(58px, 8.5vw, 88px);
   }
 }
 
@@ -728,15 +753,42 @@
     height: 44px;
   }
 
+  .page :global(.capabilities-intro) {
+    display: flex;
+    align-items: flex-start;
+    gap: 26px;
+  }
+
+  .page :global(.capabilities-intro h2) {
+    max-width: 8ch;
+  }
+
+  .page :global(.capabilities-intro p) {
+    max-width: 31ch;
+    padding-bottom: 0;
+  }
+
   .page :global(.capabilities-grid) {
-    gap: 16px;
+    gap: 14px;
   }
 
   .page :global(.capability-card) {
     position: relative;
     top: auto;
-    min-height: 390px;
+    min-height: clamp(330px, 96vw, 390px);
+    gap: 44px;
+    padding: clamp(26px, 8vw, 34px);
     border-radius: 26px;
+  }
+
+  .page :global(.capability-card h3) {
+    max-width: 10ch;
+    font-size: clamp(48px, 15vw, 66px);
+  }
+
+  .page :global(.capability-description) {
+    max-width: 32ch;
+    margin-left: 0;
   }
 
   .page :global(.well--brim) {
@@ -767,14 +819,8 @@
   }
 
   .page :global(.capability-card) {
-    min-height: 360px;
+    min-height: 340px;
     padding: 24px;
-  }
-
-  .page :global(.capability-description) {
-    right: 24px;
-    bottom: 24px;
-    left: 24px;
   }
 }
 
