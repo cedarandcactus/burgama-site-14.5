@@ -178,7 +178,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', active = true, id, onMe
       </div>
       <section key={step} className={styles.step} data-direction={direction < 0 ? 'back' : 'forward'} aria-labelledby={`${idPrefix}-step-heading`}>
         <div className={styles.intro}>
-          <h2 ref={heading} id={`${idPrefix}-step-heading`} tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{inline && step === 0 ? 'your project' : headings[step]}</h2>
+          <h2 ref={heading} id={`${idPrefix}-step-heading`} tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{inline && step === 0 ? 'tell us a bit about your project' : headings[step]}</h2>
         </div>
         {step === 0 && (
           <FieldGroup>
@@ -200,7 +200,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', active = true, id, onMe
             )}
             {inline && <Field data-invalid={!!errors.brief}>
               <FieldLabel className="sr-only" htmlFor={`${idPrefix}-brief`}>project brief</FieldLabel>
-              <Textarea id={`${idPrefix}-brief`} name="brief" className={styles.brief} placeholder="a little about your project" maxLength={1200} rows={3} required value={brief} onChange={(event) => { setBrief(event.target.value); setErrors((previous) => ({ ...previous, brief: undefined })) }} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
+              <Textarea id={`${idPrefix}-brief`} name="brief" className={styles.brief} placeholder={inline ? 'project details' : 'a little about your project'} maxLength={1200} rows={3} required value={brief} onChange={(event) => { setBrief(event.target.value); setErrors((previous) => ({ ...previous, brief: undefined })) }} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
               <FieldError id={`${idPrefix}-brief-error`}>{errors.brief}</FieldError>
             </Field>}
           </FieldGroup>

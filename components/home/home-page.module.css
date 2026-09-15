@@ -175,8 +175,8 @@
   color: var(--palette-navy);
 }
 
-.sectionRise[data-surface='yellow-soft'] {
-  color: var(--palette-yellow-soft);
+.sectionRise[data-surface='blue-slate'] {
+  color: var(--palette-blue-slate);
 }
 
 .sectionRise[data-surface='blue-mid'] {
@@ -989,7 +989,7 @@
 
 .results {
   color: var(--palette-navy);
-  background: var(--palette-yellow-soft);
+  background: var(--palette-blue-slate);
   overflow: clip;
 }
 
@@ -1008,7 +1008,7 @@
   padding: 0;
 }
 
-.impactBand[data-impact-band='yellow-soft'] { background: var(--palette-yellow-soft); }
+.impactBand[data-impact-band='blue-slate'] { background: var(--palette-blue-slate); }
 .impactBand[data-impact-band='blue-mid'] { color: var(--palette-powder); background: var(--palette-blue-mid); }
 .impactBand[data-impact-band='powder'] { background: var(--palette-powder); }
 
@@ -1219,20 +1219,27 @@
 
 .reelArrows button {
   display: grid;
-  width: clamp(112px, 12vw, 168px);
+  width: 56px;
+  padding: 3px 0;
   height: 44px;
   place-items: center;
   border: 1px solid transparent;
   border-radius: 999px;
   color: var(--palette-navy);
   background: var(--palette-powder);
+  background-clip: content-box;
   cursor: pointer;
   transition: color 180ms ease, background-color 180ms ease;
 }
 
+.reelArrows button svg {
+  width: 20px;
+  height: 20px;
+}
+
 .reelArrows button[aria-disabled='true'] {
   color: var(--palette-powder);
-  background: var(--palette-navy-raised);
+  background-color: var(--palette-navy-raised);
   cursor: default;
 }
 
@@ -1308,7 +1315,7 @@
   }
 
   .reelArrows button {
-    width: clamp(88px, 18vw, 112px);
+    width: 52px;
   }
 }
 

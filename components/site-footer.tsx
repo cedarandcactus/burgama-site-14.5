@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
+import { FooterUpdates } from '@/components/footer-updates'
 import { Reveal } from '@/components/reveal'
 import { ProjectEnquiryForm } from '@/components/nav-project-form'
 import { SectionRise } from '@/components/home/section-rise'
@@ -70,8 +71,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
 
     const media = gsap.matchMedia(root)
     const identity = root.querySelector<HTMLElement>('[data-footer-identity]')
-    const invitation = root.querySelector<HTMLElement>('[data-footer-invitation]')
-    const titleWords = Array.from(root.querySelectorAll<HTMLElement>('[data-footer-title-word]'))
     const groups = Array.from(root.querySelectorAll<HTMLElement>('[data-footer-group]'))
     const letters = Array.from(track.querySelectorAll<HTMLElement>('[data-footer-letter]'))
     let disposed = false
@@ -193,22 +192,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         })
       }
 
-      if (titleWords.length) gsap.fromTo(titleWords, {
-        yPercent: context.conditions?.desktop ? 55 : 30,
-        rotation: context.conditions?.desktop ? 5 : 2,
-      }, {
-        yPercent: 0,
-        rotation: 0,
-        duration: 0.8,
-        stagger: 0.09,
-        ease: 'back.out(1.15)',
-        scrollTrigger: {
-          trigger: invitation,
-          start: 'top 92%',
-          once: true,
-        },
-      })
-
       groups.forEach((group, index) => {
         gsap.fromTo(group, { y: context.conditions?.desktop ? 28 : 16 }, {
           y: 0,
@@ -242,7 +225,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       return () => {
         delete lead.dataset.rolling
         delete lead.dataset.curved
-        for (const element of [track, ...Array.from(track.children), ...letters, ...titleWords, ...groups, identity]) {
+        for (const element of [track, ...Array.from(track.children), ...letters, ...groups, identity]) {
           element?.removeAttribute('style')
         }
       }
@@ -316,24 +299,8 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           <FooterFilm />
           <div className={styles.content}>
             <div className={styles.topRow}>
-              <div className={styles.invitation} data-footer-invitation="">
-                {!home && <h2 aria-label="Let’s make your mark.">
-                  <span className={styles.titleLine} aria-hidden="true">
-                    <span data-footer-title-word="">let&apos;s</span>{' '}
-                    <span data-footer-title-word="">make</span>
-                  </span>
-                  <span className={styles.titleLine} aria-hidden="true">
-                    <span data-footer-title-word="">your</span>{' '}
-                    <span data-footer-title-word="">mark.</span>
-                  </span>
-                </h2>}
-                <a className={styles.emailButton} href="mailto:hello@burgama.com">
-                  <span className={styles.emailLabel}><RollingLabel text="hello@burgama.com" /></span>
-                  <span className={styles.emailArrow} aria-hidden="true">
-                    <ArrowUpRight />
-                    <ArrowUpRight />
-                  </span>
-                </a>
+              <div className={styles.invitation}>
+                <FooterUpdates />
               </div>
               <div className={styles.utilities}>
                 <div className={styles.navigation}>

@@ -7,7 +7,7 @@ import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
 const results = [
-  { phrase: '130+ businesses worked with', surface: 'yellow-soft', next: 'blue-mid', direction: 'right' },
+  { phrase: '130+ businesses worked with', surface: 'blue-slate', next: 'blue-mid', direction: 'right' },
   { phrase: '20 million annual ad impressions', surface: 'blue-mid', next: 'powder', direction: 'left' },
   { phrase: '65 countries with active clients', surface: 'powder', next: 'powder-deep', direction: 'right' },
 ] as const

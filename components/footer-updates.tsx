@@ -1,25 +1,73 @@
 'use client'
 
-import { useId, useState } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
+import { ArrowRight, Check, Pencil, RotateCcw } from 'lucide-react'
+import styles from '@/components/site-footer.module.css'
 
 export function FooterUpdates() {
   const id = useId()
   const [email, setEmail] = useState('')
-  const [state, setState] = useState<'idle' | 'sending' | 'received' | 'error'>('idle')
-  async function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    if (state === 'sending') return
-    setState('sending')
-    try {
-      const response = await fetch('/api/updates', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
-      if (!response.ok) throw new Error('Request failed')
-      setState('received')
-    } catch { setState('error') }
+  const [step, setStep] = useState<'email' | 'terms' | 'complete'>('email')
+  const [error, setError] = useState('')
+  const input = useRef<HTMLInputElement>(null)
+  const confirm = useRef<HTMLButtonElement>(null)
+  const completion = useRef<HTMLSpanElement>(null)
+  const focusNext = useRef(false)
+
+  useEffect(() => {
+    if (!focusNext.current) return
+    focusNext.current = false
+    const target = step === 'email' ? input.current : step === 'terms' ? confirm.current : completion.current
+    target?.focus({ preventScroll: true })
+  }, [step])
+
+  function advance(next: typeof step) {
+    focusNext.current = true
+    setError('')
+    setStep(next)
   }
-  return <details className="footer-updates">
-    <summary><h2 className="font-serif">Subscribe to<br />Newsletter</h2></summary>
-    <div className="updates-content"><p className="caption">The mailing list isn&apos;t live yet. This form checks your address but does not save it or subscribe you. <a href="mailto:hello@burgama.com?subject=Studio%20updates">Email us about updates</a>.</p>
-      <form onSubmit={submit}><label htmlFor={id}>Email address</label><input id={id} name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={event => { setEmail(event.target.value); setState('idle') }} /><button className="pill pill-small" disabled={state === 'sending'}>{state === 'sending' ? 'checking…' : 'check address'}</button><p role="status">{state === 'received' ? 'Address checked. You have not been subscribed.' : state === 'error' ? 'Unable to check your address. Please try again.' : ''}</p></form>
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (step !== 'email') return
+    if (!input.current?.validity.valid) {
+      setError('enter a valid email')
+      input.current?.focus({ preventScroll: true })
+      return
+    }
+    advance('terms')
+  }
+
+  return (
+    <div className={styles.updates}>
+      <h2 id={`${id}-heading`}>studio notes</h2>
+      <p className={styles.updatesSubtitle}>new work, ideas and occasional updates.</p>
+      <form className={styles.updatesPill} aria-labelledby={`${id}-heading`} aria-describedby={`${id}-status`} noValidate onSubmit={submit} onKeyDown={(event) => {
+        if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
+      }}>
+        <div key={step} className={styles.updatesStep}>
+          {step === 'email' ? (
+            <>
+              <label className="sr-only" htmlFor={`${id}-email`}>Email address</label>
+              <input ref={input} id={`${id}-email`} name="email" type="email" autoComplete="email" autoCapitalize="none" spellCheck={false} required maxLength={254} placeholder="your email" value={email} onChange={(event) => { setEmail(event.target.value); setError('') }} aria-invalid={!!error} aria-describedby={`${id}-status`} />
+              <button className={styles.updatesAction} type="submit" aria-label="Continue to terms"><span><ArrowRight aria-hidden="true" /></span></button>
+            </>
+          ) : step === 'terms' ? (
+            <>
+              <span className={styles.updatesConsent}>agree to our <a href="/terms" target="_blank" rel="noopener noreferrer" aria-label="Terms (opens in a new tab)">terms</a></span>
+              <button className={styles.updatesEdit} type="button" aria-label="Edit email address" onClick={() => advance('email')}><Pencil aria-hidden="true" /></button>
+              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and preview signup" onClick={() => advance('complete')}><span><Check aria-hidden="true" /></span></button>
+            </>
+          ) : (
+            <>
+              <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>preview complete</span>
+              <button className={styles.updatesAction} type="button" aria-label="Restart newsletter preview" onClick={() => { setEmail(''); advance('email') }}><span><RotateCcw aria-hidden="true" /></span></button>
+            </>
+          )}
+        </div>
+      </form>
+      <noscript><style>{`.${styles.updatesPill} { display: none; }`}</style></noscript>
+      <p id={`${id}-status`} className={styles.updatesStatus} role="status" aria-live="polite" aria-atomic="true">{error ? `${error} — preview only` : step === 'complete' ? 'not subscribed — preview only' : 'preview only'}</p>
     </div>
-  </details>
+  )
 }

@@ -2241,7 +2241,7 @@
 
 /*
   Button proportions measured off the Eleken reference: 13px/500 label,
-  9px 16px padding, 10px radius, solid fill. Deliberately small ����� the
+  9px 16px padding, 10px radius, solid fill. Deliberately small ������ the
   reference never scales its controls with the headings.
 */
 @utility action {
@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �������������������������������������
+  Text links are set back by tone and resolve to the sanctioned hover ���������������������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5303,13 +5303,14 @@ body:has(.lot-poster) > .mobile-console {
   radius from the other three.
 */
 :root {
-  /* Burgama rebrand palette: warm, tonal, and digitally crisp. */
+  /* Legacy accent aliases remain light so navy text retains its contrast. */
   --palette-navy: #011329;
   --palette-navy-raised: #082443;
   --palette-powder: #afc8f2;
   --palette-powder-deep: #8eafe3;
   --palette-butter: var(--palette-powder);
-  --palette-yellow-soft: #f8e7a8;
+  --palette-blue-slate: #7495bc;
+  --palette-yellow-soft: var(--palette-powder-deep);
   --palette-yellow-deep: var(--palette-powder);
   --palette-soft-white: #f7f2e8;
   --palette-blue-mid: #2d5380;
@@ -5625,7 +5626,7 @@ body:has(.contact-prompts) #main {
 }
 
 body:has(.contact-prompts) .editorial-page-hero {
-  color: var(--palette-soft-white);
+  color: var(--palette-navy);
   background: var(--palette-yellow-soft);
   box-shadow: 0 0 0 100vmax var(--palette-yellow-soft);
   clip-path: inset(0 -100vmax);

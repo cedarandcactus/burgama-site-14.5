@@ -1,7 +1,6 @@
 .ending {
   --ending-title-size: clamp(48px, 8vw, 112px);
   --ending-rolling-size: clamp(96px, 13.5vw, 200px);
-  --footer-title-size: clamp(42px, 4.8vw, 68px);
   position: relative;
   z-index: 10;
   min-width: 0;
@@ -223,54 +222,144 @@
   min-width: 0;
 }
 
-.invitation h2 {
-  margin: 0 0 20px;
+.updates {
+  width: min(100%, 380px);
+}
+
+.updates h2 {
+  margin: 0 0 8px;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: var(--footer-title-size);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 400;
   line-height: 1;
   letter-spacing: normal;
-  text-transform: lowercase;
 }
 
-.titleLine {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
-  column-gap: .18em;
+.updatesSubtitle {
+  margin: 0 0 20px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
 }
 
-.titleLine > span {
-  display: inline-block;
-  transform-origin: 0 100%;
+.updatesPill {
+  width: 100%;
+  height: 54px;
+  margin: 0;
+  padding: 4px 4px 4px 16px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(18px, 1.7vw, 22px);
+  line-height: 1;
 }
 
-.footer .emailButton {
-  position: relative;
+.updatesStep {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 50px;
-  width: min(100%, 360px);
-  padding: 6px 6px 6px 18px;
-  border: 1px solid var(--palette-powder);
-  border-radius: 999px;
-  color: var(--palette-powder);
-  -webkit-text-fill-color: currentColor;
-  background: transparent;
-  font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(18px, 1.7vw, 23px);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: lowercase;
-  text-decoration: none;
-  transition: background 220ms ease;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  animation: updates-arrive 180ms ease-out;
 }
 
-.emailLabel,
+.updatesPill input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  height: 44px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  box-shadow: none;
+}
+
+.updatesPill input::placeholder {
+  color: inherit;
+  opacity: 1;
+}
+
+.updatesConsent,
+.updatesCompletion {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.footer .updatesConsent a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.updatesAction,
+.updatesEdit {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 52px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.updatesAction > span {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--palette-powder);
+  color: var(--palette-navy);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.updatesAction svg { width: 20px; height: 20px; }
+.updatesEdit { width: 44px; }
+.updatesEdit svg { width: 15px; height: 15px; }
+
+.footer .updatesPill :focus-visible {
+  outline-offset: -2px;
+}
+
+.footer .updatesCompletion:focus {
+  outline: none;
+  color: inherit;
+  background: transparent;
+}
+
+.updatesAction:is(:hover, :focus-visible) > span {
+  background: var(--palette-powder-deep);
+}
+
+.updatesStatus {
+  min-height: 18px;
+  margin: 8px 0 0 16px;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+@keyframes updates-arrive {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: none; }
+}
+
 .linkLabel {
   display: block;
   flex: none;
@@ -294,39 +383,6 @@
   position: absolute;
   top: 100%;
   left: 0;
-}
-
-.footer .emailArrow {
-  position: relative;
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 52px;
-  height: 36px;
-  overflow: hidden;
-  border-radius: 999px;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
-}
-
-.footer .emailButton:is(:hover, :focus-visible, :active) {
-  color: var(--palette-powder);
-  border-color: currentColor;
-  background: transparent;
-}
-
-.emailArrow svg {
-  grid-area: 1 / 1;
-  width: 22px;
-  height: 22px;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 360ms cubic-bezier(.2, .8, .2, 1);
-}
-
-.emailArrow svg:last-child {
-  transform: translate(-180%, 180%);
 }
 
 .utilities {
@@ -480,17 +536,8 @@
   outline-offset: 5px;
 }
 
-.emailButton:focus-visible .rollGlyph,
 .linkColumn a:focus-visible .rollGlyph {
   transform: translateY(-100%);
-}
-
-.emailButton:focus-visible .emailArrow svg:first-child {
-  transform: translate(180%, -180%);
-}
-
-.emailButton:focus-visible .emailArrow svg:last-child {
-  transform: translate(0, 0);
 }
 
 .linkColumn a:focus-visible > svg {
@@ -498,27 +545,8 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .footer .emailButton:hover {
-    color: var(--palette-powder);
-    background: transparent;
-  }
-
-  .footer .emailButton:hover .emailArrow {
-    color: var(--palette-navy);
-    background: var(--palette-powder);
-  }
-
-  .emailButton:hover .rollGlyph,
   .linkColumn a:hover .rollGlyph {
     transform: translateY(-100%);
-  }
-
-  .emailButton:hover .emailArrow svg:first-child {
-    transform: translate(180%, -180%);
-  }
-
-  .emailButton:hover .emailArrow svg:last-child {
-    transform: translate(0, 0);
   }
 
   .linkColumn a:hover > svg {
@@ -527,10 +555,6 @@
 }
 
 @media (max-width: 799px) {
-  .ending {
-    --footer-title-size: clamp(40px, 6vw, 48px);
-  }
-
   .topRow {
     flex-direction: column;
     gap: 28px;
@@ -559,7 +583,6 @@
 @media (max-width: 699px) {
   .ending {
     --ending-title-size: clamp(44px, 11vw, 72px);
-    --footer-title-size: clamp(36px, 9vw, 48px);
   }
 
   .lead {
@@ -573,10 +596,6 @@
   .poster,
   .video {
     object-position: 58% center;
-  }
-
-  .invitation h2 {
-    margin-bottom: 20px;
   }
 
   .utilities {
@@ -614,18 +633,6 @@
     padding: 32px 20px 16px;
   }
 
-  .footer .emailButton {
-    min-height: 48px;
-    gap: 8px;
-    padding-left: 14px;
-    font-size: clamp(17px, 4.8vw, 20px);
-  }
-
-  .footer .emailArrow {
-    width: 48px;
-    height: 34px;
-  }
-
   .navigation {
     grid-template-columns: minmax(max-content, 1.35fr) minmax(0, 1fr);
     gap: 24px;
@@ -649,9 +656,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .footer .emailButton,
+  .updatesAction > span,
   .footer .rollGlyph,
-  .emailArrow svg,
   .linkColumn a > svg,
   .video {
     transition: none;
@@ -659,13 +665,13 @@
 
   .footer a .rollGlyph,
   .footer a:is(:hover, :focus-visible) .rollGlyph,
-  .footer .emailButton .emailArrow svg:first-child,
   .footer .linkColumn a > svg {
     transform: none;
   }
 
-  .rollCopy,
-  .footer .emailArrow svg:last-child {
+  .rollCopy {
     display: none;
   }
+
+  .updatesStep { animation: none; }
 }

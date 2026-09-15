@@ -16,7 +16,7 @@ export function ActWork() {
         {featuredProjects.map(project => <ProjectCard key={project.id} project={project} concise actionLabel="view project" />)}
       </WorkReel>
       <Reveal className={styles.workAction}><ModularButton href="/work">all our work</ModularButton></Reveal>
-      <SectionRise surface="yellow-soft" direction="left" />
+      <SectionRise surface="blue-slate" direction="left" />
     </section>
   )
 }

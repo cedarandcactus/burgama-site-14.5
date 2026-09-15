@@ -1,7 +1,7 @@
 import { homeCurvePath } from '@/lib/home-curve'
 import styles from './home-page.module.css'
 
-export function SectionRise({ surface, direction = 'right' }: { surface: 'powder' | 'powder-deep' | 'navy' | 'yellow-soft' | 'blue-mid'; direction?: 'left' | 'right' }) {
+export function SectionRise({ surface, direction = 'right' }: { surface: 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blue-mid'; direction?: 'left' | 'right' }) {
   return (
     <svg
       className={styles.sectionRise}
