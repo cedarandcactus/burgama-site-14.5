@@ -1,18 +1,16 @@
 'use client'
 
-import { useEffect, useRef, type CSSProperties } from 'react'
-import Link from '@/components/transition-link'
-import { gsap } from '@/lib/motion'
+import { useEffect, useRef } from 'react'
+import { gsap, ScrollTrigger } from '@/lib/motion'
 import { homeCurvePoint } from '@/lib/home-curve'
+import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
-// Exact reported figures from the corresponding case studies in lib/projects.ts.
 const results = [
-  { value: 576649, metric: 'Instagram views', client: 'MatchDay', period: 'May 15–October 12, 2025', href: '/work/matchday-social' },
-  { value: 6555, metric: 'Instagram engagements', client: 'MatchDay', period: 'May 15–October 12, 2025', href: '/work/matchday-social' },
-  { value: 172503, metric: 'Instagram views', client: 'Hush Hush Tan', period: 'June 1–September 22, 2025', href: '/work/hush-hush-tan-social' },
+  { value: '130+', spoken: '130 plus', metric: 'businesses worked with', surface: 'yellow-soft', next: 'soft-coral', direction: 'right' },
+  { value: '20m', spoken: '20 million', metric: 'annual ad impressions', surface: 'soft-coral', next: 'powder', direction: 'left' },
+  { value: '65', spoken: '65', metric: 'countries with active clients', surface: 'powder', next: 'powder-deep', direction: 'right' },
 ] as const
-const format = new Intl.NumberFormat('en-US')
 
 export function ActResults() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -21,69 +19,87 @@ export function ActResults() {
     const section = sectionRef.current
     if (!section) return
     const media = gsap.matchMedia(section)
-    const revealed = new Set<number>()
+    let disposed = false
+    let frame = 0
 
-    media.add({ desktop: '(min-width: 700px)', reduced: '(prefers-reduced-motion: reduce)' }, (context) => {
-      if (context.conditions?.reduced) return
-      const groups = section.querySelectorAll<HTMLElement>('[data-result]')
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const groups = [...section.querySelectorAll<HTMLElement>('[data-result]')]
       groups.forEach((group, index) => {
-        const number = group.querySelector<HTMLElement>('[data-result-number]')!
-        const value = results[index].value
-        const counter = { value }
-        if (!revealed.has(index)) {
-          gsap.fromTo(counter, { value: 0 }, {
-            value,
-            duration: 1.3,
-            ease: 'power2.out',
-            onUpdate: () => { number.textContent = format.format(Math.round(counter.value)) },
-            onComplete: () => { revealed.add(index) },
-            scrollTrigger: { trigger: group, start: 'top 90%', once: true },
-          })
+        const band = group.closest<HTMLElement>('[data-impact-band]')!
+        const progress = { value: 0 }
+        let width = 0
+        let rise = 0
+        let travel = 0
+        const measure = () => {
+          width = band.clientWidth
+          rise = band.querySelector('svg')?.getBoundingClientRect().height ?? 80
+          const gutter = Number.parseFloat(getComputedStyle(band).paddingLeft)
+          const available = Math.max(0, (width - group.offsetWidth) / 2 - gutter)
+          travel = Math.min(0.14, available / width)
         }
-        if (context.conditions?.desktop) {
-          const t = (index + 0.5) / results.length
-          const start = homeCurvePoint(t - 0.016)
-          const end = homeCurvePoint(t)
-          gsap.fromTo(group, {
-            x: () => (start.x - end.x) * group.parentElement!.parentElement!.clientWidth,
-            y: () => (start.y - end.y) * Math.min(112, Math.max(56, window.innerWidth * 0.08)),
-          }, {
-            x: 0,
-            y: 0,
-            ease: 'none',
-            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom 55%', scrub: 0.5, invalidateOnRefresh: true },
-          })
+        const render = () => {
+          const point = homeCurvePoint(0.5 - travel * (1 - progress.value))
+          const destination = homeCurvePoint(0.5)
+          const direction = results[index].direction === 'left' ? -1 : 1
+          group.style.transform = `translate3d(${(point.x - destination.x) * width * direction}px, ${(point.y - destination.y) * rise}px, 0)`
         }
-      })
-      return () => {
-        groups.forEach((group, index) => {
-          group.querySelector<HTMLElement>('[data-result-number]')!.textContent = format.format(results[index].value)
+        measure()
+        gsap.fromTo(progress, { value: 0 }, {
+          value: 1,
+          ease: 'none',
+          onUpdate: render,
+          scrollTrigger: {
+            trigger: band,
+            start: 'top bottom',
+            end: 'center 55%',
+            scrub: 0.45,
+            onRefreshInit: measure,
+            onRefresh: render,
+            invalidateOnRefresh: true,
+          },
         })
-      }
+      })
+      return () => groups.forEach(group => group.style.removeProperty('transform'))
     })
-    return () => media.revert()
+
+    const refresh = () => {
+      if (disposed) return
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => ScrollTrigger.refresh())
+    }
+    let previousWidth = section.clientWidth
+    const resize = new ResizeObserver(() => {
+      if (section.clientWidth === previousWidth) return
+      previousWidth = section.clientWidth
+      refresh()
+    })
+    resize.observe(section)
+    document.fonts.ready.then(refresh)
+    document.fonts.addEventListener('loadingdone', refresh)
+    return () => {
+      disposed = true
+      cancelAnimationFrame(frame)
+      resize.disconnect()
+      document.fonts.removeEventListener('loadingdone', refresh)
+      media.revert()
+    }
   }, [])
 
   return (
-    <section ref={sectionRef} className={styles.results} aria-labelledby="results-heading" data-nav-surface="frost">
-      <h2 id="results-heading" className="font-serif">a little of the impact.</h2>
-      <div className={styles.resultsContour}>
-        {results.map((result, index) => (
-          <div className={styles.resultPosition} key={`${result.client}-${result.metric}`} style={{ '--result-offset': homeCurvePoint((index + 0.5) / results.length).y } as CSSProperties}>
-            <Link href={result.href} className={styles.result} data-result="">
-              <span className="sr-only">{format.format(result.value)} </span>
-              <span className={styles.resultNumber} aria-hidden="true">
-                <span className={styles.resultNumberSpace}>{format.format(result.value)}</span>
-                <span data-result-number="">{format.format(result.value)}</span>
-              </span>
-              <span className={styles.resultMetric}>{result.metric}</span>
-              <span className={styles.resultClient}>{result.client}</span>
-              <span className={styles.resultPeriod}>{result.period}</span>
-            </Link>
-          </div>
-        ))}
-      </div>
-      <p className={styles.resultsNote}>View totals include organic and paid activity.</p>
+    <section ref={sectionRef} className={styles.results} aria-labelledby="results-heading">
+      {results.map((result, index) => (
+        <div className={styles.impactBand} key={result.value} data-impact-band={result.surface} data-nav-surface="frost">
+          {index === 0 && <h2 id="results-heading" className="font-serif">a little of the impact.</h2>}
+          <dl className={styles.result} data-result="">
+            <dt className={styles.resultMetric}>{result.metric}</dt>
+            <dd className={styles.resultNumber}>
+              <span aria-hidden="true">{result.value}</span>
+              <span className="sr-only">{result.spoken}</span>
+            </dd>
+          </dl>
+          <SectionRise surface={result.next} direction={result.direction} />
+        </div>
+      ))}
     </section>
   )
 }

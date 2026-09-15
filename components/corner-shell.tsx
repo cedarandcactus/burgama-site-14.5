@@ -23,7 +23,7 @@ export function CornerShell() {
   const projectTrigger = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
 
-  useHeaderGlass(header, pathname, projectOpen)
+  useHeaderGlass(header, pathname)
 
   function closeMenu({ restoreFocus = false } = {}) {
     const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(document.activeElement)

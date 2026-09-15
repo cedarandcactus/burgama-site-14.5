@@ -76,7 +76,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
     let refreshFrame = 0
     let curveEntrance = 0
     let curveDestination = 0
-    let textWidth = 0
     const measureCurve = () => {
       const svg = svgRef.current
       const path = pathRef.current
@@ -85,20 +84,32 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       const width = lead.clientWidth
       const height = lead.clientHeight
       const rise = root.querySelector<SVGSVGElement>('[data-footer-lead] > svg')?.getBoundingClientRect().height ?? 100
-      textWidth = text.getComputedTextLength()
-      const extension = Math.max(width, textWidth) + 160
-      const d = homeCurvePath(width, rise, height - rise - 48, extension)
+      text.style.removeProperty('font-size')
+      const naturalSize = Number.parseFloat(getComputedStyle(text).fontSize)
+      const naturalWidth = text.getComputedTextLength()
+      text.style.fontSize = `${naturalSize * Math.min(1, width * 0.88 / Math.max(1, naturalWidth))}px`
+      const extension = width + 160
+      const d = homeCurvePath(width, rise, height - rise - 64, extension)
       const leftLength = homeCurveExtensionLength(width, rise, extension)
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
       path.setAttribute('d', d)
-      curveEntrance = leftLength + width * 0.72
-      curveDestination = leftLength + Math.min(0, width * 0.92 - textWidth)
+      curveDestination = leftLength + width * 0.05
+      curveEntrance = curveDestination + width * 0.14
     }
+    const measureWordmark = () => {
+      const wordmark = root.querySelector<HTMLElement>('[data-footer-wordmark]')
+      const link = wordmark?.parentElement
+      if (!wordmark || !link || !wordmark.offsetWidth) return
+      const size = Number.parseFloat(getComputedStyle(wordmark).fontSize)
+      link.style.setProperty('--footer-wordmark-size', `${size * link.clientWidth * 0.995 / wordmark.offsetWidth}px`)
+    }
+    measureWordmark()
     const refresh = () => {
       if (disposed) return
       cancelAnimationFrame(refreshFrame)
       refreshFrame = requestAnimationFrame(() => {
         if (!disposed) {
+          measureWordmark()
           measureCurve()
           ScrollTrigger.refresh()
         }
@@ -124,10 +135,10 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           scrollTrigger: {
             id: `footer-roll-${titleId}`,
             trigger: lead,
-            start: 'top top',
-            end: () => `+=${Math.max(600, Math.min(1300, (home ? textWidth : track.scrollWidth) * 0.55))}`,
+            start: home ? 'top bottom' : 'top top',
+            end: home ? 'center 55%' : () => `+=${Math.max(600, Math.min(1300, track.scrollWidth * 0.55))}`,
             onRefreshInit: measureCurve,
-            pin: true,
+            pin: !home,
             // Page wrappers use transforms, which change the containing block for fixed pins.
             pinType: 'transform',
             scrub: 0.65,
@@ -263,7 +274,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
   }, [titleId, home])
 
   return (
-    <div ref={rootRef} className={styles.ending} data-site-ending="">
+    <div ref={rootRef} className={styles.ending} data-site-ending="" data-home={home}>
       <section ref={leadRef} className={styles.lead} aria-labelledby={titleId} data-footer-lead="" data-nav-surface={home ? 'frost' : undefined}>
         <div className={styles.leadViewport}>
           <h2 id={titleId} className={styles.headline} aria-label={headline}>
@@ -327,20 +338,22 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                 </div>
               </div>
             </div>
-            <address className={styles.address} aria-label="Mailing address" data-footer-group="">
-              701 Tillery St #12, Mailbox #289, Austin, TX 78702
-            </address>
             <div className={styles.identityReveal} data-footer-identity-reveal="">
               <div className={styles.identity} data-footer-identity="">
-                <Link href="/" className={styles.wordmark} aria-label="burgama home">burgama</Link>
+                <Link href="/" className={styles.wordmark} aria-label="burgama home"><span data-footer-wordmark="">burgama</span></Link>
               </div>
             </div>
             <div className={styles.bottomRow}>
-              <p>© {new Date().getFullYear()} burgama</p>
-              <nav className={styles.legalLinks} aria-label="Legal">
-                <Link href="/privacy">Privacy</Link>
-                <Link href="/terms">Terms</Link>
-              </nav>
+              <address className={styles.address} aria-label="Mailing address">
+                701 Tillery St #12, Mailbox #289, Austin, TX 78702
+              </address>
+              <div className={styles.bottomLegal}>
+                <p>© 2026 burgama</p>
+                <nav className={styles.legalLinks} aria-label="Legal">
+                  <Link href="/privacy">Privacy</Link>
+                  <Link href="/terms">Terms</Link>
+                </nav>
+              </div>
             </div>
           </div>
         </footer>

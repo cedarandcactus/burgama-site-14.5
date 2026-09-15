@@ -21,7 +21,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 52px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -71,7 +71,7 @@
 @media (max-width: 699px) {
   .section { padding-block: 0 16px; }
   .window { height: calc(var(--home-rise) + 108px); }
-  .group { gap: 8px; }
+  .group { gap: 44px; }
   .logo { flex-basis: 132px; width: 132px; height: 72px; }
   .artwork { max-width: 126px; max-height: 64px; }
 }
@@ -79,7 +79,7 @@
 @supports not (offset-path: path('M 0 0 L 1 1')) {
   .section { padding-bottom: calc(var(--home-rise) + 20px); }
   .window { height: auto; overflow: visible; }
-  .group { flex-wrap: wrap; justify-content: center; padding: 24px; gap: 16px 12px; overflow: visible; }
+  .group { flex-wrap: wrap; justify-content: center; padding: 24px; gap: 24px clamp(44px, 4vw, 52px); overflow: visible; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,7 +89,7 @@
     flex-wrap: wrap;
     justify-content: center;
     padding: 24px;
-    gap: 16px 12px;
+    gap: 24px clamp(44px, 4vw, 52px);
     overflow: visible;
   }
 }

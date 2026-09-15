@@ -1,12 +1,13 @@
 import { homeCurvePath } from '@/lib/home-curve'
 import styles from './home-page.module.css'
 
-export function SectionRise({ surface, direction = 'right' }: { surface: 'powder' | 'powder-deep' | 'navy'; direction?: 'left' | 'right' }) {
+export function SectionRise({ surface, direction = 'right' }: { surface: 'powder' | 'powder-deep' | 'navy' | 'yellow-soft' | 'soft-coral'; direction?: 'left' | 'right' }) {
   return (
     <svg
       className={styles.sectionRise}
       data-surface={surface}
       data-direction={direction}
+      data-nav-curve=""
       data-nav-surface={surface === 'navy' ? 'ink' : 'frost'}
       viewBox="0 0 1000 100"
       preserveAspectRatio="none"

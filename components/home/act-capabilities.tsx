@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/motion'
 import { ModularButton } from '@/components/modular-button'
 import { SectionRise } from '@/components/home/section-rise'
@@ -9,68 +9,25 @@ import styles from './home-page.module.css'
 const capabilities = [
   {
     title: 'creative.',
-    services: [
-      { name: 'strategy', detail: 'Positioning, a clear point of view, and a direction to build on.' },
-      { name: 'branding', detail: 'Identity, language, and design systems that feel like you.' },
-      { name: 'websites', detail: 'Thoughtful design and development, from first impression to everyday use.' },
-      { name: 'photography', detail: 'Art direction and original imagery for your brand, products, and people.' },
-    ],
+    description: 'We find what makes your business distinct, then bring it to life through identity, websites, and imagery.',
+    accessibleAction: 'Our creative approach',
   },
   {
     title: 'marketing.',
-    services: [
-      { name: 'campaigns', detail: 'One clear idea, carried through the channels that matter.' },
-      { name: 'content', detail: 'Words, images, and films with something worth saying.' },
-      { name: 'social', detail: 'A considered presence, with content and community working together.' },
-      { name: 'search', detail: 'Organic and paid search that helps the right people find you.' },
-    ],
+    description: 'We connect strategy, content, and campaigns to reach the right people—and keep learning from what works.',
+    accessibleAction: 'Our marketing approach',
   },
 ]
 
 function CapabilityCard({ capability }: { capability: typeof capabilities[number] }) {
-  const id = useId()
-  const [selected, setSelected] = useState(0)
-  const tabsRef = useRef<HTMLDivElement>(null)
-
-  function onKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    if (event.nativeEvent.isComposing || event.keyCode === 229 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
-    event.preventDefault()
-    const total = capability.services.length
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? total - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + total) % total
-    setSelected(next)
-    tabsRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus({ preventScroll: true })
-  }
-
   return (
     <article className={styles.capabilityCard} data-capability-card>
       <h3 className="font-serif">{capability.title}</h3>
-      <div className={styles.capabilityServices}>
-        <div ref={tabsRef} className={styles.serviceTabs} role="tablist" aria-label={`${capability.title.replace('.', '')} services`}>
-          {capability.services.map((service, index) => (
-            <button
-              key={service.name}
-              type="button"
-              role="tab"
-              id={`${id}-tab-${index}`}
-              aria-selected={selected === index}
-              aria-controls={`${id}-panel-${index}`}
-              tabIndex={selected === index ? 0 : -1}
-              onClick={() => setSelected(index)}
-              onKeyDown={(event) => onKeyDown(event, index)}
-            >
-              {service.name}
-            </button>
-          ))}
-        </div>
-        <div className={styles.serviceDetails}>
-          {capability.services.map((service, index) => (
-            <div key={service.name} role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} aria-hidden={selected !== index} inert={selected !== index} data-active={selected === index} tabIndex={selected === index ? 0 : -1}>
-              <p>{service.detail}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      <p>{capability.description}</p>
+      <ModularButton href="/studio">
+        <span aria-hidden="true">our approach</span>
+        <span className="sr-only">{capability.accessibleAction}</span>
+      </ModularButton>
     </article>
   )
 }
@@ -104,7 +61,6 @@ export function ActCapabilities() {
       <div className={styles.capabilitiesGrid}>
         {capabilities.map((item) => <CapabilityCard key={item.title} capability={item} />)}
       </div>
-      <div className={styles.capabilitiesAction}><ModularButton href="/contact">let&apos;s talk</ModularButton></div>
       <SectionRise surface="navy" />
     </section>
   )
