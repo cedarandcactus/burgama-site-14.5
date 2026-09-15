@@ -885,8 +885,49 @@
 }
 
 .processInner {
-  width: min(100%, 1120px);
+  position: relative;
+  width: min(100%, 1200px);
   margin-inline: auto;
+  padding: clamp(96px, 10vw, 132px) clamp(36px, 13vw, 170px);
+}
+
+.processContent {
+  position: relative;
+  z-index: 1;
+}
+
+.processOrbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.processOrbit canvas { display: block; }
+
+.processFallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--palette-blue-mid);
+}
+
+.processFallback svg { display: block; width: 100%; height: 100%; }
+.processFallback path { stroke: currentColor; stroke-width: 5; }
+.processFallbackMarker {
+  position: absolute;
+  left: 95.3%;
+  top: 53.4%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--palette-navy);
+  transform: translate(-50%, -50%);
+}
+.processOrbit[data-orbit-ready='true'] .processFallback { visibility: hidden; }
+
+@media (max-width: 599px) {
+  .processInner { padding: 90px 36px 122px; }
 }
 
 .processHeading {
@@ -894,6 +935,10 @@
   font-size: clamp(44px, 6vw, 80px);
   line-height: 1.05;
   text-align: center;
+}
+
+@media (max-width: 599px) {
+  .processHeading { font-size: clamp(28px, 8.5vw, 44px); }
 }
 
 .processDescription {
@@ -905,53 +950,6 @@
   line-height: 1.65;
   text-align: center;
   text-wrap: pretty;
-}
-
-.processGraphic {
-  position: absolute;
-  inset: auto 0 36px;
-  display: block;
-  width: 100%;
-  height: var(--home-rise);
-  overflow: visible;
-  pointer-events: none;
-}
-
-.processOutline {
-  stroke: currentColor;
-  stroke-width: 1.5;
-  opacity: .5;
-}
-
-.processMarker { fill: var(--palette-navy); }
-
-.processMotion {
-  display: none;
-  min-height: 44px;
-  margin: 12px auto 0;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 999px;
-  color: inherit;
-  background: transparent;
-  font-family: var(--font-pangram), sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  cursor: pointer;
-  text-underline-offset: 4px;
-}
-
-.capabilities[data-loop-motion='true'] .processMotion { display: block; }
-
-.processMotion:is(:hover, :focus-visible) {
-  color: inherit;
-  background: transparent;
-  text-decoration: underline;
-}
-
-.processMotion:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
 }
 
 .processAction {

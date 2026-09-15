@@ -3,6 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { CornerShell } from '@/components/corner-shell'
 import { PageTransition } from '@/components/page-transition'
+import { SmoothScroll } from '@/components/smooth-scroll'
+import 'lenis/dist/lenis.css'
 import './globals.css'
 import './cyan-shell.css'
 
@@ -42,11 +44,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${pangram.variable} ${cenura.variable} bg-background`}>
       <body className="bg-background text-foreground font-sans antialiased">
         <noscript><style>{'.reveal { opacity: 1 !important; transform: none !important; }'}</style></noscript>
-        <PageTransition>
-          <a href="#main" className="skip-link">Skip to content</a>
-          <CornerShell />
-          <main id="main" tabIndex={-1}>{children}</main>
-        </PageTransition>
+        <SmoothScroll>
+          <PageTransition>
+            <a href="#main" className="skip-link">Skip to content</a>
+            <CornerShell />
+            <main id="main" tabIndex={-1}>{children}</main>
+          </PageTransition>
+        </SmoothScroll>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

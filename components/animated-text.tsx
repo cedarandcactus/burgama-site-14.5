@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState, type ElementType } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type AnimatedTextProps = {
   /** Each entry is one clipped phrase line. */
   lines: string[]
-  as?: ElementType
+  as?: 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   id?: string
   className?: string
   lineClassName?: string
@@ -54,7 +54,7 @@ export function AnimatedText({
   }, [])
 
   return (
-    <Tag ref={ref} id={id} className={className}>
+    <Tag ref={node => { ref.current = node }} id={id} className={className}>
       {lines.map((line, index) => (
         <span key={line + index} className="block overflow-hidden">
           <span

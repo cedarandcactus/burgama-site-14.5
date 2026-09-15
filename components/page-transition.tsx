@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, useTransition, type ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
+import { useSmoothScroll } from './smooth-scroll'
 import styles from './page-transition.module.css'
 
 type Destination = { href: string; replace?: boolean; scroll?: boolean }
@@ -12,6 +13,7 @@ export const usePageTransition = () => useContext(TransitionContext)
 export function PageTransition({ children }: { children: ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
+  const scroll = useSmoothScroll()
   const [phase, setPhase] = useState<Phase>('idle')
   const [sequence, setSequence] = useState(0)
   const [hydrated, setHydrated] = useState(false)
@@ -33,7 +35,12 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const later = useCallback((callback: () => void, delay: number) => {
     timers.current.push(setTimeout(callback, delay))
   }, [])
-  const changePhase = useCallback((next: Phase) => { phaseRef.current = next; setPhase(next) }, [])
+  const changePhase = useCallback((next: Phase) => {
+    phaseRef.current = next
+    scroll?.setScrollLock('transition', next !== 'idle')
+    setPhase(next)
+  }, [scroll])
+  useEffect(() => () => scroll?.setScrollLock('transition', false), [scroll])
   const finish = useCallback(() => {
     clearTimers()
     destination.current = null
@@ -117,6 +124,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const begin = useCallback((target: Destination) => {
     if (phaseRef.current !== 'idle') return
     focusAfter.current = true
+    scroll?.cancelScroll()
     clearTimers()
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       startTransition(() => {
@@ -132,7 +140,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     later(navigate, 380)
     // A failed or interrupted route must never leave the site behind a curtain.
     later(finish, 6000)
-  }, [changePhase, clearTimers, finish, later, navigate, router])
+  }, [changePhase, clearTimers, finish, later, navigate, router, scroll])
 
   const transitionPath = destination.current?.href.split(/[?#]/)[0] ?? pathname
   const workTransition = transitionPath === '/work' || transitionPath.startsWith('/work/')

@@ -1,112 +1,87 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
+import { Component, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
 import { SectionRise } from '@/components/home/section-rise'
-import { homeCurvePath } from '@/lib/home-curve'
 import styles from './home-page.module.css'
 
+const ProcessOrbit = dynamic(() => import('./process-orbit'), { ssr: false })
+const fallbackPath = Array.from({ length: 96 }, (_, index) => {
+  const angle = index / 96 * Math.PI * 2
+  const cos = Math.cos(angle)
+  const sin = Math.sin(angle)
+  const x = Math.sign(cos) * Math.abs(cos) ** .58 * 453
+  const y = Math.sign(sin) * Math.abs(sin) ** .58 * 281.45 - x * .04875
+  return `${index ? 'L' : 'M'}${(500 + x).toFixed(2)} ${(325 - y).toFixed(2)}`
+}).join(' ') + ' Z'
+
+class OrbitBoundary extends Component<{ children: ReactNode; onFailure: () => void }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch() { this.props.onFailure() }
+  render() { return this.state.failed ? null : this.props.children }
+}
+
 export function ActCapabilities() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const graphicRef = useRef<SVGSVGElement>(null)
-  const pathRef = useRef<SVGPathElement>(null)
-  const markerRef = useRef<SVGCircleElement>(null)
-  const syncRef = useRef<() => void>(() => {})
-  const pausedRef = useRef(false)
-  const [paused, setPaused] = useState(false)
+  const orbitRef = useRef<HTMLDivElement>(null)
+  const phase = useRef(.16)
+  const [nearby, setNearby] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [reduced, setReduced] = useState(true)
+  const [tabVisible, setTabVisible] = useState(true)
+  const [ready, setReady] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
-    const section = sectionRef.current
-    const graphic = graphicRef.current
-    const path = pathRef.current
-    const marker = markerRef.current
-    if (!section || !graphic || !path || !marker) return
-
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)')
-    let visible = false
-    let frame = 0
-    let previousTime: number | null = null
-    let elapsed = 2500
-    let length = 0
-    const duration = 14000
-
-    const position = () => {
-      if (!length) return
-      const progress = reduced.matches ? .5 : elapsed / duration
-      const point = path.getPointAtLength(progress * length)
-      marker.setAttribute('cx', String(point.x))
-      marker.setAttribute('cy', String(point.y))
-      // Fade only at the edges so the repeating dot never visibly jumps back.
-      marker.setAttribute('opacity', String(Math.min(1, progress / .025, (1 - progress) / .025)))
-    }
-    const shouldRun = () => visible && !document.hidden && !reduced.matches && !pausedRef.current && length > 0
-    const tick = (time: number) => {
-      frame = 0
-      if (!shouldRun()) { previousTime = null; return }
-      if (previousTime !== null) elapsed = (elapsed + time - previousTime) % duration
-      previousTime = time
-      position()
-      frame = requestAnimationFrame(tick)
-    }
-    const sync = () => {
-      section.dataset.loopMotion = String(!reduced.matches && length > 0)
-      if (shouldRun()) {
-        if (!frame) frame = requestAnimationFrame(tick)
-      } else {
-        cancelAnimationFrame(frame)
-        frame = 0
-        previousTime = null
-      }
-    }
-    const measure = () => {
-      const { width, height } = graphic.getBoundingClientRect()
-      if (!width || !height) return
-      graphic.setAttribute('viewBox', `0 0 ${width} ${height}`)
-      path.setAttribute('d', homeCurvePath(width, height))
-      length = path.getTotalLength()
-      position()
-      sync()
-    }
-    const preferenceChanged = () => { position(); sync() }
-    const intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync() })
-    const resize = new ResizeObserver(measure)
-    syncRef.current = sync
-    measure()
-    intersection.observe(graphic)
-    resize.observe(graphic)
-    reduced.addEventListener('change', preferenceChanged)
-    document.addEventListener('visibilitychange', sync)
-
+    const element = orbitRef.current
+    if (!element) return
+    const preference = matchMedia('(prefers-reduced-motion: reduce)')
+    const syncPreference = () => { setReduced(preference.matches); setReady(false) }
+    const syncVisibility = () => setTabVisible(!document.hidden)
+    const preload = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setNearby(true); preload.disconnect() }
+    }, { rootMargin: '280px' })
+    const intersection = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting))
+    syncPreference()
+    syncVisibility()
+    preload.observe(element)
+    intersection.observe(element)
+    preference.addEventListener('change', syncPreference)
+    document.addEventListener('visibilitychange', syncVisibility)
     return () => {
-      cancelAnimationFrame(frame)
+      preload.disconnect()
       intersection.disconnect()
-      resize.disconnect()
-      reduced.removeEventListener('change', preferenceChanged)
-      document.removeEventListener('visibilitychange', sync)
-      syncRef.current = () => {}
-      delete section.dataset.loopMotion
+      preference.removeEventListener('change', syncPreference)
+      document.removeEventListener('visibilitychange', syncVisibility)
     }
   }, [])
 
+  const showScene = nearby && !reduced && !failed
+
   return (
-    <section id="capabilities" ref={sectionRef} className={styles.capabilities} data-nav-surface="frost" aria-labelledby="capabilities-heading">
+    <section id="capabilities" className={styles.capabilities} data-nav-surface="frost" aria-labelledby="capabilities-heading">
       <div className={styles.processInner}>
-        <Reveal>
-          <h2 id="capabilities-heading" className={styles.processHeading}>how we work</h2>
-          <p className={styles.processDescription}>We start by listening, getting to know your business and what makes it different. Together, we shape a clear direction and bring it to life through identity, websites, content, and campaigns. We stay close to the work after launch, learning from what connects and refining what comes next.</p>
-        </Reveal>
-        <Reveal className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>
-        <button type="button" className={styles.processMotion} aria-pressed={paused} onClick={() => {
-          pausedRef.current = !pausedRef.current
-          setPaused(pausedRef.current)
-          syncRef.current()
-        }}>{paused ? 'resume motion' : 'pause motion'}</button>
+        <div ref={orbitRef} className={styles.processOrbit} aria-hidden="true" data-orbit-ready={showScene && ready} data-orbit-running={showScene && visible && tabVisible}>
+          <div className={styles.processFallback}>
+            <svg viewBox="0 0 1000 650" preserveAspectRatio="none" fill="none" focusable="false">
+              <path d={fallbackPath} vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+            </svg>
+            <span className={styles.processFallbackMarker} />
+          </div>
+          {showScene && <OrbitBoundary onFailure={() => setFailed(true)}>
+            <ProcessOrbit active={visible && tabVisible} phase={phase} onReady={() => setReady(true)} onFailure={() => setFailed(true)} />
+          </OrbitBoundary>}
+        </div>
+        <div className={styles.processContent}>
+          <Reveal>
+            <h2 id="capabilities-heading" className={styles.processHeading}>how we work</h2>
+            <p className={styles.processDescription}>We start by listening, getting to know your business and what makes it different. Together, we shape a clear direction and bring it to life through identity, websites, content, and campaigns. We stay close to the work after launch, learning from what connects and refining what comes next.</p>
+          </Reveal>
+          <Reveal className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>
+        </div>
       </div>
-      <svg ref={graphicRef} className={styles.processGraphic} viewBox="0 0 1000 100" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
-        <path ref={pathRef} className={styles.processOutline} d={homeCurvePath(1000, 100)} vectorEffect="non-scaling-stroke" />
-        <circle ref={markerRef} className={styles.processMarker} r="6" opacity="0" />
-      </svg>
       <SectionRise surface="navy" />
     </section>
   )

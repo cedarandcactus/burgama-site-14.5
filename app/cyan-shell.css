@@ -4,8 +4,8 @@
   --cyan-shade: var(--palette-powder-deep);
   --control-basis-width: clamp(18rem, 22vw, 20rem);
   --header-brand-width: 104px;
-  --header-control-height: 52px;
-  --header-shell-padding: 6px;
+  --header-control-height: 48px;
+  --header-shell-padding: 8px;
   --header-shell-inline-padding: 12px;
   --header-control-gap: 12px;
   --header-link-gap: 8px;
@@ -32,8 +32,8 @@ html:has(.cyan-header) {
 }
 
 html:has(.cyan-header[data-home='true']) {
-  --header-control-height: 52px;
-  --header-shell-padding: 6px;
+  --header-control-height: 48px;
+  --header-shell-padding: 8px;
   --header-shell-inline-padding: 18px;
   --header-toggle-width: 5rem;
   --header-symbol-size: 44px;
@@ -463,8 +463,8 @@ body:has(.cyan-header[data-home='true']) #main {
 
 @media (max-width: 699px) {
   :root {
-    --header-control-height: 52px;
-    --header-shell-padding: 6px;
+    --header-control-height: 48px;
+    --header-shell-padding: 8px;
     --header-symbol-size: 44px;
     --header-top-inset: 8px;
     --hero-frame-inset: 8px;
@@ -474,9 +474,9 @@ body:has(.cyan-header[data-home='true']) #main {
   body .site-header.cyan-header,
   body .site-header.cyan-header[data-home='true'][data-condensed='false'] {
     --header-motion: 360ms cubic-bezier(.16, 1, .3, 1);
-    --header-control-height: 52px;
-    --header-shell-padding: 6px;
-    --header-shell-inline-padding: 12px;
+    --header-control-height: 48px;
+    --header-shell-padding: 8px;
+    --header-shell-inline-padding: 30px;
     --header-toggle-width: 80px;
     --header-symbol-size: 44px;
     --header-compact-height: calc(var(--header-control-height) + 2 * var(--header-shell-padding));
