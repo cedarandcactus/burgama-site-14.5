@@ -184,6 +184,13 @@ export const projects: Project[] = [
     summary: 'We directed a cohesive image system for CellinKey through sculpted light, textured sets, product photography, and web presentation.',
     disciplines: ['Photography', 'Web'], services: ['Product photography', 'Website'],
     heroMedia: image('cellinkey', 'a000.jpg', 'The product range arranged in warm directional light.'),
+    thumbnailMedia: {
+      src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Poolside%20Mockup%20_%20Spaced%20Out.png-kAK4mJIdLez54vWnl9Z0Scrnx8otYj.jpeg',
+      label: 'CellinKey and Comaeryo skincare products arranged on a cream poolside lounger beside turquoise water.',
+      ratio: 'wide',
+      width: 5408,
+      height: 3072,
+    },
     contentModules: [
       text('build one world without repeating one frame.', 'We kept the packaging clear while changing the atmosphere around it. Directional light creates shape and depth; warm stone, suspended powder, foliage, and saturated color give each product a distinct setting inside one recognizable visual system.'),
       pair('cellinkey', ['a017.jpg', 'Product photographed with a suspended powder effect.'], ['a041.jpg', 'White pump bottle in a warm stone setting.']),
