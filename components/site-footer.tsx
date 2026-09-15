@@ -243,13 +243,14 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           <div className={styles.content}>
             <div className={styles.topRow}>
               <div className={styles.invitation} data-footer-invitation="">
-                <h2 aria-label="Let’s start something.">
+                <h2 aria-label="Let’s make your mark.">
                   <span className={styles.titleLine} aria-hidden="true">
                     <span data-footer-title-word="">let&apos;s</span>{' '}
-                    <span data-footer-title-word="">start</span>
+                    <span data-footer-title-word="">make</span>
                   </span>
                   <span className={styles.titleLine} aria-hidden="true">
-                    <span data-footer-title-word="">something.</span>
+                    <span data-footer-title-word="">your</span>{' '}
+                    <span data-footer-title-word="">mark.</span>
                   </span>
                 </h2>
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
@@ -259,7 +260,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                     <ArrowUpRight />
                   </span>
                 </a>
-                <p>Bring the idea. We&apos;ll bring the people to make it happen.</p>
+                <p>Strategy, design, digital, and growth. One team, working with yours.</p>
               </div>
               <div className={styles.utilities}>
                 <div className={styles.navigation}>
