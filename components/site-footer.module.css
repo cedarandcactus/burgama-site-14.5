@@ -174,13 +174,13 @@
   border-radius: 999px;
   color: var(--palette-powder);
   -webkit-text-fill-color: currentColor;
-  background: var(--palette-navy-raised);
+  background: transparent;
   font-family: var(--font-pangram), sans-serif;
   font-size: clamp(17px, 1.65vw, 32px);
   font-weight: 500;
   line-height: 1.2;
   text-decoration: none;
-  transition: background-color 180ms ease;
+  transition: border-color 180ms ease;
 }
 
 .footer .emailArrow {
@@ -215,45 +215,22 @@
 }
 
 .linkColumn {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: clamp(12px, 1vw, 22px);
   min-width: 0;
-  padding-left: clamp(28px, 2vw, 44px);
 }
 
 .divider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20px;
+  display: block;
+  flex: none;
+  width: 100%;
+  height: clamp(48px, 6vw, 96px);
+  margin-block: clamp(24px, 3vw, 56px);
   color: var(--palette-powder);
   opacity: .55;
   pointer-events: none;
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  width: 2px;
-  min-height: 12px;
-  background: currentColor;
-  border-radius: 999px;
-}
-
-.divider svg {
-  display: block;
-  flex: none;
-  width: 20px;
-  height: 64px;
-  overflow: visible;
 }
 
 .linkColumn a,
@@ -279,7 +256,7 @@
 .identity {
   width: 100%;
   margin-top: auto;
-  padding-top: clamp(100px, 10vw, 240px);
+  padding-top: clamp(8px, 1.5vw, 36px);
 }
 
 .footer .wordmark {
@@ -333,7 +310,6 @@
 
 @media (hover: hover) and (pointer: fine) {
   .footer .emailButton:hover {
-    background: var(--palette-navy);
     border-color: var(--palette-powder);
   }
 
@@ -389,7 +365,7 @@
   }
 
   .identity {
-    padding-top: 90px;
+    padding-top: 12px;
   }
 
   .bottomRow {
@@ -437,16 +413,6 @@
 
   .linkColumn {
     gap: 14px;
-    padding-left: 18px;
-  }
-
-  .divider,
-  .divider svg {
-    width: 12px;
-  }
-
-  .divider svg {
-    height: 48px;
   }
 
   .linkColumn a,
