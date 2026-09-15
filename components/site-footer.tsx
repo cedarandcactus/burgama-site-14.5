@@ -4,6 +4,8 @@ import { useEffect, useId, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
+import { BurgamaMark } from '@/components/burgama-mark'
+import { ProjectEnquiryForm } from '@/components/nav-project-form'
 import { SectionRise } from '@/components/home/section-rise'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import { homeCurveExtensionLength, homeCurvePath } from '@/lib/home-curve'
@@ -191,7 +193,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         })
       }
 
-      gsap.fromTo(titleWords, {
+      if (titleWords.length) gsap.fromTo(titleWords, {
         yPercent: context.conditions?.desktop ? 55 : 30,
         rotation: context.conditions?.desktop ? 5 : 2,
       }, {
@@ -255,12 +257,17 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
     document.fonts.ready.then(refresh)
     document.fonts.addEventListener('loadingdone', refresh)
     let previousWidth = root.clientWidth
+    let previousFormHeight = 0
+    const enquiry = root.querySelector<HTMLElement>('[data-inline-enquiry]')
     const observer = new ResizeObserver(() => {
-      if (root.clientWidth === previousWidth) return
+      const formHeight = enquiry?.offsetHeight ?? 0
+      if (root.clientWidth === previousWidth && formHeight === previousFormHeight) return
       previousWidth = root.clientWidth
+      previousFormHeight = formHeight
       refresh()
     })
     observer.observe(root)
+    if (enquiry) observer.observe(enquiry)
 
     return () => {
       disposed = true
@@ -295,15 +302,23 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             </svg>
           )}
         </div>
-        {home && <SectionRise surface="navy" />}
+        {home && <SectionRise surface="powder" />}
       </section>
+      {home && <section className={styles.enquiry} data-inline-enquiry="" data-nav-surface="frost" aria-label="Start a project">
+        <div className={styles.enquiryInner}>
+          <ProjectEnquiryForm variant="inline" />
+          <noscript><style>{'[data-inline-enquiry] form { display: none; }'}</style><p>Email <a href="mailto:hello@burgama.com">hello@burgama.com</a> to start a project.</p></noscript>
+        </div>
+        <SectionRise surface="navy" direction="left" />
+      </section>}
       <div className={styles.footerFrame} data-home={home}>
-        <footer className={styles.footer} data-home={home} data-work={work} data-nav-surface={home ? 'ink' : undefined}>
+        <footer className={styles.footer} data-site-footer="" data-home={home} data-work={work} data-nav-surface={home ? 'ink' : undefined}>
           <FooterFilm />
           <div className={styles.content}>
             <div className={styles.topRow}>
               <div className={styles.invitation} data-footer-invitation="">
-                <h2 aria-label="Let’s make your mark.">
+                <Link href="/" className={styles.symbolLink} aria-label="burgama home"><BurgamaMark /></Link>
+                {!home && <h2 aria-label="Let’s make your mark.">
                   <span className={styles.titleLine} aria-hidden="true">
                     <span data-footer-title-word="">let&apos;s</span>{' '}
                     <span data-footer-title-word="">make</span>
@@ -312,7 +327,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                     <span data-footer-title-word="">your</span>{' '}
                     <span data-footer-title-word="">mark.</span>
                   </span>
-                </h2>
+                </h2>}
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
                   <span className={styles.emailLabel}><RollingLabel text="hello@burgama.com" /></span>
                   <span className={styles.emailArrow} aria-hidden="true">

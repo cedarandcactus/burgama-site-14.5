@@ -894,8 +894,6 @@
 }
 
 .capabilityCard {
-  --card-slope: -1.8deg;
-  --card-rounding: 64px 28px 72px 28px;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -903,27 +901,22 @@
   align-items: center;
   gap: 28px;
   min-width: 0;
-  min-height: clamp(320px, 30vw, 400px);
-  padding: clamp(28px, 3.6vw, 48px);
+  min-height: clamp(360px, 32vw, 440px);
+  padding: clamp(48px, 4.5vw, 64px) clamp(28px, 3.6vw, 48px);
   border-radius: 28px;
   color: var(--palette-powder);
   text-align: center;
 }
 
-.capabilityCard::before {
-  content: '';
+.cardContour {
   position: absolute;
-  inset: 8px 0;
+  inset: 0;
   z-index: -1;
-  border-radius: var(--card-rounding);
-  background: var(--palette-navy);
-  transform: skewY(var(--card-slope));
+  width: 100%;
+  height: 100%;
+  fill: var(--palette-navy);
   pointer-events: none;
-}
-
-.capabilityCard:nth-child(even) {
-  --card-slope: 1.8deg;
-  --card-rounding: 28px 64px 28px 72px;
+  overflow: visible;
 }
 
 .capabilityCard h3 {
@@ -959,6 +952,7 @@
 }
 
 .impactBand {
+  --ribbon-type-size: clamp(54px, 8.8vw, 140px);
   position: relative;
   display: flex;
   align-items: center;
@@ -968,7 +962,7 @@
 }
 
 .impactBand[data-ribbon-ready='true'] {
-  height: clamp(190px, 24vw, 350px);
+  height: max(190px, calc(var(--home-rise) + var(--ribbon-type-size) * 1.35 + 40px));
   padding: 0;
 }
 
@@ -980,7 +974,7 @@
   max-width: 20ch;
   margin: 0;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(38px, 6.8vw, 108px);
+  font-size: clamp(46px, 8vw, 128px);
   font-weight: 400;
   line-height: 1.1;
   text-align: center;
@@ -1009,7 +1003,7 @@
   pointer-events: none;
   fill: currentColor;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(42px, 7.2vw, 112px);
+  font-size: var(--ribbon-type-size);
   font-weight: 400;
   font-kerning: normal;
   letter-spacing: normal;

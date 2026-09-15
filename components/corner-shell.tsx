@@ -4,7 +4,7 @@ import Link from '@/components/transition-link'
 import { NavProjectForm } from '@/components/nav-project-form'
 import { useHeaderGlass } from '@/hooks/use-header-glass'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 const destinations = [
   { label: 'work', href: '/work' },
@@ -14,6 +14,7 @@ const destinations = [
 
 export function CornerShell() {
   const pathname = usePathname()
+  const enquiryId = `nav-project-${useId()}`
   const [open, setOpen] = useState(false)
   const [projectOpen, setProjectOpen] = useState(false)
   const projectOpenRef = useRef(false)
@@ -24,6 +25,41 @@ export function CornerShell() {
   const header = useRef<HTMLElement>(null)
 
   useHeaderGlass(header, pathname)
+
+  useEffect(() => {
+    const element = header.current
+    if (!element) return
+    let currentFooter: Element | null = null
+    let visible = false
+    delete element.dataset.footerVisible
+    const commit = (next: boolean) => {
+      if (visible === next) return
+      visible = next
+      element.dataset.footerVisible = String(next)
+    }
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === currentFooter) commit(entry.isIntersecting && entry.intersectionRect.height > 0)
+      }
+    }, { threshold: 0 })
+    const connect = () => {
+      const footer = document.querySelector('[data-site-footer]')
+      if (footer === currentFooter) return
+      observer.disconnect()
+      currentFooter = footer
+      commit(false)
+      if (footer) observer.observe(footer)
+    }
+    connect()
+    const content = document.querySelector('main')
+    const mutations = new MutationObserver(connect)
+    if (content) mutations.observe(content, { childList: true, subtree: true })
+    return () => {
+      observer.disconnect()
+      mutations.disconnect()
+      delete element.dataset.footerVisible
+    }
+  }, [pathname])
 
   function closeMenu({ restoreFocus = false } = {}) {
     const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(document.activeElement)
@@ -143,6 +179,7 @@ export function CornerShell() {
       <div className="header-inner" data-lenis-prevent={projectOpen || undefined}>
         <Link className="cyan-header-mark-link" href="/" aria-label="Home">
           <span className="cyan-header-mark" data-glass-ink aria-hidden="true" />
+          <span className="cyan-header-wordmark" data-glass-ink aria-hidden="true">burgama</span>
         </Link>
         <button
           ref={trigger}
@@ -150,7 +187,7 @@ export function CornerShell() {
           className="cyan-menu-trigger font-serif"
           aria-label={projectOpen ? 'Close project enquiry' : open ? 'Close menu' : 'Open menu'}
           aria-expanded={open || projectOpen}
-          aria-controls={projectOpen ? 'nav-project-enquiry' : 'primary-navigation'}
+          aria-controls={projectOpen ? enquiryId : 'primary-navigation'}
           aria-hidden={!menuTriggerVisible}
           tabIndex={menuTriggerVisible ? 0 : -1}
           onClick={() => projectOpen ? closeProject({ restoreFocus: true }) : setOpen((value) => !value)}
@@ -167,13 +204,13 @@ export function CornerShell() {
                 <span data-glass-ink>{item.label}</span>
               </Link>
             ))}
-            <button ref={projectTrigger} type="button" className="header-contact" onClick={openProject} aria-expanded={projectOpen} aria-controls="nav-project-enquiry">
+            <button ref={projectTrigger} type="button" className="header-contact" onClick={openProject} aria-expanded={projectOpen} aria-controls={enquiryId}>
               <span data-glass-ink>start a project</span>
             </button>
           </nav>
         </div>
         <div className="header-project-panel" hidden={!projectOpen}>
-          <NavProjectForm active={projectOpen} onMenu={() => closeProject({ toMenu: true, restoreFocus: true })} onHeightChange={(height) => header.current?.style.setProperty('--project-form-height', `${height}px`)} />
+          <NavProjectForm id={enquiryId} active={projectOpen} onMenu={() => closeProject({ toMenu: true, restoreFocus: true })} onHeightChange={(height) => header.current?.style.setProperty('--project-form-height', `${height}px`)} />
         </div>
       </div>
     </header>

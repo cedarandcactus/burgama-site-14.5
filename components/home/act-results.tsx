@@ -49,7 +49,7 @@ export function ActResults() {
           const fontSize = Number.parseFloat(getComputedStyle(text).fontSize)
           period = text.getComputedTextLength() + fontSize * 1.4
           const extension = Math.max(width, period) * 3
-          const baseline = height - rise - Math.max(22, fontSize * 0.36)
+          const baseline = height - rise - Math.max(24, fontSize * 0.42)
           svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
           path.setAttribute('d', homeSlopePath(width, rise, baseline, extension, results[index].direction))
           entrance = results[index].direction === 'left' ? extension : homeCurveExtensionLength(width, rise, extension)

@@ -27,7 +27,6 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     const shell = header?.querySelector<HTMLElement>('.header-inner')
     if (!header || !shell || pathname !== '/') return
 
-    const motion = matchMedia('(prefers-reduced-motion: reduce)')
     const transparency = matchMedia('(prefers-reduced-transparency: reduce)')
     const supportsPaint = CSS.supports('background-clip', 'text') && CSS.supports('mask-image', 'url("/burgama-symbol.svg")')
     const regions = [...document.querySelectorAll<HTMLElement | SVGSVGElement>('[data-nav-surface]')]
@@ -95,7 +94,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     function update() {
       frame = 0
       if (disposed) return
-      // The shell stays fixed; only its corner silhouette and surface paint change.
+      // Project the underlying surface without changing the shell's shape or position.
       const headerBounds = header!.getBoundingClientRect()
       const left = headerBounds.left + shell!.offsetLeft
       const top = headerBounds.top + shell!.offsetTop
@@ -112,7 +111,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
         initialized = true
       }
 
-      let crossing: { curve: typeof curves[number]; matrix: DOMMatrix; slope: number; distance: number } | undefined
+      let crossing: { curve: typeof curves[number]; matrix: DOMMatrix; distance: number } | undefined
       if (!interacting && !transparency.matches && supportsPaint) {
         for (const curve of curves) {
           const rect = curve.region.getBoundingClientRect()
@@ -134,20 +133,11 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
             return new DOMPoint(point.x * curve.width, point.y * curve.height).matrixTransform(matrix)
           }
           const point = project(t)
-          const before = project(t - 0.01)
-          const after = project(t + 0.01)
           const distance = point.y - center.y
           if (Math.abs(distance) > height + 90 || (crossing && Math.abs(distance) >= Math.abs(crossing.distance))) continue
-          crossing = { curve, matrix, distance, slope: Math.atan((after.y - before.y) / (after.x - before.x)) * 180 / Math.PI }
+          crossing = { curve, matrix, distance }
         }
       }
-
-      const proximity = crossing ? Math.max(0, 1 - Math.abs(crossing.distance) / (height + 90)) : 0
-      const strength = proximity * proximity * (3 - 2 * proximity)
-      const lean = !motion.matches && crossing ? Math.max(-1, Math.min(1, crossing.slope / 10)) * strength : 0
-      const radius = Math.min(height / 2, 30)
-      shell!.style.setProperty('--glass-round-a', `${(radius + lean * 22).toFixed(3)}px`)
-      shell!.style.setProperty('--glass-round-b', `${(radius - lean * 22).toFixed(3)}px`)
 
       if (!crossing) {
         clearPaint()
@@ -188,7 +178,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     const refresh = () => { backgrounds.clear(); scheduleUpdate() }
     const resize = new ResizeObserver(refresh)
     const state = new MutationObserver(scheduleUpdate)
-    state.observe(header, { attributes: true, attributeFilter: ['data-menu-open', 'data-project-open', 'data-condensed'] })
+    state.observe(header, { attributes: true, attributeFilter: ['data-menu-open', 'data-project-open', 'data-condensed', 'data-footer-visible'] })
     resize.observe(shell)
     for (const region of regions) resize.observe(region)
     update()
@@ -200,7 +190,6 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     shell.addEventListener('pointerleave', leave)
     shell.addEventListener('focusin', scheduleUpdate)
     shell.addEventListener('focusout', scheduleUpdate)
-    motion.addEventListener('change', scheduleUpdate)
     transparency.addEventListener('change', scheduleUpdate)
     return () => {
       disposed = true
@@ -211,7 +200,6 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       delete header.dataset.glassTheme
       delete header.dataset.glassSurface
       header.style.removeProperty('--header-surface')
-      for (const property of ['--glass-round-a', '--glass-round-b']) shell.style.removeProperty(property)
       window.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', refresh)
       document.removeEventListener('visibilitychange', scheduleUpdate)
@@ -219,7 +207,6 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       shell.removeEventListener('pointerleave', leave)
       shell.removeEventListener('focusin', scheduleUpdate)
       shell.removeEventListener('focusout', scheduleUpdate)
-      motion.removeEventListener('change', scheduleUpdate)
       transparency.removeEventListener('change', scheduleUpdate)
     }
   }, [headerRef, pathname])
