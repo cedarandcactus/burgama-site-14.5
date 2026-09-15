@@ -149,7 +149,7 @@
 
 .invitation {
   flex: 1.1;
-  min-width: 0;
+  min-width: min(100%, var(--header-expanded-width));
 }
 
 .invitation h2 {
@@ -179,7 +179,7 @@
   justify-content: space-between;
   gap: 12px;
   min-height: 72px;
-  width: min(100%, 420px);
+  width: min(100%, var(--header-expanded-width));
   padding: 6px 6px 6px 24px;
   border: 2px solid var(--palette-powder);
   border-radius: 999px;

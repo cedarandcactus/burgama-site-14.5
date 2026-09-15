@@ -12,7 +12,7 @@
   --header-action-width: 9.25rem;
   --header-toggle-width: 4.5rem;
   --header-label-size: 1rem;
-  --header-symbol-size: 32px;
+  --header-symbol-size: 40px;
   --header-top-inset: 9px;
   --header-top: max(var(--header-top-inset), env(safe-area-inset-top, 0px));
   --header-compact-height: calc(var(--header-control-height) + 2 * var(--header-shell-padding));
