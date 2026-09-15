@@ -13,7 +13,7 @@
 
 .window {
   position: relative;
-  height: calc(var(--home-rise) + 104px);
+  height: calc(var(--home-rise) + 128px);
   overflow: hidden;
 }
 
@@ -21,7 +21,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 12px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -31,18 +31,18 @@
 
 .logo {
   display: flex;
-  flex: 0 0 160px;
+  flex: 0 0 172px;
   align-items: center;
   justify-content: center;
-  width: 160px;
-  height: 80px;
+  width: 172px;
+  height: 88px;
 }
 
 .artwork {
   display: block;
   flex: none;
-  width: 144px;
-  height: 42px;
+  width: 166px;
+  height: 48px;
   background: currentColor;
   mask-size: contain;
   mask-position: center;
@@ -50,9 +50,9 @@
   mask-mode: alpha;
 }
 
-.symbol .artwork { width: 56px; height: 56px; }
-.script .artwork { width: 120px; height: 52px; }
-.illustration .artwork { width: 60px; height: 68px; }
+.symbol .artwork { width: 64px; height: 64px; }
+.script .artwork { width: 138px; height: 60px; }
+.illustration .artwork { width: 69px; height: 78px; }
 
 .section[data-animated='true'] .group {
   overflow: visible;
@@ -70,14 +70,16 @@
 
 @media (max-width: 699px) {
   .section { padding-block: 0 16px; }
-  .window { height: calc(var(--home-rise) + 88px); }
-  .group { gap: 24px; }
-  .logo { flex-basis: 120px; width: 120px; height: 60px; }
-  .artwork { max-width: 110px; max-height: 56px; }
+  .window { height: calc(var(--home-rise) + 108px); }
+  .group { gap: 8px; }
+  .logo { flex-basis: 132px; width: 132px; height: 72px; }
+  .artwork { max-width: 126px; max-height: 64px; }
 }
 
 @supports not (offset-path: path('M 0 0 L 1 1')) {
   .section { padding-bottom: calc(var(--home-rise) + 20px); }
+  .window { height: auto; overflow: visible; }
+  .group { flex-wrap: wrap; justify-content: center; padding: 24px; gap: 16px 12px; overflow: visible; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,7 +89,7 @@
     flex-wrap: wrap;
     justify-content: center;
     padding: 24px;
-    gap: 24px;
+    gap: 16px 12px;
     overflow: visible;
   }
 }

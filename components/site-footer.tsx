@@ -6,9 +6,10 @@ import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
 import { SectionRise } from '@/components/home/section-rise'
 import { gsap, ScrollTrigger } from '@/lib/motion'
+import { homeCurveExtensionLength, homeCurvePath } from '@/lib/home-curve'
 import styles from '@/components/site-footer.module.css'
 
-const headline = 'Ready for what comes next'
+const headline = 'ready for what comes next'
 const words = headline.split(' ')
 const navigationGroups = [
   {
@@ -53,6 +54,11 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
   const leadRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLSpanElement>(null)
   const titleId = useId()
+  const curveId = `footer-curve-${useId().replace(/:/g, '')}`
+  const svgRef = useRef<SVGSVGElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
+  const textRef = useRef<SVGTextElement>(null)
+  const textPathRef = useRef<SVGTextPathElement>(null)
 
   useEffect(() => {
     const root = rootRef.current
@@ -68,11 +74,34 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
     const letters = Array.from(track.querySelectorAll<HTMLElement>('[data-footer-letter]'))
     let disposed = false
     let refreshFrame = 0
+    let curveEntrance = 0
+    let curveDestination = 0
+    let textWidth = 0
+    const measureCurve = () => {
+      const svg = svgRef.current
+      const path = pathRef.current
+      const text = textRef.current
+      if (!home || !svg || !path || !text || lead.dataset.curved !== 'true') return
+      const width = lead.clientWidth
+      const height = lead.clientHeight
+      const rise = root.querySelector<SVGSVGElement>('[data-footer-lead] > svg')?.getBoundingClientRect().height ?? 100
+      textWidth = text.getComputedTextLength()
+      const extension = Math.max(width, textWidth) + 160
+      const d = homeCurvePath(width, rise, height - rise - 48, extension)
+      const leftLength = homeCurveExtensionLength(width, rise, extension)
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
+      path.setAttribute('d', d)
+      curveEntrance = leftLength + width * 0.72
+      curveDestination = leftLength + Math.min(0, width * 0.92 - textWidth)
+    }
     const refresh = () => {
       if (disposed) return
       cancelAnimationFrame(refreshFrame)
       refreshFrame = requestAnimationFrame(() => {
-        if (!disposed) ScrollTrigger.refresh()
+        if (!disposed) {
+          measureCurve()
+          ScrollTrigger.refresh()
+        }
       })
     }
 
@@ -85,6 +114,10 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
 
       if (context.conditions?.desktop) {
         lead.dataset.rolling = 'true'
+        if (home) {
+          lead.dataset.curved = 'true'
+          measureCurve()
+        }
         const entrance = () => lead.clientWidth * 0.72
         const destination = () => Math.min(0, lead.clientWidth * 0.92 - track.scrollWidth)
         const timeline = gsap.timeline({
@@ -92,7 +125,8 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             id: `footer-roll-${titleId}`,
             trigger: lead,
             start: 'top top',
-            end: () => `+=${Math.max(600, Math.min(1300, track.scrollWidth * 0.55))}`,
+            end: () => `+=${Math.max(600, Math.min(1300, (home ? textWidth : track.scrollWidth) * 0.55))}`,
+            onRefreshInit: measureCurve,
             pin: true,
             // Page wrappers use transforms, which change the containing block for fixed pins.
             pinType: 'transform',
@@ -102,30 +136,38 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           },
         })
 
-        timeline.fromTo(track, { x: entrance }, {
-          x: destination,
-          duration: 3,
-          ease: 'none',
-        }, 0)
+        if (home && textPathRef.current) {
+          timeline.fromTo(textPathRef.current, { attr: { startOffset: () => curveEntrance } }, {
+            attr: { startOffset: () => curveDestination },
+            duration: 3,
+            ease: 'none',
+          }, 0)
+        } else {
+          timeline.fromTo(track, { x: entrance }, {
+            x: destination,
+            duration: 3,
+            ease: 'none',
+          }, 0)
 
-        letters.forEach((letter) => {
-          const word = letter.parentElement!
-          const offset = word.offsetLeft + letter.offsetLeft
-          const distance = entrance() - destination()
-          const arrival = Math.max(0, (entrance() + offset - lead.clientWidth * 0.9) / distance * 3)
-          timeline.fromTo(letter, {
-            yPercent: 65,
-            rotation: 16,
-          }, {
-            yPercent: 0,
-            rotation: 0,
-            duration: 0.45,
-            ease: 'power2.out',
-          }, Math.min(2.5, arrival))
-        })
+          letters.forEach((letter) => {
+            const word = letter.parentElement!
+            const offset = word.offsetLeft + letter.offsetLeft
+            const distance = entrance() - destination()
+            const arrival = Math.max(0, (entrance() + offset - lead.clientWidth * 0.9) / distance * 3)
+            timeline.fromTo(letter, {
+              yPercent: 65,
+              rotation: 16,
+            }, {
+              yPercent: 0,
+              rotation: 0,
+              duration: 0.45,
+              ease: 'power2.out',
+            }, Math.min(2.5, arrival))
+          })
+        }
 
         timeline.to({}, { duration: 0.2 })
-      } else {
+      } else if (!home) {
         gsap.fromTo(track.children, { y: 42, rotation: 4 }, {
           y: 0,
           rotation: 0,
@@ -188,6 +230,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
 
       return () => {
         delete lead.dataset.rolling
+        delete lead.dataset.curved
         for (const element of [track, ...Array.from(track.children), ...letters, ...titleWords, ...groups, identity]) {
           element?.removeAttribute('style')
         }
@@ -217,7 +260,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       document.fonts.removeEventListener('loadingdone', refresh)
       media.revert()
     }
-  }, [titleId])
+  }, [titleId, home])
 
   return (
     <div ref={rootRef} className={styles.ending} data-site-ending="">
@@ -234,6 +277,14 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
               ))}
             </span>
           </h2>
+          {home && (
+            <svg ref={svgRef} className={styles.curvedHeadline} aria-hidden="true" focusable="false">
+              <defs><path ref={pathRef} id={curveId} d={homeCurvePath(1440, 144, 220, 3200)} /></defs>
+              <text ref={textRef}>
+                <textPath ref={textPathRef} href={`#${curveId}`} startOffset="3200">{headline}</textPath>
+              </text>
+            </svg>
+          )}
         </div>
         {home && <SectionRise surface="navy" />}
       </section>

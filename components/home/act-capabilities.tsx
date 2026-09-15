@@ -65,7 +65,7 @@ function CapabilityCard({ capability }: { capability: typeof capabilities[number
         </div>
         <div className={styles.serviceDetails}>
           {capability.services.map((service, index) => (
-            <div key={service.name} role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} hidden={selected !== index} tabIndex={0}>
+            <div key={service.name} role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} aria-hidden={selected !== index} inert={selected !== index} data-active={selected === index} tabIndex={selected === index ? 0 : -1}>
               <p>{service.detail}</p>
             </div>
           ))}
@@ -87,8 +87,7 @@ export function ActCapabilities() {
       const cards = section.querySelectorAll('[data-capability-card]')
       gsap.from(cards, {
         y: 48,
-        rotation: (index) => index === 0 ? -2 : 2,
-        stagger: 0.12,
+        stagger: 0.08,
         duration: 1,
         ease: 'power3.out',
         clearProps: 'transform',

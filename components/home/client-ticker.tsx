@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { homeCurvePath } from '@/lib/home-curve'
 import styles from './client-ticker.module.css'
 
 const logos = [
@@ -22,10 +23,8 @@ const logos = [
 ]
 
 function logoPath(width: number, height: number) {
-  const top = width < 700 ? 44 : 52
-  const bottom = height - top
-  // Mirror the section rise's 24%/76% control points with a constant vertical clearance.
-  return `M ${width + 100} ${top} L ${width} ${top} C ${width * 0.76} ${top} ${width * 0.24} ${bottom} 0 ${bottom} L -100 ${bottom}`
+  const clearance = width < 700 ? 54 : 64
+  return homeCurvePath(width, height - clearance * 2, clearance, 136, true)
 }
 
 export function ClientTicker() {
@@ -80,7 +79,7 @@ export function ClientTicker() {
       const measurement = document.createElementNS('http://www.w3.org/2000/svg', 'path')
       measurement.setAttribute('d', path)
       const pathLength = measurement.getTotalLength()
-      const spacing = width < 700 ? 152 : 196
+      const spacing = width < 700 ? 140 : 184
       const speed = width < 700 ? 30 : 39
       const duration = Math.max(logos.length * spacing, pathLength + spacing) / speed * 1000
       const travelFraction = pathLength / speed * 1000 / duration
@@ -88,7 +87,7 @@ export function ClientTicker() {
       const frames: Keyframe[] = Array.from({ length: 121 }, (_, index) => {
         const progress = index / 120
         const point = measurement.getPointAtLength(progress * pathLength)
-        const edgeDistance = Math.min(point.x, width - point.x) - 12
+        const edgeDistance = Math.min(point.x, width - point.x) - (width < 700 ? 28 : 36)
         const fade = Math.max(0, Math.min(1, edgeDistance / (width < 700 ? 48 : 88)))
         const clarity = fade * fade * (3 - 2 * fade)
         return {

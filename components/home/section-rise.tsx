@@ -1,3 +1,4 @@
+import { homeCurvePath } from '@/lib/home-curve'
 import styles from './home-page.module.css'
 
 export function SectionRise({ surface, direction = 'right' }: { surface: 'powder' | 'powder-deep' | 'navy'; direction?: 'left' | 'right' }) {
@@ -12,7 +13,7 @@ export function SectionRise({ surface, direction = 'right' }: { surface: 'powder
       aria-hidden="true"
       focusable="false"
     >
-      <path d="M 0 100 C 240 100 760 0 1000 0 L 1000 101 L 0 101 Z" fill="currentColor" />
+      <path d={`${homeCurvePath(1000, 100)} L 1000 101 L 0 101 Z`} fill="currentColor" />
     </svg>
   )
 }

@@ -46,7 +46,7 @@ body .site-header.cyan-header {
   inset: 0 0 auto;
   z-index: 60;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   padding: var(--header-top) max(var(--page-gutter), env(safe-area-inset-right, 0px)) 0 max(var(--page-gutter), env(safe-area-inset-left, 0px));
   color: var(--cyan-night);
@@ -65,7 +65,7 @@ body .cyan-header .header-inner {
   width: var(--header-compact-width);
   height: var(--header-compact-height);
   max-width: 100%;
-  margin-inline: auto;
+  margin-inline: 0;
   padding: var(--header-shell-padding) var(--header-shell-inline-padding);
   overflow: hidden;
   border: 0;
@@ -213,28 +213,6 @@ body .cyan-header[data-home='true'][data-condensed='false'] .header-inner {
   width: var(--header-expanded-width);
 }
 
-@media (min-width: 800px) {
-  body .cyan-header[data-home='true'][data-condensed='false']:not([data-project-open='true']) .header-inner {
-    width: min(100%, 960px);
-  }
-
-  body .cyan-header[data-home='true'][data-condensed='false']:not([data-project-open='true']) .header-nav-shell {
-    flex: 1;
-    width: auto;
-  }
-
-  body .cyan-header[data-home='true'][data-condensed='false'] .header-nav {
-    width: 100%;
-    justify-content: flex-end;
-    gap: clamp(8px, 2vw, 28px);
-  }
-
-  body .cyan-header[data-home='true'][data-condensed='false'] .header-nav > a {
-    flex: 1;
-    max-width: 160px;
-  }
-}
-
 body .cyan-header[data-work='true'] {
   --header-action-bg: var(--brand-navy);
   --header-action-ink: var(--brand-white);
@@ -362,6 +340,7 @@ body .cyan-header .header-nav :is(a, button.header-contact):is([aria-current='pa
 body .cyan-header .header-nav :is(a, button.header-contact).header-contact {
   width: var(--header-action-width);
   padding-inline: 16px;
+  border: 1px solid transparent;
   color: var(--header-action-ink);
   background: var(--header-action-bg);
 }
@@ -449,9 +428,15 @@ body .modular-button {
     background: var(--header-action-bg);
   }
 
-  body .cyan-header .header-nav :is(a, button.header-contact).header-contact:hover {
-    color: var(--header-action-ink);
-    background: color-mix(in srgb, var(--header-action-bg) 86%, var(--header-action-ink));
+  body .site-header.cyan-header .header-nav :is(a, button.header-contact).header-contact:hover {
+    color: var(--header-action-bg);
+    border-color: currentColor;
+    background: transparent;
+  }
+
+  body .cyan-header[data-glass-sweeping='true'] .header-contact:hover [data-glass-ink] {
+    --glass-cloud-color: var(--glass-new-ink);
+    --glass-base-color: var(--glass-old-ink);
   }
 
   body .cyan-header .cyan-menu-trigger:hover,

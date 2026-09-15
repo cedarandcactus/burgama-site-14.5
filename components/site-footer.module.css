@@ -86,6 +86,37 @@
   will-change: transform;
 }
 
+.curvedHeadline { display: none; }
+
+.lead[data-curved='true'] {
+  min-height: max(320px, calc(var(--ending-rolling-size) + var(--home-rise) + 64px));
+}
+
+.lead[data-curved='true'] .headline {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lead[data-curved='true'] .curvedHeadline {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  fill: currentColor;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: var(--ending-rolling-size);
+  font-weight: 400;
+  font-kerning: normal;
+  letter-spacing: normal;
+}
+
 .footerFrame {
   background: var(--palette-navy);
 }
@@ -145,19 +176,25 @@
 .content {
   display: flex;
   flex-direction: column;
+  width: min(100%, 1280px);
+  margin-inline: auto;
   padding: clamp(32px, 4vw, 56px) clamp(24px, 5vw, 80px) 20px;
   container-type: inline-size;
+  text-align: center;
 }
 
 .topRow {
   display: flex;
-  align-items: flex-start;
-  gap: clamp(48px, 7vw, 112px);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
   width: 100%;
 }
 
 .invitation {
-  flex: 1.3;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
   min-width: 0;
 }
 
@@ -175,6 +212,7 @@
 .titleLine {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   column-gap: .18em;
 }
 
@@ -192,11 +230,11 @@
   min-height: 50px;
   width: min(100%, 360px);
   padding: 6px 6px 6px 18px;
-  border: 1px solid currentColor;
+  border: 1px solid var(--palette-powder);
   border-radius: 999px;
-  color: var(--palette-powder);
+  color: var(--palette-navy);
   -webkit-text-fill-color: currentColor;
-  background: transparent;
+  background: var(--palette-powder);
   font-family: var(--font-cenura), sans-serif;
   font-size: clamp(18px, 1.7vw, 23px);
   font-weight: 400;
@@ -242,8 +280,8 @@
   height: 36px;
   overflow: hidden;
   border-radius: 999px;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
+  color: var(--palette-powder);
+  background: var(--palette-navy);
 }
 
 .emailArrow svg {
@@ -266,12 +304,15 @@
   flex-direction: column;
   gap: 32px;
   min-width: 0;
-  padding-top: 8px;
+  padding-top: 0;
+  align-items: center;
 }
 
 .navigation {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 360px);
+  margin-inline: auto;
   gap: clamp(24px, 3vw, 56px);
 }
 
@@ -286,7 +327,7 @@
 .footer .linkColumn a {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 8px;
   min-height: 44px;
   padding-block: 4px;
@@ -346,7 +387,7 @@
   font-weight: 400;
   line-height: .78;
   letter-spacing: normal;
-  text-align: left;
+  text-align: center;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -355,6 +396,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 0 20px;
   padding-top: 20px;
   font-size: clamp(12px, .95vw, 15px);
@@ -412,7 +454,13 @@
 
 @media (hover: hover) and (pointer: fine) {
   .footer .emailButton:hover {
-    background: color-mix(in srgb, var(--palette-powder) 10%, transparent);
+    color: var(--palette-powder);
+    background: transparent;
+  }
+
+  .footer .emailButton:hover .emailArrow {
+    color: var(--palette-navy);
+    background: var(--palette-powder);
   }
 
   .emailButton:hover .rollGlyph,

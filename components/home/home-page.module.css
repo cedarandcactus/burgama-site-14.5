@@ -852,8 +852,15 @@
   min-width: min(100%, 208px);
   min-height: 44px;
   padding: 10px 30px;
+  border: 1px solid transparent;
   font-size: 20px;
   line-height: 1.1;
+}
+
+.heroStatement :global(.pill),
+.workAction :global(.pill) {
+  color: var(--palette-navy);
+  background: var(--palette-powder);
 }
 
 .introduction :global(.pill),
@@ -874,22 +881,22 @@
 .capabilitiesGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 24px 20px;
   width: min(100%, 1120px);
   margin-inline: auto;
 }
 
 .capabilityCard {
-  display: flex;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
   min-width: 0;
   min-height: clamp(288px, 28vw, 360px);
   padding: clamp(28px, 3.6vw, 48px);
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 48px;
   border-radius: 28px;
   color: var(--palette-powder);
   background: var(--palette-navy);
+  text-align: center;
 }
 
 .capabilityCard h3 {
@@ -900,21 +907,21 @@
 }
 
 .capabilityServices {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: contents;
 }
 
 .serviceTabs {
   display: flex;
   flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
   gap: 8px;
 }
 
 .serviceTabs button {
   min-height: 44px;
   padding: 9px 16px;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 999px;
   color: var(--palette-powder);
   background: var(--palette-navy-raised);
@@ -932,21 +939,33 @@
 }
 
 .serviceDetails {
+  display: grid;
+  align-items: start;
   min-height: 4.5em;
   font-size: 16px;
   line-height: 1.5;
 }
 
+.serviceDetails [role='tabpanel'] {
+  grid-area: 1 / 1;
+  min-width: 0;
+  visibility: hidden;
+}
+
+.serviceDetails [data-active='true'] {
+  visibility: visible;
+}
+
 .serviceDetails p {
   max-width: 36ch;
-  margin: 0;
+  margin: 0 auto;
   font-size: inherit;
   font-weight: 500;
   line-height: inherit;
   text-wrap: pretty;
 }
 
-.serviceDetails [role='tabpanel']:not([hidden]) {
+.serviceDetails [role='tabpanel'][data-active='true'] {
   animation: service-detail-enter 260ms ease both;
 }
 
@@ -965,6 +984,80 @@
   display: flex;
   justify-content: center;
   margin-top: 32px;
+}
+
+.results {
+  padding: clamp(40px, 5vw, 64px) var(--home-inset) 32px;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+  text-align: center;
+}
+
+.results h2 {
+  margin: 0 0 40px;
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.resultsContour {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  width: min(100%, 1120px);
+  margin-inline: auto;
+  padding-bottom: 32px;
+}
+
+.resultPosition {
+  flex: 1;
+  min-width: 0;
+  padding-top: calc(var(--result-offset) * clamp(56px, 8vw, 112px));
+}
+
+.results .result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.resultNumber {
+  display: grid;
+  max-width: 100%;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(40px, 5.7vw, 80px);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.resultNumber > span { grid-area: 1 / 1; }
+.resultNumberSpace { visibility: hidden; }
+.resultMetric { margin-top: 8px; font-size: clamp(14px, 1.3vw, 18px); }
+.resultClient { margin-top: 20px; font-size: 14px; font-weight: 600; }
+.resultPeriod { margin-top: 4px; font-size: 12px; font-weight: 300; line-height: 1.5; }
+.resultsNote { margin: 0; font-size: 12px; font-weight: 300; }
+
+.results .result:focus-visible {
+  background: transparent;
+  color: inherit;
+  outline: 2px solid currentColor;
+  outline-offset: 8px;
+  border-radius: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .result:hover .resultClient { text-decoration: underline; text-underline-offset: .25em; }
+}
+
+@media (max-width: 699px) {
+  .resultsContour { flex-direction: column; align-items: center; gap: 36px; padding-bottom: 32px; }
+  .resultPosition { padding-top: 0; width: 100%; }
+  .resultNumber { font-size: clamp(52px, 12vw, 72px); }
+  .resultClient { margin-top: 12px; }
 }
 
 .selectedWork {
@@ -1083,6 +1176,7 @@
   justify-content: center;
   min-height: 44px;
   padding: 10px 26px;
+  border: 1px solid transparent;
   border-radius: 999px;
   color: var(--palette-navy);
   background: var(--palette-powder);
@@ -1136,7 +1230,7 @@
   width: clamp(112px, 12vw, 168px);
   height: 44px;
   place-items: center;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 999px;
   color: var(--palette-navy);
   background: var(--palette-powder);
@@ -1166,21 +1260,28 @@
   .workAction :global(.pill:hover),
   .page .workTrack :global(.project-tile:hover .project-link-prompt),
   .reelArrows button:not([aria-disabled='true']):hover {
-    color: var(--palette-navy);
-    background: var(--palette-powder-deep);
-    border-color: transparent;
+    color: var(--palette-powder);
+    background: transparent;
+    border-color: currentColor;
   }
 
   .introduction :global(.pill:hover),
   .capabilities :global(.pill:hover) {
-    color: var(--palette-powder);
-    background: var(--palette-navy-raised);
-    border-color: transparent;
+    color: var(--palette-navy);
+    background: transparent;
+    border-color: currentColor;
   }
 
-  .serviceTabs button:not([aria-selected='true']):hover {
-    color: var(--palette-navy);
-    background: var(--palette-powder-deep);
+  .serviceTabs button:hover {
+    color: var(--palette-powder);
+    background: transparent;
+    border-color: color-mix(in srgb, currentColor 50%, transparent);
+  }
+
+  .serviceTabs button[aria-selected='true']:hover {
+    border-color: currentColor;
+    text-decoration: underline;
+    text-underline-offset: .25em;
   }
 }
 
@@ -1201,7 +1302,7 @@
   .capabilityCard {
     min-height: 276px;
     border-radius: 24px;
-    gap: 40px;
+    row-gap: 24px;
   }
 
   .workIntro h2 {
@@ -1251,7 +1352,7 @@
     transition: none;
   }
 
-  .serviceDetails [role='tabpanel']:not([hidden]) {
+  .serviceDetails [role='tabpanel'][data-active='true'] {
     animation: none;
   }
 }
