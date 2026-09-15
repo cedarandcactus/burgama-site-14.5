@@ -1,28 +1,32 @@
 'use client'
 
 import { useEffect, useId, useRef, useState } from 'react'
-import { homeSlopePath } from '@/lib/home-curve'
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
 import { SectionRise } from '@/components/home/section-rise'
 import styles from './home-page.module.css'
 
-const topics = [
-  { title: 'strategy', stage: 'understand', description: 'We get to know your business, your audience, and what needs to change. The result is a focused brief that gives the work a clear purpose.' },
-  { title: 'identity', stage: 'shape', description: 'We find what makes you distinct, then give it a voice and a visual language. A shared direction for everything your business puts into the world.' },
-  { title: 'websites', stage: 'make', description: 'We bring structure, design, and development together. Clear, considered websites that help people understand your business and take the next step.' },
-  { title: 'content', stage: 'make', description: 'Photography, film, and words, made with the same direction in mind. We create the pieces your brand needs to show up consistently.' },
-  { title: 'campaigns', stage: 'shape + make', description: 'We connect the message, the creative, and the channels. Campaigns built around who you need to reach and what you want to move forward.' },
-  { title: 'refinement', stage: 'improve', description: 'The launch is a beginning. We listen to feedback, learn from performance, and keep improving the things that make a difference.' },
+const stages = [
+  { title: 'understand', description: 'We get to know your business, your audience, and what needs to change. Together, we turn those conversations into a focused strategy and brief.' },
+  { title: 'shape', description: 'We find what makes you distinct, then shape the positioning, voice, and visual identity. One creative direction for everything that follows.' },
+  { title: 'make', description: 'We bring the direction to life through websites, imagery, film, words, and campaigns. Every piece made to work together.' },
+  { title: 'improve', description: 'We listen to feedback and learn from performance after launch. Then we refine the work, carrying what we learn into the next cycle.' },
 ]
 
-const lanes = [topics.slice(0, 3), topics.slice(3)]
+// Four circular shoulders joined with short tangent curves keep the marker smooth at each inward turn.
+const loopPath = 'M 326 92.55 A 160 160 0 1 1 547.45 314 Q 538.31 320 547.45 326 A 160 160 0 1 1 326 547.45 Q 320 538.31 314 547.45 A 160 160 0 1 1 92.55 326 Q 101.69 320 92.55 314 A 160 160 0 1 1 314 92.55 Q 320 101.69 326 92.55 Z'
+const innerPath = 'M 320 257.46 A 160 160 0 0 0 382.54 320 A 160 160 0 0 0 320 382.54 A 160 160 0 0 0 257.46 320 A 160 160 0 0 0 320 257.46 Z'
+const cycleDuration = 16000
 
 export function ActCapabilities() {
   const sectionRef = useRef<HTMLElement>(null)
-  const streamRef = useRef<HTMLDivElement>(null)
-  const syncRef = useRef<() => void>(() => {})
+  const diagramRef = useRef<HTMLDivElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
+  const markerRef = useRef<SVGGElement>(null)
+  const motionButtonRef = useRef<HTMLButtonElement>(null)
   const selectedButton = useRef<HTMLButtonElement | null>(null)
+  const syncRef = useRef<() => void>(() => {})
   const playback = useRef({ hovered: false, focused: false, selected: false, manual: false })
   const [selected, setSelected] = useState<string | null>(null)
   const [paused, setPaused] = useState(false)
@@ -36,110 +40,74 @@ export function ActCapabilities() {
 
   useEffect(() => {
     const section = sectionRef.current
-    const stream = streamRef.current
-    if (!section || !stream || !CSS.supports('offset-path', 'path("M 0 0 L 1 1")')) return
+    const diagram = diagramRef.current
+    const path = pathRef.current
+    const marker = markerRef.current
+    if (!section || !diagram || !path || !marker || typeof path.getPointAtLength !== 'function') return
 
     const reduced = matchMedia('(prefers-reduced-motion: reduce)')
-    const rows = [...stream.querySelectorAll<HTMLElement>('[data-topic-lane]')]
-    let animations: Animation[] = []
+    const length = path.getTotalLength()
+    if (!Number.isFinite(length) || length <= 0) return
     let inView = false
-    let disposed = false
     let frame = 0
-    let previousWidth = 0
+    let previousTime: number | null = null
+    let elapsed = cycleDuration * 0.875
 
-    const sync = () => {
+    const position = () => {
+      const point = path.getPointAtLength((elapsed / cycleDuration) * length)
+      marker.setAttribute('transform', `translate(${point.x} ${point.y})`)
+    }
+    const shouldRun = () => {
       const reasons = playback.current
-      const shouldPause = !inView || document.hidden || reasons.hovered || reasons.focused || reasons.selected || reasons.manual
-      const now = Number(document.timeline.currentTime ?? 0)
-      for (const animation of animations) {
-        if (shouldPause && animation.playState !== 'paused') animation.pause()
-        else if (!shouldPause && animation.playState !== 'running') {
-          const elapsed = Number(animation.currentTime ?? 0)
-          animation.play()
-          animation.startTime = now - elapsed
-        }
+      return inView && !document.hidden && !reduced.matches && !reasons.hovered && !reasons.focused && !reasons.selected && !reasons.manual
+    }
+    const tick = (time: number) => {
+      frame = 0
+      if (!shouldRun()) { previousTime = null; return }
+      if (previousTime !== null) elapsed = (elapsed + time - previousTime) % cycleDuration
+      previousTime = time
+      position()
+      frame = requestAnimationFrame(tick)
+    }
+    const sync = () => {
+      section.dataset.loopMotion = reduced.matches ? 'false' : 'true'
+      if (shouldRun()) {
+        if (!frame) frame = requestAnimationFrame(tick)
+      } else {
+        cancelAnimationFrame(frame)
+        frame = 0
+        previousTime = null
       }
     }
-    syncRef.current = sync
-
-    const rebuild = () => {
-      if (disposed) return
-      const phases = animations.map(animation => Number(animation.currentTime ?? 0) / Number(animation.effect?.getTiming().duration || 1))
-      animations.forEach(animation => animation.cancel())
-      animations = []
-      previousWidth = stream.clientWidth
-      if (reduced.matches) {
-        delete section.dataset.topicsAnimated
-        return
+    const preferenceChanged = () => {
+      if (reduced.matches && document.activeElement === motionButtonRef.current) {
+        const target = selectedButton.current ?? diagram.querySelector<HTMLButtonElement>('button')
+        target?.focus({ preventScroll: true })
       }
-
-      section.dataset.topicsAnimated = 'true'
-      rows.forEach((row, laneIndex) => {
-        const nodes = [...row.querySelectorAll<HTMLElement>('[data-topic-node]')]
-        const widths = nodes.map(node => node.offsetWidth)
-        const widest = Math.max(...widths)
-        const width = row.clientWidth
-        const height = row.clientHeight
-        const rise = Math.min(90, width * 0.1)
-        const extension = widest / 2 + 28
-        const path = homeSlopePath(width, rise, (height - rise) / 2, extension, laneIndex ? 'left' : 'right')
-        row.style.setProperty('--topic-path', `path('${path}')`)
-        const measurement = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-        measurement.setAttribute('d', path)
-        const length = measurement.getTotalLength()
-        const gap = width < 700 ? 60 : 96
-        const contentLength = widths.reduce((total, wordWidth) => total + wordWidth + gap, 0)
-        const cycleLength = Math.max(contentLength, length + widest + gap)
-        const duration = cycleLength / (width < 700 ? 23 : 32) * 1000
-        const travelFraction = length / cycleLength
-        const extraGap = (cycleLength - contentLength) / nodes.length
-        let center = extension + widths[0] / 2
-
-        nodes.forEach((node, index) => {
-          const position = laneIndex ? 1 - center / cycleLength : center / cycleLength
-          const animation = node.animate([
-            { offset: 0, offsetDistance: laneIndex ? '100%' : '0%', opacity: 1 },
-            { offset: travelFraction, offsetDistance: laneIndex ? '0%' : '100%', opacity: 1 },
-            { offset: 1, offsetDistance: laneIndex ? '0%' : '100%', opacity: 0 },
-          ], { duration, delay: -((position + 1) % 1) * duration, iterations: Infinity, easing: 'linear' })
-          animation.pause()
-          animation.currentTime = (phases[laneIndex * 3 + index] ?? 0) * duration
-          animations.push(animation)
-          center += widths[index] / 2 + (widths[index + 1] ?? widths[0]) / 2 + gap + extraGap
-        })
-      })
       sync()
     }
-
-    const schedule = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(rebuild)
-    }
-    const intersection = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync() })
-    const resize = new ResizeObserver(() => { if (stream.clientWidth !== previousWidth) schedule() })
-    rebuild()
-    intersection.observe(stream)
-    resize.observe(stream)
-    reduced.addEventListener('change', schedule)
+    syncRef.current = sync
+    const intersection = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting
+      sync()
+    })
+    position()
+    sync()
+    intersection.observe(diagram)
+    reduced.addEventListener('change', preferenceChanged)
     document.addEventListener('visibilitychange', sync)
-    document.fonts.ready.then(() => { if (!disposed) schedule() })
-    document.fonts.addEventListener('loadingdone', schedule)
 
     return () => {
-      disposed = true
       cancelAnimationFrame(frame)
-      animations.forEach(animation => animation.cancel())
       intersection.disconnect()
-      resize.disconnect()
-      reduced.removeEventListener('change', schedule)
+      reduced.removeEventListener('change', preferenceChanged)
       document.removeEventListener('visibilitychange', sync)
-      document.fonts.removeEventListener('loadingdone', schedule)
       syncRef.current = () => {}
-      delete section.dataset.topicsAnimated
+      delete section.dataset.loopMotion
     }
   }, [])
 
-  function closeTopic(restoreFocus = false) {
+  function closeStage(restoreFocus = false) {
     setSelected(null)
     if (restoreFocus) selectedButton.current?.focus({ preventScroll: true })
   }
@@ -150,54 +118,69 @@ export function ActCapabilities() {
         <Reveal><h2 id="capabilities-heading" className={styles.processHeading}>how we work</h2></Reveal>
         <div className={styles.processInteractive} onKeyDown={event => {
           if (event.nativeEvent.isComposing || event.keyCode === 229) return
-          if (event.key === 'Escape' && selected) { event.preventDefault(); closeTopic(true) }
-          if (event.key === 'Tab' && streamRef.current) streamRef.current.dataset.keyboard = 'true'
+          if (event.key === 'Escape' && selected) { event.preventDefault(); closeStage(true) }
+          if (['Tab', 'Enter', ' '].includes(event.key)) {
+            playback.current.focused = true
+            syncRef.current()
+          }
+        }} onPointerDownCapture={() => {
+          playback.current.focused = false
+          syncRef.current()
         }} onFocusCapture={event => {
           playback.current.focused = event.target.matches(':focus-visible')
-          if (playback.current.focused && streamRef.current) streamRef.current.dataset.keyboard = 'true'
           syncRef.current()
         }} onBlurCapture={event => {
           if (event.currentTarget.contains(event.relatedTarget)) return
           playback.current.focused = false
-          if (streamRef.current) delete streamRef.current.dataset.keyboard
           syncRef.current()
         }}>
-          <div ref={streamRef} className={styles.processStream} role="group" aria-label="Explore our process" onPointerEnter={event => {
+          <div ref={diagramRef} className={styles.processDiagram} role="group" aria-label="Explore our process: understand, shape, make, improve" onPointerEnter={event => {
             if (event.pointerType !== 'touch') { playback.current.hovered = true; syncRef.current() }
           }} onPointerLeave={() => { playback.current.hovered = false; syncRef.current() }}>
-            {lanes.map((lane, laneIndex) => (
-              <div key={laneIndex} className={styles.processLane} data-topic-lane>
-                {lane.map(topic => (
-                  <div key={topic.title} className={styles.processTopic} data-topic-node>
-                    <button type="button" aria-pressed={selected === topic.title} aria-controls={`${id}-detail`} onClick={event => {
-                      selectedButton.current = event.currentTarget
-                      setSelected(current => current === topic.title ? null : topic.title)
-                    }}>{topic.title}</button>
-                  </div>
-                ))}
-              </div>
-            ))}
+            <svg className={styles.processGraphic} viewBox="0 0 640 640" fill="none" aria-hidden="true" focusable="false">
+              <g className={styles.processOutline}>
+                <path ref={pathRef} d={loopPath} vectorEffect="non-scaling-stroke" />
+                <path d={innerPath} vectorEffect="non-scaling-stroke" />
+              </g>
+              <ArrowRight x={302} y={162} width={36} height={36} strokeWidth={1.8} />
+              <ArrowDown x={442} y={302} width={36} height={36} strokeWidth={1.8} />
+              <ArrowLeft x={302} y={442} width={36} height={36} strokeWidth={1.8} />
+              <ArrowUp x={162} y={302} width={36} height={36} strokeWidth={1.8} />
+              <g ref={markerRef} className={styles.processMarker} transform="translate(66.86 66.86)">
+                <circle r="10" vectorEffect="non-scaling-stroke" />
+              </g>
+            </svg>
+            <div className={styles.processStages}>
+              {stages.map(stage => (
+                <div key={stage.title} className={styles.processStage} data-stage={stage.title}>
+                  <button type="button" aria-pressed={selected === stage.title} aria-controls={`${id}-detail`} onClick={event => {
+                    selectedButton.current = event.currentTarget
+                    setSelected(current => current === stage.title ? null : stage.title)
+                  }}>{stage.title}</button>
+                  <noscript><h3>{stage.title}</h3></noscript>
+                </div>
+              ))}
+            </div>
           </div>
           <div className={styles.processDetails} id={`${id}-detail`} role="region" aria-label="About our process" aria-live="polite" aria-atomic="true">
             <div className={styles.processExplanation} data-active={selected === null} aria-hidden={selected !== null}>
-              <h3>understand. shape. make. improve.</h3>
-              <p>One shared direction, from the first conversation to what comes next. Explore what goes into the work.</p>
+              <p>One shared direction, from the first conversation to what comes next.</p>
             </div>
-            {topics.map(topic => (
-              <div key={topic.title} className={styles.processExplanation} data-active={selected === topic.title} aria-hidden={selected !== topic.title}>
-                <h3>{topic.title} / {topic.stage}</h3>
-                <p>{topic.description}</p>
+            {stages.map(stage => (
+              <div key={stage.title} className={styles.processExplanation} data-active={selected === stage.title} aria-hidden={selected !== stage.title}>
+                <h3>{stage.title}</h3>
+                <p>{stage.description}</p>
               </div>
             ))}
           </div>
           <div className={styles.processTools}>
-            <button type="button" className={styles.processMotion} aria-pressed={paused} onClick={() => setPaused(current => !current)}>{paused ? 'resume motion' : 'pause motion'}</button>
-            <button type="button" className={styles.processDismiss} disabled={!selected} onClick={() => closeTopic(true)}>close topic</button>
+            <button ref={motionButtonRef} type="button" className={styles.processMotion} aria-pressed={paused} onClick={() => setPaused(current => !current)}>{paused ? 'resume motion' : 'pause motion'}</button>
+            <button type="button" className={styles.processDismiss} disabled={!selected} onClick={() => closeStage(true)}>close stage</button>
           </div>
         </div>
         <noscript>
-          <style>{`.${styles.processInteractive} { display: none; }`}</style>
-          <dl className={styles.processFallback}>{topics.map(topic => <div key={topic.title}><dt>{topic.title} — {topic.stage}</dt><dd>{topic.description}</dd></div>)}</dl>
+          <style>{`.${styles.processStage} button, .${styles.processDetails}, .${styles.processTools} { display: none; }`}</style>
+          <dl className={styles.processFallback}>{stages.map(stage => <div key={stage.title}><dt>{stage.title}</dt><dd>{stage.description}</dd></div>)}</dl>
         </noscript>
         <Reveal className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>
       </div>
