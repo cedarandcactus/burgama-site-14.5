@@ -5,6 +5,7 @@
   --control-basis-width: clamp(18rem, 22vw, 20rem);
   --header-control-height: 44px;
   --header-shell-padding: 8px;
+  --header-shell-inline-padding: 16px;
   --header-control-gap: 8px;
   --header-link-gap: 4px;
   --header-link-width: 4.75rem;
@@ -15,9 +16,9 @@
   --header-top-inset: 9px;
   --header-top: max(var(--header-top-inset), env(safe-area-inset-top, 0px));
   --header-compact-height: calc(var(--header-control-height) + 2 * var(--header-shell-padding));
-  --header-compact-width: calc(var(--header-control-height) + var(--header-toggle-width) + var(--header-control-gap) + 2 * var(--header-shell-padding));
+  --header-compact-width: calc(var(--header-control-height) + var(--header-toggle-width) + var(--header-control-gap) + 2 * var(--header-shell-inline-padding));
   --header-navigation-width: calc(3 * var(--header-link-width) + var(--header-action-width) + 3 * var(--header-link-gap));
-  --header-expanded-width: calc(var(--header-control-height) + var(--header-control-gap) + var(--header-navigation-width) + 2 * var(--header-shell-padding));
+  --header-expanded-width: calc(var(--header-control-height) + var(--header-control-gap) + var(--header-navigation-width) + 2 * var(--header-shell-inline-padding));
   --header-open-width: calc(var(--header-expanded-width) + var(--header-toggle-width) + var(--header-control-gap));
   --header-surface: var(--palette-powder);
   --header-clearance: calc(var(--header-top) + var(--header-compact-height) + var(--header-control-gap));
@@ -57,7 +58,7 @@ body .cyan-header .header-inner {
   height: var(--header-compact-height);
   max-width: 100%;
   margin-inline: auto;
-  padding: var(--header-shell-padding);
+  padding: var(--header-shell-padding) var(--header-shell-inline-padding);
   overflow: hidden;
   border: 0;
   border-radius: 999px;
