@@ -10,6 +10,23 @@ import styles from '@/components/site-footer.module.css'
 const headline = 'ready for what comes next'
 const words = headline.split(' ')
 
+function FooterDivider() {
+  return (
+    <span className={styles.divider} aria-hidden="true">
+      <svg viewBox="0 0 20 64" preserveAspectRatio="none" fill="none" focusable="false">
+        <path
+          d="M10 0 C10 16 19 18 19 32 C19 49 1 49 1 32 C1 15 10 22 10 36 L10 64"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+    </span>
+  )
+}
+
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const leadRef = useRef<HTMLElement>(null)
@@ -174,16 +191,19 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                 <p>Bring the idea. We&apos;ll bring the people to make it happen.</p>
               </div>
               <nav className={styles.linkColumn} aria-label="Explore Burgama">
+                <FooterDivider />
                 <Link href="/#capabilities">services</Link>
                 <Link href="/work">work</Link>
                 <Link href="/studio">about</Link>
               </nav>
               <nav className={styles.linkColumn} aria-label="Inside the studio">
+                <FooterDivider />
                 <Link href="/ideas">ideas</Link>
                 <Link href="/studio#small-title">our approach</Link>
                 <Link href="/studio#team-title">the people</Link>
               </nav>
               <div className={styles.linkColumn}>
+                <FooterDivider />
                 <p className={styles.location}>austin, texas</p>
                 <p className={styles.availability}>Working wherever you are.</p>
                 <Link href="/contact">contact</Link>

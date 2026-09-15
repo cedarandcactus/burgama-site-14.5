@@ -115,6 +115,8 @@
 .video {
   object-fit: cover;
   object-position: 55% center;
+  filter: blur(10px);
+  transform: scale(1.06);
 }
 
 .video {
@@ -168,10 +170,11 @@
   min-height: 64px;
   width: 100%;
   padding: 8px 8px 8px clamp(20px, 1.6vw, 38px);
-  border: 1px solid rgb(175 200 242 / 18%);
+  border: 2px solid rgb(175 200 242 / 45%);
   border-radius: 999px;
   color: var(--palette-powder);
-  background: rgb(175 200 242 / 12%);
+  -webkit-text-fill-color: currentColor;
+  background: var(--palette-navy-raised);
   font-family: var(--font-pangram), sans-serif;
   font-size: clamp(17px, 1.65vw, 32px);
   font-weight: 500;
@@ -180,7 +183,7 @@
   transition: background-color 180ms ease;
 }
 
-.emailArrow {
+.footer .emailArrow {
   display: flex;
   flex: none;
   align-items: center;
@@ -195,7 +198,9 @@
 .emailArrow svg {
   width: 48%;
   height: 48%;
-  stroke-width: 1.5;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   transition: transform 180ms ease;
 }
 
@@ -210,13 +215,45 @@
 }
 
 .linkColumn {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: clamp(12px, 1vw, 22px);
   min-width: 0;
-  padding-left: clamp(16px, 1.2vw, 28px);
-  border-left: 1px solid rgb(175 200 242 / 30%);
+  padding-left: clamp(28px, 2vw, 44px);
+}
+
+.divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20px;
+  color: var(--palette-powder);
+  opacity: .55;
+  pointer-events: none;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  width: 2px;
+  min-height: 12px;
+  background: currentColor;
+  border-radius: 999px;
+}
+
+.divider svg {
+  display: block;
+  flex: none;
+  width: 20px;
+  height: 64px;
+  overflow: visible;
 }
 
 .linkColumn a,
@@ -296,7 +333,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .footer .emailButton:hover {
-    background: rgb(175 200 242 / 22%);
+    background: var(--palette-navy);
+    border-color: var(--palette-powder);
   }
 
   .emailButton:hover .emailArrow svg {
@@ -321,7 +359,7 @@
     font-size: 16px;
   }
 
-  .emailArrow {
+  .footer .emailArrow {
     width: 38px;
   }
 }
@@ -346,7 +384,7 @@
     font-size: 20px;
   }
 
-  .emailArrow {
+  .footer .emailArrow {
     width: 48px;
   }
 
@@ -393,17 +431,27 @@
   }
 
   .topRow {
+    grid-template-columns: .9fr 1.15fr 1fr;
     column-gap: 12px;
   }
 
   .linkColumn {
     gap: 14px;
-    padding-left: 10px;
+    padding-left: 18px;
+  }
+
+  .divider,
+  .divider svg {
+    width: 12px;
+  }
+
+  .divider svg {
+    height: 48px;
   }
 
   .linkColumn a,
   .linkColumn .location {
-    font-size: 23px;
+    font-size: clamp(18px, 5.3vw, 23px);
   }
 
   .bottomRow {
