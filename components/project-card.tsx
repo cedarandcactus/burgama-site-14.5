@@ -1,5 +1,5 @@
-import { ArrowRight } from 'lucide-react'
 import type { CSSProperties } from 'react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import Link from '@/components/transition-link'
 import type { MediaRatio, Project } from '@/lib/projects'
 
@@ -57,7 +57,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <p className="project-tile-summary">{project.summary}</p>
           </div>
           <span className="project-link-arrow" aria-hidden="true">
-            <ArrowRight strokeWidth={1.25} />
+            <CircularArrowIcon />
           </span>
         </div>
       </article>

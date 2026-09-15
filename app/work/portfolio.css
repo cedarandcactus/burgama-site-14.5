@@ -266,18 +266,17 @@ body .portfolio .project-tile-image {
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 78px;
-  min-height: 40px;
+  width: 48px;
+  height: 48px;
   color: inherit;
-  background: var(--work-surface);
-  border: 1.5px solid transparent;
-  border-radius: 999px;
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
 }
 
 .portfolio .project-link-arrow svg {
-  width: 38px;
-  height: 18px;
+  width: 100%;
+  height: 100%;
   transition: transform 180ms ease;
 }
 
@@ -640,17 +639,16 @@ body .portfolio .case-media-frame img {
 
 .portfolio-related-link > span:last-child {
   display: inline-flex;
-  width: 76px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
-  border: 1px solid currentColor;
-  border-radius: 999px;
 }
 
 .portfolio-related-link svg {
-  width: 38px;
-  height: 18px;
+  width: 100%;
+  height: 100%;
+  transition: transform 180ms ease;
 }
 
 .portfolio-related-link:hover h3,

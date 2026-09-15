@@ -12,7 +12,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         </div>
       </div>
       <div className={styles.directory}>
-        <nav className={styles.links} aria-label="Footer"><Link href="/work">work</Link><Link href="/studio">studio</Link><Link href="/ideas">ideas</Link><Link href="/contact">contact</Link></nav>
+        <nav className={styles.links} aria-label="Footer"><Link href="/work">work</Link><Link href="/studio">about</Link><Link href="/ideas">ideas</Link><Link href="/contact">contact</Link></nav>
         <a className={styles.email} href="mailto:hello@burgama.com">hello@burgama.com</a>
         <p className={styles.location}>Austin, Texas<br />Working wherever you are</p>
       </div>

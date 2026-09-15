@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import Link from '@/components/transition-link'
 import { EditorialArtwork } from '@/components/editorial-artwork'
 import { SiteFooter } from '@/components/site-footer'
@@ -10,103 +10,89 @@ import {
 import styles from './editorial.module.css'
 
 export function EditorialDetail({ idea }: { idea: IdeaPost }) {
-  const currentIndex = ideas.findIndex((candidate) => candidate.slug === idea.slug)
+  const currentIndex = ideas.findIndex((entry) => entry.slug === idea.slug)
   const previous = currentIndex > 0 ? ideas[currentIndex - 1] : undefined
   const next = currentIndex < ideas.length - 1 ? ideas[currentIndex + 1] : undefined
 
   return (
-    <div className={`${styles.detailRoot} font-sans`}>
-      <main>
-        <header className={styles.detailHeader} data-theme={idea.theme}>
-          <div className={styles.detailHeaderInner}>
-            <Link href="/ideas" className={styles.breadcrumb}>
-              <ArrowLeft aria-hidden="true" strokeWidth={1.25} />
-              All ideas
-            </Link>
+    <div className={styles.detailPage} data-theme={idea.theme}>
+      <header className={styles.articleHero}>
+        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+          <Link href="/ideas">Ideas</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Note {idea.issue}</span>
+        </nav>
 
-            <div className={styles.detailTitleGrid}>
-              <div>
-                <div className={styles.detailMeta}>
-                  <span>Field note {idea.number}</span>
-                  <span>{getIdeaReadingTime(idea)}</span>
-                </div>
-                <h1 className="font-serif text-balance">{idea.title}</h1>
-              </div>
-              <div className={styles.detailIntroduction}>
-                <p>{idea.metaDescription}</p>
-                <ul className={styles.detailCategories} aria-label="Topics">
-                  {idea.categories.map((category) => (
-                    <li key={category}>{category}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <EditorialArtwork visual={idea.visual} className={styles.detailArtwork} />
+        <div className={styles.articleHeading}>
+          <div className={styles.articleTitleBlock}>
+            <p className={styles.articleLabel}>BURGAMA / IDEAS / {idea.issue}</p>
+            <h1 className="font-serif">{idea.title}</h1>
           </div>
-        </header>
+          <div className={styles.articleIntroduction}>
+            <p>{idea.deck}</p>
+            <div className={styles.articleMeta}>
+              <span>{getIdeaReadingTime(idea)} min read</span>
+              <span>{idea.targetKeyword}</span>
+            </div>
+          </div>
+        </div>
+      </header>
 
-        <div className={styles.articleShell}>
-          <aside className={styles.articleRail} aria-label="Article details">
-            <div>
-              <span>Focus</span>
-              <strong>{idea.targetKeyword}</strong>
-            </div>
-            <div>
-              <span>Topics</span>
-              <strong>{idea.categories.join(' · ')}</strong>
-            </div>
+      <div className={styles.detailArtwork}>
+        <EditorialArtwork idea={idea} />
+      </div>
+
+      <section className={styles.readingSection} aria-label="Article">
+        <div className={styles.articleGrid}>
+          <aside className={styles.articleAside} aria-label="Article categories">
+            <p>Filed under</p>
+            <ul>
+              {idea.categories.map((category) => <li key={category}>{category}</li>)}
+            </ul>
           </aside>
 
-          <article className={styles.articleProse}>
-            {idea.body.map((paragraph, index) => (
-              <p className={index === 0 ? styles.articleLead : undefined} key={paragraph}>
-                {paragraph}
-              </p>
-            ))}
+          <article className={styles.articleBody}>
+            {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
 
-            <section className={styles.sourceBlock} aria-labelledby="sources-heading">
-              <h2 id="sources-heading" className="font-serif">Useful sources.</h2>
+            <Link href={idea.internalLink.href} className={styles.internalLink}>
+              <span>{idea.internalLink.label}</span>
+              <CircularArrowIcon className={styles.inlineArrow} />
+            </Link>
+
+            <details className={styles.sources}>
+              <summary>Sources and further reading</summary>
               <ul>
                 {idea.sources.map((source) => (
                   <li key={source.href}>
-                    <a href={source.href} target="_blank" rel="noreferrer">
-                      {source.label}
-                    </a>
+                    <a href={source.href} target="_blank" rel="noreferrer">{source.label}</a>
                   </li>
                 ))}
               </ul>
-            </section>
-
-            <Link href={idea.internalLink.href} className={styles.internalLink}>
-              {idea.internalLink.label}
-              <ArrowRight aria-hidden="true" strokeWidth={1.25} />
-            </Link>
+            </details>
           </article>
         </div>
+      </section>
 
-        <nav className={styles.articleNavigation} aria-label="More ideas">
-          {previous ? (
-            <Link href={`/ideas/${previous.slug}`} className={styles.articleNavLink}>
-              <span className={styles.articleNavDirection}>
-                <ArrowLeft aria-hidden="true" strokeWidth={1.25} />
-                Previous note
-              </span>
-              <strong className="font-serif">{previous.title}</strong>
-            </Link>
-          ) : (
-            <span aria-hidden="true" />
-          )}
-
-          <Link href={next ? `/ideas/${next.slug}` : '/ideas'} className={styles.articleNavLink}>
+      <nav className={styles.articleNavigation} aria-label="More ideas">
+        {previous ? (
+          <Link href={`/ideas/${previous.slug}`} className={styles.articleNavLink}>
             <span className={styles.articleNavDirection}>
-              {next ? 'Next note' : 'All ideas'}
-              <ArrowRight aria-hidden="true" strokeWidth={1.25} />
+              <CircularArrowIcon className={styles.navArrow} />
+              <span>Previous note</span>
             </span>
-            <strong className="font-serif">{next?.title ?? 'Return to the index'}</strong>
+            <strong className="font-serif">{previous.title}</strong>
           </Link>
-        </nav>
-      </main>
+        ) : <span aria-hidden="true" />}
+
+        <Link href={next ? `/ideas/${next.slug}` : '/ideas'} className={styles.articleNavLink}>
+          <span className={styles.articleNavDirection}>
+            <span>{next ? 'Next note' : 'All ideas'}</span>
+            <CircularArrowIcon className={styles.navArrow} />
+          </span>
+          <strong className="font-serif">{next?.title ?? 'Return to the index'}</strong>
+        </Link>
+      </nav>
+
       <SiteFooter />
     </div>
   )

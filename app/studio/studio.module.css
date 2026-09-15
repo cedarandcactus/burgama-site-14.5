@@ -1,0 +1,290 @@
+.page {
+  overflow: clip;
+  color: var(--cyan-night);
+  background: var(--cyan-ink);
+}
+
+.hero,
+.teamSection,
+.smallSection,
+.actions {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+.hero {
+  display: flex;
+  min-height: calc(100svh - var(--header-clearance));
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(3rem, 7vw, 7rem);
+  padding-block: clamp(3rem, 6vw, 6rem) clamp(5rem, 9vw, 9rem);
+}
+
+.heroMeta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.heroMeta p:last-child {
+  text-align: right;
+}
+
+.title {
+  margin-left: -0.035em;
+  font-size: clamp(7rem, 22vw, 25rem);
+  font-weight: 400;
+  line-height: 0.62;
+  letter-spacing: -0.055em;
+}
+
+.intro {
+  width: min(100%, 42ch);
+  margin-left: auto;
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
+  font-weight: 300;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+.teamSection {
+  padding-block: clamp(5rem, 9vw, 9rem);
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-bottom: clamp(2.5rem, 5vw, 5rem);
+}
+
+.sectionHeading h2 {
+  max-width: 11ch;
+  font-size: clamp(3.5rem, 7vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-align: right;
+  text-wrap: balance;
+}
+
+.sectionLabel {
+  flex: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.person {
+  min-width: 0;
+}
+
+.portrait {
+  aspect-ratio: 29 / 36;
+  overflow: hidden;
+  background: var(--cyan-night);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.personHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+}
+
+.personHeading h3 {
+  font-size: clamp(2.25rem, 4vw, 4rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+.personHeading p {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.personDescription {
+  max-width: 31ch;
+  padding-top: 0.9rem;
+  font-size: clamp(0.95rem, 1.25vw, 1.125rem);
+  font-weight: 300;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.smallSection {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1.2fr) minmax(16rem, 0.55fr);
+  align-items: start;
+  gap: clamp(2rem, 5vw, 6rem);
+  padding-block: clamp(6rem, 11vw, 11rem);
+}
+
+.smallSection h2 {
+  max-width: 12ch;
+  font-size: clamp(3.25rem, 6.5vw, 7rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.smallSection > p:last-child {
+  font-size: clamp(1rem, 1.45vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: clamp(6rem, 10vw, 10rem);
+}
+
+.actions :global(.modular-button) {
+  color: var(--cyan-ink);
+  background: var(--cyan-night);
+  border-color: var(--cyan-night);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .actions :global(.modular-button:hover) {
+    color: var(--cyan-night);
+    background: transparent;
+    border-color: var(--cyan-night);
+  }
+}
+
+@media (max-width: 999px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 4rem;
+  }
+
+  .person:last-child {
+    grid-column: 2;
+  }
+
+  .smallSection {
+    grid-template-columns: minmax(7rem, 0.35fr) 1fr;
+  }
+
+  .smallSection > p:last-child {
+    grid-column: 2;
+    max-width: 35ch;
+  }
+}
+
+@media (max-width: 699px) {
+  .hero {
+    min-height: calc(100svh - var(--header-clearance));
+    gap: 3.5rem;
+    padding-block: 2.5rem 5rem;
+  }
+
+  .heroMeta {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .heroMeta p:last-child {
+    text-align: left;
+  }
+
+  .title {
+    font-size: clamp(6.4rem, 34vw, 10rem);
+    line-height: 0.68;
+  }
+
+  .intro {
+    margin-left: 0;
+    font-size: 1.125rem;
+  }
+
+  .teamSection {
+    padding-block: 4.5rem 6rem;
+  }
+
+  .sectionHeading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sectionHeading h2 {
+    font-size: clamp(3.5rem, 17vw, 5.25rem);
+    text-align: left;
+  }
+
+  .teamGrid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .person:last-child {
+    grid-column: auto;
+  }
+
+  .personHeading {
+    align-items: flex-end;
+  }
+
+  .personHeading h3 {
+    font-size: 3.25rem;
+  }
+
+  .smallSection {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-block: 6rem;
+  }
+
+  .smallSection h2 {
+    font-size: clamp(3.4rem, 16vw, 5.25rem);
+  }
+
+  .smallSection > p:last-child {
+    grid-column: auto;
+  }
+
+  .actions {
+    flex-direction: column;
+    padding-bottom: 6rem;
+  }
+
+  .actions :global(.modular-button) {
+    width: 100%;
+  }
+}

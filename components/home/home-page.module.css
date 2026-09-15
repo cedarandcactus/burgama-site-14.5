@@ -55,6 +55,7 @@
   display: block;
   width: 100%;
   height: 1.86em;
+  overflow: hidden;
 }
 
 .heroSlide {
@@ -302,20 +303,20 @@
 
 .page :global(.project-link-arrow) {
   display: inline-flex;
-  width: 76px;
-  min-width: 76px;
-  height: 38px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
-  border: 1px solid currentColor;
-  border-radius: 999px;
+  border: 0;
+  border-radius: 50%;
   background: transparent;
-  transition: color 180ms ease, background-color 180ms ease;
+  transition: color 180ms ease;
 }
 
 .page :global(.project-link-arrow svg) {
-  width: 38px;
-  height: 18px;
+  width: 100%;
+  height: 100%;
   transition: transform 180ms ease;
 }
 
@@ -349,18 +350,24 @@
 
 .page :global(.capabilities-plate) {
   position: relative;
-  display: grid;
+  overflow: clip;
   min-height: 0;
-  grid-template-columns: minmax(280px, 0.76fr) minmax(0, 1.24fr);
-  align-items: start;
-  gap: clamp(38px, 6vw, 92px);
   color: var(--cyan-ink);
   background: var(--cyan-night);
 }
 
+.page :global(.capabilities-shell) {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  align-items: start;
+  gap: clamp(38px, 6vw, 92px);
+  width: min(100%, 1520px);
+  margin-inline: auto;
+}
+
 .page :global(.capabilities-intro) {
   position: sticky;
-  top: 128px;
+  top: 106px;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -374,47 +381,47 @@
   line-height: 1.5;
 }
 
-.page :global(.capabilities-stack) {
+.page :global(.capabilities-grid) {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: clamp(18px, 2vw, 30px);
+  gap: 12px;
+  padding: 12px;
+  background: var(--brand-white);
 }
 
 .page :global(.capability-card) {
   position: sticky;
-  top: calc(118px + var(--card-index, 0) * 14px);
+  top: calc(84px + var(--card-index, 0) * 12px);
   overflow: hidden;
-  min-height: clamp(330px, 38vw, 560px);
+  min-height: clamp(390px, 42vw, 620px);
   padding: clamp(28px, 4vw, 54px);
-  border-radius: clamp(22px, 2.2vw, 32px);
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--cyan-ink);
+  background: var(--cyan-night);
 }
 
-.page :global(.capability-card:nth-child(2n)) {
-  background: color-mix(in srgb, var(--cyan-ink) 90%, var(--brand-white));
-}
-
-.page :global(.capability-number) {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.11em;
+.page :global(.capability-label) {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .page :global(.capability-card h3) {
   max-width: 9ch;
-  margin: clamp(26px, 5vw, 68px) 0 0;
+  margin: clamp(42px, 7vw, 94px) 0 0;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(48px, 7vw, 112px);
+  font-size: clamp(42px, 7vw, 112px);
   font-weight: 400;
   line-height: 0.84;
   letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
   text-wrap: balance;
 }
 
-.page :global(.capability-card p) {
+.page :global(.capability-description) {
   position: absolute;
   right: clamp(28px, 4vw, 54px);
   bottom: clamp(28px, 4vw, 54px);
@@ -616,10 +623,10 @@
 }
 
 @media (max-width: 900px) {
-  .page :global(.capabilities-plate),
   .page :global(.studio-plate),
   .page :global(.section-intro),
-  .page :global(.more-work-intro) {
+  .page :global(.more-work-intro),
+  .page :global(.capabilities-shell) {
     grid-template-columns: 1fr;
   }
 
@@ -641,55 +648,56 @@
   }
 
   .hero {
-    min-height: auto;
+    min-height: 330svh;
   }
 
   .heroStage {
-    position: relative;
-    top: auto;
-    height: auto;
-    min-height: 100svh;
-    overflow: visible;
+    top: 0;
+    height: 100svh;
+    min-height: 540px;
   }
 
   .heroFrame {
     min-height: 100svh;
-    padding-top: 116px;
+    padding-top: 76px;
     padding-bottom: 24px;
   }
 
   .heroFrameContent {
-    min-height: calc(100svh - 140px);
+    min-height: calc(100svh - 100px);
   }
 
   .heroFrame h1 {
-    display: block;
-    flex: none;
-    padding-block: 44px;
+    display: flex;
+    flex: 1;
+    padding-block: 24px;
+    font-size: clamp(48px, 17vw, 64px);
   }
 
   .kineticHeading {
-    display: none;
+    display: block;
+    height: 3em;
+  }
+
+  .heroSlide {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, auto);
+    align-content: center;
+    align-items: start;
+    gap: 0;
+  }
+
+  .heroPhraseLine {
+    white-space: normal;
+  }
+
+  .heroConnectorLine,
+  .heroResultLine {
+    justify-self: start;
   }
 
   .heroStatic {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-
-  .heroStaticPhrase {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    align-items: baseline;
-    gap: 0.28em;
-    font-size: clamp(42px, 13vw, 68px);
-    line-height: 0.88;
-  }
-
-  .heroStaticResult {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    display: none;
   }
 
   .heroStatement {
@@ -712,19 +720,19 @@
   }
 
   .page :global(.project-link-arrow) {
-    width: 64px;
-    min-width: 64px;
-    height: 34px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .page :global(.capabilities-grid) {
+    gap: 8px;
+    padding: 8px;
   }
 
   .page :global(.capability-card) {
-    position: relative;
-    top: auto;
+    top: calc(68px + var(--card-index, 0) * 8px);
     min-height: 390px;
-  }
-
-  .page :global(.capability-card p) {
-    position: absolute;
   }
 
   .page :global(.well--brim) {
@@ -759,7 +767,7 @@
     padding: 24px;
   }
 
-  .page :global(.capability-card p) {
+  .page :global(.capability-description) {
     right: 24px;
     bottom: 24px;
     left: 24px;

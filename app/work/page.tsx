@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { ArrowRight } from 'lucide-react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
 import Link from '@/components/transition-link'
@@ -20,7 +20,7 @@ export default function WorkPage() {
 
   return (
     <>
-      <main id="main">
+      <div>
         <header className="portfolio-intro portfolio-width">
           <div className="portfolio-intro-heading">
             <h1 className="font-serif">Selected work.</h1>
@@ -63,7 +63,7 @@ export default function WorkPage() {
                       ))}
                     </div>
                     <span className="project-link-arrow" aria-hidden="true">
-                      <ArrowRight strokeWidth={1.25} />
+                      <CircularArrowIcon />
                     </span>
                   </div>
                   <h3 className="font-serif">{project.title}</h3>
@@ -81,7 +81,7 @@ export default function WorkPage() {
           </div>
           <WorkIndex projects={archive} />
         </section>
-      </main>
+      </div>
       <SiteFooter work />
     </>
   )

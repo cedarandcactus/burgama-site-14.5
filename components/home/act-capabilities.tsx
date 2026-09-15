@@ -1,5 +1,6 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/motion'
 
@@ -33,43 +34,64 @@ export function ActCapabilities() {
     const section = sectionRef.current
     if (!section) return
 
+    const shell = section.querySelector<HTMLElement>('[data-capabilities-shell]')
     const cards = gsap.utils.toArray<HTMLElement>('[data-capability-card]', section)
     const media = gsap.matchMedia()
 
-    media.add('(prefers-reduced-motion: no-preference)', () => {
-      const tweens = cards.map(card => gsap.fromTo(card, {
-        xPercent: 42,
-        rotate: 1.5,
-        transformOrigin: 'center right',
+    media.add('(min-width: 700px) and (prefers-reduced-motion: no-preference)', () => {
+      const entrance = shell ? gsap.fromTo(shell, {
+        xPercent: 10,
       }, {
         xPercent: 0,
-        rotate: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 96%',
+          end: 'top 58%',
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      }) : undefined
+
+      const cardTweens = cards.map(card => gsap.fromTo(card, {
+        xPercent: 18,
+      }, {
+        xPercent: 0,
         ease: 'none',
         scrollTrigger: {
           trigger: card,
-          start: 'top 96%',
-          end: 'top 62%',
-          scrub: 0.65,
+          start: 'top 94%',
+          end: 'top 68%',
+          scrub: 0.8,
           invalidateOnRefresh: true,
         },
       }))
 
-      return () => tweens.forEach(tween => tween.kill())
+      return () => {
+        entrance?.kill()
+        cardTweens.forEach(tween => tween.kill())
+      }
     })
 
     return () => media.revert()
   }, [])
 
   return (
-    <section ref={sectionRef} className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
-      <div className="capabilities-shell">
+    <section id="capabilities" ref={sectionRef} className="home-plate capabilities-plate" data-home-plate aria-labelledby="capabilities-heading">
+      <div className="capabilities-shell" data-capabilities-shell>
         <div className="capabilities-intro">
           <h2 id="capabilities-heading" className="font-serif">Built wide.<br />Kept close.</h2>
           <p>Strategy, identity, digital, campaigns, and the people who connect them. One team stays with the work.</p>
         </div>
         <div className="capabilities-grid" role="list">
-          {capabilities.map(item => (
-            <article data-capability-card key={item.title} role="listitem">
+          {capabilities.map((item, index) => (
+            <article
+              className="capability-card"
+              data-capability-card
+              key={item.title}
+              role="listitem"
+              style={{ '--card-index': index } as CSSProperties}
+            >
               <p className="capability-label">{item.label}</p>
               <h3 className="font-serif text-balance">{item.title}</h3>
               <p className="capability-description">{item.body}</p>

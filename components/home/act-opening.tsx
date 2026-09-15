@@ -36,50 +36,39 @@ export function ActOpening() {
       const timeline = gsap.timeline({ paused: true })
 
       gsap.set(slides, {
-        autoAlpha: 0,
-        yPercent: 16,
-        scale: 0.992,
+        autoAlpha: 1,
+        yPercent: 110,
         force3D: true,
-        transformOrigin: 'center center',
       })
-      gsap.set(slides[0], { autoAlpha: 1, yPercent: 0, scale: 1 })
+      gsap.set(slides[0], { yPercent: 0 })
 
       for (let index = 1; index < transformations.length; index += 1) {
-        const transitionStart = index - 0.84
+        const transitionStart = index - 1
         const previousSlide = slides[index - 1]
         const nextSlide = slides[index]
 
         timeline
           .to(previousSlide, {
-            autoAlpha: 0,
-            yPercent: -14,
-            scale: 0.995,
-            duration: 0.86,
+            yPercent: -110,
+            duration: 0.72,
             ease: 'power2.inOut',
           }, transitionStart)
           .fromTo(nextSlide, {
-            autoAlpha: 0,
-            yPercent: 16,
-            scale: 0.992,
+            yPercent: 110,
           }, {
-            autoAlpha: 1,
             yPercent: 0,
-            scale: 1,
-            duration: 1.06,
-            ease: 'power3.out',
+            duration: 0.72,
+            ease: 'power2.inOut',
             immediateRender: false,
-          }, transitionStart + 0.16)
+          }, transitionStart)
       }
 
       const scrollTrigger = ScrollTrigger.create({
         trigger: hero,
         animation: timeline,
-        start: () => {
-          const stickyTop = Number.parseFloat(window.getComputedStyle(stage).top) || 0
-          return `top top+=${stickyTop}`
-        },
+        start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.85,
+        scrub: 1.15,
         invalidateOnRefresh: true,
       })
 

@@ -2241,7 +2241,7 @@
 
 /*
   Button proportions measured off the Eleken reference: 13px/500 label,
-  9px 16px padding, 10px radius, solid fill. Deliberately small — the
+  9px 16px padding, 10px radius, solid fill. Deliberately small �� the
   reference never scales its controls with the headings.
 */
 @utility action {
@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �������������������������������
+  Text links are set back by tone and resolve to the sanctioned hover ��������������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5405,7 +5405,8 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .project-tile-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; }
 .project-tile-caption h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
 .project-tile-caption p { font-weight: 300; font-size: 14px; line-height: 1.5; padding-top: 8px; }
-  .project-link-arrow { display: inline-flex; align-items: center; justify-content: center; width: 92px; height: 44px; border: 1px solid currentColor; border-radius: 999px; flex: none; font-size: 23px; }
+  .project-link-arrow { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 0; border-radius: 50%; flex: none; }
+  .project-link-arrow svg { display: block; width: 100%; height: 100%; transition: transform 180ms ease; }
 .project-tile:hover .project-link-arrow { background: var(--brand-navy); color: var(--brand-white); }
 .section-outro { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--rule); margin-top: 56px; padding-top: 32px; }
 .section-outro p { max-width: 32ch; font-size: var(--t-body); line-height: 1.5; }

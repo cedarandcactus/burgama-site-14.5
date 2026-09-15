@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { ArrowRight } from 'lucide-react'
 import { notFound } from 'next/navigation'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
 import { SiteFooter } from '@/components/site-footer'
 import Link from '@/components/transition-link'
@@ -44,7 +44,7 @@ export default async function WorkDetailPage({
 
   return (
     <>
-      <main id="main">
+      <div>
         <header className="portfolio-detail-heading portfolio-width">
           <nav className="portfolio-breadcrumb" aria-label="Breadcrumb">
             <ol>
@@ -113,14 +113,14 @@ export default async function WorkDetailPage({
                   <span>{related.disciplines.join(' · ')}</span>
                   <h3 className="font-serif">{related.title}</h3>
                   <span aria-hidden="true">
-                    <ArrowRight strokeWidth={1.25} />
+                    <CircularArrowIcon />
                   </span>
                 </Link>
               ))}
             </nav>
           </section>
         ) : null}
-      </main>
+      </div>
       <SiteFooter work />
     </>
   )

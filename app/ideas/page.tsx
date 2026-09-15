@@ -3,7 +3,14 @@ import { EditorialIndex } from '@/components/editorial-index'
 
 export const metadata: Metadata = {
   title: 'Ideas',
-  description: 'Ideas, methods, and things worth a second look from Burgama.',
+  description: 'Practical notes from Burgama on websites, ecommerce, search, and the systems around them.',
+  alternates: { canonical: '/ideas' },
+  openGraph: {
+    title: 'Ideas — Burgama',
+    description: 'Practical notes on websites, ecommerce, search, and the systems around them.',
+    url: '/ideas',
+    type: 'website',
+  },
 }
 
 export default function IdeasPage() {

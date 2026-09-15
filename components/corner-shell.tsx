@@ -3,11 +3,10 @@
 import Link from '@/components/transition-link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { BrandMark } from '@/components/brand-mark'
 
 const destinations = [
   { label: 'work', href: '/work' },
-  { label: 'studio', href: '/studio' },
+  { label: 'about', href: '/studio' },
   { label: 'ideas', href: '/ideas' },
   { label: 'start a project', href: '/contact', action: true },
 ]
@@ -38,7 +37,7 @@ export function CornerShell() {
     function commitCondensed(next: boolean) {
       if (condensedRef.current === next) return
       if (!next && document.activeElement === trigger.current) {
-        header.current?.querySelector<HTMLAnchorElement>('.header-brand')?.focus()
+        header.current?.querySelector<HTMLAnchorElement>('.header-nav a')?.focus()
       }
       condensedRef.current = next
       setCondensed(next)
@@ -119,9 +118,6 @@ export function CornerShell() {
       data-work={pathname.startsWith('/work')}
     >
       <div className="header-inner">
-        <Link href="/" aria-label="Burgama home" className="header-brand" onClick={() => closeMenu()}>
-          <BrandMark withMark />
-        </Link>
         <div
           id="primary-navigation"
           className="header-nav-shell"

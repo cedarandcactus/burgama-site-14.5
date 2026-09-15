@@ -1,125 +1,99 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { ModularButton } from '@/components/modular-button'
-import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
+import styles from './studio.module.css'
 
 export const metadata: Metadata = {
-  title: 'Studio',
-  description: 'Burgama brings strategy, design, development, and marketing into one senior creative team.',
+  title: 'About',
+  description: 'Meet the small, multidisciplinary team behind Burgama—an independent creative and marketing studio in Austin, Texas.',
 }
 
-const CAPABILITIES = [
+const TEAM = [
   {
-    title: 'Brand systems',
-    body: 'Positioning, naming, identity, voice, art direction, and the rules that make the whole thing recognizable.',
+    name: 'Deniz',
+    role: 'Founder',
+    description: 'Sets the direction, shapes the strategy, and stays close to every part of the work.',
+    image: '/team/deniz.jpg',
+    alt: 'Deniz, founder of Burgama',
   },
   {
-    title: 'Web & product',
-    body: 'Websites, commerce, and digital tools designed to work hard without becoming hard to run.',
+    name: 'Amanda',
+    role: 'Brand & Growth',
+    description: 'Connects positioning, campaigns, and digital growth into a clear path forward.',
+    image: '/team/amanda.jpg',
+    alt: 'Amanda, Brand and Growth at Burgama',
   },
   {
-    title: 'Campaigns & content',
-    body: 'Photography, production, and flexible creative systems built for more than one launch day.',
-  },
-  {
-    title: 'Ongoing marketing',
-    body: 'Search, social, and creative support that keeps the brand moving without turning up the noise.',
-  },
-]
-
-const PRINCIPLES = [
-  {
-    title: 'Work with the makers',
-    body: 'The people in the room are the people doing the work. Nothing gets diluted in transit.',
-  },
-  {
-    title: 'Find the point',
-    body: 'Before we design, we decide what matters. Every choice answers to that.',
-  },
-  {
-    title: 'Build the system',
-    body: 'A logo is not a brand. A page is not a website. We make the parts work together.',
-  },
-  {
-    title: 'Stay useful',
-    body: 'Launch is a checkpoint, not a vanishing act. We leave clear tools and can keep building.',
-  },
-]
-
-const APPROACH = [
-  {
-    title: 'Find the point',
-    body: 'Get the right people together. Ask the hard questions. Agree on what the work needs to do before deciding how it should look.',
-  },
-  {
-    title: 'Make the system',
-    body: 'Turn the direction into identity, type, layout, motion, code, and content that belong to the same idea.',
-  },
-  {
-    title: 'Put it to work',
-    body: 'Launch it, document it, and make sure the people carrying it forward can use it without us in the room.',
+    name: 'Josiah',
+    role: 'Design & Direction',
+    description: 'Turns strategy into visual systems and digital experiences with a distinct point of view.',
+    image: '/team/josiah.jpg',
+    alt: 'Josiah, Design and Direction at Burgama',
   },
 ]
 
 export default function StudioPage() {
   return (
-    <>
-      <PageHero
-        wordmark="Studio"
-        intro={[
-          'Some studios sell process. We stay close enough that the work gets better.',
-          'Burgama brings strategy, design, development, and marketing into one senior team. No relay race. No account layer. Just direct collaboration from the first question to launch.',
-        ]}
-      />
-
-      <section aria-label="How we work" className="wide">
-        <div className="page-hero-columns">
-          {PRINCIPLES.map(item => (
-            <div key={item.title}>
-              <h2 className="page-hero-column-title">{item.title}</h2>
-              <p className="page-hero-column-body">{item.body}</p>
-            </div>
-          ))}
+    <div className={styles.page}>
+      <section className={styles.hero} aria-labelledby="about-title">
+        <div className={styles.heroMeta}>
+          <p>Independent creative and marketing studio</p>
+          <p>Austin, Texas · Working wherever you are</p>
         </div>
+        <h1 id="about-title" className={`${styles.title} font-serif`}>about</h1>
+        <p className={styles.intro}>
+          Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.
+        </p>
       </section>
 
-      <div className="wide case">
-        <section id="capabilities" aria-labelledby="capabilities-title" className="scroll-mt-28">
-          <Reveal className="case-module">
-            <h2 id="capabilities-title" className="case-module-title">What we bring to the table.</h2>
-            <div className="page-hero-columns columns-bare">
-              {CAPABILITIES.map(item => (
-                <div key={item.title}>
-                  <h3 className="page-hero-column-title">{item.title}</h3>
-                  <p className="page-hero-column-body">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </section>
+      <section className={styles.teamSection} aria-labelledby="team-title">
+        <Reveal className={styles.sectionHeading}>
+          <p className={styles.sectionLabel}>The team</p>
+          <h2 id="team-title" className="font-serif">The people in the room make the work.</h2>
+        </Reveal>
 
-        <section id="approach" aria-labelledby="approach-title" className="scroll-mt-28">
-          <Reveal className="case-module">
-            <h2 id="approach-title" className="case-module-title">How an idea gets out into the world.</h2>
-            <div className="case-spec">
-              {APPROACH.map(step => (
-                <div key={step.title} className="case-spec-row">
-                  <span className="case-spec-label">{step.title}</span>
-                  <span className="case-spec-value">{step.body}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </section>
+        <ul className={styles.teamGrid}>
+          {TEAM.map((person, index) => (
+            <Reveal as="li" className={styles.person} delay={index * 90} key={person.name}>
+              <figure className={styles.portrait}>
+                <Image
+                  src={person.image}
+                  alt={person.alt}
+                  width={3712}
+                  height={4608}
+                  sizes="(max-width: 699px) 100vw, (max-width: 999px) 50vw, 33vw"
+                />
+              </figure>
+              <div className={styles.personHeading}>
+                <h3 className="font-serif">{person.name}</h3>
+                <p>{person.role}</p>
+              </div>
+              <p className={styles.personDescription}>{person.description}</p>
+            </Reveal>
+          ))}
+        </ul>
+      </section>
 
-        <section aria-label="Elsewhere" className="contact-actions">
-          <ModularButton href="/work">See the work</ModularButton>
-          <ModularButton href="/contact">Start a project</ModularButton>
-        </section>
-      </div>
+      <section aria-labelledby="small-title">
+        <Reveal className={styles.smallSection}>
+          <p className={styles.sectionLabel}>Small by design</p>
+          <h2 id="small-title" className="font-serif">
+            Ideas stay sharper when they do not get passed down a line.
+          </h2>
+          <p>
+            The same people who frame the problem carry the work through strategy, design, build, and growth. No account layer. No handoff to a separate delivery team.
+          </p>
+        </Reveal>
+      </section>
+
+      <section className={styles.actions} aria-label="Next steps">
+        <ModularButton href="/work">See the work</ModularButton>
+        <ModularButton href="/contact">Start a project</ModularButton>
+      </section>
 
       <SiteFooter />
-    </>
+    </div>
   )
 }
