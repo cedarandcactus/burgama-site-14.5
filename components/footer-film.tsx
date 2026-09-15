@@ -92,6 +92,8 @@ export function FooterFilm() {
         ref={videoRef}
         className={styles.video}
         data-visible={showVideo}
+        autoPlay
+        controls={false}
         muted
         loop
         playsInline

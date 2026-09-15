@@ -58,33 +58,6 @@
   background: linear-gradient(180deg, color-mix(in srgb, var(--palette-navy) 22%, transparent), color-mix(in srgb, var(--palette-navy) 36%, transparent) 55%, color-mix(in srgb, var(--palette-navy) 68%, transparent));
 }
 
-.heroPlayback {
-  position: absolute;
-  z-index: 1;
-  top: 100px;
-  right: var(--home-inset);
-  display: flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-  border-radius: 50%;
-  color: var(--palette-soft-white);
-  background: color-mix(in srgb, var(--palette-navy) 35%, transparent);
-  cursor: pointer;
-}
-
-.heroPlayback svg {
-  width: 16px;
-  height: 16px;
-}
-
-.heroPlayback:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
-}
-
 .heroFrame {
   height: 100%;
   padding: 106px var(--home-inset) clamp(22px, 3.4vw, 52px);
@@ -855,8 +828,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .heroVideo,
-  .heroPlayback {
+  .heroVideo {
     display: none;
   }
 
