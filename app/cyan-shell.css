@@ -95,7 +95,10 @@ body .site-header.cyan-header[data-home='true'][data-condensed='false'] {
 }
 
 body .cyan-header[data-home='true'] {
-  --header-surface: color-mix(in srgb, var(--palette-navy-raised) 90%, var(--palette-powder-deep));
+  --glass-blue-rich: oklch(from var(--palette-powder-deep) .40 .19 h);
+  --glass-blue-bright: oklch(from var(--palette-powder-deep) .76 .15 h);
+  --glass-blue-glow: oklch(from var(--palette-powder-deep) .63 .24 h);
+  --header-surface: var(--glass-blue-rich);
   --header-ink: var(--palette-powder);
   --header-action-bg: var(--palette-powder);
   --header-action-ink: var(--palette-navy);
@@ -110,7 +113,7 @@ body .cyan-header[data-home='true'] {
 }
 
 body .cyan-header[data-home='true'][data-glass-theme='frost'] {
-  --header-surface: var(--palette-powder-deep);
+  --header-surface: var(--glass-blue-bright);
   --header-ink: var(--palette-navy);
   --header-action-bg: var(--palette-navy);
   --header-action-ink: var(--palette-powder);
@@ -118,15 +121,15 @@ body .cyan-header[data-home='true'][data-glass-theme='frost'] {
 }
 
 body .cyan-header[data-home='true'] .header-inner {
-  --glass-opacity: 88%;
+  --glass-opacity: 82%;
   --glass-mist:
-    radial-gradient(ellipse at 7% 0%, color-mix(in srgb, var(--palette-powder-deep) 22%, transparent), transparent 54%),
-    radial-gradient(ellipse at 68% 125%, color-mix(in srgb, var(--palette-powder-deep) 18%, transparent), transparent 62%),
-    radial-gradient(ellipse at 108% 8%, color-mix(in srgb, var(--palette-navy-raised) 12%, transparent), transparent 48%);
+    radial-gradient(ellipse at 4% -18%, color-mix(in srgb, var(--glass-blue-bright) 58%, transparent), transparent 57%),
+    radial-gradient(ellipse at 78% 124%, color-mix(in srgb, var(--glass-blue-glow) 68%, transparent), transparent 66%),
+    radial-gradient(ellipse at 112% 5%, color-mix(in srgb, var(--glass-blue-rich) 30%, transparent), transparent 48%);
   background: transparent;
-  box-shadow: 0 8px 28px -14px color-mix(in srgb, var(--palette-navy) 46%, transparent), inset 0 1px 0 color-mix(in srgb, var(--palette-powder) 36%, transparent), inset 0 -1px 0 color-mix(in srgb, var(--palette-powder-deep) 14%, transparent);
-  -webkit-backdrop-filter: blur(32px) saturate(185%);
-  backdrop-filter: blur(32px) saturate(185%);
+  box-shadow: 0 9px 26px -14px color-mix(in srgb, var(--glass-blue-rich) 65%, transparent), inset 0 1px 0 color-mix(in srgb, var(--palette-powder) 78%, transparent), inset 0 -1px 0 color-mix(in srgb, var(--glass-blue-bright) 48%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(260%);
+  backdrop-filter: blur(18px) saturate(260%);
   transition: width var(--header-motion), height var(--header-motion), border-radius var(--header-motion);
 }
 
@@ -139,6 +142,17 @@ body .cyan-header[data-home='true'] .header-inner::before {
   pointer-events: none;
   opacity: var(--glass-opacity);
   background: var(--glass-mist), var(--header-surface);
+}
+
+body .cyan-header[data-home='true'] .header-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 66% 24% at 27% 0%, rgb(255 255 255 / 30%), transparent 80%),
+    radial-gradient(ellipse 52% 18% at 86% 100%, color-mix(in srgb, var(--glass-blue-bright) 48%, transparent), transparent 85%);
 }
 
 body .cyan-header[data-glass-sweeping='true'] .header-inner::before,
