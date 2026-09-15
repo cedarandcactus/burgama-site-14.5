@@ -23,8 +23,8 @@ const logos = [
 
 function logoPath(width: number, height: number) {
   const center = height * 0.5
-  const bend = Math.min(72, height * 0.4)
-  return `M ${width + 100} ${center} C ${width * 0.7} ${center - bend}, ${width * 0.3} ${center + bend}, -100 ${center}`
+  const rise = Math.min(28, height * 0.16)
+  return `M ${width + 100} ${center - rise} C ${width * 0.65} ${center - rise}, ${width * 0.35} ${center + rise}, -100 ${center + rise}`
 }
 
 export function ClientTicker() {
@@ -47,9 +47,13 @@ export function ClientTicker() {
 
     const syncPlayback = () => {
       const paused = !inView || document.hidden || focused
+      const sharedStart = Number(document.timeline.currentTime ?? 0) - Number(animations[0]?.currentTime ?? 0)
       for (const animation of animations) {
         if (paused) animation.pause()
-        else animation.play()
+        else {
+          animation.play()
+          animation.startTime = sharedStart
+        }
       }
     }
 
@@ -77,7 +81,7 @@ export function ClientTicker() {
       const speed = width < 700 ? 26 : 34
       const duration = Math.max(logos.length * spacing, pathLength + spacing) / speed * 1000
       const travelFraction = pathLength / speed * 1000 / duration
-      const initialTime = typeof phase === 'number' ? phase / previousDuration * duration : duration * 0.12
+      const elapsedTime = typeof phase === 'number' ? phase / previousDuration * duration : 0
       const frames: Keyframe[] = Array.from({ length: 121 }, (_, index) => {
         const progress = index / 120
         const point = measurement.getPointAtLength(progress * pathLength)
@@ -93,8 +97,15 @@ export function ClientTicker() {
       frames.push({ offset: 1, offsetDistance: '100%', opacity: 0 })
 
       animations = nodes.map((node, index) => {
-        const animation = node.animate(frames, { duration, iterations: Infinity, easing: 'linear' })
-        animation.currentTime = (initialTime + (logos.length - index) / logos.length * duration) % duration
+        const phaseOffset = (0.12 + (logos.length - index) / logos.length) % 1
+        const animation = node.animate(frames, {
+          duration,
+          delay: -phaseOffset * duration,
+          iterations: Infinity,
+          easing: 'linear',
+        })
+        animation.pause()
+        animation.currentTime = elapsedTime
         return animation
       })
       syncPlayback()

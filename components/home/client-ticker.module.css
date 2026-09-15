@@ -58,7 +58,8 @@
   opacity: 0;
   offset-path: var(--logo-path);
   offset-anchor: center;
-  offset-rotate: 0deg;
+  /* The path travels right to left; reverse its tangent to keep logos readable. */
+  offset-rotate: auto 180deg;
 }
 
 .glass {
