@@ -11,7 +11,7 @@ export function ActIntroduction() {
         <p>We&apos;re an independent creative and marketing studio in Austin. The people you meet are the people making your work.</p>
         <ModularButton href="/studio">a little about us</ModularButton>
       </Reveal>
-      <SectionRise surface="powder-deep" direction="left" />
+      <SectionRise surface="powder" direction="left" cutout />
     </section>
   )
 }

@@ -8,10 +8,12 @@ import styles from './home-page.module.css'
 export function ActCapabilities() {
   return (
     <section id="capabilities" className={styles.capabilities} data-nav-surface="ink" aria-labelledby="capabilities-heading">
-      <video className={styles.processVideo} autoPlay muted loop playsInline preload="metadata" aria-hidden="true" tabIndex={-1}>
-        <source src="/videos/bg-2.mp4" type="video/mp4" />
-      </video>
-      <div className={styles.processVideoShade} aria-hidden="true" />
+      <div className={styles.processMedia} aria-hidden="true">
+        <video className={styles.processVideo} autoPlay muted loop playsInline preload="metadata" tabIndex={-1}>
+          <source src="/videos/bg-2.mp4" type="video/mp4" />
+        </video>
+        <div className={styles.processVideoShade} />
+      </div>
       <div className={styles.processInner}>
         <div className={styles.processContent}>
           <Reveal>
