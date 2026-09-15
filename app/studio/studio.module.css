@@ -94,7 +94,7 @@
   overflow: hidden;
   isolation: isolate;
   border-radius: 24px;
-  background: var(--palette-powder);
+  background: var(--palette-yellow-soft);
 }
 
 .portrait img {
