@@ -351,6 +351,7 @@
 
 .page :global(.capabilities-plate) {
   position: relative;
+  display: block;
   overflow: clip;
   min-height: 0;
   color: var(--cyan-ink);
@@ -409,7 +410,8 @@
   font-weight: 400;
   line-height: 0.84;
   letter-spacing: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
   text-wrap: balance;
 }
 
@@ -615,10 +617,7 @@
   }
 }
 
-@media (max-width: 900px) {
-  .page :global(.studio-plate),
-  .page :global(.section-intro),
-  .page :global(.more-work-intro),
+@media (max-width: 1024px) {
   .page :global(.capabilities-shell) {
     grid-template-columns: 1fr;
   }
@@ -628,7 +627,18 @@
     top: auto;
   }
 
-  .page :global(.capabilities-intro p),
+  .page :global(.capabilities-intro p) {
+    max-width: 44ch;
+  }
+}
+
+@media (max-width: 900px) {
+  .page :global(.studio-plate),
+  .page :global(.section-intro),
+  .page :global(.more-work-intro) {
+    grid-template-columns: 1fr;
+  }
+
   .page :global(.section-intro > p),
   .page :global(.more-work-intro p) {
     max-width: 44ch;
