@@ -126,8 +126,8 @@ export function ActOpening({ children }: { children: ReactNode }) {
             ))}
           </h1>
           <div className={styles.heroStatement}>
-            <p>a creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
-            <ModularButton href="/work">view selected work</ModularButton>
+            <p>an independent creative and marketing studio.</p>
+            <ModularButton href="#studio-introduction">meet the studio</ModularButton>
           </div>
         </div>
       </div>

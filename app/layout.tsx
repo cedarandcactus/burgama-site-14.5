@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://burgama.com'),
   icons: { icon: '/burgama-symbol.svg' },
   title: { default: 'Burgama — Creative & marketing studio', template: '%s — Burgama' },
-  description: 'We turn what makes you different into brands the right people remember. An Austin creative and marketing studio for strategy, identity, websites, and campaigns.',
+  description: 'An independent creative and marketing studio in Austin. Meet the small team bringing strategy, branding, websites, and campaigns together—and explore our work.',
   openGraph: {
     title: 'Burgama — Creative & marketing studio',
     description: 'We turn what makes you different into brands the right people remember. Strategy, identity, websites, and campaigns from Austin, Texas.',

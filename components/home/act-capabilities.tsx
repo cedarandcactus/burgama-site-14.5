@@ -1,27 +1,14 @@
 'use client'
 
-import type { CSSProperties } from 'react'
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/motion'
+import { ModularButton } from '@/components/modular-button'
 import { SectionRise } from '@/components/home/section-rise'
+import styles from './home-page.module.css'
 
 const capabilities = [
-  {
-    title: 'Brand & direction',
-    body: 'We find the useful truth, then turn it into a distinct identity and a system your team can actually use.',
-  },
-  {
-    title: 'Digital & development',
-    body: 'We design and build digital experiences that feel considered, work hard, and stay maintainable.',
-  },
-  {
-    title: 'Campaigns & content',
-    body: 'We create the ideas, imagery, and production systems that keep a brand moving without losing the plot.',
-  },
-  {
-    title: 'Marketing & growth',
-    body: 'We connect search, social, and ongoing support to the outcomes that matter—not activity for its own sake.',
-  },
+  { title: 'creative.', description: 'Find your voice. Make your mark.', services: ['strategy', 'branding', 'websites', 'photography'] },
+  { title: 'marketing.', description: 'Reach the right people. Keep them close.', services: ['campaigns', 'content', 'social', 'search'] },
 ]
 
 export function ActCapabilities() {
@@ -30,56 +17,42 @@ export function ActCapabilities() {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
+    const media = gsap.matchMedia(section)
 
-    const cards = gsap.utils.toArray<HTMLElement>('[data-capability-card]', section)
-    const media = gsap.matchMedia()
-
-    media.add('(min-width: 700px) and (prefers-reduced-motion: no-preference)', () => {
-      const cardTweens = cards.map((card, index) => gsap.fromTo(card, {
-        xPercent: 10 + index * 2,
-        opacity: 0.35,
-      }, {
-        xPercent: 0,
-        opacity: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 96%',
-          end: 'top 72%',
-          scrub: 0.65,
-          invalidateOnRefresh: true,
-        },
-      }))
-
-      return () => cardTweens.forEach(tween => tween.kill())
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const cards = section.querySelectorAll('[data-capability-card]')
+      gsap.from(cards, {
+        y: 48,
+        rotation: (index) => index === 0 ? -2 : 2,
+        stagger: 0.12,
+        duration: 1,
+        ease: 'power3.out',
+        clearProps: 'transform',
+        scrollTrigger: { trigger: section, start: 'top 85%', once: true },
+      })
     })
 
     return () => media.revert()
   }, [])
 
   return (
-    <section id="capabilities" ref={sectionRef} className="home-plate capabilities-plate" data-home-plate data-nav-surface="ink" aria-labelledby="capabilities-heading">
-      <div className="capabilities-shell" data-capabilities-shell>
-        <div className="capabilities-intro">
-          <h2 id="capabilities-heading" className="font-serif">Built wide.<br />Kept close.</h2>
-          <p>Strategy, identity, digital, campaigns, and the people who connect them. One team stays with the work.</p>
-        </div>
-        <div className="capabilities-grid" role="list">
-          {capabilities.map((item, index) => (
-            <article
-              className="capability-card"
-              data-capability-card
-              key={item.title}
-              role="listitem"
-              style={{ '--card-index': index } as CSSProperties}
-            >
-              <h3 className="font-serif text-balance">{item.title}</h3>
-              <p className="capability-description">{item.body}</p>
-            </article>
-          ))}
-        </div>
+    <section id="capabilities" ref={sectionRef} className={styles.capabilities} data-nav-surface="frost" aria-labelledby="capabilities-heading">
+      <h2 id="capabilities-heading" className="sr-only">two sides of one studio</h2>
+      <div className={styles.capabilitiesGrid}>
+        {capabilities.map((item) => (
+          <article className={styles.capabilityCard} data-capability-card key={item.title}>
+            <div>
+              <h3 className="font-serif">{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+            <ul aria-label={`${item.title.replace('.', '')} services`}>
+              {item.services.map((service) => <li key={service}>{service}</li>)}
+            </ul>
+          </article>
+        ))}
       </div>
-      <SectionRise surface="studio" />
+      <div className={styles.capabilitiesAction}><ModularButton href="/contact">let&apos;s talk</ModularButton></div>
+      <SectionRise surface="work" />
     </section>
   )
 }

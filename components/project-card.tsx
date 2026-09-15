@@ -22,9 +22,11 @@ const widthCaps: Record<MediaRatio, string> = {
 export function ProjectCard({
   project,
   showArrow = true,
+  concise = false,
 }: {
   project: Project
   showArrow?: boolean
+  concise?: boolean
 }) {
   const media = project.thumbnailMedia ?? project.heroMedia
   const style = {
@@ -35,7 +37,7 @@ export function ProjectCard({
   } as CSSProperties
 
   return (
-    <Link className="project-tile" href={`/work/${project.slug}`}>
+    <Link className="project-tile" href={`/work/${project.slug}`} aria-label={concise ? `${project.title} — view project` : undefined}>
       <article className="project-tile-content" style={style}>
         {media.src ? (
           <div className="project-tile-image">
@@ -60,7 +62,7 @@ export function ProjectCard({
               ))}
             </ul>
             <h3 className="project-tile-title">{project.title}</h3>
-            <p className="project-tile-summary">{project.summary}</p>
+            {!concise && <p className="project-tile-summary">{project.summary}</p>}
           </div>
           {showArrow ? (
             <span className="project-link-arrow" aria-hidden="true">
