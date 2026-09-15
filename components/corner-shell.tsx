@@ -118,6 +118,9 @@ export function CornerShell() {
       data-work={pathname.startsWith('/work')}
     >
       <div className="header-inner">
+        <Link className="cyan-header-mark-link" href="/" aria-label="Home">
+          <span className="cyan-header-mark" aria-hidden="true" />
+        </Link>
         <div
           id="primary-navigation"
           className="header-nav-shell"
