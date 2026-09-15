@@ -10,21 +10,6 @@ import styles from '@/components/site-footer.module.css'
 const headline = 'ready for what comes next'
 const words = headline.split(' ')
 
-function EmailOutline() {
-  return (
-    <svg className={styles.emailOutline} viewBox="0 0 480 80" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
-      <path
-        d="M48 4 H432 C458 4 476 18 476 40 C476 62 458 76 432 76 H344 C320 76 316 100 336 100 C356 100 356 70 336 70 C316 70 310 76 292 76 H48 C22 76 4 62 4 40 C4 18 22 4 48 4 Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      />
-    </svg>
-  )
-}
-
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const leadRef = useRef<HTMLElement>(null)
@@ -183,7 +168,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
               <div className={styles.invitation}>
                 <h2>let&apos;s start something.</h2>
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
-                  <EmailOutline />
                   <span>hello@burgama.com</span>
                   <span className={styles.emailArrow} aria-hidden="true"><ArrowUpRight /></span>
                 </a>
@@ -201,7 +185,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
               </nav>
               <div className={styles.linkColumn}>
                 <p className={styles.location}>austin, texas</p>
-                <p className={styles.availability}>Working wherever you are.</p>
                 <Link href="/contact">contact</Link>
               </div>
             </div>
@@ -211,7 +194,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             <div className={styles.bottomRow}>
               <p>© {new Date().getFullYear()} Burgama. All rights reserved.</p>
               <a href="mailto:hello@burgama.com">hello@burgama.com</a>
-              <p className={styles.credit}>Independent by design.</p>
+              <p className={styles.credit}>Working wherever you are.</p>
             </div>
           </div>
         </footer>
