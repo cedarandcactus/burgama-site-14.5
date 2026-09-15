@@ -141,7 +141,6 @@ export function CornerShell() {
         <Link className="cyan-header-mark-link" href="/" aria-label="Home">
           <span className="cyan-header-mark" aria-hidden="true" />
         </Link>
-        {projectOpen && <span className="header-project-caption">a good place to start.</span>}
         <button
           ref={trigger}
           type="button"

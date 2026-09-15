@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
@@ -13,8 +13,7 @@ const companyTypes = ['startup', 'small business', 'established company', 'agenc
 const currencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD'] as const
 const budgetBands = [[0, 5000], [5000, 10000], [10000, 25000], [25000, 50000], [50000, 100000], [100000, null]] as const
 const steps = ['company', 'budget', 'you', 'review']
-const headings = ['what kind of company?', 'what are you thinking?', 'who should we talk to?', 'the start of something good.']
-const descriptions = ['Big ambitions come in all shapes. Tell us yours.', 'A ballpark is perfect. We can figure out the details together.', 'Just a few details to put a person to the project.', 'One last look, then let’s get the conversation going.']
+const headings = ['company type', 'budget', 'your details', 'review']
 const recipient = 'hello@burgama.com'
 type Currency = typeof currencies[number]
 type Contact = { name: string; email: string; phone: string }
@@ -42,12 +41,12 @@ function ContactFields({ contact, errors, onChange }: { contact: Contact; errors
   return (
     <FieldGroup className={styles.contactFields}>
       {([
-        { key: 'name', label: 'your name', type: 'text', autocomplete: 'name', placeholder: 'First and last name', max: 100 },
-        { key: 'email', label: 'email address', type: 'email', autocomplete: 'email', placeholder: 'you@company.com', max: 254 },
-        { key: 'phone', label: 'phone number', type: 'tel', autocomplete: 'tel', placeholder: '+1 555 123 4567', max: 40 },
+        { key: 'name', label: 'name', type: 'text', autocomplete: 'name', placeholder: 'name', max: 100 },
+        { key: 'email', label: 'email', type: 'email', autocomplete: 'email', placeholder: 'email', max: 254 },
+        { key: 'phone', label: 'phone', type: 'tel', autocomplete: 'tel', placeholder: 'phone', max: 40 },
       ] as const).map(({ key, label, type, autocomplete, placeholder, max }) => (
         <Field key={key} data-invalid={!!errors[key]}>
-          <FieldLabel htmlFor={`enquiry-${key}`}>{label}</FieldLabel>
+          <FieldLabel className="sr-only" htmlFor={`enquiry-${key}`}>{label}</FieldLabel>
           <Input id={`enquiry-${key}`} name={key} type={type} autoComplete={autocomplete} placeholder={placeholder} maxLength={max} required value={contact[key]} onChange={(event) => onChange(key, event.target.value)} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `enquiry-${key}-error` : undefined} />
           <FieldError id={`enquiry-${key}-error`}>{errors[key]}</FieldError>
         </Field>
@@ -148,18 +147,12 @@ export function NavProjectForm({ active, onMenu, onHeightChange }: { active: boo
     <form ref={form} id="nav-project-enquiry" className={styles.form} aria-label="Start a project" noValidate onSubmit={submit} onKeyDown={(event) => {
       if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
     }}>
-      <ol className={styles.progress} aria-label="Enquiry progress">
-        {steps.map((label, index) => (
-          <li key={label} data-current={index === step} data-complete={index < step} aria-current={index === step ? 'step' : undefined}>
-            <span className={styles.progressTrack}><span /></span>
-            <span className={styles.progressLabel}><span>{index < step ? <Check aria-hidden="true" /> : `0${index + 1}`}</span>{label}</span>
-          </li>
-        ))}
-      </ol>
+      <div className={styles.progress} role="progressbar" aria-label="Enquiry progress" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={step + 1} aria-valuetext={`${steps[step]}, step ${step + 1} of ${steps.length}`}>
+        <span style={{ transform: `scaleX(${(step + 1) / steps.length})` }} />
+      </div>
       <section key={step} className={styles.step} data-direction={direction < 0 ? 'back' : 'forward'} aria-labelledby="enquiry-step-heading">
         <div className={styles.intro}>
           <h2 ref={heading} id="enquiry-step-heading" tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{headings[step]}</h2>
-          <p>{descriptions[step]}</p>
         </div>
         {step === 0 && (
           <FieldGroup>
@@ -168,14 +161,14 @@ export function NavProjectForm({ active, onMenu, onHeightChange }: { active: boo
                 setCompany(values[0] ?? '')
                 setErrors({})
               }} aria-label="Company type" aria-invalid={!!errors.company} aria-describedby={errors.company ? 'enquiry-company-error' : undefined}>
-                {companyTypes.map((type) => <ToggleGroupItem key={type} value={type}>{type}<Check aria-hidden="true" /></ToggleGroupItem>)}
+                {companyTypes.map((type) => <ToggleGroupItem key={type} value={type}>{type}</ToggleGroupItem>)}
               </ToggleGroup>
               <FieldError id="enquiry-company-error">{errors.company}</FieldError>
             </Field>
             {company === 'other' && (
               <Field data-invalid={!!errors.customType}>
-                <FieldLabel htmlFor="enquiry-customType">a little more about your company</FieldLabel>
-                <Input id="enquiry-customType" name="companyType" maxLength={100} value={customType} onChange={(event) => { setCustomType(event.target.value); setErrors({}) }} placeholder="A collective, a personal brand, something new…" required aria-invalid={!!errors.customType} aria-describedby={errors.customType ? 'enquiry-customType-error' : undefined} />
+                <FieldLabel className="sr-only" htmlFor="enquiry-customType">company type</FieldLabel>
+                <Input id="enquiry-customType" name="companyType" maxLength={100} value={customType} onChange={(event) => { setCustomType(event.target.value); setErrors({}) }} placeholder="company type" required aria-invalid={!!errors.customType} aria-describedby={errors.customType ? 'enquiry-customType-error' : undefined} />
                 <FieldError id="enquiry-customType-error">{errors.customType}</FieldError>
               </Field>
             )}
@@ -184,9 +177,9 @@ export function NavProjectForm({ active, onMenu, onHeightChange }: { active: boo
         {step === 1 && (
           <FieldGroup>
             <div className={styles.budgetTop}>
-              <div className={styles.budgetAmount}><span className={styles.eyebrow}>project budget · {currency}</span><span key={`${currency}-${budget}-${undecided}`} className={styles.amount}>{undecided ? 'let’s talk' : formatBudget(budget, currency, true)}</span></div>
+              <span className={styles.amount}>{undecided ? '—' : formatBudget(budget, currency, true)}</span>
               <Field className={styles.currencyField}>
-                <FieldLabel htmlFor="enquiry-currency">currency</FieldLabel>
+                <FieldLabel className="sr-only" htmlFor="enquiry-currency">currency</FieldLabel>
                 <NativeSelect id="enquiry-currency" name="currency" value={currency} onChange={(event) => setCurrency(event.target.value as Currency)}>
                   {currencies.map((code) => <NativeSelectOption key={code} value={code}>{code}</NativeSelectOption>)}
                 </NativeSelect>
@@ -194,12 +187,9 @@ export function NavProjectForm({ active, onMenu, onHeightChange }: { active: boo
             </div>
             <Field>
               <div className={styles.budgetControl} data-undecided={undecided}>
-                <Slider value={[budget]} min={0} max={budgetBands.length - 1} step={1} className={styles.budgetSlider} onValueChange={(values) => { setBudget(Array.isArray(values) ? values[0] : values); setUndecided(false) }} thumbProps={{ 'aria-label': 'Project budget', getAriaValueText: () => undecided ? 'Not sure yet; adjust to choose a budget' : budgetLabel, 'aria-describedby': 'enquiry-budget-help' }} />
-                <div className={styles.budgetTicks} aria-hidden="true">{budgetBands.map((_, index) => <span key={index} data-selected={!undecided && index <= budget} />)}</div>
-                <div className={styles.budgetEnds} aria-hidden="true"><span>{formatBudget(0, currency, true)}</span><span>{formatBudget(5, currency, true)}</span></div>
+                <Slider value={[budget]} min={0} max={budgetBands.length - 1} step={1} className={styles.budgetSlider} onValueChange={(values) => { setBudget(Array.isArray(values) ? values[0] : values); setUndecided(false) }} thumbProps={{ 'aria-label': 'Budget', getAriaValueText: () => undecided ? 'Not sure yet; adjust to choose a budget' : budgetLabel }} />
               </div>
-              <div className={styles.budgetHelp}><p id="enquiry-budget-help">drag to find your range</p><button type="button" className={styles.unsure} aria-pressed={undecided} onClick={() => setUndecided((value) => !value)}>{undecided && <Check aria-hidden="true" />}not sure yet</button></div>
-              <p className={styles.smallNote}>Currency sets your budget denomination, not an exchange-rate conversion.</p>
+              <button type="button" className={styles.unsure} aria-pressed={undecided} onClick={() => setUndecided((value) => !value)}>not sure yet</button>
             </Field>
           </FieldGroup>
         )}
@@ -210,25 +200,25 @@ export function NavProjectForm({ active, onMenu, onHeightChange }: { active: boo
         {step === 3 && (
           <>
             <dl className={styles.review}>
-              <div><dt>company type</dt><dd>{companyLabel}</dd><button type="button" onClick={() => goTo(0)} aria-label="Edit company type">edit</button></div>
-              <div><dt>project budget</dt><dd>{budgetLabel}</dd><button type="button" onClick={() => goTo(1)} aria-label="Edit budget">edit</button></div>
-              <div><dt>your details</dt><dd>{contact.name.trim()}<span>{contact.email.trim()}</span><span>{contact.phone.trim()}</span></dd><button type="button" onClick={() => goTo(2)} aria-label="Edit contact details">edit</button></div>
+              <div><dt>company</dt><dd>{companyLabel}</dd><button type="button" onClick={() => goTo(0)} aria-label="Edit company type">edit</button></div>
+              <div><dt>budget</dt><dd>{budgetLabel}</dd><button type="button" onClick={() => goTo(1)} aria-label="Edit budget">edit</button></div>
+              <div><dt>contact</dt><dd>{contact.name.trim()}<span>{contact.email.trim()}</span><span>{contact.phone.trim()}</span></dd><button type="button" onClick={() => goTo(2)} aria-label="Edit contact details">edit</button></div>
             </dl>
             <div className={styles.handoff}>
-              <p>to <a href={`mailto:${recipient}`}>{recipient}</a></p>
-              <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'}><Copy aria-hidden="true" />{copyState === 'copied' ? 'copied' : 'copy enquiry'}</button>
+              <a href={`mailto:${recipient}`}>{recipient}</a>
+              <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'} aria-label={copyState === 'copied' ? 'Enquiry copied' : 'Copy enquiry'}>{copyState === 'copied' ? 'copied' : 'copy'}</button>
             </div>
-            <p className={styles.copyStatus} role="status">{copyState === 'copied' ? 'Enquiry copied. Paste it into an email whenever you’re ready.' : copyState === 'manual' ? 'Copying isn’t available here. Select the text below to copy it manually.' : ''}</p>
-            {copyState === 'manual' && <Field><FieldLabel htmlFor="enquiry-copy">your enquiry — select and copy</FieldLabel><textarea id="enquiry-copy" className={styles.copyText} readOnly value={enquiryText} rows={6} onFocus={(event) => event.target.select()} /></Field>}
+            <p className={styles.copyStatus} role="status">{copyState === 'copied' ? <span className="sr-only">Enquiry copied.</span> : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
+            {copyState === 'manual' && <Field><FieldLabel className="sr-only" htmlFor="enquiry-copy">enquiry</FieldLabel><textarea id="enquiry-copy" className={styles.copyText} readOnly value={enquiryText} rows={6} onFocus={(event) => event.target.select()} /></Field>}
           </>
         )}
       </section>
       <footer className={styles.footer}>
         <div className={styles.actions}>
           <button type="button" className={styles.back} onClick={() => step === 0 ? onMenu() : goTo(step - 1)}><ArrowLeft aria-hidden="true" />{step === 0 ? 'menu' : 'back'}</button>
-          {step < 3 ? <button type="submit" className={styles.continue}>{step === 2 ? 'review enquiry' : 'continue'}<ArrowRight aria-hidden="true" /></button> : <a className={styles.continue} href={mailto}>open email draft<ArrowUpRight aria-hidden="true" /></a>}
+          {step < 3 ? <button type="submit" className={styles.continue}>{step === 2 ? 'review' : 'continue'}<ArrowRight aria-hidden="true" /></button> : <a className={styles.continue} href={mailto}>open email draft<ArrowUpRight aria-hidden="true" /></a>}
         </div>
-        <div className={styles.footerNote}><p>{step === 3 ? 'opens your email app — you’ll send it from there.' : step === 2 ? 'all fields required · nothing is sent yet.' : 'just the essentials. we’ll take it from there.'}</p>{step === 3 && <button type="button" onClick={reset}>start over</button>}</div>
+        {step === 3 && <div className={styles.footerNote}><button type="button" onClick={reset}>start over</button><p>opens your email app</p></div>}
       </footer>
     </form>
   )
