@@ -1,5 +1,5 @@
 .form {
-  --enquiry-ink: var(--cyan-night);
+  --enquiry-ink: var(--header-ink, var(--cyan-night));
   --enquiry-muted: color-mix(in srgb, var(--enquiry-ink) 76%, transparent);
   --enquiry-fill: color-mix(in srgb, var(--enquiry-ink) 8%, transparent);
   --enquiry-rule: color-mix(in srgb, var(--enquiry-ink) 16%, transparent);
@@ -22,7 +22,7 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
-  color-scheme: light;
+  color-scheme: var(--header-color-scheme, light);
 }
 
 .form p { margin: 0; }

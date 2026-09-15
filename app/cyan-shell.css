@@ -63,7 +63,7 @@ body .cyan-header .header-inner {
   border: 0;
   border-radius: 999px;
   background:
-    linear-gradient(115deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 8%) 38%, transparent 58%, rgb(255 255 255 / 22%)),
+    var(--header-highlight, linear-gradient(115deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 8%) 38%, transparent 58%, rgb(255 255 255 / 22%))),
     color-mix(in srgb, var(--header-surface) 72%, transparent);
   color: inherit;
   box-shadow:
@@ -95,8 +95,13 @@ body .site-header.cyan-header[data-home='true'][data-condensed='false'] {
 }
 
 body .cyan-header[data-home='true'] {
-  --header-action-bg: var(--cyan-night);
-  --header-action-ink: var(--cyan-ink);
+  --header-surface: var(--cyan-night);
+  --header-ink: var(--palette-powder);
+  --header-action-bg: var(--palette-powder);
+  --header-action-ink: var(--cyan-night);
+  --header-color-scheme: dark;
+  --header-highlight: linear-gradient(115deg, rgb(255 255 255 / 8%), rgb(255 255 255 / 2%) 38%, transparent 58%, rgb(255 255 255 / 4%));
+  color: var(--header-ink);
 }
 
 body .cyan-header[data-home='true'][data-condensed='false'] .header-inner {
