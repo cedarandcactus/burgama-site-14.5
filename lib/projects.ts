@@ -29,6 +29,7 @@ export type Project = {
   disciplines: Discipline[]
   services: string[]
   heroMedia: MediaItem
+  thumbnailMedia?: MediaItem
   contentModules: ContentModule[]
   credits: { role: string; name: string }[]
   links: { label: string; href: string }[]
@@ -216,6 +217,13 @@ export const projects: Project[] = [
     summary: 'Positioning, brand identity, messaging, and a complete website built as one connected launch system.',
     disciplines: ['Brand', 'Web', 'Content'], services: ['Positioning', 'Brand identity', 'Messaging and copy', 'Website strategy', 'Website design and development'],
     heroMedia: image('wurqly', 'web-wurqly.jpg', 'Wurqly’s blue-and-dark website presentation.'),
+    thumbnailMedia: {
+      src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Fitted%20Shelf%20Laptop%20Mockup-iM0MGqvA2aEo1lNctqheBQrUUcYYc2.png',
+      label: 'Wurqly’s navy and blue website displayed on a laptop resting on a curved silver shelf.',
+      ratio: 'wide',
+      width: 4800,
+      height: 3456,
+    },
     contentModules: [
       text('position the platform.', 'We clarified the audience, category, value proposition, and message hierarchy so the breadth of the product could become one focused public story.'),
       text('build the brand.', 'We developed the identity system, typography, color, art direction, and brand language as one flexible toolkit for launch and growth.'),

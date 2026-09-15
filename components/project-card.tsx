@@ -26,7 +26,7 @@ export function ProjectCard({
   project: Project
   showArrow?: boolean
 }) {
-  const media = project.heroMedia
+  const media = project.thumbnailMedia ?? project.heroMedia
   const style = {
     '--project-width': media.ratio === 'tall' ? 'min(76vw, 640px)' : 'min(94vw, 1180px)',
     '--project-media-width-viewport': media.ratio === 'tall' ? '76vw' : '94vw',
