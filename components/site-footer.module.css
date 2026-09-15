@@ -275,8 +275,8 @@
 .footer .linkColumn a {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 6px;
   min-height: 44px;
   padding-block: 4px;
   color: inherit;

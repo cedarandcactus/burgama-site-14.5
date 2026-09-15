@@ -245,7 +245,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                 <div className={styles.navigation}>
                   {navigationGroups.map((group) => (
                     <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
-                      <p className={styles.groupLabel}>{group.label}</p>
                       {group.links.map((link) => (
                         <Link key={link.href} href={link.href}>
                           <span>{link.label}</span>
