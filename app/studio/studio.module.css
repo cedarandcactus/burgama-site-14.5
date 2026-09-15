@@ -90,7 +90,6 @@
 }
 
 .portrait {
-  position: relative;
   aspect-ratio: 29 / 36;
   overflow: hidden;
   isolation: isolate;
@@ -103,17 +102,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(.75) contrast(1.04);
-}
-
-.portrait::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--palette-powder);
-  mix-blend-mode: overlay;
-  opacity: .8;
-  pointer-events: none;
+  filter: grayscale(1);
+  mix-blend-mode: multiply;
 }
 
 .personHeading {
