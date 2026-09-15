@@ -1,4 +1,7 @@
 .ending {
+  --ending-title-size: clamp(68px, 10.8vw, 164px);
+  --ending-rolling-size: clamp(128px, 18.8vw, 310px);
+  --footer-title-size: clamp(60px, 6.95vw, 104px);
   position: relative;
   z-index: 10;
   min-width: 0;
@@ -12,7 +15,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 76svh;
+  min-height: 72svh;
   margin: 0;
   color: var(--palette-navy);
   background: var(--palette-powder);
@@ -21,14 +24,14 @@
 .leadViewport {
   width: 100%;
   overflow: clip;
-  padding-block: clamp(88px, 12vw, 180px);
+  padding-block: clamp(80px, 10.8vw, 160px);
 }
 
 .headline {
   margin: 0;
   padding-inline: var(--page-gutter);
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(72px, 11.5vw, 176px);
+  font-size: var(--ending-title-size);
   font-weight: 400;
   line-height: .9;
   letter-spacing: normal;
@@ -52,6 +55,11 @@
   white-space: nowrap;
 }
 
+.lead:not([data-rolling='true']) .word:nth-child(3) {
+  flex-basis: 100%;
+  justify-content: center;
+}
+
 .letter {
   position: relative;
   display: inline-block;
@@ -59,13 +67,13 @@
 }
 
 .lead[data-rolling='true'] {
-  height: 100svh;
-  min-height: 420px;
+  height: 92svh;
+  min-height: 400px;
 }
 
 .lead[data-rolling='true'] .headline {
   padding-inline: 0;
-  font-size: clamp(136px, 20vw, 330px);
+  font-size: var(--ending-rolling-size);
   text-align: left;
 }
 
@@ -135,15 +143,15 @@
 .content {
   display: flex;
   flex-direction: column;
-  min-height: clamp(640px, 50vw, 1100px);
-  padding: clamp(32px, 4vw, 80px) clamp(24px, 3.5vw, 72px) clamp(24px, 2.5vw, 48px);
+  min-height: clamp(600px, 47vw, 1032px);
+  padding: clamp(28px, 3.6vw, 72px) clamp(24px, 3.5vw, 72px) clamp(22px, 2.2vw, 42px);
   container-type: inline-size;
 }
 
 .topRow {
   display: flex;
   align-items: flex-start;
-  gap: clamp(48px, 6vw, 120px);
+  gap: clamp(44px, 5.4vw, 108px);
   width: 100%;
 }
 
@@ -153,13 +161,13 @@
 }
 
 .invitation h2 {
-  margin: 0 0 clamp(32px, 3vw, 48px);
+  margin: 0 0 clamp(28px, 2.6vw, 42px);
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(64px, 7.4vw, 112px);
+  font-size: var(--footer-title-size);
   font-weight: 400;
-  line-height: 1.12;
-  letter-spacing: .01em;
+  line-height: 1.08;
+  letter-spacing: normal;
   text-transform: lowercase;
 }
 
@@ -180,16 +188,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 72px;
+  min-height: 64px;
   width: 100%;
-  padding: 6px 6px 6px 24px;
+  padding: 6px 6px 6px 22px;
   border: 2px solid var(--palette-powder);
   border-radius: 999px;
   color: var(--palette-powder);
   -webkit-text-fill-color: currentColor;
   background: transparent;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(24px, 2.3vw, 34px);
+  font-size: clamp(23px, 2.15vw, 32px);
   font-weight: 400;
   line-height: 1;
   letter-spacing: normal;
@@ -229,8 +237,8 @@
   display: grid;
   flex: none;
   place-items: center;
-  width: 96px;
-  height: 56px;
+  width: 88px;
+  height: 48px;
   overflow: hidden;
   border-radius: 999px;
   color: var(--palette-navy);
@@ -239,8 +247,8 @@
 
 .emailArrow svg {
   grid-area: 1 / 1;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -265,9 +273,9 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 36px;
+  gap: 32px;
   min-width: 0;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
 .navigation {
@@ -303,7 +311,7 @@
   padding-block: 4px;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(25px, 2.4vw, 38px);
+  font-size: clamp(24px, 2.25vw, 36px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: normal;
@@ -350,7 +358,7 @@
 .identityReveal {
   width: 100%;
   margin-top: auto;
-  padding-top: clamp(72px, 8vw, 144px);
+  padding-top: clamp(60px, 7vw, 124px);
   padding-bottom: 8px;
   overflow: clip;
   overflow-clip-margin: 8px;
@@ -381,8 +389,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 28px;
-  padding-top: 20px;
+  gap: 8px 24px;
+  padding-top: 16px;
   font-size: clamp(12px, .95vw, 15px);
   font-weight: 300;
   line-height: 1.5;
@@ -465,22 +473,22 @@
 }
 
 @media (max-width: 1000px) {
+  .ending {
+    --footer-title-size: clamp(60px, 8.45vw, 84px);
+  }
+
   .topRow {
     flex-direction: column;
-    gap: 48px;
+    gap: 40px;
   }
 
   .invitation {
     width: 100%;
   }
 
-  .invitation h2 {
-    font-size: clamp(64px, 9vw, 90px);
-  }
-
   .utilities {
     flex-direction: row;
-    gap: 48px;
+    gap: 40px;
     width: 100%;
     padding-top: 0;
   }
@@ -501,17 +509,18 @@
   }
 
   .footer .linkColumn a {
-    font-size: clamp(25px, 3.3vw, 32px);
+    font-size: clamp(24px, 3.1vw, 30px);
   }
 }
 
 @media (max-width: 699px) {
-  .lead {
-    min-height: 64svh;
+  .ending {
+    --ending-title-size: clamp(60px, 15vw, 104px);
+    --footer-title-size: clamp(45px, 10vw, 64px);
   }
 
-  .headline {
-    font-size: clamp(64px, 16vw, 110px);
+  .lead {
+    min-height: 60svh;
   }
 
   .track {
@@ -524,13 +533,12 @@
   }
 
   .invitation h2 {
-    font-size: clamp(48px, 10.7vw, 68px);
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
 
   .utilities {
     flex-direction: column;
-    gap: 32px;
+    gap: 28px;
   }
 
   .navigation {
@@ -544,7 +552,7 @@
   }
 
   .footer .linkColumn a {
-    font-size: clamp(23px, 5.6vw, 30px);
+    font-size: clamp(22px, 5.25vw, 28px);
   }
 
   .bottomRow {
@@ -563,19 +571,19 @@
   }
 
   .content {
-    padding: 36px 20px 24px;
+    padding: 32px 20px 22px;
   }
 
   .footer .emailButton {
-    min-height: 64px;
+    min-height: 60px;
     gap: 8px;
     padding-left: 14px;
     font-size: clamp(17px, 5.3vw, 23px);
   }
 
   .footer .emailArrow {
-    width: 72px;
-    height: 48px;
+    width: 64px;
+    height: 44px;
   }
 
   .navigation {
@@ -584,7 +592,7 @@
   }
 
   .footer .linkColumn a {
-    font-size: clamp(21px, 6.7vw, 26px);
+    font-size: clamp(21px, 6.3vw, 24px);
   }
 
   .linkColumn a > svg {
