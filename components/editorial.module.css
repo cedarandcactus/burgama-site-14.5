@@ -1,7 +1,9 @@
 .indexPage,
 .detailPage {
-  --ideas-cyan: var(--cyan-ink);
-  --ideas-navy: var(--cyan-night);
+  --ideas-cyan: var(--palette-powder);
+  --ideas-navy: var(--palette-navy);
+  --ideas-highlight: var(--palette-butter);
+  --ideas-action: var(--palette-orange);
   min-width: 0;
   color: var(--ideas-navy);
   background: var(--ideas-cyan);
@@ -86,8 +88,8 @@
   margin: 0 0 clamp(1.1rem, 2vw, 1.8rem);
   padding: 0.48rem 0.9rem 0.5rem;
   border-radius: 999px;
-  color: var(--ideas-cyan);
-  background: var(--ideas-navy);
+  color: var(--ideas-navy);
+  background: var(--ideas-highlight);
   font-size: 0.74rem;
   font-weight: 500;
   line-height: 1;
@@ -146,7 +148,7 @@
 .articleHeading .categoryPill {
   grid-column: 1 / -1;
   color: var(--ideas-navy);
-  background: var(--ideas-cyan);
+  background: var(--ideas-highlight);
 }
 
 .articleHeading h1 {
@@ -209,8 +211,8 @@
   margin-top: 1.6rem;
   padding: 0.7rem 0.8rem 0.7rem 1.25rem;
   border-radius: 999px;
-  color: var(--ideas-cyan);
-  background: var(--ideas-navy);
+  color: var(--ideas-navy);
+  background: var(--ideas-action);
   font-family: var(--font-cenura), sans-serif;
   font-size: 1.08rem;
   text-decoration: none;

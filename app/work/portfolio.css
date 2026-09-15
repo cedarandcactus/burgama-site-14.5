@@ -1,8 +1,8 @@
 .portfolio {
-  --work-bg: var(--brand-white);
-  --work-ink: var(--brand-navy);
+  --work-bg: var(--palette-soft-white);
+  --work-ink: var(--palette-navy);
   --work-soft: color-mix(in srgb, var(--work-ink) 68%, var(--work-bg));
-  --work-surface: color-mix(in srgb, var(--work-ink) 7%, var(--work-bg));
+  --work-surface: color-mix(in srgb, var(--palette-powder) 58%, var(--work-bg));
   --work-line: color-mix(in srgb, var(--work-ink) 24%, var(--work-bg));
   --field-bg: var(--work-bg);
   --field-bg-raised: var(--work-surface);
@@ -64,7 +64,11 @@ body:has(.portfolio) #main {
 }
 
 .portfolio-intro {
+  position: relative;
   padding-block: clamp(44px, 6vw, 96px) clamp(64px, 8vw, 128px);
+  background: var(--palette-butter);
+  box-shadow: 0 0 0 100vmax var(--palette-butter);
+  clip-path: inset(0 -100vmax);
 }
 
 .portfolio-intro-heading {
@@ -105,8 +109,8 @@ body:has(.portfolio) #main {
 }
 
 .portfolio-jumps .pill {
-  color: var(--work-bg);
-  background: var(--work-ink);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   border-color: transparent;
 }
 
@@ -273,11 +277,11 @@ body .portfolio .project-tile-image {
 }
 
 .portfolio-studies {
-  --button-hover-bg: var(--brand-navy);
-  --button-hover-ink: var(--brand-white);
+  --button-hover-bg: var(--palette-orange);
+  --button-hover-ink: var(--palette-navy);
   padding-block: clamp(88px, 10vw, 160px);
-  color: var(--work-ink);
-  background: transparent;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
 }
 
 .portfolio-study-grid {
@@ -293,12 +297,12 @@ body .portfolio .project-tile-image {
   gap: 18px;
   min-height: 250px;
   padding: clamp(24px, 3vw, 40px);
-  color: inherit;
-  background: var(--work-surface);
+  color: var(--palette-soft-white);
+  background: var(--palette-forest);
   text-decoration: none;
   border: 0;
   border-radius: 20px;
-  transition: background-color 180ms ease;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 .portfolio-study h3 {
@@ -314,10 +318,15 @@ body .portfolio .project-tile-image {
   font-weight: 300;
 }
 
+.portfolio-study .archive-categories span {
+  color: var(--palette-navy);
+  background: var(--palette-butter);
+}
+
 .portfolio-study:hover,
 .portfolio-study:focus-visible {
-  color: var(--brand-navy);
-  background: var(--brand-blue);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
 }
 
 .portfolio-archive {
@@ -325,8 +334,8 @@ body .portfolio .project-tile-image {
 }
 
 .portfolio-filters .pill[aria-pressed='true'] {
-  color: var(--work-bg);
-  background: var(--work-ink);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   border-color: transparent;
 }
 

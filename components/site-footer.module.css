@@ -64,8 +64,8 @@
   min-width: 196px;
   min-height: 48px;
   padding: 7px 25px;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   border: 1.5px solid transparent;
   border-radius: 999px;
   font-family: var(--font-cenura);
@@ -78,29 +78,24 @@
 .footer[data-home='true'] .emailButton {
   width: min(100%, var(--control-basis-width));
   min-width: 0;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   border-color: transparent;
 }
 
 .footer[data-work='true'] .emailButton {
-  color: var(--cyan-ink);
-  background: var(--brand-navy);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .footer[data-work='false'] .emailButton:hover,
-  .footer[data-home='true'] .emailButton:hover {
-    color: var(--cyan-ink);
-    background: transparent;
-    border-color: var(--cyan-ink);
-  }
-
+  .footer .emailButton:hover,
+  .footer[data-home='true'] .emailButton:hover,
   .footer[data-work='true'] .emailButton:hover {
-    color: var(--brand-navy);
+    color: var(--palette-orange);
     background: transparent;
-    border-color: var(--brand-navy);
+    border-color: var(--palette-orange);
   }
 }
 

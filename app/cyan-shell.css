@@ -1,11 +1,11 @@
 :root {
-  --cyan-night: #000020;
-  --cyan-ink: #00c8ed;
-  --cyan-shade: #008ca8;
+  --cyan-night: var(--palette-navy);
+  --cyan-ink: var(--palette-powder);
+  --cyan-shade: var(--palette-powder-deep);
   --control-basis-width: clamp(18rem, 22vw, 20rem);
   --header-compact-height: 52px;
   --header-compact-width: 132px;
-  --header-surface: var(--cyan-shade);
+  --header-surface: var(--palette-powder);
   --header-clearance: 62px;
   --hero-frame-inset: clamp(12px, 2.2vw, 30px);
   --hero-frame-radius: clamp(24px, 3vw, 42px);
@@ -298,8 +298,8 @@ body .modular-button {
   padding: 7px 25px;
   border-color: transparent;
   border-radius: 999px;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   font-size: clamp(1.25rem, 2vw, 1.6rem);
 }
 
@@ -314,8 +314,8 @@ body .modular-button {
   }
 
   body .modular-button:hover {
-    border-color: var(--cyan-ink);
-    color: var(--cyan-ink);
+    border-color: var(--palette-orange);
+    color: var(--palette-orange);
     background: transparent;
   }
 }
@@ -331,6 +331,31 @@ body:has(.cyan-header) #main {
 
 body:has(.cyan-header[data-home='true']) #main {
   padding-top: 0;
+}
+
+.cyan-header {
+  animation: burgama-header-arrive 720ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+#main > :first-child {
+  animation: burgama-content-arrive 880ms 90ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes burgama-header-arrive {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes burgama-content-arrive {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyan-header,
+  #main > :first-child {
+    animation: none;
+  }
 }
 
 @media (max-width: 699px) {

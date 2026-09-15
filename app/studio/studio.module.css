@@ -1,13 +1,14 @@
 .page {
   overflow: clip;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--palette-navy);
+  background: var(--palette-powder);
 }
 
 .hero,
 .teamSection,
 .smallSection,
 .actions {
+  position: relative;
   width: 100%;
   max-width: var(--page-max);
   margin-inline: auto;
@@ -21,6 +22,21 @@
   justify-content: space-between;
   gap: clamp(3rem, 7vw, 7rem);
   padding-block: clamp(3rem, 6vw, 6rem) clamp(5rem, 9vw, 9rem);
+  isolation: isolate;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 8%;
+  right: -7%;
+  width: min(42vw, 38rem);
+  aspect-ratio: 0.78;
+  border-radius: 58% 42% 46% 54% / 45% 58% 42% 55%;
+  background: var(--palette-butter);
+  transform: rotate(13deg);
+  pointer-events: none;
 }
 
 .title {
@@ -76,7 +92,7 @@
 .portrait {
   aspect-ratio: 29 / 36;
   overflow: hidden;
-  background: var(--cyan-night);
+  background: var(--palette-forest);
 }
 
 .portrait img {
@@ -149,16 +165,16 @@
 }
 
 .actions :global(.modular-button) {
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .actions :global(.modular-button:hover) {
-    color: var(--cyan-night);
+    color: var(--palette-orange);
     background: transparent;
-    border-color: var(--cyan-night);
+    border-color: var(--palette-orange);
   }
 }
 

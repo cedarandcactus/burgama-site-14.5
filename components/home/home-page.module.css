@@ -3,15 +3,15 @@
   --home-space: clamp(62px, 7vw, 112px);
   --home-text: clamp(17px, 1.45vw, 22px);
   --home-title: clamp(54px, 8.4vw, 132px);
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--palette-soft-white);
+  background: var(--palette-navy);
 }
 
 .hero {
   position: relative;
   min-height: 320vh;
-  background: var(--cyan-ink);
-  color: var(--cyan-night);
+  background: var(--palette-navy);
+  color: var(--palette-soft-white);
 }
 
 .heroStage {
@@ -20,6 +20,35 @@
   height: calc(100svh - 106px);
   min-height: 560px;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.heroStage::before,
+.heroStage::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.heroStage::before {
+  right: -12vw;
+  bottom: -35%;
+  width: min(58vw, 820px);
+  aspect-ratio: 0.82;
+  border-radius: 58% 42% 48% 52% / 44% 60% 40% 56%;
+  background: var(--palette-forest);
+  transform: rotate(-18deg);
+}
+
+.heroStage::after {
+  right: clamp(22px, 7vw, 110px);
+  top: 20%;
+  width: clamp(56px, 8vw, 124px);
+  aspect-ratio: 1;
+  border-radius: 52% 48% 62% 38% / 44% 58% 42% 56%;
+  background: var(--palette-butter);
+  transform: rotate(16deg);
 }
 
 .heroFrame {
@@ -116,8 +145,8 @@
   padding: 7px 25px;
   border: 1.5px solid transparent;
   border-radius: 999px;
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
   font-size: clamp(20px, 2vw, 26px);
   line-height: 1;
 }
@@ -345,8 +374,8 @@
 
 .page :global(.section-outro .pill) {
   border-color: transparent;
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
 }
 
 .page :global(.capabilities-plate) {
@@ -354,8 +383,8 @@
   display: block;
   overflow: clip;
   min-height: 0;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--palette-navy);
+  background: var(--palette-butter);
 }
 
 .page :global(.capabilities-shell) {
@@ -408,8 +437,8 @@
   gap: clamp(40px, 7vw, 96px);
   padding: clamp(32px, 3.6vw, 52px);
   border-radius: clamp(24px, 2.5vw, 38px);
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--palette-soft-white);
+  background: var(--palette-forest);
   transform-origin: center right;
   will-change: transform, opacity;
 }
@@ -563,8 +592,8 @@
   grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.72fr);
   align-items: end;
   gap: clamp(40px, 8vw, 120px);
-  color: var(--cyan-ink);
-  background: var(--cyan-night);
+  color: var(--palette-soft-white);
+  background: var(--palette-forest);
 }
 
 .page :global(.studio-description) {
@@ -584,22 +613,22 @@
 
 .page :global(.studio-description .pill) {
   border-color: transparent;
-  color: var(--cyan-night);
-  background: var(--cyan-ink);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .page :global(.heroStatement .pill:hover),
   .page :global(.section-outro .pill:hover) {
-    border-color: var(--cyan-night);
-    color: var(--cyan-night);
+    border-color: var(--palette-orange);
+    color: var(--palette-orange);
     background: transparent;
   }
 
   .page :global(.studio-description .pill:hover) {
-    color: var(--cyan-ink);
+    color: var(--palette-orange);
     background: transparent;
-    border-color: var(--cyan-ink);
+    border-color: var(--palette-orange);
   }
 
   .page :global(.project-tile:hover .project-tile-image img),

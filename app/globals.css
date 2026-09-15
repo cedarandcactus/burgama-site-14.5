@@ -5303,20 +5303,58 @@ body:has(.lot-poster) > .mobile-console {
   radius from the other three.
 */
 :root {
-  --brand-navy: #000020;
-  --brand-blue: #00c8ed;
-  --brand-yellow: #00c8ed;
-  --brand-white: #f0f0f5;
-  --kinetic-hero-bg: var(--brand-navy);
-  --kinetic-hero-ink: var(--brand-blue);
+  /* Burgama rebrand palette: botanical, sun-warmed, and digitally crisp. */
+  --palette-navy: #011329;
+  --palette-navy-raised: #082443;
+  --palette-powder: #afc8f2;
+  --palette-powder-deep: #8eafe3;
+  --palette-butter: #f4d06f;
+  --palette-orange: #e95f2b;
+  --palette-forest: #1d4b3e;
+  --palette-soft-white: #f7f2e8;
+  --palette-soft-coral: #e89b8f;
+  --palette-brick: #b8452c;
+  --brand-navy: var(--palette-navy);
+  --brand-blue: var(--palette-powder);
+  --brand-yellow: var(--palette-butter);
+  --brand-orange: var(--palette-orange);
+  --brand-forest: var(--palette-forest);
+  --brand-white: var(--palette-soft-white);
+  --kinetic-hero-bg: var(--palette-navy);
+  --kinetic-hero-ink: var(--palette-soft-white);
   --kinetic-hero-ease: cubic-bezier(.65, 0, .35, 1);
-  --paper: var(--brand-navy);
-  --paper-raised: var(--brand-navy);
-  --paper-sunk: var(--brand-navy);
-  --ink: var(--brand-white);
-  --ink-soft: var(--brand-blue);
-  --ink-mid: var(--brand-blue);
-  --panel: var(--brand-navy);
+  --paper: var(--palette-navy);
+  --paper-raised: var(--palette-navy-raised);
+  --paper-sunk: var(--palette-navy);
+  --ink: var(--palette-soft-white);
+  --ink-soft: var(--palette-powder);
+  --ink-mid: var(--palette-powder-deep);
+  --panel: var(--palette-navy-raised);
+  --mag: var(--palette-orange);
+  --mag-raised: var(--palette-soft-coral);
+  --mag-sunk: var(--palette-brick);
+  --mag-ink: var(--palette-navy);
+  --mag-ink-soft: var(--palette-navy-raised);
+  --peri-field: var(--palette-powder);
+  --peri-field-raised: var(--palette-soft-white);
+  --peri-field-sunk: var(--palette-powder-deep);
+  --peri-field-ink: var(--palette-navy);
+  --peri-field-ink-soft: var(--palette-navy-raised);
+  --pine: var(--palette-forest);
+  --pine-raised: var(--palette-navy-raised);
+  --pine-sunk: var(--palette-navy);
+  --pine-ink: var(--palette-soft-white);
+  --pine-ink-soft: var(--palette-powder);
+  --rust: var(--palette-brick);
+  --rust-raised: var(--palette-orange);
+  --rust-sunk: var(--palette-navy);
+  --rust-ink: var(--palette-soft-white);
+  --rust-ink-soft: var(--palette-butter);
+  --teal: var(--palette-navy-raised);
+  --teal-raised: var(--palette-forest);
+  --teal-sunk: var(--palette-navy);
+  --teal-ink: var(--palette-soft-white);
+  --teal-ink-soft: var(--palette-powder);
   --font-standard: var(--font-pangram);
   --font-wordmark: var(--font-cenura);
   --font-mono-pressura: var(--font-pangram);
@@ -5516,7 +5554,7 @@ html:has(#main > .opening-plate), body:has(#main > .opening-plate), #main:has(> 
 .case-spec-row { border: 0; }
 .detail-toggle::before, .detail-toggle::after { border-radius: 999px; }
 
-:root { --print-blue: #3155b5; }
+:root { --print-blue: var(--palette-forest); }
 .opening-plate, .editorial-footer {
   background: var(--print-blue); color: var(--brand-white);
 }
@@ -5570,6 +5608,28 @@ body .pill, body .project-link-arrow, body .icontrol { border-radius: 999px; }
 
 body .site-header .header-inner { border-radius: 999px; }
 body .site-header .mobile-nav { border-radius: 24px; }
+
+body:has(.contact-prompts) #main {
+  color: var(--palette-soft-white);
+  background: var(--palette-navy);
+}
+
+body:has(.contact-prompts) .editorial-page-hero {
+  color: var(--palette-soft-white);
+  background: var(--palette-forest);
+  box-shadow: 0 0 0 100vmax var(--palette-forest);
+  clip-path: inset(0 -100vmax);
+}
+
+.contact-availability {
+  padding: clamp(1.1rem, 2vw, 1.6rem) var(--page-gutter);
+  color: var(--palette-navy);
+  background: var(--palette-orange);
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.75rem);
+  line-height: 1;
+  text-align: center;
+}
 
 body .updates-content input,
 body .opening-art,

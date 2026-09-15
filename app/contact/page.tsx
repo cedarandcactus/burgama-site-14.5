@@ -27,6 +27,10 @@ export default function ContactPage() {
         ]}
       />
 
+      <aside className="contact-availability" aria-label="Studio availability">
+        <p>Open for new collaborations and brand challenges.</p>
+      </aside>
+
       <div className="wide case">
         <section aria-label="Email the studio">
           <LiquidEmail />
