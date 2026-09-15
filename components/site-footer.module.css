@@ -231,9 +231,9 @@
 .linkColumn .location {
   margin: 0;
   color: inherit;
-  font-family: var(--font-cenura), sans-serif;
+  font-family: var(--font-pangram), sans-serif;
   font-size: clamp(24px, 2.2vw, 46px);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1;
   text-decoration: none;
 }
