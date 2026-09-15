@@ -83,7 +83,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
       })
         .to(film, { y: desktop ? 96 : 40, ease: 'none', duration: 1 }, 0)
         .to(content, { y: desktop ? -48 : -18, ease: 'none', duration: 1 }, 0)
-        .to(frost, { opacity: 1, ease: 'none', duration: 0.7 }, 0)
+        .to(frost, { opacity: 0.55, ease: 'none', duration: 0.7 }, 0)
     })
 
     document.fonts.ready.then(() => {

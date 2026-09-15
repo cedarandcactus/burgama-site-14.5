@@ -415,7 +415,7 @@ export function getPublishedProjects(collection?: PortfolioCollection) {
       return found ? [found] : []
     })
 }
-const featuredProjectOrder = ['hiking-pony', 'go2bites', 'cellinkey', 'wagner-wealth', 'wurqly'] as const
+const featuredProjectOrder = ['wurqly', 'hiking-pony', 'go2bites', 'cellinkey', 'wagner-wealth'] as const
 export const featuredProjects = featuredProjectOrder.flatMap(slug => {
   const item = getProject(slug)
   return item?.collection === 'featured' ? [item] : []

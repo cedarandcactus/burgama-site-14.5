@@ -13,7 +13,7 @@ export function ActWork() {
         <h2 id="featured-title" className="font-serif">a few things<br />we&apos;ve put into the world.</h2>
       </Reveal>
       <WorkReel count={featuredProjects.length}>
-        {featuredProjects.map(project => <ProjectCard key={project.id} project={project} concise />)}
+        {featuredProjects.map(project => <ProjectCard key={project.id} project={project} concise actionLabel="see what we did" />)}
       </WorkReel>
       <div className={styles.workAction}><ModularButton href="/work">all our work</ModularButton></div>
       <SectionRise surface="powder" direction="left" />

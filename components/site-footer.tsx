@@ -267,7 +267,8 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                     <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
                       {group.links.map((link) => (
                         <Link key={link.href} href={link.href}>
-                          {link.label}
+                          <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
+                          <ArrowUpRight aria-hidden="true" />
                         </Link>
                       ))}
                     </nav>

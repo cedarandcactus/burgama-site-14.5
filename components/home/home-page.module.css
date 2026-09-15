@@ -36,10 +36,10 @@
   inset: 36% 0 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.65;
-  background: color-mix(in srgb, var(--palette-navy) 14%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(85%);
-  backdrop-filter: blur(16px) saturate(85%);
+  opacity: 0.25;
+  background: color-mix(in srgb, var(--palette-navy) 8%, transparent);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 78%);
   mask-image: linear-gradient(to bottom, transparent, #000 78%);
 }
@@ -53,6 +53,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  filter: saturate(1.2) contrast(1.04);
 }
 
 .heroVideo {
@@ -68,7 +69,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--palette-navy) 40%, transparent), color-mix(in srgb, var(--palette-navy) 62%, transparent) 48%, color-mix(in srgb, var(--palette-navy) 76%, transparent));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--palette-navy) 26%, transparent), color-mix(in srgb, var(--palette-navy) 50%, transparent) 48%, color-mix(in srgb, var(--palette-navy) 64%, transparent));
 }
 
 .heroFrame {
@@ -706,11 +707,6 @@
     inset: -56px -8px;
   }
 
-  .heroFrost {
-    -webkit-backdrop-filter: blur(10px) saturate(85%);
-    backdrop-filter: blur(10px) saturate(85%);
-  }
-
   .heroFrame {
     padding-top: clamp(128px, 20svh, 160px);
     padding-bottom: 72px;
@@ -1055,6 +1051,7 @@
 .page .workTrack :global(.project-tile-caption) {
   padding-top: 22px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .page .workTrack :global(.project-tile-copy) {
@@ -1079,19 +1076,22 @@
   font-weight: 500;
 }
 
-.page .workTrack :global(.project-link-arrow) {
-  width: clamp(112px, 12vw, 168px);
-  height: 44px;
-  padding: 10px 24px;
-  border: 0;
+.page .workTrack :global(.project-link-prompt) {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 26px;
   border-radius: 999px;
   color: var(--palette-navy);
   background: var(--palette-powder);
-}
-
-.page .workTrack :global(.project-link-arrow svg) {
-  width: 24px;
-  height: 24px;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.1;
+  white-space: nowrap;
+  transition: background-color 180ms ease;
 }
 
 .reelControls {
@@ -1164,7 +1164,7 @@
 @media (hover: hover) and (pointer: fine) {
   .heroStatement :global(.pill:hover),
   .workAction :global(.pill:hover),
-  .page .workTrack :global(.project-tile:hover .project-link-arrow),
+  .page .workTrack :global(.project-tile:hover .project-link-prompt),
   .reelArrows button:not([aria-disabled='true']):hover {
     color: var(--palette-navy);
     background: var(--palette-powder-deep);
@@ -1219,19 +1219,14 @@
   }
 
   .page .workTrack :global(.project-tile-caption) {
-    gap: 14px;
+    flex-direction: column;
+    gap: 20px;
     align-items: flex-start;
     padding-top: 18px;
   }
 
   .page .workTrack :global(.project-tile-title) {
     font-size: 28px;
-  }
-
-  .page .workTrack :global(.project-link-arrow) {
-    width: 88px;
-    height: 44px;
-    padding: 10px 20px;
   }
 
   .reelControls {
@@ -1251,6 +1246,7 @@
 @media (prefers-reduced-motion: reduce) {
   .reelProgress span,
   .reelArrows button,
+  .page .workTrack :global(.project-link-prompt),
   .serviceTabs button {
     transition: none;
   }

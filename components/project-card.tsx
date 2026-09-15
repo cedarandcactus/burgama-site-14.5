@@ -23,10 +23,12 @@ export function ProjectCard({
   project,
   showArrow = true,
   concise = false,
+  actionLabel,
 }: {
   project: Project
   showArrow?: boolean
   concise?: boolean
+  actionLabel?: string
 }) {
   const media = project.thumbnailMedia ?? project.heroMedia
   const style = {
@@ -37,7 +39,7 @@ export function ProjectCard({
   } as CSSProperties
 
   return (
-    <Link className="project-tile" href={`/work/${project.slug}`} aria-label={concise ? `${project.title} — view project` : undefined}>
+    <Link className="project-tile" href={`/work/${project.slug}`} aria-label={concise ? `${project.title} — ${actionLabel ?? 'view project'}` : undefined}>
       <article className="project-tile-content" style={style}>
         {media.src ? (
           <div className="project-tile-image">
@@ -64,7 +66,9 @@ export function ProjectCard({
             <h3 className="project-tile-title">{project.title}</h3>
             {!concise && <p className="project-tile-summary">{project.summary}</p>}
           </div>
-          {showArrow ? (
+          {actionLabel ? (
+            <span className="project-link-prompt">{actionLabel}</span>
+          ) : showArrow ? (
             <span className="project-link-arrow" aria-hidden="true">
               <ArrowUpRight size={26} strokeWidth={2.5} aria-hidden="true" focusable="false" />
             </span>
