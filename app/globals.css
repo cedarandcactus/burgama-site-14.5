@@ -2241,7 +2241,7 @@
 
 /*
   Button proportions measured off the Eleken reference: 13px/500 label,
-  9px 16px padding, 10px radius, solid fill. Deliberately small ���� the
+  9px 16px padding, 10px radius, solid fill. Deliberately small ����� the
   reference never scales its controls with the headings.
 */
 @utility action {
@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover ���������������������������������
+  Text links are set back by tone and resolve to the sanctioned hover �����������������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5310,7 +5310,7 @@ body:has(.lot-poster) > .mobile-console {
   --palette-powder-deep: #8eafe3;
   --palette-butter: #f4d06f;
   --palette-yellow-soft: #f8e7a8;
-  --palette-yellow-deep: #d8ad3d;
+  --palette-yellow-deep: var(--palette-powder);
   --palette-soft-white: #f7f2e8;
   --palette-soft-coral: #e89b8f;
   --palette-brick: #b8452c;
