@@ -285,7 +285,7 @@ body .cyan-header .cyan-menu-trigger {
   border-radius: 999px;
   color: var(--palette-navy);
   background: transparent;
-  border: 1px solid currentColor;
+  border: 2px solid currentColor;
   cursor: pointer;
   opacity: 1;
   visibility: visible;
