@@ -3,16 +3,16 @@
   --cyan-ink: var(--palette-powder);
   --cyan-shade: var(--palette-powder-deep);
   --control-basis-width: clamp(18rem, 22vw, 20rem);
-  --header-control-height: 44px;
-  --header-shell-padding: 8px;
-  --header-shell-inline-padding: 24px;
-  --header-control-gap: 8px;
-  --header-link-gap: 4px;
-  --header-link-width: 4.75rem;
-  --header-action-width: 9.25rem;
-  --header-toggle-width: 4.5rem;
-  --header-label-size: 1rem;
-  --header-symbol-size: 40px;
+  --header-control-height: 52px;
+  --header-shell-padding: 10px;
+  --header-shell-inline-padding: 28px;
+  --header-control-gap: 12px;
+  --header-link-gap: 8px;
+  --header-link-width: 5.5rem;
+  --header-action-width: 11rem;
+  --header-toggle-width: 5rem;
+  --header-label-size: 1.125rem;
+  --header-symbol-size: 48px;
   --header-top-inset: 9px;
   --header-top: max(var(--header-top-inset), env(safe-area-inset-top, 0px));
   --header-compact-height: calc(var(--header-control-height) + 2 * var(--header-shell-padding));
@@ -377,6 +377,17 @@ body:has(.cyan-header[data-home='true']) #main {
     background: var(--header-surface);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 799px) {
+  :root {
+    --header-shell-inline-padding: 24px;
+    --header-control-gap: 8px;
+    --header-link-width: 4.5rem;
+    --header-action-width: 9.75rem;
+    --header-toggle-width: 4.5rem;
+    --header-label-size: 1.0625rem;
   }
 }
 
