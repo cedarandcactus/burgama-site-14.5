@@ -180,12 +180,12 @@
   gap: 12px;
   min-height: 72px;
   width: min(100%, 420px);
-  padding: 8px 8px 8px 24px;
-  border: 0;
+  padding: 6px 6px 6px 24px;
+  border: 2px solid var(--palette-powder);
   border-radius: 999px;
-  color: var(--palette-navy);
+  color: var(--palette-powder);
   -webkit-text-fill-color: currentColor;
-  background: var(--palette-powder);
+  background: transparent;
   font-family: var(--font-cenura), sans-serif;
   font-size: clamp(24px, 2.3vw, 34px);
   font-weight: 400;
@@ -207,19 +207,19 @@
   display: grid;
   flex: none;
   place-items: center;
-  width: 56px;
-  aspect-ratio: 1;
+  width: 96px;
+  height: 56px;
   overflow: hidden;
-  border-radius: 50%;
-  color: var(--palette-powder);
-  background: var(--palette-navy);
+  border-radius: 999px;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
 }
 
 .emailArrow svg {
   grid-area: 1 / 1;
-  width: 48%;
-  height: 48%;
-  stroke-width: 1.75;
+  width: 30px;
+  height: 30px;
+  stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: transform 360ms cubic-bezier(.2, .8, .2, 1);
@@ -425,7 +425,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .footer .emailButton:hover {
-    background: color-mix(in srgb, var(--palette-powder) 85%, white);
+    background: color-mix(in srgb, var(--palette-powder) 10%, transparent);
   }
 
   .emailButton:hover .emailLabel,
@@ -552,12 +552,13 @@
   .footer .emailButton {
     min-height: 64px;
     gap: 8px;
-    padding-left: 18px;
-    font-size: clamp(21px, 6.2vw, 27px);
+    padding-left: 14px;
+    font-size: clamp(17px, 5.3vw, 23px);
   }
 
   .footer .emailArrow {
-    width: 48px;
+    width: 72px;
+    height: 48px;
   }
 
   .navigation {
