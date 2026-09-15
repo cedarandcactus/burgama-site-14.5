@@ -31,15 +31,11 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     function measureControls() {
       const bounds = shell!.getBoundingClientRect()
       shell!.style.setProperty('--glass-width', `${bounds.width}px`)
-      if (animation?.effect instanceof KeyframeEffect) {
-        animation.effect.setKeyframes([
-          { '--glass-edge': '-48px' },
-          { '--glass-edge': `${bounds.width + 48}px` },
-        ])
-      }
+      shell!.style.setProperty('--glass-height', `${bounds.height}px`)
       for (const control of shell!.querySelectorAll<HTMLElement>('[data-glass-ink], .header-contact')) {
-        const offset = control.getBoundingClientRect().left - bounds.left
-        control.style.setProperty('--glass-offset', `${-offset}px`)
+        const rect = control.getBoundingClientRect()
+        control.style.setProperty('--glass-offset-x', `${bounds.left - rect.left}px`)
+        control.style.setProperty('--glass-offset-y', `${bounds.top - rect.top}px`)
       }
     }
 
@@ -57,6 +53,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       const before = getComputedStyle(header!)
       const oldSurface = before.getPropertyValue('--header-surface')
       const oldInk = before.getPropertyValue('--header-ink')
+      const oldActionInk = before.getPropertyValue('--header-action-ink')
       header!.dataset.glassTheme = next
       if (immediate || motion.matches || transparency.matches || typeof CSS.registerProperty !== 'function') return
 
@@ -65,13 +62,17 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       shell!.style.setProperty('--glass-old-ink', oldInk)
       shell!.style.setProperty('--glass-new-surface', after.getPropertyValue('--header-surface'))
       shell!.style.setProperty('--glass-new-ink', after.getPropertyValue('--header-ink'))
-      shell!.style.setProperty('--glass-angle', reverse ? '270deg' : '90deg')
+      shell!.style.setProperty('--glass-old-action-ink', oldActionInk)
+      shell!.style.setProperty('--glass-new-action-ink', after.getPropertyValue('--header-action-ink'))
+      shell!.style.setProperty('--glass-origin-a', reverse ? '104%' : '-4%')
+      shell!.style.setProperty('--glass-origin-b', reverse ? '49%' : '51%')
+      shell!.style.setProperty('--glass-origin-c', reverse ? '7%' : '93%')
       measureControls()
       header!.dataset.glassSweeping = 'true'
       animation = shell!.animate([
-        { '--glass-edge': '-48px' },
-        { '--glass-edge': `${shell!.getBoundingClientRect().width + 48}px` },
-      ], { duration: 820, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'both' })
+        { '--glass-bloom': '0%' },
+        { '--glass-bloom': '320%' },
+      ], { duration: 1400, easing: 'cubic-bezier(.45, 0, .35, 1)', fill: 'both' })
       animation.onfinish = finishSweep
     }
 
@@ -82,7 +83,9 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
         return
       }
       const bounds = shell!.getBoundingClientRect()
-      const probe = new DOMPoint(bounds.left + bounds.width / 2, bounds.top + 36)
+      const compactHeight = Number.parseFloat(getComputedStyle(header!).getPropertyValue('--header-control-height'))
+      const padding = Number.parseFloat(getComputedStyle(header!).getPropertyValue('--header-shell-padding'))
+      const probe = new DOMPoint(bounds.left + bounds.width / 2, bounds.top + padding + compactHeight / 2)
       let next = 'ink'
       for (const region of regions) {
         const rect = region.getBoundingClientRect()
