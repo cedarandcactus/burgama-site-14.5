@@ -902,9 +902,9 @@
 
 .processDiagram {
   position: relative;
-  width: min(100%, 640px);
-  aspect-ratio: 1;
-  margin-inline: auto;
+  width: min(100%, 1000px);
+  aspect-ratio: 1000 / 520;
+  margin: clamp(32px, 5vw, 64px) auto 0;
   container-type: inline-size;
 }
 
@@ -916,53 +916,65 @@
   pointer-events: none;
 }
 
+.processGraphic[data-layout='narrow'] { display: none; }
+
 .processOutline {
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: 2.5;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
-.processMarker {
+.processStop {
   fill: var(--palette-blue-mid);
+  transition: fill 180ms ease;
+}
+
+.processStop[data-selected='true'] { fill: var(--palette-navy); }
+
+.processMarker {
+  fill: var(--palette-navy);
   stroke: var(--palette-powder-deep);
-  stroke-width: 2;
+  stroke-width: 3;
 }
 
 .processStages {
   position: absolute;
-  inset: 6.25%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
+  inset: 0;
+  pointer-events: none;
 }
 
 .processStage {
+  position: absolute;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
   min-width: 0;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(20px, 7cqw, 46px);
+  font-size: clamp(26px, 5cqw, 50px);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.1;
+  pointer-events: auto;
 }
 
-.processStage[data-stage='make'] { grid-column: 2; grid-row: 2; }
-.processStage[data-stage='improve'] { grid-column: 1; grid-row: 2; }
+.processStage[data-stage='understand'] { left: 11.5%; top: 53%; }
+.processStage[data-stage='shape'] { left: 30%; top: 15%; }
+.processStage[data-stage='make'] { left: 54%; top: 79%; }
+.processStage[data-stage='improve'] { left: 80%; top: 23%; }
 
 .processStage button {
   display: block;
   min-height: 44px;
   max-width: 100%;
   margin: 0;
-  padding: 8px 4px;
+  padding: 0;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: var(--palette-navy);
   font: inherit;
   letter-spacing: normal;
+  text-align: left;
   white-space: nowrap;
   cursor: pointer;
   touch-action: manipulation;
@@ -970,6 +982,14 @@
 }
 
 .processStage h3 { margin: 0; font: inherit; }
+
+.processCaption {
+  margin: 8px 0 0;
+  font-family: var(--font-pangram), sans-serif;
+  font-size: clamp(12px, 1.7cqw, 17px);
+  font-weight: 400;
+  line-height: 1.35;
+}
 
 .processStage button[aria-pressed='true'] {
   color: var(--palette-blue-mid);
@@ -980,8 +1000,27 @@
 
 .processStage button:focus-visible {
   outline: 2px solid var(--palette-navy);
-  outline-offset: 5px;
+  outline-offset: 6px;
 }
+
+@media (min-width: 600px) and (max-width: 699px) {
+  .processStage[data-stage='understand'] { top: 48%; }
+  .processStage[data-stage='shape'] { top: 10%; }
+}
+
+@media (max-width: 599px) {
+  .processDiagram { max-width: 400px; aspect-ratio: 400 / 760; margin-top: 28px; }
+  .processGraphic[data-layout='wide'] { display: none; }
+  .processGraphic[data-layout='narrow'] { display: block; }
+  .processStage { font-size: clamp(28px, 9cqw, 36px); }
+  .processStage[data-stage='understand'] { left: 23%; top: 5.3%; }
+  .processStage[data-stage='shape'] { left: 25%; top: 29%; }
+  .processStage[data-stage='make'] { left: 23%; top: 54.5%; }
+  .processStage[data-stage='improve'] { left: 25%; top: 79%; }
+  .processCaption { margin-top: 4px; font-size: clamp(12px, 3.6cqw, 14px); }
+  .processOutline { stroke-width: 2; }
+}
+
 
 .processDetails {
   display: grid;
@@ -1076,6 +1115,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .processStop,
   .processStage button,
   .processExplanation {
     transition: none;
