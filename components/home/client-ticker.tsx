@@ -23,14 +23,8 @@ const logos = [
 
 function logoPath(width: number, height: number) {
   const center = height * 0.5
-  return [
-    `M ${width + 100} ${height * 0.8}`,
-    `C ${width * 0.81} ${height * 1.14}, ${width * 0.99} ${-height * 0.18}, ${width * 0.78} ${height * 0.2}`,
-    `C ${width * 0.69} ${height * 0.32}, ${width * 0.71} ${center}, ${width * 0.61} ${center}`,
-    `L ${width * 0.4} ${center}`,
-    `C ${width * 0.28} ${center}, ${width * 0.32} ${height * 0.84}, ${width * 0.2} ${height * 0.8}`,
-    `C ${width * 0.02} ${height * 0.86}, ${width * 0.15} ${-height * 0.12}, -100 ${height * 0.24}`,
-  ].join(' ')
+  const bend = Math.min(72, height * 0.4)
+  return `M ${width + 100} ${center} C ${width * 0.7} ${center - bend}, ${width * 0.3} ${center + bend}, -100 ${center}`
 }
 
 export function ClientTicker() {
@@ -48,12 +42,11 @@ export function ClientTicker() {
     const nodes = [...group.children] as HTMLElement[]
     let animations: Animation[] = []
     let inView = false
-    let hovered = false
     let focused = false
     let lastWidth = 0
 
     const syncPlayback = () => {
-      const paused = !inView || document.hidden || hovered || focused
+      const paused = !inView || document.hidden || focused
       for (const animation of animations) {
         if (paused) animation.pause()
         else animation.play()
@@ -95,10 +88,9 @@ export function ClientTicker() {
           offset: progress * travelFraction,
           offsetDistance: `${progress * 100}%`,
           opacity: clarity * 0.88,
-          transform: `scale(${0.78 + clarity * 0.22})`,
         }
       })
-      frames.push({ offset: 1, offsetDistance: '100%', opacity: 0, transform: 'scale(0.78)' })
+      frames.push({ offset: 1, offsetDistance: '100%', opacity: 0 })
 
       animations = nodes.map((node, index) => {
         const animation = node.animate(frames, { duration, iterations: Infinity, easing: 'linear' })
@@ -108,12 +100,6 @@ export function ClientTicker() {
       syncPlayback()
     }
 
-    const enter = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse') return
-      hovered = true
-      syncPlayback()
-    }
-    const leave = () => { hovered = false; syncPlayback() }
     const focus = () => { focused = true; syncPlayback() }
     const blur = () => { focused = false; syncPlayback() }
     const intersection = new IntersectionObserver(([entry]) => {
@@ -129,8 +115,6 @@ export function ClientTicker() {
     resize.observe(windowElement)
     reducedMotion.addEventListener('change', rebuild)
     document.addEventListener('visibilitychange', syncPlayback)
-    section.addEventListener('pointerenter', enter)
-    section.addEventListener('pointerleave', leave)
     section.addEventListener('focusin', focus)
     section.addEventListener('focusout', blur)
 
@@ -140,8 +124,6 @@ export function ClientTicker() {
       resize.disconnect()
       reducedMotion.removeEventListener('change', rebuild)
       document.removeEventListener('visibilitychange', syncPlayback)
-      section.removeEventListener('pointerenter', enter)
-      section.removeEventListener('pointerleave', leave)
       section.removeEventListener('focusin', focus)
       section.removeEventListener('focusout', blur)
       delete section.dataset.animated
@@ -150,7 +132,7 @@ export function ClientTicker() {
 
   return (
     <section ref={sectionRef} className={styles.section} aria-label="Brands we have worked with" tabIndex={0} aria-describedby="client-motion-hint">
-      <span id="client-motion-hint" className="sr-only">Hover or keep keyboard focus here to pause the logo motion.</span>
+      <span id="client-motion-hint" className="sr-only">Keep keyboard focus here to pause the logo motion.</span>
       <div ref={windowRef} className={styles.window}>
         <ul ref={groupRef} className={styles.group}>
           {logos.map((logo) => (
