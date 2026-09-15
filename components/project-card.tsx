@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { CircularArrowIcon } from '@/components/circular-arrow-icon'
+import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import type { MediaRatio, Project } from '@/lib/projects'
 
@@ -64,7 +64,7 @@ export function ProjectCard({
           </div>
           {showArrow ? (
             <span className="project-link-arrow" aria-hidden="true">
-              <CircularArrowIcon />
+              <ArrowUpRight size={26} strokeWidth={2.5} aria-hidden="true" focusable="false" />
             </span>
           ) : null}
         </div>
