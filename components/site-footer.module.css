@@ -163,6 +163,7 @@
 }
 
 .footer .emailButton {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -170,7 +171,7 @@
   min-height: 64px;
   width: 100%;
   padding: 8px 8px 8px clamp(20px, 1.6vw, 38px);
-  border: 2px solid rgb(175 200 242 / 45%);
+  border: 2px solid transparent;
   border-radius: 999px;
   color: var(--palette-powder);
   -webkit-text-fill-color: currentColor;
@@ -180,7 +181,6 @@
   font-weight: 500;
   line-height: 1.2;
   text-decoration: none;
-  transition: border-color 180ms ease;
 }
 
 .footer .emailArrow {
@@ -206,7 +206,7 @@
 
 .invitation p {
   max-width: 34ch;
-  margin: 22px 0 0;
+  margin: 34px 0 0;
   color: inherit;
   font-size: clamp(14px, 1vw, 19px);
   font-weight: 500;
@@ -222,15 +222,21 @@
   min-width: 0;
 }
 
-.divider {
+.emailOutline {
+  position: absolute;
+  inset: 0;
   display: block;
-  flex: none;
   width: 100%;
-  height: clamp(48px, 6vw, 96px);
-  margin-block: clamp(24px, 3vw, 56px);
+  height: 100%;
+  overflow: visible;
   color: var(--palette-powder);
-  opacity: .55;
+  opacity: .75;
   pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.emailButton:focus-visible .emailOutline {
+  opacity: 1;
 }
 
 .linkColumn a,
@@ -256,7 +262,7 @@
 .identity {
   width: 100%;
   margin-top: auto;
-  padding-top: clamp(8px, 1.5vw, 36px);
+  padding-top: clamp(80px, 9vw, 200px);
 }
 
 .footer .wordmark {
@@ -309,8 +315,8 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .footer .emailButton:hover {
-    border-color: var(--palette-powder);
+  .emailButton:hover .emailOutline {
+    opacity: 1;
   }
 
   .emailButton:hover .emailArrow svg {
@@ -365,7 +371,7 @@
   }
 
   .identity {
-    padding-top: 12px;
+    padding-top: 72px;
   }
 
   .bottomRow {
@@ -428,7 +434,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .emailButton,
+  .emailOutline,
   .emailArrow svg,
   .video {
     transition: none;

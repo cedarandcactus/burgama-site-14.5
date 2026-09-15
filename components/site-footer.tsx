@@ -10,11 +10,11 @@ import styles from '@/components/site-footer.module.css'
 const headline = 'ready for what comes next'
 const words = headline.split(' ')
 
-function FooterDivider() {
+function EmailOutline() {
   return (
-    <svg className={styles.divider} viewBox="0 0 1200 96" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
+    <svg className={styles.emailOutline} viewBox="0 0 480 80" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
       <path
-        d="M2 48 H480 C526 48 530 12 559 12 C597 12 597 84 559 84 C523 84 529 48 584 48 H1198"
+        d="M48 4 H432 C458 4 476 18 476 40 C476 62 458 76 432 76 H344 C320 76 316 100 336 100 C356 100 356 70 336 70 C316 70 310 76 292 76 H48 C22 76 4 62 4 40 C4 18 22 4 48 4 Z"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -183,6 +183,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
               <div className={styles.invitation}>
                 <h2>let&apos;s start something.</h2>
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
+                  <EmailOutline />
                   <span>hello@burgama.com</span>
                   <span className={styles.emailArrow} aria-hidden="true"><ArrowUpRight /></span>
                 </a>
@@ -204,7 +205,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                 <Link href="/contact">contact</Link>
               </div>
             </div>
-            <FooterDivider />
             <div className={styles.identity} data-footer-identity="">
               <Link href="/" className={styles.wordmark} aria-label="Burgama home">burgama</Link>
             </div>
