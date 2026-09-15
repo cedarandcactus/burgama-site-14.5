@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
 import styles from './client-ticker.module.css'
 
 const logos = [
@@ -18,21 +21,146 @@ const logos = [
   { file: 'logo-02', name: 'Zeytin', shape: 'script' },
 ]
 
+function logoPath(width: number, height: number) {
+  const center = height * 0.5
+  return [
+    `M ${width + 100} ${height * 0.8}`,
+    `C ${width * 0.81} ${height * 1.14}, ${width * 0.99} ${-height * 0.18}, ${width * 0.78} ${height * 0.2}`,
+    `C ${width * 0.69} ${height * 0.32}, ${width * 0.71} ${center}, ${width * 0.61} ${center}`,
+    `L ${width * 0.4} ${center}`,
+    `C ${width * 0.28} ${center}, ${width * 0.32} ${height * 0.84}, ${width * 0.2} ${height * 0.8}`,
+    `C ${width * 0.02} ${height * 0.86}, ${width * 0.15} ${-height * 0.12}, -100 ${height * 0.24}`,
+  ].join(' ')
+}
+
 export function ClientTicker() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const windowRef = useRef<HTMLDivElement>(null)
+  const groupRef = useRef<HTMLUListElement>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    const windowElement = windowRef.current
+    const group = groupRef.current
+    if (!section || !windowElement || !group || !CSS.supports('offset-path', 'path("M 0 0 L 1 1")')) return
+
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+    const nodes = [...group.children] as HTMLElement[]
+    let animations: Animation[] = []
+    let inView = false
+    let hovered = false
+    let focused = false
+    let lastWidth = 0
+
+    const syncPlayback = () => {
+      const paused = !inView || document.hidden || hovered || focused
+      for (const animation of animations) {
+        if (paused) animation.pause()
+        else animation.play()
+      }
+    }
+
+    const rebuild = () => {
+      const phase = animations[0]?.currentTime
+      const previousDuration = Number(animations[0]?.effect?.getTiming().duration || 1)
+      for (const animation of animations) animation.cancel()
+      animations = []
+      if (reducedMotion.matches) {
+        delete section.dataset.animated
+        return
+      }
+
+      section.dataset.animated = 'true'
+      const width = windowElement.clientWidth
+      const height = windowElement.clientHeight
+      lastWidth = width
+      const path = logoPath(width, height)
+      group.style.setProperty('--logo-path', `path('${path}')`)
+
+      const measurement = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      measurement.setAttribute('d', path)
+      const pathLength = measurement.getTotalLength()
+      const spacing = width < 700 ? 170 : 220
+      const speed = width < 700 ? 26 : 34
+      const duration = Math.max(logos.length * spacing, pathLength + spacing) / speed * 1000
+      const travelFraction = pathLength / speed * 1000 / duration
+      const initialTime = typeof phase === 'number' ? phase / previousDuration * duration : duration * 0.12
+      const frames: Keyframe[] = Array.from({ length: 121 }, (_, index) => {
+        const progress = index / 120
+        const point = measurement.getPointAtLength(progress * pathLength)
+        const edgeDistance = Math.min(point.x, width - point.x) - (width < 700 ? 12 : 20)
+        const fade = Math.max(0, Math.min(1, edgeDistance / (width < 700 ? 64 : 130)))
+        const clarity = fade * fade * (3 - 2 * fade)
+        return {
+          offset: progress * travelFraction,
+          offsetDistance: `${progress * 100}%`,
+          opacity: clarity * 0.88,
+          transform: `scale(${0.78 + clarity * 0.22})`,
+        }
+      })
+      frames.push({ offset: 1, offsetDistance: '100%', opacity: 0, transform: 'scale(0.78)' })
+
+      animations = nodes.map((node, index) => {
+        const animation = node.animate(frames, { duration, iterations: Infinity, easing: 'linear' })
+        animation.currentTime = (initialTime + (logos.length - index) / logos.length * duration) % duration
+        return animation
+      })
+      syncPlayback()
+    }
+
+    const enter = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') return
+      hovered = true
+      syncPlayback()
+    }
+    const leave = () => { hovered = false; syncPlayback() }
+    const focus = () => { focused = true; syncPlayback() }
+    const blur = () => { focused = false; syncPlayback() }
+    const intersection = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting
+      syncPlayback()
+    })
+    const resize = new ResizeObserver(() => {
+      if (!reducedMotion.matches && windowElement.clientWidth !== lastWidth) rebuild()
+    })
+
+    rebuild()
+    intersection.observe(section)
+    resize.observe(windowElement)
+    reducedMotion.addEventListener('change', rebuild)
+    document.addEventListener('visibilitychange', syncPlayback)
+    section.addEventListener('pointerenter', enter)
+    section.addEventListener('pointerleave', leave)
+    section.addEventListener('focusin', focus)
+    section.addEventListener('focusout', blur)
+
+    return () => {
+      animations.forEach((animation) => animation.cancel())
+      intersection.disconnect()
+      resize.disconnect()
+      reducedMotion.removeEventListener('change', rebuild)
+      document.removeEventListener('visibilitychange', syncPlayback)
+      section.removeEventListener('pointerenter', enter)
+      section.removeEventListener('pointerleave', leave)
+      section.removeEventListener('focusin', focus)
+      section.removeEventListener('focusout', blur)
+      delete section.dataset.animated
+    }
+  }, [])
+
   return (
-    <section className={styles.section} aria-label="Brands we have worked with">
-      <div className={styles.window}>
-        <div className={styles.track}>
-          {[0, 1].map((copy) => (
-            <ul className={styles.group} key={copy} aria-hidden={copy === 1 ? true : undefined}>
-              {logos.map((logo) => (
-                <li className={`${styles.logo} ${styles[logo.shape]}`} key={logo.file}>
-                  <img src={`/client-logos/${logo.file}.${logo.format ?? 'webp'}`} alt={copy === 0 ? logo.name : ''} width={180} height={80} decoding="async" draggable={false} />
-                </li>
-              ))}
-            </ul>
+    <section ref={sectionRef} className={styles.section} aria-label="Brands we have worked with" tabIndex={0} aria-describedby="client-motion-hint">
+      <span id="client-motion-hint" className="sr-only">Hover or keep keyboard focus here to pause the logo motion.</span>
+      <div ref={windowRef} className={styles.window}>
+        <ul ref={groupRef} className={styles.group}>
+          {logos.map((logo) => (
+            <li className={`${styles.logo} ${styles[logo.shape]}`} key={logo.file}>
+              <img src={`/client-logos/${logo.file}.${logo.format ?? 'webp'}`} alt={logo.name} width={180} height={80} decoding="async" draggable={false} />
+            </li>
           ))}
-        </div>
+        </ul>
+        <div className={`${styles.glass} ${styles.glassLeft}`} aria-hidden="true" />
+        <div className={`${styles.glass} ${styles.glassRight}`} aria-hidden="true" />
       </div>
     </section>
   )

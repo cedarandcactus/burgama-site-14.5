@@ -74,7 +74,7 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  min-height: calc(100svh - 108px);
+  min-height: calc(100svh - clamp(176px, 15vw, 220px));
   padding: clamp(116px, 10vw, 152px) var(--home-inset) clamp(64px, 7vw, 104px);
 }
 
@@ -88,11 +88,22 @@
 }
 
 .heroFrame h1 {
+  display: grid;
   margin: 0;
   font-size: clamp(42px, 5.65vw, 100px);
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: normal;
+}
+
+.heroHeadlineVariant {
+  grid-area: 1 / 1;
+  min-width: 0;
+  visibility: hidden;
+}
+
+.heroHeadlineVariant[data-headline-active='true'] {
+  visibility: visible;
 }
 
 .heroHeadlineLine {
