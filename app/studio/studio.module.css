@@ -95,7 +95,7 @@
   overflow: hidden;
   isolation: isolate;
   border-radius: 24px;
-  background: var(--palette-yellow-soft);
+  background: var(--palette-powder);
 }
 
 .portrait img {
@@ -110,7 +110,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--palette-yellow-soft);
+  background: var(--palette-powder);
   mix-blend-mode: overlay;
   opacity: .8;
   pointer-events: none;
