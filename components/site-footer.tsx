@@ -184,7 +184,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                 <Link href="/studio#team-title">the people</Link>
               </nav>
               <div className={styles.linkColumn}>
-                <p className={styles.location}>austin, texas</p>
                 <address className={styles.address}>
                   701 Tillery St #12<br />
                   Mailbox #289<br />
@@ -198,7 +197,10 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             </div>
             <div className={styles.bottomRow}>
               <p>© {new Date().getFullYear()} Burgama. All rights reserved.</p>
-              <a href="mailto:hello@burgama.com">hello@burgama.com</a>
+              <nav className={styles.legalLinks} aria-label="Legal">
+                <Link href="/privacy">privacy</Link>
+                <Link href="/terms">terms</Link>
+              </nav>
               <p className={styles.credit}>Working wherever you are.</p>
             </div>
           </div>

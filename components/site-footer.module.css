@@ -227,8 +227,7 @@
   border-color: var(--palette-powder);
 }
 
-.linkColumn a,
-.linkColumn .location {
+.linkColumn a {
   margin: 0;
   color: inherit;
   font-family: var(--font-pangram), sans-serif;
@@ -286,6 +285,13 @@
   margin: 0;
   color: inherit;
   text-decoration: none;
+}
+
+.legalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
 }
 
 .bottomRow .credit {
