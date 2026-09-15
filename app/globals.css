@@ -2241,7 +2241,7 @@
 
 /*
   Button proportions measured off the Eleken reference: 13px/500 label,
-  9px 16px padding, 10px radius, solid fill. Deliberately small ������ the
+  9px 16px padding, 10px radius, solid fill. Deliberately small; the
   reference never scales its controls with the headings.
 */
 @utility action {
@@ -2275,7 +2275,7 @@ button.action:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 2px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--periwinkle) 34%, transparent);
   border-radius: var(--radius-module);
   padding: 0.5625rem 1rem;
   background: transparent;

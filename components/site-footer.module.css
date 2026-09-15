@@ -242,7 +242,7 @@
   height: 56px;
   margin: 0;
   padding: 5px 8px 5px 20px;
-  border: 2px solid currentColor;
+  border: 1.5px solid currentColor;
   border-radius: 999px;
   background: transparent;
   color: inherit;

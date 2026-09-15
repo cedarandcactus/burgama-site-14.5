@@ -270,7 +270,7 @@ body .cyan-header .header-nav :is(a, button.header-contact):is([aria-current='pa
 body .cyan-header .header-nav :is(a, button.header-contact).header-contact {
   width: var(--header-action-width);
   padding-inline: 16px;
-  border: 1px solid transparent;
+  border: 1.5px solid transparent;
   color: var(--header-action-ink);
   background: var(--header-action-bg);
 }
@@ -285,7 +285,7 @@ body .cyan-header .cyan-menu-trigger {
   border-radius: 999px;
   color: var(--palette-navy);
   background: transparent;
-  border: 2px solid currentColor;
+  border: 1.5px solid currentColor;
   cursor: pointer;
   opacity: 1;
   visibility: visible;
@@ -445,7 +445,7 @@ body:has(.cyan-header[data-home='true']) #main {
 
 @media (min-width: 960px) {
   body .site-header.cyan-header {
-    --header-shell-inline-padding: 30px;
+    --header-shell-inline-padding: 36px;
     --header-control-gap: 20px;
     --header-link-gap: 12px;
   }
@@ -627,6 +627,12 @@ body .site-header.cyan-header[data-project-open='true'] .cyan-menu-trigger {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+}
+
+@media (min-width: 960px) {
+  body .site-header.cyan-header[data-project-open='true'] .cyan-menu-trigger {
+    width: var(--header-action-width);
+  }
 }
 
 @media (max-width: 699px) {
