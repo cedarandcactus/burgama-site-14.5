@@ -902,8 +902,6 @@
   pointer-events: none;
 }
 
-.processOrbit canvas { display: block; }
-
 .processFallback {
   position: absolute;
   inset: 0;
@@ -924,8 +922,6 @@
   background: var(--palette-navy);
   transform: translate(-50%, -50%);
 }
-.processOrbit[data-orbit-ready='true'] .processFallback { visibility: hidden; }
-
 @media (max-width: 599px) {
   .processInner { padding: 90px 36px 122px; }
 }

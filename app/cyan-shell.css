@@ -283,8 +283,9 @@ body .cyan-header .cyan-menu-trigger {
   margin-left: var(--header-control-gap);
   overflow: hidden;
   border-radius: 999px;
-  color: var(--header-action-ink);
-  background: var(--header-action-bg);
+  color: var(--palette-navy);
+  background: transparent;
+  border: 1px solid currentColor;
   cursor: pointer;
   opacity: 1;
   visibility: visible;
@@ -341,7 +342,7 @@ body .cyan-header[data-menu-open='true'] .cyan-menu-label-close {
 body .cyan-header[data-menu-open='true'] .cyan-menu-trigger,
 body .cyan-header .cyan-menu-trigger:active {
   color: var(--palette-powder);
-  background: var(--palette-blue-mid);
+  background: var(--palette-navy);
 }
 
 body .cyan-header .cyan-header-mark-link:active {
@@ -372,7 +373,7 @@ body .modular-button {
 
   body .cyan-header .cyan-menu-trigger:hover {
     color: var(--palette-powder);
-    background: var(--palette-blue-mid);
+    background: var(--palette-navy);
   }
 
   body .cyan-header .cyan-header-mark-link:hover {
