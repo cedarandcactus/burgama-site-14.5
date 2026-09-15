@@ -2,7 +2,6 @@
 
 import Link from '@/components/transition-link'
 import { NavProjectForm } from '@/components/nav-project-form'
-import { useHeaderGlass } from '@/hooks/use-header-glass'
 import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
 
@@ -23,8 +22,6 @@ export function CornerShell() {
   const trigger = useRef<HTMLButtonElement>(null)
   const projectTrigger = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
-
-  useHeaderGlass(header, pathname)
 
   const [symbolVisible, setSymbolVisible] = useState(false)
   const symbolVisibleRef = useRef(false)

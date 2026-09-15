@@ -41,7 +41,6 @@ export function FooterUpdates() {
   return (
     <div className={styles.updates}>
       <h2 id={`${id}-heading`}>subscribe for updates</h2>
-      <p className={styles.updatesSubtitle}>new work, ideas and occasional updates.</p>
       <form className={styles.updatesPill} aria-labelledby={`${id}-heading`} aria-describedby={`${id}-status`} noValidate onSubmit={submit} onKeyDown={(event) => {
         if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
       }}>
@@ -56,18 +55,18 @@ export function FooterUpdates() {
             <>
               <span className={styles.updatesConsent}>agree to our <a href="/terms" target="_blank" rel="noopener noreferrer" aria-label="Terms (opens in a new tab)">terms</a></span>
               <button className={styles.updatesEdit} type="button" aria-label="Edit email address" onClick={() => advance('email')}><Pencil aria-hidden="true" /></button>
-              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and preview signup" onClick={() => advance('complete')}><span><Check aria-hidden="true" /></span></button>
+              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and continue" onClick={() => advance('complete')}><span><Check aria-hidden="true" /></span></button>
             </>
           ) : (
             <>
-              <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>preview complete</span>
-              <button className={styles.updatesAction} type="button" aria-label="Restart newsletter preview" onClick={() => { setEmail(''); advance('email') }}><span><RotateCcw aria-hidden="true" /></span></button>
+              <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>signup unavailable</span>
+              <button className={styles.updatesAction} type="button" aria-label="Try another email address" onClick={() => { setEmail(''); advance('email') }}><span><RotateCcw aria-hidden="true" /></span></button>
             </>
           )}
         </div>
       </form>
       <noscript><style>{`.${styles.updatesPill} { display: none; }`}</style></noscript>
-      <p id={`${id}-status`} className={styles.updatesStatus} role="status" aria-live="polite" aria-atomic="true">{error ? `${error} — preview only` : step === 'complete' ? 'not subscribed — preview only' : 'preview only'}</p>
+      <p id={`${id}-status`} className={styles.updatesStatus} role="status" aria-live="polite" aria-atomic="true">{error || (step === 'complete' ? 'signup isn’t connected yet. your email hasn’t been saved.' : '')}</p>
     </div>
   )
 }
