@@ -110,7 +110,7 @@ body:has(.portfolio) #main {
 
 .portfolio-jumps .pill {
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   border-color: transparent;
 }
 
@@ -277,7 +277,7 @@ body .portfolio .project-tile-image {
 }
 
 .portfolio-studies {
-  --button-hover-bg: var(--palette-orange);
+  --button-hover-bg: var(--palette-yellow-deep);
   --button-hover-ink: var(--palette-navy);
   padding-block: clamp(88px, 10vw, 160px);
   color: var(--palette-navy);
@@ -297,8 +297,8 @@ body .portfolio .project-tile-image {
   gap: 18px;
   min-height: 250px;
   padding: clamp(24px, 3vw, 40px);
-  color: var(--palette-soft-white);
-  background: var(--palette-forest);
+  color: var(--palette-navy);
+  background: var(--palette-yellow-soft);
   text-decoration: none;
   border: 0;
   border-radius: 20px;
@@ -326,7 +326,7 @@ body .portfolio .project-tile-image {
 .portfolio-study:hover,
 .portfolio-study:focus-visible {
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
 }
 
 .portfolio-archive {
@@ -335,7 +335,7 @@ body .portfolio .project-tile-image {
 
 .portfolio-filters .pill[aria-pressed='true'] {
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   border-color: transparent;
 }
 

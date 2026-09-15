@@ -92,7 +92,7 @@
 .portrait {
   aspect-ratio: 29 / 36;
   overflow: hidden;
-  background: var(--palette-forest);
+  background: var(--palette-yellow-soft);
 }
 
 .portrait img {
@@ -166,15 +166,15 @@
 
 .actions :global(.modular-button) {
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .actions :global(.modular-button:hover) {
-    color: var(--palette-orange);
+    color: var(--palette-yellow-deep);
     background: transparent;
-    border-color: var(--palette-orange);
+    border-color: var(--palette-yellow-deep);
   }
 }
 

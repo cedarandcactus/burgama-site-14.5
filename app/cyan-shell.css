@@ -3,8 +3,8 @@
   --cyan-ink: var(--palette-powder);
   --cyan-shade: var(--palette-powder-deep);
   --control-basis-width: clamp(18rem, 22vw, 20rem);
-  --header-compact-height: 52px;
-  --header-compact-width: 132px;
+  --header-compact-height: 58px;
+  --header-compact-width: 148px;
   --header-surface: var(--palette-powder);
   --header-clearance: 62px;
   --hero-frame-inset: clamp(12px, 2.2vw, 30px);
@@ -31,17 +31,19 @@ body .cyan-header .header-inner {
   height: var(--header-compact-height);
   max-width: calc(100vw - (2 * var(--page-gutter)));
   margin-inline: auto;
-  padding: 7px;
+  padding: 8px 10px;
   overflow: hidden;
-  border: 0;
+  border: 1px solid color-mix(in srgb, white 58%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--header-surface) 72%, transparent);
+  background: color-mix(in srgb, var(--header-surface) 48%, transparent);
   color: inherit;
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 24%, transparent),
-    0 12px 32px color-mix(in srgb, var(--cyan-night) 14%, transparent);
-  -webkit-backdrop-filter: blur(26px) saturate(150%);
-  backdrop-filter: blur(26px) saturate(150%);
+    inset 0 1px 0 color-mix(in srgb, white 82%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, white 24%, transparent),
+    0 18px 48px color-mix(in srgb, var(--cyan-night) 28%, transparent),
+    0 3px 14px color-mix(in srgb, white 18%, transparent);
+  -webkit-backdrop-filter: blur(48px) saturate(190%) brightness(1.16) contrast(1.06);
+  backdrop-filter: blur(48px) saturate(190%) brightness(1.16) contrast(1.06);
   pointer-events: auto;
   transition:
     width 560ms cubic-bezier(.16, 1, .3, 1),
@@ -63,13 +65,13 @@ body .site-header.cyan-header[data-home='true'][data-condensed='false'] {
 
 body .cyan-header[data-home='true'] .header-inner {
   color: var(--cyan-night);
-  background: color-mix(in srgb, var(--cyan-shade) 70%, transparent);
+  background: color-mix(in srgb, var(--cyan-shade) 44%, transparent);
 }
 
 body .cyan-header[data-home='true'][data-condensed='false'] .header-inner {
-  width: fit-content;
+  width: min(660px, calc(100vw - (2 * var(--page-gutter))));
   max-width: calc(100vw - (2 * var(--page-gutter)));
-  min-height: clamp(48px, 5vw, 58px);
+  min-height: clamp(58px, 5vw, 64px);
 }
 
 body .cyan-header[data-work='true'] .header-inner {
@@ -80,8 +82,8 @@ body .cyan-header[data-work='true'] .header-inner {
 body .cyan-header .cyan-header-mark-link {
   display: inline-grid;
   flex: none;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   place-items: center;
   color: inherit;
   border-radius: 50%;
@@ -94,8 +96,8 @@ body .cyan-header .cyan-header-mark-link:focus-visible {
 
 body .cyan-header .cyan-header-mark {
   display: block;
-  width: 25px;
-  height: 25px;
+  width: 32px;
+  height: 32px;
   background: currentColor;
   -webkit-mask: url('/burgama-symbol.svg') center / contain no-repeat;
   mask: url('/burgama-symbol.svg') center / contain no-repeat;
@@ -299,7 +301,7 @@ body .modular-button {
   border-color: transparent;
   border-radius: 999px;
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   font-size: clamp(1.25rem, 2vw, 1.6rem);
 }
 
@@ -314,8 +316,8 @@ body .modular-button {
   }
 
   body .modular-button:hover {
-    border-color: var(--palette-orange);
-    color: var(--palette-orange);
+    border-color: var(--palette-yellow-deep);
+    color: var(--palette-yellow-deep);
     background: transparent;
   }
 }

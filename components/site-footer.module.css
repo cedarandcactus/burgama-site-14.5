@@ -65,7 +65,7 @@
   min-height: 48px;
   padding: 7px 25px;
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   border: 1.5px solid transparent;
   border-radius: 999px;
   font-family: var(--font-cenura);
@@ -79,13 +79,13 @@
   width: min(100%, var(--control-basis-width));
   min-width: 0;
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   border-color: transparent;
 }
 
 .footer[data-work='true'] .emailButton {
   color: var(--palette-navy);
-  background: var(--palette-orange);
+  background: var(--palette-yellow-deep);
   border-color: transparent;
 }
 
@@ -93,9 +93,9 @@
   .footer .emailButton:hover,
   .footer[data-home='true'] .emailButton:hover,
   .footer[data-work='true'] .emailButton:hover {
-    color: var(--palette-orange);
+    color: var(--palette-yellow-deep);
     background: transparent;
-    border-color: var(--palette-orange);
+    border-color: var(--palette-yellow-deep);
   }
 }
 

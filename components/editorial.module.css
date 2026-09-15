@@ -3,7 +3,7 @@
   --ideas-cyan: var(--palette-powder);
   --ideas-navy: var(--palette-navy);
   --ideas-highlight: var(--palette-butter);
-  --ideas-action: var(--palette-orange);
+  --ideas-action: var(--palette-yellow-deep);
   min-width: 0;
   color: var(--ideas-navy);
   background: var(--ideas-cyan);
