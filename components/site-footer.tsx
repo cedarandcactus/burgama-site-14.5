@@ -185,6 +185,11 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
               </nav>
               <div className={styles.linkColumn}>
                 <p className={styles.location}>austin, texas</p>
+                <address className={styles.address}>
+                  701 Tillery St #12<br />
+                  Mailbox #289<br />
+                  Austin, TX 78702
+                </address>
                 <Link href="/contact">contact</Link>
               </div>
             </div>
