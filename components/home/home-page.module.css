@@ -74,8 +74,8 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  min-height: calc(100svh - 132px);
-  padding: clamp(116px, 11vw, 168px) var(--home-inset) clamp(40px, 5vw, 72px);
+  min-height: calc(100svh - 108px);
+  padding: clamp(116px, 10vw, 152px) var(--home-inset) clamp(64px, 7vw, 104px);
 }
 
 .heroFrameContent {
@@ -89,9 +89,9 @@
 
 .heroFrame h1 {
   margin: 0;
-  font-size: clamp(42px, 6.2vw, 108px);
+  font-size: clamp(42px, 5.65vw, 100px);
   font-weight: 400;
-  line-height: 1.02;
+  line-height: 1.08;
   letter-spacing: normal;
 }
 
@@ -662,13 +662,13 @@
   }
 
   .heroFrame {
-    min-height: calc(100svh - 104px);
+    min-height: calc(100svh - 80px);
     padding-top: 100px;
-    padding-bottom: 32px;
+    padding-bottom: 48px;
   }
 
   .heroFrameContent {
-    gap: 28px;
+    gap: 32px;
   }
 
   .heroFrame h1 {

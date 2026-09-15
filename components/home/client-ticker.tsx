@@ -7,7 +7,7 @@ const logos = [
   { file: 'avro', name: 'AVRO', shape: 'wordmark' },
   { file: 'go2bites', name: 'Go2Bites', shape: 'symbol' },
   { file: 'cellinkey', name: 'Cellinkey', shape: 'wordmark' },
-  { file: 'wurqly', name: 'Wurqly', shape: 'script' },
+  { file: 'wurqly-cobalt', format: 'svg', name: 'Wurqly', shape: 'wordmark' },
   { file: 'clement', name: 'Clement Senior Solutions', shape: 'wordmark' },
   { file: 'logo-21', name: 'Hush Hush Tan', shape: 'symbol' },
   { file: 'matchday', name: 'MatchDay', shape: 'wordmark' },
@@ -27,7 +27,7 @@ export function ClientTicker() {
             <ul className={styles.group} key={copy} aria-hidden={copy === 1 ? true : undefined}>
               {logos.map((logo) => (
                 <li className={`${styles.logo} ${styles[logo.shape]}`} key={logo.file}>
-                  <img src={`/client-logos/${logo.file}.webp`} alt={copy === 0 ? logo.name : ''} width={180} height={80} decoding="async" draggable={false} />
+                  <img src={`/client-logos/${logo.file}.${logo.format ?? 'webp'}`} alt={copy === 0 ? logo.name : ''} width={180} height={80} decoding="async" draggable={false} />
                 </li>
               ))}
             </ul>
