@@ -22,8 +22,10 @@ const logos = [
 ]
 
 function logoPath(width: number, height: number) {
-  const center = height * 0.5
-  return `M ${width + 100} ${center} L -100 ${center}`
+  const top = width < 700 ? 44 : 52
+  const bottom = height - top
+  // Mirror the section rise's 24%/76% control points with a constant vertical clearance.
+  return `M ${width + 100} ${top} L ${width} ${top} C ${width * 0.76} ${top} ${width * 0.24} ${bottom} 0 ${bottom} L -100 ${bottom}`
 }
 
 export function ClientTicker() {
@@ -43,6 +45,7 @@ export function ClientTicker() {
     let inView = false
     let focused = false
     let lastWidth = 0
+    let lastHeight = 0
 
     const syncPlayback = () => {
       const paused = !inView || document.hidden || focused
@@ -70,6 +73,7 @@ export function ClientTicker() {
       const width = windowElement.clientWidth
       const height = windowElement.clientHeight
       lastWidth = width
+      lastHeight = height
       const path = logoPath(width, height)
       group.style.setProperty('--logo-path', `path('${path}')`)
 
@@ -84,8 +88,8 @@ export function ClientTicker() {
       const frames: Keyframe[] = Array.from({ length: 121 }, (_, index) => {
         const progress = index / 120
         const point = measurement.getPointAtLength(progress * pathLength)
-        const edgeDistance = Math.min(point.x, width - point.x) - (width < 700 ? 12 : 20)
-        const fade = Math.max(0, Math.min(1, edgeDistance / (width < 700 ? 64 : 130)))
+        const edgeDistance = Math.min(point.x, width - point.x) - 12
+        const fade = Math.max(0, Math.min(1, edgeDistance / (width < 700 ? 48 : 88)))
         const clarity = fade * fade * (3 - 2 * fade)
         return {
           offset: progress * travelFraction,
@@ -117,7 +121,7 @@ export function ClientTicker() {
       syncPlayback()
     })
     const resize = new ResizeObserver(() => {
-      if (!reducedMotion.matches && windowElement.clientWidth !== lastWidth) rebuild()
+      if (!reducedMotion.matches && (windowElement.clientWidth !== lastWidth || windowElement.clientHeight !== lastHeight)) rebuild()
     })
 
     rebuild()
@@ -156,8 +160,6 @@ export function ClientTicker() {
             </li>
           ))}
         </ul>
-        <div className={`${styles.glass} ${styles.glassLeft}`} aria-hidden="true" />
-        <div className={`${styles.glass} ${styles.glassRight}`} aria-hidden="true" />
       </div>
     </section>
   )

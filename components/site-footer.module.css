@@ -1,7 +1,7 @@
 .ending {
-  --ending-title-size: clamp(68px, 10.8vw, 164px);
-  --ending-rolling-size: clamp(128px, 18.8vw, 310px);
-  --footer-title-size: clamp(60px, 6.95vw, 104px);
+  --ending-title-size: clamp(48px, 8vw, 112px);
+  --ending-rolling-size: clamp(96px, 13.5vw, 200px);
+  --footer-title-size: clamp(42px, 4.8vw, 68px);
   position: relative;
   z-index: 10;
   min-width: 0;
@@ -15,7 +15,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 72svh;
+  min-height: 54svh;
   margin: 0;
   color: var(--palette-navy);
   background: var(--palette-powder);
@@ -24,7 +24,7 @@
 .leadViewport {
   width: 100%;
   overflow: clip;
-  padding-block: clamp(80px, 10.8vw, 160px);
+  padding-block: clamp(56px, 7vw, 96px);
 }
 
 .headline {
@@ -67,8 +67,8 @@
 }
 
 .lead[data-rolling='true'] {
-  height: 92svh;
-  min-height: 400px;
+  height: 68svh;
+  min-height: 320px;
 }
 
 .lead[data-rolling='true'] .headline {
@@ -145,14 +145,14 @@
 .content {
   display: flex;
   flex-direction: column;
-  padding: clamp(24px, 3vw, 48px) clamp(24px, 3.5vw, 56px) 16px;
+  padding: clamp(32px, 4vw, 56px) clamp(24px, 5vw, 80px) 20px;
   container-type: inline-size;
 }
 
 .topRow {
   display: flex;
   align-items: flex-start;
-  gap: clamp(32px, 5vw, 80px);
+  gap: clamp(48px, 7vw, 112px);
   width: 100%;
 }
 
@@ -189,16 +189,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 64px;
-  width: 100%;
-  padding: 6px 6px 6px 22px;
-  border: 0;
+  min-height: 50px;
+  width: min(100%, 360px);
+  padding: 6px 6px 6px 18px;
+  border: 1px solid currentColor;
   border-radius: 999px;
-  color: var(--palette-navy);
+  color: var(--palette-powder);
   -webkit-text-fill-color: currentColor;
-  background: var(--palette-powder);
+  background: transparent;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(23px, 2.15vw, 32px);
+  font-size: clamp(18px, 1.7vw, 23px);
   font-weight: 400;
   line-height: 1;
   letter-spacing: normal;
@@ -238,8 +238,8 @@
   display: grid;
   flex: none;
   place-items: center;
-  width: 88px;
-  height: 48px;
+  width: 52px;
+  height: 36px;
   overflow: hidden;
   border-radius: 999px;
   color: var(--palette-navy);
@@ -248,9 +248,9 @@
 
 .emailArrow svg {
   grid-area: 1 / 1;
-  width: 28px;
-  height: 28px;
-  stroke-width: 2.5;
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: transform 360ms cubic-bezier(.2, .8, .2, 1);
@@ -287,12 +287,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2px;
+  gap: 8px;
   min-height: 44px;
   padding-block: 4px;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(24px, 2.25vw, 36px);
+  font-size: clamp(20px, 1.75vw, 25px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: normal;
@@ -302,19 +302,19 @@
 
 .linkColumn a > svg {
   flex: none;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   opacity: 1;
-  stroke-width: 2.5;
+  stroke-width: 2;
   transition: transform 300ms cubic-bezier(.2, .8, .2, 1), opacity 200ms ease;
 }
 
 .address {
   width: 100%;
-  margin: 24px 0 0;
+  margin: 28px 0 0;
   color: inherit;
   font-family: var(--font-pangram), sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 300;
   line-height: 1.4;
@@ -323,8 +323,8 @@
 
 .identityReveal {
   width: 100%;
-  margin-top: 0;
-  padding-top: clamp(20px, 3vw, 40px);
+  margin-top: 32px;
+  padding-top: 0;
   padding-bottom: 4px;
   overflow: clip;
   overflow-clip-margin: 8px;
@@ -342,7 +342,7 @@
   padding-bottom: .13em;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 25.6cqw;
+  font-size: min(18cqw, 200px);
   font-weight: 400;
   line-height: .78;
   letter-spacing: normal;
@@ -355,8 +355,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 16px;
-  padding-top: 4px;
+  gap: 0 20px;
+  padding-top: 20px;
   font-size: clamp(12px, .95vw, 15px);
   font-weight: 300;
   line-height: 1.5;
@@ -412,7 +412,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .footer .emailButton:hover {
-    background: var(--palette-powder-deep);
+    background: color-mix(in srgb, var(--palette-powder) 10%, transparent);
   }
 
   .emailButton:hover .rollGlyph,
@@ -433,14 +433,14 @@
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 799px) {
   .ending {
-    --footer-title-size: clamp(60px, 8.45vw, 84px);
+    --footer-title-size: clamp(40px, 6vw, 48px);
   }
 
   .topRow {
     flex-direction: column;
-    gap: 24px;
+    gap: 28px;
   }
 
   .invitation {
@@ -459,18 +459,18 @@
   }
 
   .footer .linkColumn a {
-    font-size: clamp(24px, 3.1vw, 30px);
+    font-size: 22px;
   }
 }
 
 @media (max-width: 699px) {
   .ending {
-    --ending-title-size: clamp(60px, 15vw, 104px);
-    --footer-title-size: clamp(45px, 10vw, 64px);
+    --ending-title-size: clamp(44px, 11vw, 72px);
+    --footer-title-size: clamp(36px, 9vw, 48px);
   }
 
   .lead {
-    min-height: 60svh;
+    min-height: 46svh;
   }
 
   .track {
@@ -497,7 +497,7 @@
   }
 
   .footer .linkColumn a {
-    font-size: clamp(22px, 5.25vw, 28px);
+    font-size: 20px;
   }
 
   .bottomRow {
@@ -507,28 +507,28 @@
 
 @media (max-width: 450px) {
   .content {
-    padding: 24px 20px 12px;
+    padding: 32px 20px 16px;
   }
 
   .footer .emailButton {
-    min-height: 60px;
+    min-height: 48px;
     gap: 8px;
     padding-left: 14px;
-    font-size: clamp(17px, 5.3vw, 23px);
+    font-size: clamp(17px, 4.8vw, 20px);
   }
 
   .footer .emailArrow {
-    width: 64px;
-    height: 44px;
+    width: 48px;
+    height: 34px;
   }
 
   .navigation {
-    grid-template-columns: minmax(0, .65fr) minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
   }
 
   .footer .linkColumn a {
-    font-size: clamp(21px, 6.3vw, 24px);
+    font-size: 20px;
   }
 
   .linkColumn a > svg {
@@ -540,7 +540,7 @@
     flex-direction: row;
     align-items: center;
     gap: 0 14px;
-    padding-top: 4px;
+    padding-top: 16px;
   }
 }
 

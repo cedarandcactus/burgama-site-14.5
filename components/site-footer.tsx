@@ -92,7 +92,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
             id: `footer-roll-${titleId}`,
             trigger: lead,
             start: 'top top',
-            end: () => `+=${Math.max(900, Math.min(1900, track.scrollWidth * 0.65))}`,
+            end: () => `+=${Math.max(600, Math.min(1300, track.scrollWidth * 0.55))}`,
             pin: true,
             // Page wrappers use transforms, which change the containing block for fixed pins.
             pinType: 'transform',
