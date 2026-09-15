@@ -9,6 +9,25 @@ import styles from '@/components/site-footer.module.css'
 
 const headline = 'Ready for what comes next'
 const words = headline.split(' ')
+const navigationGroups = [
+  {
+    label: 'Explore',
+    links: [
+      { label: 'Services', href: '/#capabilities' },
+      { label: 'Work', href: '/work' },
+      { label: 'About', href: '/studio' },
+    ],
+  },
+  {
+    label: 'The studio',
+    links: [
+      { label: 'Ideas', href: '/ideas' },
+      { label: 'Our approach', href: '/studio#small-title' },
+      { label: 'The people', href: '/studio#team-title' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+]
 
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null)
@@ -24,6 +43,9 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
 
     const media = gsap.matchMedia(root)
     const identity = root.querySelector<HTMLElement>('[data-footer-identity]')
+    const invitation = root.querySelector<HTMLElement>('[data-footer-invitation]')
+    const titleWords = Array.from(root.querySelectorAll<HTMLElement>('[data-footer-title-word]'))
+    const groups = Array.from(root.querySelectorAll<HTMLElement>('[data-footer-group]'))
     const letters = Array.from(track.querySelectorAll<HTMLElement>('[data-footer-letter]'))
     let disposed = false
     let refreshFrame = 0
@@ -99,20 +121,55 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
         })
       }
 
-      gsap.fromTo(identity, { y: 44 }, {
+      gsap.fromTo(titleWords, {
+        yPercent: context.conditions?.desktop ? 55 : 30,
+        rotation: context.conditions?.desktop ? 5 : 2,
+      }, {
+        yPercent: 0,
+        rotation: 0,
+        duration: 0.8,
+        stagger: 0.09,
+        ease: 'back.out(1.15)',
+        scrollTrigger: {
+          trigger: invitation,
+          start: 'top 92%',
+          once: true,
+        },
+      })
+
+      groups.forEach((group, index) => {
+        gsap.fromTo(group, { y: context.conditions?.desktop ? 28 : 16 }, {
+          y: 0,
+          duration: 0.7,
+          delay: index * 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: group,
+            start: 'top 95%',
+            once: true,
+          },
+        })
+      })
+
+      gsap.fromTo(identity, {
+        y: context.conditions?.desktop ? 84 : 32,
+        skewY: context.conditions?.desktop ? 1.5 : 0,
+      }, {
         y: 0,
+        skewY: 0,
         ease: 'none',
         scrollTrigger: {
-          trigger: root.querySelector('footer'),
+          trigger: root.querySelector('[data-footer-identity-reveal]'),
           start: 'top bottom',
           end: 'bottom bottom',
           scrub: 0.6,
+          invalidateOnRefresh: true,
         },
       })
 
       return () => {
         delete lead.dataset.rolling
-        for (const element of [track, ...Array.from(track.children), ...letters, identity]) {
+        for (const element of [track, ...Array.from(track.children), ...letters, ...titleWords, ...groups, identity]) {
           element?.removeAttribute('style')
         }
       }
@@ -165,35 +222,53 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
           <FooterFilm />
           <div className={styles.content}>
             <div className={styles.topRow}>
-              <div className={styles.invitation}>
-                <h2>Let&apos;s start something.</h2>
+              <div className={styles.invitation} data-footer-invitation="">
+                <h2 aria-label="Let’s start something.">
+                  <span className={styles.titleLine} aria-hidden="true">
+                    <span data-footer-title-word="">let&apos;s</span>{' '}
+                    <span data-footer-title-word="">start</span>
+                  </span>
+                  <span className={styles.titleLine} aria-hidden="true">
+                    <span data-footer-title-word="">something.</span>
+                  </span>
+                </h2>
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
-                  <span>hello@burgama.com</span>
-                  <span className={styles.emailArrow} aria-hidden="true"><ArrowUpRight /></span>
+                  <span className={styles.emailLabel}>hello@burgama.com</span>
+                  <span className={styles.emailArrow} aria-hidden="true">
+                    <ArrowUpRight />
+                    <ArrowUpRight />
+                  </span>
                 </a>
                 <p>Bring the idea. We&apos;ll bring the people to make it happen.</p>
               </div>
-              <nav className={styles.linkColumn} aria-label="Explore burgama">
-                <Link href="/#capabilities">Services</Link>
-                <Link href="/work">Work</Link>
-                <Link href="/studio">About</Link>
-              </nav>
-              <nav className={styles.linkColumn} aria-label="Inside the studio">
-                <Link href="/ideas">Ideas</Link>
-                <Link href="/studio#small-title">Our approach</Link>
-                <Link href="/studio#team-title">The people</Link>
-              </nav>
-              <div className={`${styles.linkColumn} ${styles.addressColumn}`}>
-                <address className={styles.address}>
-                  701 Tillery St #12<br />
-                  Mailbox #289<br />
-                  Austin, TX 78702
-                </address>
-                <Link href="/contact">Contact</Link>
+              <div className={styles.utilities}>
+                <div className={styles.navigation}>
+                  {navigationGroups.map((group) => (
+                    <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
+                      <p className={styles.groupLabel}>{group.label}</p>
+                      {group.links.map((link) => (
+                        <Link key={link.href} href={link.href}>
+                          <span>{link.label}</span>
+                          <ArrowUpRight aria-hidden="true" />
+                        </Link>
+                      ))}
+                    </nav>
+                  ))}
+                </div>
+                <div className={styles.addressColumn} data-footer-group="">
+                  <p className={styles.groupLabel}>Mailing address</p>
+                  <address className={styles.address}>
+                    <span>701 Tillery St #12</span>
+                    <span>Mailbox #289</span>
+                    <span>Austin, TX 78702</span>
+                  </address>
+                </div>
               </div>
             </div>
-            <div className={styles.identity} data-footer-identity="">
-              <Link href="/" className={styles.wordmark} aria-label="burgama home">burgama</Link>
+            <div className={styles.identityReveal} data-footer-identity-reveal="">
+              <div className={styles.identity} data-footer-identity="">
+                <Link href="/" className={styles.wordmark} aria-label="burgama home">burgama</Link>
+              </div>
             </div>
             <div className={styles.bottomRow}>
               <p>© {new Date().getFullYear()} burgama. All rights reserved.</p>
