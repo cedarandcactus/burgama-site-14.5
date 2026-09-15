@@ -1,6 +1,7 @@
 'use client'
 
 import Link from '@/components/transition-link'
+import { NavProjectForm } from '@/components/nav-project-form'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
@@ -8,29 +9,54 @@ const destinations = [
   { label: 'work', href: '/work' },
   { label: 'about', href: '/studio' },
   { label: 'ideas', href: '/ideas' },
-  { label: 'start a project', href: '/contact', action: true },
 ]
 
 export function CornerShell() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [projectOpen, setProjectOpen] = useState(false)
+  const projectOpenRef = useRef(false)
   const [condensed, setCondensed] = useState(pathname !== '/')
   const condensedRef = useRef(pathname !== '/')
   const trigger = useRef<HTMLButtonElement>(null)
+  const projectTrigger = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
 
   function closeMenu({ restoreFocus = false } = {}) {
-    const navigationHasFocus = header.current
-      ?.querySelector('.header-nav')
-      ?.contains(document.activeElement)
-
+    const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(document.activeElement)
     if (restoreFocus || (condensedRef.current && navigationHasFocus)) {
       trigger.current?.focus({ preventScroll: true })
     }
     setOpen(false)
   }
 
+  function openProject() {
+    projectOpenRef.current = true
+    setProjectOpen(true)
+    setOpen(true)
+  }
+
+  function closeProject({ toMenu = false, restoreFocus = false } = {}) {
+    projectOpenRef.current = false
+    const nextCondensed = pathname !== '/'
+      || window.matchMedia('(max-width: 699px)').matches
+      || window.matchMedia('(max-width: 900px) and (max-height: 520px)').matches
+      || window.scrollY > (condensedRef.current ? 24 : 72)
+    condensedRef.current = nextCondensed
+    setCondensed(nextCondensed)
+    setProjectOpen(false)
+    setOpen(toMenu)
+    if (restoreFocus) {
+      requestAnimationFrame(() => {
+        const target = toMenu || !nextCondensed ? projectTrigger.current : trigger.current
+        target?.focus({ preventScroll: true })
+      })
+    }
+  }
+
   useEffect(() => {
+    projectOpenRef.current = false
+    setProjectOpen(false)
     setOpen(false)
   }, [pathname])
 
@@ -41,7 +67,7 @@ export function CornerShell() {
     let frame = 0
 
     function commitCondensed(next: boolean) {
-      if (condensedRef.current === next) return
+      if (projectOpenRef.current || condensedRef.current === next) return
       const activeElement = document.activeElement
       const navigationHasFocus = header.current?.querySelector('.header-nav')?.contains(activeElement)
       if ((next && navigationHasFocus) || (!next && activeElement === trigger.current)) {
@@ -55,17 +81,10 @@ export function CornerShell() {
     function update() {
       frame = 0
       const forcedCompact = pathname !== '/' || compactViewport.matches || compactLandscape.matches
-      const next = forcedCompact
-        ? true
-        : condensedRef.current
-          ? window.scrollY > 24
-          : window.scrollY > 72
-
+      const next = forcedCompact ? true : window.scrollY > (condensedRef.current ? 24 : 72)
       commitCondensed(next)
-      header.current?.style.setProperty(
-        '--logo-turn',
-        `${reducedMotion.matches || !next ? 0 : window.scrollY * 0.04}deg`,
-      )
+      header.current?.style.setProperty('--logo-turn', `${reducedMotion.matches || !next ? 0 : window.scrollY * 0.04}deg`)
+      header.current?.style.setProperty('--header-viewport-height', `${window.visualViewport?.height ?? window.innerHeight}px`)
     }
 
     function scheduleUpdate() {
@@ -75,13 +94,14 @@ export function CornerShell() {
     update()
     window.addEventListener('scroll', scheduleUpdate, { passive: true })
     window.addEventListener('resize', scheduleUpdate, { passive: true })
+    window.visualViewport?.addEventListener('resize', scheduleUpdate)
     compactViewport.addEventListener('change', scheduleUpdate)
     compactLandscape.addEventListener('change', scheduleUpdate)
     reducedMotion.addEventListener('change', scheduleUpdate)
-
     return () => {
       window.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', scheduleUpdate)
+      window.visualViewport?.removeEventListener('resize', scheduleUpdate)
       compactViewport.removeEventListener('change', scheduleUpdate)
       compactLandscape.removeEventListener('change', scheduleUpdate)
       reducedMotion.removeEventListener('change', scheduleUpdate)
@@ -90,80 +110,68 @@ export function CornerShell() {
   }, [pathname])
 
   useEffect(() => {
-    if (!open) return
-
+    if (!open && !projectOpen) return
     function onKey(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        closeMenu({ restoreFocus: true })
-      }
+      if (event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
+      event.preventDefault()
+      if (projectOpenRef.current) closeProject({ toMenu: true, restoreFocus: true })
+      else closeMenu({ restoreFocus: true })
     }
-
     function onPointerDown(event: PointerEvent) {
-      if (!header.current?.contains(event.target as Node)) closeMenu()
+      if (header.current?.contains(event.target as Node)) return
+      if (projectOpenRef.current) {
+        closeProject({ restoreFocus: header.current?.contains(document.activeElement) })
+      } else closeMenu()
     }
-
     document.addEventListener('keydown', onKey)
     document.addEventListener('pointerdown', onPointerDown)
-
     return () => {
       document.removeEventListener('keydown', onKey)
       document.removeEventListener('pointerdown', onPointerDown)
     }
-  }, [open])
+  }, [open, projectOpen, pathname])
 
   if (pathname.startsWith('/lot-2046')) return null
-
-  const navigationVisible = !condensed || open
+  const navigationVisible = !projectOpen && (!condensed || open)
+  const menuTriggerVisible = condensed || projectOpen
 
   return (
-    <header
-      ref={header}
-      className="site-header cyan-header"
-      data-home={pathname === '/'}
-      data-condensed={condensed}
-      data-menu-open={open}
-      data-work={pathname.startsWith('/work')}
-    >
-      <div className="header-inner">
+    <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-condensed={condensed} data-menu-open={open} data-project-open={projectOpen} data-work={pathname.startsWith('/work')}>
+      <div className="header-inner" data-lenis-prevent={projectOpen || undefined}>
         <Link className="cyan-header-mark-link" href="/" aria-label="Home">
           <span className="cyan-header-mark" aria-hidden="true" />
         </Link>
+        {projectOpen && <span className="header-project-caption">a good place to start.</span>}
         <button
           ref={trigger}
           type="button"
           className="cyan-menu-trigger font-serif"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          aria-controls="primary-navigation"
-          aria-hidden={!condensed}
-          tabIndex={condensed ? 0 : -1}
-          onClick={() => setOpen((value) => !value)}
+          aria-label={projectOpen ? 'Close project enquiry' : open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open || projectOpen}
+          aria-controls={projectOpen ? 'nav-project-enquiry' : 'primary-navigation'}
+          aria-hidden={!menuTriggerVisible}
+          tabIndex={menuTriggerVisible ? 0 : -1}
+          onClick={() => projectOpen ? closeProject({ restoreFocus: true }) : setOpen((value) => !value)}
         >
           <span className="cyan-menu-labels" aria-hidden="true">
             <span className="cyan-menu-label cyan-menu-label-menu">Menu</span>
             <span className="cyan-menu-label cyan-menu-label-close">Close</span>
           </span>
         </button>
-        <div
-          id="primary-navigation"
-          className="header-nav-shell"
-          aria-hidden={!navigationVisible}
-          inert={!navigationVisible}
-        >
+        <div id="primary-navigation" className="header-nav-shell" aria-hidden={!navigationVisible} inert={!navigationVisible}>
           <nav aria-label="Primary" className="header-nav">
             {destinations.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={item.action ? 'header-contact' : undefined}
-                onClick={() => closeMenu()}
-                aria-current={pathname.startsWith(item.href) ? 'page' : undefined}
-              >
+              <Link key={item.href} href={item.href} onClick={() => closeMenu()} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>
                 {item.label}
               </Link>
             ))}
+            <button ref={projectTrigger} type="button" className="header-contact" onClick={openProject} aria-expanded={projectOpen} aria-controls="nav-project-enquiry">
+              start a project
+            </button>
           </nav>
+        </div>
+        <div className="header-project-panel" hidden={!projectOpen}>
+          <NavProjectForm active={projectOpen} onMenu={() => closeProject({ toMenu: true, restoreFocus: true })} onHeightChange={(height) => header.current?.style.setProperty('--project-form-height', `${height}px`)} />
         </div>
       </div>
     </header>
