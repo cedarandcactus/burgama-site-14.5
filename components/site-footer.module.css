@@ -196,10 +196,30 @@
   transition: background 220ms ease;
 }
 
-.emailLabel {
+.emailLabel,
+.linkLabel {
   display: block;
+  flex: none;
   white-space: nowrap;
-  transition: transform 300ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.rollWindow {
+  display: flex;
+  overflow: clip;
+  line-height: 1.35;
+}
+
+.rollGlyph {
+  position: relative;
+  display: block;
+  transform: translateY(0);
+  transition: transform 460ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.rollCopy {
+  position: absolute;
+  top: 100%;
+  left: 0;
 }
 
 .footer .emailArrow {
@@ -276,7 +296,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 6px;
+  gap: 2px;
   min-height: 44px;
   padding-block: 4px;
   color: inherit;
@@ -287,10 +307,6 @@
   letter-spacing: normal;
   text-transform: lowercase;
   text-decoration: none;
-}
-
-.linkColumn a > span {
-  transition: transform 300ms cubic-bezier(.2, .8, .2, 1);
 }
 
 .linkColumn a > svg {
@@ -403,11 +419,12 @@
 .footer :focus-visible {
   outline: 2px solid var(--palette-powder);
   outline-offset: 5px;
+  background-color: transparent;
 }
 
-.emailButton:focus-visible .emailLabel,
-.linkColumn a:focus-visible > span {
-  transform: translateX(4px);
+.emailButton:focus-visible .rollGlyph,
+.linkColumn a:focus-visible .rollGlyph {
+  transform: translateY(-100%);
 }
 
 .emailButton:focus-visible .emailArrow svg:first-child {
@@ -419,8 +436,7 @@
 }
 
 .linkColumn a:focus-visible > svg {
-  transform: translate(3px, -3px);
-  opacity: 1;
+  transform: rotate(45deg);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -428,9 +444,9 @@
     background: color-mix(in srgb, var(--palette-powder) 10%, transparent);
   }
 
-  .emailButton:hover .emailLabel,
-  .linkColumn a:hover > span {
-    transform: translateX(4px);
+  .emailButton:hover .rollGlyph,
+  .linkColumn a:hover .rollGlyph {
+    transform: translateY(-100%);
   }
 
   .emailButton:hover .emailArrow svg:first-child {
@@ -442,8 +458,7 @@
   }
 
   .linkColumn a:hover > svg {
-    transform: translate(3px, -3px);
-    opacity: 1;
+    transform: rotate(45deg);
   }
 }
 
@@ -562,7 +577,12 @@
   }
 
   .navigation {
-    gap: 20px;
+    grid-template-columns: minmax(0, .65fr) minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .footer .linkColumn a {
+    font-size: clamp(21px, 6.7vw, 26px);
   }
 
   .linkColumn a > svg {
@@ -580,21 +600,21 @@
 
 @media (prefers-reduced-motion: reduce) {
   .footer .emailButton,
-  .emailLabel,
+  .footer .rollGlyph,
   .emailArrow svg,
-  .linkColumn a > span,
   .linkColumn a > svg,
   .video {
     transition: none;
   }
 
-  .footer .emailLabel,
-  .footer .emailArrow svg:first-child,
-  .footer .linkColumn a > span,
+  .footer a .rollGlyph,
+  .footer a:is(:hover, :focus-visible) .rollGlyph,
+  .footer .emailButton .emailArrow svg:first-child,
   .footer .linkColumn a > svg {
     transform: none;
   }
 
+  .rollCopy,
   .footer .emailArrow svg:last-child {
     display: none;
   }

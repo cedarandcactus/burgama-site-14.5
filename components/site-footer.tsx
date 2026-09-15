@@ -29,6 +29,26 @@ const navigationGroups = [
   },
 ]
 
+function RollingLabel({ text }: { text: string }) {
+  return (
+    <>
+      <span className="sr-only">{text}</span>
+      <span className={styles.rollWindow} aria-hidden="true">
+        {Array.from(text).map((character, index) => (
+          <span
+            key={index}
+            className={styles.rollGlyph}
+            style={{ transitionDelay: `${index * 14}ms` }}
+          >
+            <span>{character === ' ' ? '\u00a0' : character}</span>
+            <span className={styles.rollCopy}>{character === ' ' ? '\u00a0' : character}</span>
+          </span>
+        ))}
+      </span>
+    </>
+  )
+}
+
 export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const leadRef = useRef<HTMLElement>(null)
@@ -233,7 +253,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                   </span>
                 </h2>
                 <a className={styles.emailButton} href="mailto:hello@burgama.com">
-                  <span className={styles.emailLabel}>hello@burgama.com</span>
+                  <span className={styles.emailLabel}><RollingLabel text="hello@burgama.com" /></span>
                   <span className={styles.emailArrow} aria-hidden="true">
                     <ArrowUpRight />
                     <ArrowUpRight />
@@ -247,7 +267,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
                     <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
                       {group.links.map((link) => (
                         <Link key={link.href} href={link.href}>
-                          <span>{link.label}</span>
+                          <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
                           <ArrowUpRight aria-hidden="true" />
                         </Link>
                       ))}
