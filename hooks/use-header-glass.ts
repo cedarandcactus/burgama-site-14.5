@@ -33,6 +33,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     const controls = [...shell.querySelectorAll<HTMLElement>('[data-glass-ink], .header-contact')]
     const hero = document.querySelector('[data-homepage] > section:first-child')
     const palette = getComputedStyle(header)
+    const compactHeight = parseFloat(palette.getPropertyValue('--header-control-height')) + 2 * parseFloat(palette.getPropertyValue('--header-shell-padding'))
     const navy = palette.getPropertyValue('--palette-navy').trim()
     const powder = palette.getPropertyValue('--palette-powder').trim()
     const blue = palette.getPropertyValue('--palette-powder-deep').trim()
@@ -100,7 +101,7 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       const top = headerBounds.top + shell!.offsetTop
       const width = shell!.offsetWidth
       const height = shell!.offsetHeight
-      const center = new DOMPoint(left + width / 2, top + Math.min(height, 60) / 2)
+      const center = new DOMPoint(left + width / 2, top + Math.min(height, compactHeight) / 2)
       const interacting = hovered || shell!.contains(document.activeElement)
         || header!.dataset.menuOpen === 'true' || header!.dataset.projectOpen === 'true'
       if (!initialized || !interacting) {

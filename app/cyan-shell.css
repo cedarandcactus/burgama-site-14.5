@@ -4,7 +4,7 @@
   --cyan-shade: var(--palette-powder-deep);
   --control-basis-width: clamp(18rem, 22vw, 20rem);
   --header-brand-width: 104px;
-  --header-control-height: 48px;
+  --header-control-height: 52px;
   --header-shell-padding: 6px;
   --header-shell-inline-padding: 12px;
   --header-control-gap: 12px;
@@ -32,18 +32,18 @@ html:has(.cyan-header) {
 }
 
 html:has(.cyan-header[data-home='true']) {
-  --header-control-height: 48px;
+  --header-control-height: 52px;
   --header-shell-padding: 6px;
   --header-shell-inline-padding: 18px;
   --header-toggle-width: 5rem;
-  --header-symbol-size: 40px;
+  --header-symbol-size: 44px;
 }
 
 body .site-header.cyan-header {
   --header-action-bg: var(--cyan-ink);
   --header-action-ink: var(--cyan-night);
   --header-motion: 560ms cubic-bezier(.16, 1, .3, 1);
-  --header-brand-width: 112px;
+  --header-brand-width: 120px;
   --header-navigation-width: calc(3 * var(--header-link-width) + var(--header-action-width) + 3 * var(--header-link-gap));
   --header-compact-width: calc(var(--header-brand-width) + var(--header-toggle-width) + var(--header-control-gap) + 2 * var(--header-shell-inline-padding));
   --header-expanded-width: calc(var(--header-brand-width) + var(--header-control-gap) + var(--header-navigation-width) + 2 * var(--header-shell-inline-padding));
@@ -230,7 +230,7 @@ body .cyan-header .cyan-header-wordmark {
 body .cyan-header .cyan-header-wordmark {
   display: flex;
   opacity: 1;
-  font: 400 28px/1.25 var(--font-cenura), sans-serif;
+  font: 400 30px/1.25 var(--font-cenura), sans-serif;
   letter-spacing: normal;
   white-space: nowrap;
 }
@@ -541,9 +541,9 @@ body:has(.cyan-header[data-home='true']) #main {
 
 @media (max-width: 699px) {
   :root {
-    --header-control-height: 56px;
-    --header-shell-padding: 12px;
-    --header-symbol-size: 50px;
+    --header-control-height: 52px;
+    --header-shell-padding: 6px;
+    --header-symbol-size: 44px;
     --header-top-inset: 8px;
     --hero-frame-inset: 8px;
     --hero-frame-radius: 27px;
@@ -552,11 +552,11 @@ body:has(.cyan-header[data-home='true']) #main {
   body .site-header.cyan-header,
   body .site-header.cyan-header[data-home='true'][data-condensed='false'] {
     --header-motion: 360ms cubic-bezier(.16, 1, .3, 1);
-    --header-control-height: 48px;
+    --header-control-height: 52px;
     --header-shell-padding: 6px;
     --header-shell-inline-padding: 12px;
     --header-toggle-width: 80px;
-    --header-symbol-size: 40px;
+    --header-symbol-size: 44px;
     --header-compact-height: calc(var(--header-control-height) + 2 * var(--header-shell-padding));
     justify-content: center;
     padding: var(--header-top) max(12px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));

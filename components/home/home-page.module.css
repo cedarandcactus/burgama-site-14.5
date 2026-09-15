@@ -896,66 +896,177 @@
   text-align: center;
 }
 
-.processList {
-  display: flex;
-  flex-direction: column;
+.processInteractive {
+  min-width: 0;
 }
 
-.processRow {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-block: 20px 28px;
-  border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+.processStream {
+  width: calc(100% + 2 * max(var(--home-inset), calc((100vw - 1120px) / 2)));
+  margin-inline: calc(-1 * max(var(--home-inset), calc((100vw - 1120px) / 2)));
+  padding-block: 8px 24px;
+  overflow: clip;
 }
 
-.processWord {
+.processLane {
   position: relative;
   display: flex;
+  align-content: center;
   align-items: center;
   justify-content: center;
-  min-width: 0;
-  height: clamp(100px, 14vw, 176px);
-  font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(48px, 7.6vw, 108px);
-  font-weight: 400;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  height: clamp(200px, 18vw, 270px);
+  padding-inline: var(--home-inset);
 }
 
-.processWord h3 {
+.processTopic {
+  flex: none;
+  width: max-content;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(40px, 7.6vw, 108px);
+  font-weight: 400;
+  line-height: 1.18;
+}
+
+.processTopic button {
+  display: block;
+  min-height: 44px;
   margin: 0;
+  padding: 4px 8px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--palette-navy);
   font: inherit;
+  letter-spacing: normal;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: color 180ms ease;
+}
+
+.processTopic button[aria-pressed='true'] {
+  color: var(--palette-blue-mid);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .1em;
+}
+
+.processTopic button:focus-visible {
+  color: var(--palette-navy);
+  background: transparent;
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.capabilities[data-topics-animated='true'] .processStream:not([data-keyboard='true']) .processTopic {
+  position: absolute;
+  left: 0;
+  top: 0;
+  offset-path: var(--topic-path);
+  offset-anchor: center;
+  offset-rotate: auto;
+}
+
+.processStream[data-keyboard='true'] .processTopic {
+  opacity: 1 !important;
+}
+
+.processDetails {
+  display: grid;
+  width: min(100%, 560px);
+  margin: 12px auto 0;
+  text-align: center;
+}
+
+.processExplanation {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 240ms ease, transform 320ms cubic-bezier(.22, 1, .36, 1), visibility 0s 240ms;
+}
+
+.processExplanation[data-active='true'] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 80ms, 80ms, 0s;
+}
+
+.processExplanation h3 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 2.6vw, 32px);
   line-height: 1.2;
 }
 
-.processRow p {
-  max-width: 36ch;
-  margin: 0;
-  font-size: clamp(16px, 1.4vw, 19px);
+.processExplanation p {
+  max-width: 43ch;
+  margin: 0 auto;
+  font-size: clamp(16px, 1.4vw, 18px);
   line-height: 1.6;
   text-wrap: pretty;
 }
 
-.processRibbon { display: none; }
-
-.processRow[data-process-ready='true'] .processRibbon {
-  display: block;
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  fill: currentColor;
-  font: inherit;
-  pointer-events: none;
+.processTools {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  min-height: 44px;
+  margin-top: 12px;
 }
 
-.processRow[data-process-ready='true'] h3 {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+.processTools button {
+  min-height: 44px;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 4px;
+  color: inherit;
+  background: transparent;
+  font-family: var(--font-pangram), sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+.processTools button:is(:hover, :focus-visible) {
+  color: inherit;
+  background: transparent;
+  text-decoration: underline;
+}
+
+.processTools button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.processDismiss:disabled { display: none; }
+.processMotion { display: none; }
+.capabilities[data-topics-animated='true'] .processMotion { display: block; }
+
+.processFallback {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 560px;
+  margin: 40px auto;
+}
+
+.processFallback dt { font-size: 26px; }
+.processFallback dd { margin: 8px 0 0; line-height: 1.6; }
+
+@media (hover: hover) and (pointer: fine) {
+  .processTopic button:hover { color: var(--palette-blue-mid); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .processTopic button,
+  .processExplanation {
+    transition: none;
+    transform: none;
+  }
 }
 
 .processAction {
@@ -973,18 +1084,6 @@
   color: var(--palette-navy);
   border-color: currentColor;
   background: transparent;
-}
-
-@media (min-width: 700px) {
-  .processRow {
-    flex-direction: row;
-    align-items: center;
-    gap: clamp(32px, 5vw, 80px);
-    padding-block: 24px;
-  }
-
-  .processWord { flex: 1.5; }
-  .processRow p { flex: 1; }
 }
 
 .results {
@@ -1130,6 +1229,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: none;
+  transition: none;
+}
+
+.workTrack[data-moving='true'] {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
 }
 
 .page .workTrack :global(.project-tile-caption) {
@@ -1219,17 +1325,28 @@
 
 .reelArrows button {
   display: grid;
-  width: 56px;
-  padding: 3px 0;
+  width: 52px;
   height: 44px;
+  padding: 0;
   place-items: center;
+  border: 0;
+  border-radius: 999px;
+  color: var(--palette-powder);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.reelArrows button > span {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 36px;
   border: 1px solid transparent;
   border-radius: 999px;
   color: var(--palette-navy);
   background: var(--palette-powder);
-  background-clip: content-box;
-  cursor: pointer;
-  transition: color 180ms ease, background-color 180ms ease;
+  transition: background-color 180ms ease;
 }
 
 .reelArrows button svg {
@@ -1237,10 +1354,15 @@
   height: 20px;
 }
 
-.reelArrows button[aria-disabled='true'] {
+.reelArrows button[aria-disabled='true'] { cursor: default; }
+
+.reelArrows button[aria-disabled='true'] > span {
   color: var(--palette-powder);
-  background-color: var(--palette-navy-raised);
-  cursor: default;
+  background: var(--palette-navy-raised);
+}
+
+.reelArrows button:not([aria-disabled='true']):is(:hover, :focus-visible, :active) > span {
+  background: var(--palette-powder-deep);
 }
 
 .reelArrows button:focus-visible {
@@ -1257,8 +1379,7 @@
 @media (hover: hover) and (pointer: fine) {
   .heroStatement :global(.pill:hover),
   .workAction :global(.pill:hover),
-  .page .workTrack :global(.project-tile:hover .project-link-prompt),
-  .reelArrows button:not([aria-disabled='true']):hover {
+  .page .workTrack :global(.project-tile:hover .project-link-prompt) {
     color: var(--palette-powder);
     background: transparent;
     border-color: currentColor;
@@ -1321,7 +1442,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .reelProgress span,
-  .reelArrows button,
+  .reelArrows button > span,
   .page .workTrack :global(.project-link-prompt) {
     transition: none;
   }

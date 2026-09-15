@@ -40,7 +40,7 @@ export function FooterUpdates() {
 
   return (
     <div className={styles.updates}>
-      <h2 id={`${id}-heading`}>studio notes</h2>
+      <h2 id={`${id}-heading`}>subscribe for updates</h2>
       <p className={styles.updatesSubtitle}>new work, ideas and occasional updates.</p>
       <form className={styles.updatesPill} aria-labelledby={`${id}-heading`} aria-describedby={`${id}-status`} noValidate onSubmit={submit} onKeyDown={(event) => {
         if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()

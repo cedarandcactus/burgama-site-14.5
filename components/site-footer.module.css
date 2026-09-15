@@ -281,6 +281,25 @@
   box-shadow: none;
 }
 
+.footer .updatesPill input:is(:focus, :focus-visible) {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  background: transparent;
+}
+
+.updatesPill:has(input:focus-visible) {
+  box-shadow: 0 0 0 1px currentColor;
+}
+
+.updatesPill input:autofill {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--palette-powder);
+  caret-color: var(--palette-powder);
+}
+
 .updatesPill input::placeholder {
   color: inherit;
   opacity: 1;
@@ -434,7 +453,6 @@
   height: 20px;
   opacity: 1;
   stroke-width: 2;
-  transition: transform 300ms cubic-bezier(.2, .8, .2, 1), opacity 200ms ease;
 }
 
 .address {
@@ -540,18 +558,11 @@
   transform: translateY(-100%);
 }
 
-.linkColumn a:focus-visible > svg {
-  transform: rotate(45deg);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .linkColumn a:hover .rollGlyph {
     transform: translateY(-100%);
   }
 
-  .linkColumn a:hover > svg {
-    transform: rotate(45deg);
-  }
 }
 
 @media (max-width: 799px) {
