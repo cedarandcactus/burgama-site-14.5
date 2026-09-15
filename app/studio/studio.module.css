@@ -111,8 +111,8 @@
   position: absolute;
   inset: 0;
   background: var(--palette-yellow-soft);
-  mix-blend-mode: soft-light;
-  opacity: .7;
+  mix-blend-mode: overlay;
+  opacity: .8;
   pointer-events: none;
 }
 
