@@ -261,9 +261,9 @@ body .cyan-header .header-nav :is(a, button.header-contact):is([aria-current='pa
 body .cyan-header .header-nav :is(a, button.header-contact).header-contact {
   width: var(--header-action-width);
   padding-inline: 16px;
-  border: 1.5px solid transparent;
-  color: var(--header-action-ink);
-  background: var(--header-action-bg);
+  border: 1.5px solid currentColor;
+  color: var(--header-action-bg);
+  background: transparent;
 }
 
 body .cyan-header .cyan-menu-trigger {
@@ -357,9 +357,9 @@ body .modular-button {
   }
 
   body .site-header.cyan-header .header-nav :is(a, button.header-contact).header-contact:hover {
-    color: var(--header-action-bg);
-    border-color: currentColor;
-    background: transparent;
+    color: var(--header-action-ink);
+    border-color: var(--header-action-bg);
+    background: var(--header-action-bg);
   }
 
   body .cyan-header .cyan-menu-trigger:hover {
@@ -554,7 +554,7 @@ body:has(.cyan-header[data-home='true']) #main {
   body .cyan-header .header-nav :is(a, button.header-contact).header-contact {
     grid-column: 1 / -1;
     width: 100%;
-    background: var(--header-action-bg);
+    background: transparent;
   }
 
   body .cyan-header .cyan-menu-trigger,
