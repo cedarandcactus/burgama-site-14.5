@@ -334,9 +334,11 @@ body .cyan-header[data-menu-open='true'] .cyan-menu-label-close {
 }
 
 body .cyan-header[data-menu-open='true'] .cyan-menu-trigger,
+body .cyan-header .cyan-menu-trigger:focus-visible,
 body .cyan-header .cyan-menu-trigger:active {
-  color: var(--palette-powder);
-  background: var(--palette-navy);
+  border-color: var(--header-action-bg);
+  color: var(--header-action-ink);
+  background: var(--header-action-bg);
 }
 
 body .cyan-header .cyan-header-mark-link:active {
@@ -366,8 +368,9 @@ body .modular-button {
   }
 
   body .cyan-header .cyan-menu-trigger:hover {
-    color: var(--palette-powder);
-    background: var(--palette-navy);
+    border-color: var(--header-action-bg);
+    color: var(--header-action-ink);
+    background: var(--header-action-bg);
   }
 
   body .cyan-header .cyan-header-mark-link:hover {

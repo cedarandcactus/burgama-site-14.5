@@ -141,3 +141,38 @@
 @media (prefers-reduced-motion: reduce) {
   .form *, .form *::after { animation: none !important; transition: none !important; }
 }
+
+.form { --enquiry-fill-strong: color-mix(in srgb, var(--enquiry-ink) 14%, transparent); gap: 16px; padding: 14px 0 12px; }
+.form[data-variant='inline'] { gap: 20px; }
+.form[data-variant='inline'] .step { min-height: 280px; }
+.form[data-variant='inline'] .continue { min-width: min(100%, 184px); }
+.progress { height: 6px; border-radius: 999px; background: var(--enquiry-fill-strong); }
+.progress > span { border-radius: inherit; }
+.content, .step { gap: 18px; }
+.form[data-variant='inline'] .content { gap: 22px; }
+.form [data-slot='input'], .form .brief, .form .copyText { height: 44px; padding: 10px 16px; border: 1px solid transparent; border-radius: 999px; background: var(--enquiry-fill); }
+.form :is([data-slot='input'], textarea, [data-slot='native-select']):focus { border-color: var(--enquiry-ink); outline: none; }
+.form .brief { height: 104px; min-height: 96px; padding: 14px 16px; border-radius: 20px; }
+.companyChoices [data-slot='toggle-group-item'] { min-height: 42px; padding: 9px 16px; border-color: transparent; border-radius: 999px; background: var(--enquiry-fill); }
+.currencyField [data-slot='native-select'] { height: 42px; padding: 8px 34px 8px 14px; border-color: transparent; border-radius: 999px; background: var(--enquiry-fill); }
+.budgetSlider > div { min-height: 42px; }
+.budgetSlider [data-slot='slider-track'] { height: 6px; background: var(--enquiry-fill-strong); }
+.form .unsure { min-height: 42px; padding: 9px 16px; border: 1px solid transparent; border-radius: 999px; background: var(--enquiry-fill); }
+.unsure[aria-pressed='true'] { color: var(--enquiry-surface); background: var(--enquiry-ink); opacity: 1; }
+.review { gap: 8px; }
+.review > div { grid-template-columns: 76px minmax(0, 1fr) auto; gap: 12px; padding: 12px 14px; border: 0; border-radius: 16px; background: var(--enquiry-fill); }
+.review > div:first-child { padding-top: 12px; }
+.review button, .footerNote button { min-height: 38px; padding: 7px 14px; border: 1px solid var(--enquiry-rule); border-radius: 999px; }
+.form .copyText { height: 180px; padding: 14px 16px; border-radius: 20px; }
+.back, .continue { min-height: 44px; padding: 9px 17px; border: 1px solid var(--enquiry-ink); border-radius: 999px; font-size: 18px; }
+.back { padding-inline: 17px; }
+@media (hover: hover) and (pointer: fine) {
+  .companyChoices [data-slot='toggle-group-item']:not([aria-pressed='true']):hover, .form .unsure:not([aria-pressed='true']):hover, .review button:hover, .footerNote button:hover, .back:hover { border-color: var(--enquiry-ink); background: var(--enquiry-fill-strong); opacity: 1; }
+  .continue:not(:disabled):hover { color: var(--enquiry-ink); background: transparent; }
+}
+@media (max-width: 430px) {
+  .form { gap: 16px; padding-top: 12px; }
+  .step, .content { gap: 16px; }
+  .review > div { grid-template-columns: minmax(0, 1fr) auto; }
+  .continue, .back { padding-inline: 14px; font-size: 17px; }
+}

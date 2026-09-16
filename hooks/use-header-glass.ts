@@ -42,10 +42,10 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
     }
 
     function sourceIsLight() {
-      const bounds = shell.getBoundingClientRect()
+      const bounds = shell!.getBoundingClientRect()
       const x = Math.min(window.innerWidth - 1, Math.max(0, bounds.left + bounds.width / 2))
       const y = Math.min(window.innerHeight - 1, Math.max(0, bounds.top + Math.min(bounds.height, 64) / 2))
-      const underlying = document.elementsFromPoint(x, y).find((element) => !header.contains(element) && element.closest('main'))
+      const underlying = document.elementsFromPoint(x, y).find((element) => !header!.contains(element) && element.closest('main'))
       const marker = underlying?.closest<HTMLElement>('[data-nav-surface]')
       if (marker?.dataset.navSurface === 'frost') return true
       if (marker?.dataset.navSurface === 'ink') return false
@@ -59,17 +59,17 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       currentTheme = theme
       const surface = lightPage ? navy : powder
       const ink = lightPage ? powder : navy
-      header.dataset.glassTheme = theme
-      header.style.setProperty('--header-surface', surface)
-      header.style.setProperty('--header-ink', ink)
-      header.style.setProperty('--header-action-bg', ink)
-      header.style.setProperty('--header-action-ink', surface)
-      header.style.setProperty('--header-color-scheme', lightPage ? 'dark' : 'light')
+      header!.dataset.glassTheme = theme
+      header!.style.setProperty('--header-surface', surface)
+      header!.style.setProperty('--header-ink', ink)
+      header!.style.setProperty('--header-action-bg', ink)
+      header!.style.setProperty('--header-action-ink', surface)
+      header!.style.setProperty('--header-color-scheme', lightPage ? 'dark' : 'light')
     }
 
     function update() {
       frame = 0
-      if (disposed || header.dataset.menuOpen === 'true' || header.dataset.projectOpen === 'true') return
+      if (disposed || header!.dataset.menuOpen === 'true' || header!.dataset.projectOpen === 'true') return
       applyTheme(sourceIsLight())
     }
 
@@ -103,12 +103,12 @@ export function useHeaderGlass(headerRef: RefObject<HTMLElement | null>, pathnam
       cancelAnimationFrame(frame)
       resize.disconnect()
       state.disconnect()
-      delete header.dataset.glassTheme
-      header.style.removeProperty('--header-surface')
-      header.style.removeProperty('--header-ink')
-      header.style.removeProperty('--header-action-bg')
-      header.style.removeProperty('--header-action-ink')
-      header.style.removeProperty('--header-color-scheme')
+      delete header!.dataset.glassTheme
+      header!.style.removeProperty('--header-surface')
+      header!.style.removeProperty('--header-ink')
+      header!.style.removeProperty('--header-action-bg')
+      header!.style.removeProperty('--header-action-ink')
+      header!.style.removeProperty('--header-color-scheme')
       window.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', refresh)
       window.visualViewport?.removeEventListener('resize', refresh)

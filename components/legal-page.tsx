@@ -39,17 +39,6 @@ export function LegalPage({ title, current, introduction, sections }: LegalPageP
           surface="navy"
           intro={[introduction]}
           nextSurface="powder"
-          breadcrumbLabel="Legal pages"
-          breadcrumb={
-            <div className={styles.navigation}>
-              <Link href="/">Home</Link>
-              {policies.map((policy) => (
-                <Link key={policy.id} href={policy.href} aria-current={policy.id === current ? 'page' : undefined}>
-                  {policy.label}
-                </Link>
-              ))}
-            </div>
-          }
         />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.document}`}>
