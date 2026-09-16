@@ -1126,22 +1126,31 @@
 }
 
 .page .workTrack :global(.project-tile-caption) {
+  display: grid;
+  grid-template-areas:
+    'tags title'
+    'action title';
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px 20px;
   padding-top: 22px;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .page .workTrack :global(.project-tile-copy) {
-  gap: 14px;
+  display: contents;
 }
 
 .page .workTrack :global(.project-tile-title) {
-  order: -1;
+  grid-area: title;
+  justify-self: end;
   font-size: var(--type-card-size);
   line-height: var(--type-card-leading);
+  text-align: right;
 }
 
 .page .workTrack :global(.project-category-pills) {
+  grid-area: tags;
+  align-self: start;
   margin: 0;
   gap: 6px;
 }
@@ -1155,22 +1164,25 @@
 
 .page .workTrack :global(.project-link-prompt) {
   display: inline-flex;
-  flex: none;
+  grid-area: action;
   align-items: center;
   justify-content: center;
+  justify-self: start;
   width: min(100%, 208px);
   min-height: 48px;
   padding: 10px 24px;
-  border: 1px solid transparent;
+  border: 1.5px solid currentColor;
   border-radius: 999px;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
+  color: var(--palette-powder);
+  background: transparent;
   font-family: var(--font-cenura), sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: 1.1;
   white-space: nowrap;
-  transition: background-color 180ms ease;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
 .reelControls {
@@ -1247,9 +1259,13 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .heroStatement :global(.pill:hover),
-  .workAction :global(.pill:hover),
   .page .workTrack :global(.project-tile:hover .project-link-prompt) {
+    color: var(--palette-navy);
+    background: var(--palette-powder);
+  }
+
+  .heroStatement :global(.pill:hover),
+  .workAction :global(.pill:hover) {
     color: var(--palette-powder);
     background: transparent;
     border-color: currentColor;
@@ -1278,9 +1294,9 @@
   }
 
   .page .workTrack :global(.project-tile-caption) {
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    align-items: start;
     padding-top: 18px;
   }
 
