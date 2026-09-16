@@ -19,7 +19,6 @@
   border-radius: 20px;
   color: var(--palette-powder);
   background: var(--palette-navy);
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--palette-navy) 72%, transparent);
   text-align: left;
 }
 
