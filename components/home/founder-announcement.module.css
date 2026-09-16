@@ -3,7 +3,9 @@
   background: color-mix(in srgb, var(--palette-navy) 18%, transparent);
   -webkit-backdrop-filter: blur(28px) saturate(0.72);
   backdrop-filter: blur(28px) saturate(0.72);
-  transition: opacity 360ms var(--ease-module), backdrop-filter 360ms var(--ease-module);
+  transition:
+    opacity 520ms var(--ease-module),
+    backdrop-filter 520ms var(--ease-module);
 }
 
 .overlay[data-starting-style],
@@ -16,40 +18,45 @@
 .popup {
   z-index: 1001;
   display: flex;
-  width: min(480px, calc(100vw - 40px));
-  max-width: 480px;
+  width: min(656px, calc(100vw - 40px));
+  max-width: 656px;
   max-height: calc(100dvh - 32px);
-  padding: clamp(24px, 4vw, 36px);
+  padding: clamp(24px, 4vw, 40px);
   flex-direction: column;
   align-items: stretch;
-  gap: 20px;
+  gap: 24px;
   overflow-y: auto;
   border: 0;
   color: var(--palette-powder);
   background: transparent;
   box-shadow: none;
   outline: 0;
+  animation: none;
   --tw-ring-shadow: 0 0 #0000;
   translate: -50% -50%;
+  scale: 1;
+  transform-origin: center;
+  will-change: opacity, filter, scale;
   transition:
-    opacity 360ms var(--ease-module),
-    translate 440ms var(--ease-module),
-    filter 360ms var(--ease-module);
+    opacity 600ms var(--ease-module),
+    filter 720ms var(--ease-module),
+    scale 720ms var(--ease-module);
 }
 
 .popup[data-starting-style],
 .popup[data-ending-style] {
   opacity: 0;
-  filter: blur(8px);
-  translate: -50% calc(-50% + 20px);
+  filter: blur(14px);
+  scale: 0.985;
 }
 
 .header {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: row;
   gap: 16px;
-  text-align: left;
+  text-align: center;
 }
 
 .portrait {
@@ -72,10 +79,11 @@
 
 .intro {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
   gap: 4px;
   color: inherit;
+  text-align: center;
 }
 
 .title {
@@ -113,11 +121,12 @@
   width: 100%;
   flex-direction: column;
   gap: 12px;
-  text-align: left;
+  text-align: center;
   font-family: var(--font-pangram), sans-serif;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.55;
+  text-wrap: pretty;
 }
 
 .signature {
@@ -128,9 +137,9 @@
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--header-link-gap);
   margin: 0;
   padding: 0;
   border: 0;
@@ -138,46 +147,70 @@
 }
 
 .action {
-  min-height: 40px;
-  padding: 8px 16px;
-  border: 1px solid color-mix(in srgb, currentColor 54%, transparent);
+  min-height: var(--header-control-height);
+  padding: 0 16px;
+  border: 1.5px solid color-mix(in srgb, currentColor 54%, transparent);
   border-radius: 999px;
   color: inherit;
-  background: transparent;
+  background: transparent !important;
   box-shadow: none;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 1rem;
+  font-size: var(--header-label-size);
   font-weight: 400;
+  transition: border-color 180ms ease;
 }
 
 .action:first-child {
-  border-color: color-mix(in srgb, currentColor 54%, transparent);
-  color: inherit;
-  background: transparent;
+  width: var(--header-action-width);
 }
 
-.action:is(:hover, :focus-visible) {
-  border-color: currentColor;
-  color: var(--palette-navy);
-  background: var(--palette-soft-white);
+.action:last-child {
+  width: var(--header-toggle-width);
+}
+
+.action:is(:hover, :active) {
+  border-color: color-mix(in srgb, currentColor 38%, transparent);
+  color: inherit;
+  background: transparent !important;
   box-shadow: none;
-  outline: none;
+  translate: none;
   text-decoration: none;
 }
 
-@media (max-width: 520px) {
+.action:focus-visible {
+  border-color: currentColor;
+  color: inherit;
+  background: transparent !important;
+  box-shadow: none;
+  outline: 2px solid color-mix(in srgb, currentColor 54%, transparent);
+  outline-offset: 3px;
+}
+
+@media (min-width: 700px) and (max-width: 959px) {
   .popup {
-    width: calc(100vw - 24px);
+    width: min(564px, calc(100vw - 40px));
+    max-width: 564px;
+  }
+}
+
+@media (max-width: 699px) {
+  .popup {
+    width: min(400px, calc(100vw - 24px));
     max-height: calc(100dvh - 20px);
     padding: 22px 18px;
-  }
-
-  .header {
-    align-items: flex-start;
+    gap: 20px;
   }
 
   .portrait {
     width: 54px;
+  }
+
+  .copy {
+    font-size: 0.95rem;
+  }
+
+  .action {
+    min-height: 44px;
   }
 }
 
