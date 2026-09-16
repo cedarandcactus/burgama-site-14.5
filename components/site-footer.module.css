@@ -404,6 +404,14 @@
   text-decoration: none;
 }
 
+.linkColumn a > svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+  stroke-width: 2;
+}
+
 .address {
   flex: 1 1 320px;
   margin: 0;
@@ -600,6 +608,11 @@
 
   .footer .linkColumn a {
     font-size: 20px;
+  }
+
+  .linkColumn a > svg {
+    width: 16px;
+    height: 16px;
   }
 
   .bottomRow {

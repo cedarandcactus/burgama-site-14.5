@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useId, useRef } from 'react'
-import { CircularArrowIcon } from '@/components/circular-arrow-icon'
+import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
 import { FooterUpdates } from '@/components/footer-updates'
@@ -258,7 +258,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
                       {group.links.map((link) => (
                         <Link key={link.href} href={link.href}>
                           <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
-                          <span className="arrow-capsule" aria-hidden="true"><CircularArrowIcon /></span>
+                          <ArrowUpRight aria-hidden="true" />
                         </Link>
                       ))}
                     </nav>
