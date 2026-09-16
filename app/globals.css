@@ -5793,7 +5793,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
   background: var(--studio-surface);
 }
 
-.studio-page [data-surface='white'] { --studio-surface: #ffffff; --studio-ink: var(--palette-navy); }
+.studio-page [data-surface='white'] { --studio-surface: var(--palette-soft-white); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='powder'] { --studio-surface: var(--palette-powder); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='powder-deep'] { --studio-surface: var(--palette-powder-deep); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='blue-slate'] { --studio-surface: var(--palette-blue-slate); --studio-ink: var(--palette-navy); }

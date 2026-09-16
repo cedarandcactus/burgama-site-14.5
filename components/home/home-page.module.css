@@ -164,7 +164,7 @@
 }
 
 .sectionRise[data-surface='white'] {
-  color: #ffffff;
+  color: var(--palette-soft-white);
 }
 
 .sectionRise[data-surface='powder'] {
