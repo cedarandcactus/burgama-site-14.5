@@ -694,3 +694,6 @@
 
   .updatesStep { animation: none; }
 }
+
+/* Visually hidden and out of the accessibility tree — bot bait, not a field. */
+.honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
