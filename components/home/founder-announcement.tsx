@@ -19,6 +19,7 @@ const OPEN_PROJECT_EVENT = 'burgama:open-project'
 export function FounderAnnouncement() {
   const [open, setOpen] = useState(false)
   const handoffTimeout = useRef<number | null>(null)
+  const popupRef = useRef<HTMLDivElement>(null)
   const scrollControls = useSmoothScroll()
 
   useEffect(() => {
@@ -63,6 +64,9 @@ export function FounderAnnouncement() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
+        ref={popupRef}
+        initialFocus={popupRef}
+        tabIndex={-1}
         className={styles.popup}
         overlayClassName={styles.overlay}
         showCloseButton={false}
@@ -99,10 +103,10 @@ export function FounderAnnouncement() {
         </div>
 
         <div className={styles.actions}>
-          <Button size="lg" className={styles.primaryAction} onClick={openProjectForm}>
+          <Button variant="ghost" className={styles.action} onClick={openProjectForm}>
             work with us
           </Button>
-          <Button size="lg" variant="ghost" className={styles.skipAction} onClick={() => setOpen(false)}>
+          <Button variant="ghost" className={styles.action} onClick={() => setOpen(false)}>
             skip
           </Button>
         </div>

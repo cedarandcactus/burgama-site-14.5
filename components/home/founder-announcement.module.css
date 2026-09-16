@@ -16,12 +16,13 @@
 .popup {
   z-index: 1001;
   display: flex;
-  width: min(620px, calc(100vw - 32px));
-  max-width: 620px;
+  width: min(760px, calc(100vw - 32px));
+  max-width: 760px;
   max-height: calc(100dvh - 32px);
-  padding: clamp(24px, 5vw, 40px);
+  padding: clamp(24px, 5vw, 44px);
   flex-direction: column;
-  gap: clamp(20px, 3vw, 28px);
+  align-items: center;
+  gap: clamp(18px, 3vw, 26px);
   overflow-y: auto;
   color: var(--palette-powder);
   background: transparent;
@@ -42,14 +43,15 @@
 }
 
 .header {
-  display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  gap: clamp(18px, 3vw, 24px);
+  flex-direction: column;
+  gap: 14px;
+  text-align: center;
 }
 
 .portrait {
-  width: 88px;
+  width: 82px;
   aspect-ratio: 1;
   margin: 0;
   overflow: hidden;
@@ -67,20 +69,20 @@
 
 .intro {
   display: flex;
-  min-width: 0;
+  align-items: center;
   flex-direction: column;
   gap: 8px;
+  color: inherit;
 }
 
 .title {
-  max-width: 14ch;
   margin: 0;
   color: inherit;
   font-family: var(--font-sans), sans-serif;
-  font-size: clamp(2rem, 5.7vw, 3.4rem);
-  font-weight: var(--type-heading-weight);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 
@@ -92,20 +94,22 @@
 .lede,
 .copy,
 .signature,
-.skipAction {
+.action {
   color: inherit;
 }
 
 .lede {
-  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .copy {
   display: flex;
+  width: min(100%, 680px);
   flex-direction: column;
   gap: 14px;
+  text-align: center;
   font-size: clamp(0.95rem, 1.55vw, 1.05rem);
   font-weight: 400;
   line-height: 1.55;
@@ -121,19 +125,25 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 4px;
   margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
 }
 
-.primaryAction,
-.skipAction {
-  min-height: 46px;
-  border-radius: 999px;
-  padding-inline: 22px;
-  font-size: 1rem;
+.action {
+  min-height: 36px;
+  border-color: transparent;
+  border-radius: 8px;
+  padding-inline: 12px;
+  background: transparent;
+  font-size: 0.95rem;
+}
+
+.action:hover {
+  color: inherit;
+  background: color-mix(in srgb, currentColor 8%, transparent);
 }
 
 @media (max-width: 520px) {
@@ -143,16 +153,8 @@
     padding-inline: 18px;
   }
 
-  .header {
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
   .portrait {
     width: 72px;
-  }
-
-  .title {
-    font-size: clamp(1.85rem, 9vw, 2.6rem);
   }
 }
 
