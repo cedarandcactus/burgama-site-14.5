@@ -64,8 +64,7 @@ export function WorkIndex({ projects }: { projects: Entry[] }) {
       <button type="button" aria-pressed={activeCategory === null} aria-controls={resultsId} className="pill pill-small" onClick={() => selectCategory(null)}>all work</button>
       {categories.map(filter => <button key={filter} type="button" aria-pressed={activeCategory === filter} aria-controls={resultsId} className="pill pill-small" onClick={() => selectCategory(filter)}>{filter}</button>)}
     </div>
-    <p className="portfolio-result-count" role="status" aria-live="polite" aria-atomic="true">{visible.length} {visible.length === 1 ? 'project' : 'projects'}<span aria-hidden="true"> · </span><span className="sr-only"> in </span>{activeCategory ?? 'all work'}</p>
-    <div id={resultsId} ref={resultsRef} className="portfolio-results">
+    <div id={resultsId} ref={resultsRef} className="portfolio-results" aria-live="polite">
       <div ref={libraryRef} className="portfolio-library">
         {visible.map(({ project, categories: projectCategories }) => <Link key={project.id} href={`/work/${project.slug}`} className="portfolio-library-entry">
           <div className="portfolio-library-copy"><h3 className="font-sans">{project.title}</h3>{project.year && <span>{project.year}</span>}</div>
