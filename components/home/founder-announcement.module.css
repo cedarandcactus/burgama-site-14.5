@@ -150,6 +150,12 @@
   font-weight: 400;
 }
 
+.action:first-child {
+  border-color: color-mix(in srgb, currentColor 54%, transparent);
+  color: inherit;
+  background: transparent;
+}
+
 .action:is(:hover, :focus-visible) {
   border-color: currentColor;
   color: var(--palette-navy);

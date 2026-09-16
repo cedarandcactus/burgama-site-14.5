@@ -17,12 +17,12 @@
   align-items: center;
   gap: 8px;
   padding: 10px;
-  border: 1px solid color-mix(in srgb, var(--palette-navy) 22%, transparent);
+  border: 0;
   border-radius: 16px;
   color: var(--palette-navy);
   background: var(--palette-powder-deep);
   text-align: center;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--palette-navy) 18%, transparent);
+  box-shadow: none;
 }
 
 .copy {
