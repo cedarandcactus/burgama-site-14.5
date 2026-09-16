@@ -5,12 +5,28 @@ import { Check, Pencil, RotateCcw } from 'lucide-react'
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import styles from '@/components/site-footer.module.css'
 
+/*
+  Klaviyo's client endpoint is the one meant for signup forms on public
+  pages: it authenticates with the public site ID rather than a private
+  API key, so there is no secret to hold, deploy, or rotate. Both values
+  below are public by design — the site ID is already published in this
+  domain's DNS as a Klaviyo verification record.
+
+  The list has double opt-in enabled, which is what makes a public
+  endpoint safe: an address submitted by anyone other than its owner
+  never confirms, so it never joins the list or receives anything.
+*/
+const klaviyoSiteId = 'SHGMTi'
+const klaviyoListId = 'YputDN'
+const klaviyoEndpoint = `https://a.klaviyo.com/client/subscriptions?company_id=${klaviyoSiteId}`
+const klaviyoRevision = '2026-07-15'
+
 export function FooterUpdates() {
   const id = useId()
   const [email, setEmail] = useState('')
   const [step, setStep] = useState<'email' | 'terms' | 'complete'>('email')
   const [error, setError] = useState('')
-  const [result, setResult] = useState<'pending' | 'subscribed' | 'unconfigured' | 'failed'>('pending')
+  const [result, setResult] = useState<'pending' | 'subscribed' | 'failed'>('pending')
   const request = useRef(0)
   const honeypot = useRef<HTMLInputElement>(null)
   const input = useRef<HTMLInputElement>(null)
@@ -46,15 +62,34 @@ export function FooterUpdates() {
   async function subscribe() {
     const ticket = ++request.current
     advance('complete')
+    /* Filled means a bot; report success without troubling Klaviyo. */
+    if (honeypot.current?.value.trim()) { setResult('subscribed'); return }
     try {
-      const response = await fetch('/api/updates', {
+      const response = await fetch(klaviyoEndpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, company: honeypot.current?.value ?? '' }),
+        headers: { 'Content-Type': 'application/vnd.api+json', revision: klaviyoRevision },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: {
+              /* Shows in Klaviyo as the origin of the consent record. */
+              custom_source: 'Burgama website footer',
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: {
+                    email: email.trim().toLowerCase(),
+                    subscriptions: { email: { marketing: { consent: 'SUBSCRIBED' } } },
+                  },
+                },
+              },
+            },
+            relationships: { list: { data: { type: 'list', id: klaviyoListId } } },
+          },
+        }),
       })
       if (ticket !== request.current) return
-      if (response.ok) setResult('subscribed')
-      else setResult(response.status === 503 ? 'unconfigured' : 'failed')
+      setResult(response.ok ? 'subscribed' : 'failed')
     } catch {
       if (ticket === request.current) setResult('failed')
     }
@@ -99,7 +134,7 @@ export function FooterUpdates() {
               <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>{
                 result === 'subscribed' ? 'you’re on the list'
                 : result === 'pending' ? 'subscribing…'
-                : 'signup unavailable'
+                : 'that didn’t save'
               }</span>
               <button className={styles.updatesAction} type="button" aria-label={result === 'subscribed' ? 'Subscribe another email address' : 'Try another email address'} onClick={() => { setEmail(''); advance('email') }}><span className="arrow-capsule"><RotateCcw aria-hidden="true" /></span></button>
             </>
@@ -110,7 +145,6 @@ export function FooterUpdates() {
       <p id={`${id}-status`} className={styles.updatesStatus} role="status" aria-live="polite" aria-atomic="true">{error || (step !== 'complete' ? ''
         : result === 'pending' ? 'adding you to the list…'
         : result === 'subscribed' ? 'thanks — check your inbox if we ask you to confirm. unsubscribe any time.'
-        : result === 'unconfigured' ? 'signup isn’t connected yet. your email hasn’t been saved.'
         : 'that didn’t save. please try again, or email hello@burgama.com.')}</p>
     </div>
   )
