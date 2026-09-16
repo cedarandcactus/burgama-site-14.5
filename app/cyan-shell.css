@@ -440,6 +440,10 @@ body:has(.cyan-header[data-home='true']) #main {
     --header-control-gap: 20px;
     --header-link-gap: 12px;
   }
+
+  body .site-header.cyan-header[data-condensed='true'][data-menu-open='false'][data-project-open='false'] {
+    --header-control-gap: 100px;
+  }
 }
 
 @media (min-width: 700px) and (max-width: 959px) {
