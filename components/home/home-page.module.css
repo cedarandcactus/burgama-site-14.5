@@ -1127,12 +1127,10 @@
 
 .page .workTrack :global(.project-tile-caption) {
   display: grid;
-  grid-template-areas:
-    'tags title'
-    'action title';
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: 12px 20px;
+  grid-template-areas: 'title tags action';
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
   padding-top: 22px;
 }
 
@@ -1142,15 +1140,17 @@
 
 .page .workTrack :global(.project-tile-title) {
   grid-area: title;
-  justify-self: end;
+  justify-self: start;
   font-size: var(--type-card-size);
   line-height: var(--type-card-leading);
-  text-align: right;
+  text-align: left;
 }
 
 .page .workTrack :global(.project-category-pills) {
   grid-area: tags;
-  align-self: start;
+  align-self: center;
+  justify-self: center;
+  flex-wrap: nowrap;
   margin: 0;
   gap: 6px;
 }
@@ -1167,7 +1167,7 @@
   grid-area: action;
   align-items: center;
   justify-content: center;
-  justify-self: start;
+  justify-self: end;
   width: min(100%, 208px);
   min-height: 48px;
   padding: 10px 24px;
@@ -1294,10 +1294,23 @@
   }
 
   .page .workTrack :global(.project-tile-caption) {
+    grid-template-areas:
+      'title action'
+      'tags tags';
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px 12px;
-    align-items: start;
+    align-items: center;
     padding-top: 18px;
+  }
+
+  .page .workTrack :global(.project-category-pills) {
+    justify-self: start;
+  }
+
+  .page .workTrack :global(.project-link-prompt) {
+    min-height: 40px;
+    padding: 8px 16px;
+    font-size: 17px;
   }
 
   .reelControls {

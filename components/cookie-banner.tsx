@@ -34,7 +34,7 @@ export function CookieBanner() {
     <div className={styles.overlay} data-state={state} aria-hidden={state === 'leaving'} inert={state === 'leaving'}>
       <aside className={styles.dialog} aria-labelledby={titleId}>
         <div className={styles.copy}>
-          <h2 id={titleId}>Cookies, your call.</h2>
+          <h2 id={titleId}>This site uses cookies.</h2>
         </div>
         <div className={styles.actions}>
           <button className={styles.necessary} type="button" onClick={() => choose('necessary')}>Necessary only</button>
