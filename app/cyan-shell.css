@@ -78,7 +78,7 @@ body .cyan-header .header-inner {
   padding: var(--header-shell-padding) var(--header-shell-inline-padding);
   overflow: hidden;
   border: 0;
-  border-radius: 999px;
+  border-radius: calc(var(--header-compact-height) / 2);
   background: var(--header-surface);
   color: var(--header-ink);
   box-shadow: 0 4px 20px -12px rgb(1 19 41 / 25%);
