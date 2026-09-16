@@ -26,11 +26,11 @@
   align-items: stretch;
   gap: 24px;
   overflow-y: auto;
-  border: 0;
+  border: 0 !important;
   color: var(--palette-powder);
   background: transparent;
-  box-shadow: none;
-  outline: 0;
+  box-shadow: none !important;
+  outline: 0 !important;
   animation: none;
   --tw-ring-shadow: 0 0 #0000;
   translate: -50% -50%;
@@ -66,8 +66,11 @@
   margin: 0;
   overflow: hidden;
   isolation: isolate;
+  border: 0;
   border-radius: 999px;
   background: var(--palette-powder);
+  box-shadow: none;
+  outline: 0;
 }
 
 .portrait img {

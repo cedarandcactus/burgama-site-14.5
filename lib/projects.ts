@@ -248,7 +248,6 @@ export const projects: Project[] = [
       text('make the website.', 'We shaped the information architecture, wrote the core site narrative, designed every key page, and built the responsive public website from first impression through the deeper product paths.'),
     ],
     links: [{ label: 'visit the website', href: 'https://wurqly.com/' }],
-    note: 'Burgama scope: positioning, messaging and copy, brand identity, and public website strategy, design, and development. The operational software product, insurance services, and payment functionality are not presented as Burgama-built.',
   }),
   project({
     slug: 'hiking-pony', title: 'Hiking Pony', collection: 'featured', period: '2025',
