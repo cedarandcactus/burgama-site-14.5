@@ -274,15 +274,6 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
         <Reveal className={styles.enquiryInner}>
           <ProjectEnquiryForm variant="inline" introHeading={enquiryHeading} />
           <noscript><style>{'[data-inline-enquiry] form { display: none; }'}</style><p>Email <a href="mailto:hello@burgama.com">hello@burgama.com</a> to start a project.</p></noscript>
-          <nav className={styles.socialLinks} aria-label="Follow Burgama">
-            {socialLinks.map(({ label, href, paths }) => (
-              <a key={label} className={styles.socialLink} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (opens in a new tab)`}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-                  {paths.map((path) => <path key={path} d={path} />)}
-                </svg>
-              </a>
-            ))}
-          </nav>
         </Reveal>
         <SectionRise surface="navy" direction="left" />
       </section>
@@ -297,14 +288,27 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
               <div className={styles.utilities}>
                 <div className={styles.navigation}>
                   {navigationGroups.map((group) => (
-                    <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
-                      {group.links.map((link) => (
-                        <Link key={link.href} href={link.href}>
-                          <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
-                          <ArrowUpRight aria-hidden="true" />
-                        </Link>
-                      ))}
-                    </nav>
+                    <div key={group.label} className={styles.navigationGroup} data-footer-group="">
+                      <nav className={styles.linkColumn} aria-label={group.label}>
+                        {group.links.map((link) => (
+                          <Link key={link.href} href={link.href}>
+                            <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
+                            <ArrowUpRight aria-hidden="true" />
+                          </Link>
+                        ))}
+                      </nav>
+                      {group.label === 'The studio' && (
+                        <nav className={styles.socialLinks} aria-label="Follow Burgama">
+                          {socialLinks.map(({ label, href, paths }) => (
+                            <a key={label} className={styles.socialLink} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (opens in a new tab)`}>
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                                {paths.map((path) => <path key={path} d={path} />)}
+                              </svg>
+                            </a>
+                          ))}
+                        </nav>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
