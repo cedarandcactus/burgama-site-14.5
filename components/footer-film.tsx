@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from '@/components/site-footer.module.css'
 
-const videoSource = '/videos/blue-hour-coast.mp4'
-const posterSource = '/videos/blue-hour-coast-poster.jpg'
+const videoSource = '/videos/bo22.mp4'
 
 export function FooterFilm() {
   const mediaRef = useRef<HTMLDivElement>(null)
@@ -87,7 +86,6 @@ export function FooterFilm() {
 
   return (
     <div ref={mediaRef} className={styles.film} aria-hidden="true" data-footer-film="">
-      <img className={styles.poster} src={posterSource} alt="" width={1920} height={1080} loading="lazy" decoding="async" />
       <video
         ref={videoRef}
         className={styles.video}
@@ -98,7 +96,6 @@ export function FooterFilm() {
         loop
         playsInline
         preload="none"
-        poster={posterSource}
         tabIndex={-1}
         disablePictureInPicture
       />
