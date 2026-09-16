@@ -19,7 +19,7 @@
 
 .heroMedia {
   position: absolute;
-  inset: -112px -16px;
+  inset: calc(-1 * clamp(140px, 22svh, 240px)) -16px;
   z-index: 0;
   pointer-events: none;
 }
@@ -900,9 +900,11 @@
 }
 
 .processVideo {
-  inset: -10px -18px;
+  --video-travel: clamp(80px, 16svh, 160px);
+  inset: calc(-1 * var(--video-travel)) -18px;
   width: calc(100% + 36px);
-  height: calc(100% + 20px);
+  max-width: none;
+  height: calc(100% + var(--video-travel) * 2);
   object-fit: cover;
   object-position: center;
   filter: blur(2px);

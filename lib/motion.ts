@@ -18,6 +18,51 @@ if (typeof window !== 'undefined') {
 
 export { gsap, ScrollTrigger }
 
+export function createScrollMomentum(
+  trigger: HTMLElement,
+  layers: { element: HTMLElement; distance: number }[],
+) {
+  if (prefersReducedMotion()) return () => {}
+  const previous = layers.map(({ element }) => element.style.translate)
+  const momentum = { value: 0 }
+  // Independent translate composes with the existing scrubbed GSAP transforms.
+  const move = gsap.quickTo(momentum, 'value', {
+    duration: 0.65,
+    ease: 'power3.out',
+    onUpdate: () => {
+      layers.forEach(({ element, distance }) => {
+        element.style.translate = `0 ${momentum.value * distance}px`
+      })
+    },
+  })
+  const settle = gsap.delayedCall(0.1, () => move(0)).pause()
+  const scroll = ScrollTrigger.create({
+    trigger,
+    start: 'top bottom',
+    end: 'bottom top',
+    onUpdate: (self) => {
+      if (!self.isActive) {
+        move(0)
+        return
+      }
+      move(gsap.utils.clamp(-1, 1, self.getVelocity() / 1800))
+      settle.restart(true)
+    },
+    onRefresh: () => {
+      settle.pause()
+      move(0)
+    },
+  })
+  return () => {
+    scroll.kill()
+    settle.kill()
+    move.tween.kill()
+    layers.forEach(({ element }, index) => {
+      element.style.translate = previous[index]
+    })
+  }
+}
+
 /*
   Read live rather than cached at module scope: the user can toggle the OS
   setting while the page is open, and a cached boolean would strand the site

@@ -12,7 +12,7 @@ import {
   setHeadlinePreference,
   type CookieConsent,
 } from '@/lib/cookie-consent'
-import { gsap, ScrollTrigger } from '@/lib/motion'
+import { createScrollMomentum, gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
 const headlines = [
@@ -92,13 +92,24 @@ export function ActOpening({ children }: { children: ReactNode }) {
           trigger: hero,
           start: 'top top',
           end: 'bottom top',
-          scrub: 0.85,
+          scrub: 0.55,
           invalidateOnRefresh: true,
         },
       })
-        .to(film, { y: desktop ? 96 : 40, ease: 'none', duration: 1 }, 0)
-        .to(content, { y: desktop ? -48 : -18, ease: 'none', duration: 1 }, 0)
+        .to(film, { y: () => Math.max(0, -parseFloat(getComputedStyle(film).top) - 44), scale: 1.025, ease: 'none', duration: 1 }, 0)
+        .to(content, { y: desktop ? -88 : -32, ease: 'none', duration: 1 }, 0)
+        .to(hero.querySelectorAll('[data-headline-active="true"] [data-hero-depth]'), {
+          y: (_index: number, word: HTMLElement) => -Number(word.dataset.heroDepth) * (desktop ? 14 : 5),
+          ease: 'none',
+          duration: 1,
+        }, 0)
         .to(frost, { opacity: 0.55, ease: 'none', duration: 0.7 }, 0)
+
+      const headline = hero.querySelector<HTMLElement>('h1')
+      return createScrollMomentum(hero, [
+        { element: film, distance: desktop ? 32 : 10 },
+        ...(headline ? [{ element: headline, distance: desktop ? -16 : -5 }] : []),
+      ])
     })
 
     document.fonts.ready.then(() => {
@@ -131,7 +142,9 @@ export function ActOpening({ children }: { children: ReactNode }) {
                   <span key={line} className={styles.heroHeadlineLine}>
                     {line.split(' ').map((word, wordIndex) => (
                       <span key={`${word}-${wordIndex}`}>
-                        <span className={styles.heroWord} data-hero-word="">{word}</span>{' '}
+                        <span className={styles.heroWord} data-hero-depth={index + wordIndex * 0.12}>
+                          <span className={styles.heroWord} data-hero-word="">{word}</span>
+                        </span>{' '}
                       </span>
                     ))}
                     {index < lines.length - 1 ? ' ' : null}
