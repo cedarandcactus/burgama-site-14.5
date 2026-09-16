@@ -16,72 +16,59 @@ const serviceOptions = [
   ['strategy-design', 'strategy / design'],
   ['website-growth', 'website / growth'],
 ] as const
-const preferredStartOptions = [
+const timingOptions = [
   ['soon', 'as soon as practical'],
-  ['flexible', 'flexible / not sure'],
-] as const
-const launchOptions = [
-  ['flexible', 'flexible / not sure'],
+  ['flexible', 'flexible'],
   ['date', 'I have a date'],
 ] as const
 const currencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD'] as const
 const budgetBands = [[0, 5000], [5000, 10000], [10000, 25000], [25000, 50000], [50000, 100000], [100000, null]] as const
 const stepDefinitions = [
-  { id: 'company', heading: 'About your company' },
-  { id: 'project', heading: 'What do you need?' },
-  { id: 'context', heading: 'A little more context' },
-  { id: 'timing', heading: 'Timing' },
+  { id: 'company', heading: 'A few details' },
+  { id: 'project', heading: 'What are we making?' },
+  { id: 'timing', heading: 'When?' },
   { id: 'budget', heading: 'Budget' },
-  { id: 'you', heading: 'Your details' },
-  { id: 'review', heading: 'Review' },
+  { id: 'review', heading: 'Looks good?' },
 ] as const
 const recipient = 'hello@burgama.com'
 const mailtoLengthLimit = 1800
 
 type Currency = typeof currencies[number]
 type Service = typeof serviceOptions[number][0]
-type PreferredStart = typeof preferredStartOptions[number][0]
-type LaunchMode = typeof launchOptions[number][0]
+type Timing = typeof timingOptions[number][0]
 type EnquiryDraft = {
   companyName: string
   website: string
+  name: string
+  email: string
   services: Service[]
   brief: string
-  audience: string
-  assets: string
-  preferredStart: PreferredStart | ''
-  launchMode: LaunchMode | ''
+  timing: Timing | ''
   deadline: string
   budget: number
   budgetUndecided: boolean
   currency: Currency
-  name: string
-  email: string
 }
 type Errors = Partial<Record<keyof EnquiryDraft, string>>
 
 const fieldStep: Record<keyof EnquiryDraft, number> = {
   companyName: 0,
   website: 0,
+  name: 0,
+  email: 0,
   services: 1,
   brief: 1,
-  audience: 2,
-  assets: 2,
-  preferredStart: 3,
-  launchMode: 3,
-  deadline: 3,
-  budget: 4,
-  budgetUndecided: 4,
-  currency: 4,
-  name: 5,
-  email: 5,
+  timing: 2,
+  deadline: 2,
+  budget: 3,
+  budgetUndecided: 3,
+  currency: 3,
 }
 
 function createEmptyDraft(): EnquiryDraft {
   return {
-    companyName: '', website: '', services: [], brief: '', audience: '', assets: '',
-    preferredStart: '', launchMode: '', deadline: '', budget: 2,
-    budgetUndecided: false, currency: 'USD', name: '', email: '',
+    companyName: '', website: '', name: '', email: '', services: [], brief: '',
+    timing: '', deadline: '', budget: 2, budgetUndecided: false, currency: 'USD',
   }
 }
 
@@ -120,12 +107,12 @@ function budgetLabel(draft: EnquiryDraft) {
   return draft.budgetUndecided ? `not sure yet (${draft.currency})` : `${formatBudget(draft.budget, draft.currency)} ${draft.currency}`
 }
 
-function launchLabel(draft: EnquiryDraft) {
-  if (draft.launchMode === 'date') {
+function timingLabel(draft: EnquiryDraft) {
+  if (draft.timing === 'date') {
     const date = new Date(`${draft.deadline}T12:00:00`)
     return Number.isNaN(date.getTime()) ? draft.deadline : new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date)
   }
-  return optionLabel(launchOptions, draft.launchMode)
+  return optionLabel(timingOptions, draft.timing)
 }
 
 function validateStep(index: number, draft: EnquiryDraft): Errors {
@@ -133,28 +120,25 @@ function validateStep(index: number, draft: EnquiryDraft): Errors {
   if (index === 0) {
     if (!draft.companyName.trim()) errors.companyName = 'Enter your company name.'
     if (draft.website && !normalizeWebsite(draft.website)) errors.website = 'Enter a valid website, such as example.com.'
+    if (!draft.name.trim()) errors.name = 'Enter your name.'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errors.email = 'Enter a valid email address.'
   }
   if (index === 1) {
     if (!draft.services.length) errors.services = 'Choose at least one area.'
     if (!draft.brief.trim()) errors.brief = 'Tell us what you want to accomplish.'
   }
-  if (index === 3) {
-    if (!draft.preferredStart) errors.preferredStart = 'Choose a start window.'
-    if (!draft.launchMode) errors.launchMode = 'Choose a launch option.'
-    if (draft.launchMode === 'date') {
-      if (!draft.deadline) errors.deadline = 'Choose a target launch date.'
+  if (index === 2) {
+    if (!draft.timing) errors.timing = 'Choose a timeframe.'
+    if (draft.timing === 'date') {
+      if (!draft.deadline) errors.deadline = 'Choose a target date.'
       else if (draft.deadline < currentDateValue()) errors.deadline = 'Choose today or a future date.'
     }
-  }
-  if (index === 5) {
-    if (!draft.name.trim()) errors.name = 'Enter your name.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errors.email = 'Enter a valid email address.'
   }
   return errors
 }
 
 function validateDraft(draft: EnquiryDraft) {
-  return [0, 1, 3, 5].reduce<Errors>((all, index) => ({ ...all, ...validateStep(index, draft) }), {})
+  return [0, 1, 2].reduce<Errors>((all, index) => ({ ...all, ...validateStep(index, draft) }), {})
 }
 
 function buildEnquiry(draft: EnquiryDraft) {
@@ -164,11 +148,8 @@ function buildEnquiry(draft: EnquiryDraft) {
     `Company: ${draft.companyName.trim()}`,
     ...(draft.website.trim() ? [`Website: ${draft.website.trim()}`] : []), '',
     `Project: ${serviceLabels}`,
-    draft.brief.trim(),
-    ...(draft.audience.trim() ? ['', `Audience: ${draft.audience.trim()}`] : []),
-    ...(draft.assets.trim() ? [`Existing work: ${draft.assets.trim()}`] : []), '',
-    `Start: ${optionLabel(preferredStartOptions, draft.preferredStart)}`,
-    `Launch: ${launchLabel(draft)}`,
+    draft.brief.trim(), '',
+    `Timing: ${timingLabel(draft)}`,
     `Budget: ${budgetLabel(draft)}`, '',
     draft.name.trim(),
     draft.email.trim(),
@@ -455,9 +436,9 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
   }
 
   const companySummary = [draft.companyName.trim(), draft.website.trim()]
+  const contactSummary = [draft.name.trim(), draft.email.trim()]
   const projectSummary = [draft.services.map(service => optionLabel(serviceOptions, service)).join(', '), draft.brief.trim()]
-  const contextSummary = [draft.audience.trim(), draft.assets.trim()]
-  const timingSummary = [optionLabel(preferredStartOptions, draft.preferredStart), launchLabel(draft)]
+  const timingSummary = [timingLabel(draft)]
 
   return (
     <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Project enquiry' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={event => {
@@ -474,35 +455,45 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
             </div>
 
             {step === 0 && (
-              <FieldGroup>
-                <Field data-enquiry-motion="" data-invalid={!!errors.companyName}>
-                  <FieldLabel htmlFor={`${idPrefix}-companyName`}>Company name</FieldLabel>
-                  <Input id={`${idPrefix}-companyName`} data-error-key="companyName" name="companyName" autoComplete="organization" maxLength={120} value={draft.companyName} onChange={event => updateDraft('companyName', event.target.value)} placeholder="Your company" required aria-invalid={!!errors.companyName} aria-describedby={errors.companyName ? `${idPrefix}-companyName-error` : undefined} />
-                  <FieldError id={`${idPrefix}-companyName-error`}>{errors.companyName}</FieldError>
-                </Field>
-                <Field data-enquiry-motion="" data-invalid={!!errors.website}>
-                  <FieldLabel htmlFor={`${idPrefix}-website`}>Website</FieldLabel>
-                  <Input id={`${idPrefix}-website`} data-error-key="website" name="website" type="url" inputMode="url" autoComplete="url" maxLength={240} value={draft.website} onChange={event => updateDraft('website', event.target.value)} onBlur={() => {
-                    const normalized = normalizeWebsite(draft.website)
-                    if (normalized) updateDraft('website', normalized)
-                  }} placeholder="example.com, if you have one" aria-invalid={!!errors.website} aria-describedby={errors.website ? `${idPrefix}-website-error` : undefined} />
-                  <FieldError id={`${idPrefix}-website-error`}>{errors.website}</FieldError>
-                </Field>
+              <FieldGroup className={styles.contactFields}>
+                  <Field data-enquiry-motion="" data-invalid={!!errors.name}>
+                    <FieldLabel htmlFor={`${idPrefix}-name`}>Name</FieldLabel>
+                    <Input id={`${idPrefix}-name`} data-error-key="name" name="name" autoComplete="name" maxLength={100} value={draft.name} onChange={event => updateDraft('name', event.target.value)} required aria-invalid={!!errors.name} aria-describedby={errors.name ? `${idPrefix}-name-error` : undefined} />
+                    <FieldError id={`${idPrefix}-name-error`}>{errors.name}</FieldError>
+                  </Field>
+                  <Field data-enquiry-motion="" data-invalid={!!errors.email}>
+                    <FieldLabel htmlFor={`${idPrefix}-email`}>Email</FieldLabel>
+                    <Input id={`${idPrefix}-email`} data-error-key="email" name="email" type="email" autoComplete="email" maxLength={254} value={draft.email} onChange={event => updateDraft('email', event.target.value)} placeholder="you@company.com" required aria-invalid={!!errors.email} aria-describedby={errors.email ? `${idPrefix}-email-error` : undefined} />
+                    <FieldError id={`${idPrefix}-email-error`}>{errors.email}</FieldError>
+                  </Field>
+                  <Field data-enquiry-motion="" data-invalid={!!errors.companyName}>
+                    <FieldLabel htmlFor={`${idPrefix}-companyName`}>Company</FieldLabel>
+                    <Input id={`${idPrefix}-companyName`} data-error-key="companyName" name="companyName" autoComplete="organization" maxLength={120} value={draft.companyName} onChange={event => updateDraft('companyName', event.target.value)} required aria-invalid={!!errors.companyName} aria-describedby={errors.companyName ? `${idPrefix}-companyName-error` : undefined} />
+                    <FieldError id={`${idPrefix}-companyName-error`}>{errors.companyName}</FieldError>
+                  </Field>
+                  <Field data-enquiry-motion="" data-invalid={!!errors.website}>
+                    <FieldLabel htmlFor={`${idPrefix}-website`}>Website <span className={styles.optional}>optional</span></FieldLabel>
+                    <Input id={`${idPrefix}-website`} data-error-key="website" name="website" type="url" inputMode="url" autoComplete="url" maxLength={240} value={draft.website} onChange={event => updateDraft('website', event.target.value)} onBlur={() => {
+                      const normalized = normalizeWebsite(draft.website)
+                      if (normalized) updateDraft('website', normalized)
+                    }} placeholder="example.com" aria-invalid={!!errors.website} aria-describedby={errors.website ? `${idPrefix}-website-error` : undefined} />
+                    <FieldError id={`${idPrefix}-website-error`}>{errors.website}</FieldError>
+                  </Field>
               </FieldGroup>
             )}
 
             {step === 1 && (
               <FieldGroup>
                 <FieldSet data-enquiry-motion="" data-invalid={!!errors.services}>
-                  <FieldLegend variant="label">Services needed</FieldLegend>
+                  <FieldLegend variant="label">Area</FieldLegend>
                   <ToggleGroup className={styles.companyChoices} data-error-key="services" tabIndex={0} multiple value={draft.services} onValueChange={handleServices} aria-label="Services needed" aria-invalid={!!errors.services} aria-describedby={errors.services ? `${idPrefix}-services-error` : undefined}>
                     {serviceOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
                   </ToggleGroup>
                   <FieldError id={`${idPrefix}-services-error`}>{errors.services}</FieldError>
                 </FieldSet>
                 <Field data-enquiry-motion="" data-invalid={!!errors.brief}>
-                  <FieldLabel htmlFor={`${idPrefix}-brief`}>Project goals</FieldLabel>
-                  <Textarea id={`${idPrefix}-brief`} data-error-key="brief" name="brief" className={styles.brief} placeholder="What needs to change, and what would a good outcome look like?" maxLength={1600} rows={4} required value={draft.brief} onChange={event => updateDraft('brief', event.target.value)} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
+                  <FieldLabel htmlFor={`${idPrefix}-brief`}>In a few sentences</FieldLabel>
+                  <Textarea id={`${idPrefix}-brief`} data-error-key="brief" name="brief" className={styles.brief} placeholder="What needs to change? What would a good outcome look like?" maxLength={1600} rows={4} required value={draft.brief} onChange={event => updateDraft('brief', event.target.value)} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
                   <FieldError id={`${idPrefix}-brief-error`}>{errors.brief}</FieldError>
                 </Field>
               </FieldGroup>
@@ -510,40 +501,20 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
 
             {step === 2 && (
               <FieldGroup>
-                <Field data-enquiry-motion="">
-                  <FieldLabel htmlFor={`${idPrefix}-audience`}>Target audience</FieldLabel>
-                  <Textarea id={`${idPrefix}-audience`} data-error-key="audience" name="audience" className={styles.contextArea} placeholder="Who are you trying to reach? Leave blank if unsure." maxLength={600} rows={3} value={draft.audience} onChange={event => updateDraft('audience', event.target.value)} />
-                </Field>
-                <Field data-enquiry-motion="">
-                  <FieldLabel htmlFor={`${idPrefix}-assets`}>Existing work</FieldLabel>
-                  <Textarea id={`${idPrefix}-assets`} data-error-key="assets" name="assets" className={styles.contextArea} placeholder="Website, brand, content, or research. Leave blank if none." maxLength={600} rows={3} value={draft.assets} onChange={event => updateDraft('assets', event.target.value)} />
-                </Field>
-              </FieldGroup>
-            )}
-
-            {step === 3 && (
-              <FieldGroup>
-                <FieldSet data-enquiry-motion="" data-invalid={!!errors.preferredStart}>
-                  <FieldLegend variant="label">Preferred start</FieldLegend>
-                  <ToggleGroup className={styles.companyChoices} data-error-key="preferredStart" tabIndex={0} value={draft.preferredStart ? [draft.preferredStart] : []} onValueChange={values => updateDraft('preferredStart', (values[0] ?? '') as PreferredStart | '')} aria-label="Preferred start" aria-invalid={!!errors.preferredStart} aria-describedby={errors.preferredStart ? `${idPrefix}-preferredStart-error` : undefined}>
-                    {preferredStartOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
+                <FieldSet data-enquiry-motion="" data-invalid={!!errors.timing}>
+                  <FieldLegend variant="label">Timing</FieldLegend>
+                  <ToggleGroup className={styles.companyChoices} data-error-key="timing" tabIndex={0} value={draft.timing ? [draft.timing] : []} onValueChange={values => {
+                    const timing = (values[0] ?? '') as Timing | ''
+                    setDraft(previous => ({ ...previous, timing, deadline: timing === 'date' ? previous.deadline : '' }))
+                    setErrors(previous => ({ ...previous, timing: undefined, deadline: undefined }))
+                  }} aria-label="Project timing" aria-invalid={!!errors.timing} aria-describedby={errors.timing ? `${idPrefix}-timing-error` : undefined}>
+                    {timingOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
                   </ToggleGroup>
-                  <FieldError id={`${idPrefix}-preferredStart-error`}>{errors.preferredStart}</FieldError>
+                  <FieldError id={`${idPrefix}-timing-error`}>{errors.timing}</FieldError>
                 </FieldSet>
-                <FieldSet data-enquiry-motion="" data-invalid={!!errors.launchMode}>
-                  <FieldLegend variant="label">Target launch</FieldLegend>
-                  <ToggleGroup className={styles.companyChoices} data-error-key="launchMode" tabIndex={0} value={draft.launchMode ? [draft.launchMode] : []} onValueChange={values => {
-                    const mode = (values[0] ?? '') as LaunchMode | ''
-                    setDraft(previous => ({ ...previous, launchMode: mode, deadline: mode === 'date' ? previous.deadline : '' }))
-                    setErrors(previous => ({ ...previous, launchMode: undefined, deadline: undefined }))
-                  }} aria-label="Target launch format" aria-invalid={!!errors.launchMode} aria-describedby={errors.launchMode ? `${idPrefix}-launchMode-error` : undefined}>
-                    {launchOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
-                  </ToggleGroup>
-                  <FieldError id={`${idPrefix}-launchMode-error`}>{errors.launchMode}</FieldError>
-                </FieldSet>
-                {draft.launchMode === 'date' && (
+                {draft.timing === 'date' && (
                   <Field className={styles.revealField} data-enquiry-motion="" data-invalid={!!errors.deadline}>
-                    <FieldLabel htmlFor={`${idPrefix}-deadline`}>Target launch date</FieldLabel>
+                    <FieldLabel htmlFor={`${idPrefix}-deadline`}>Target date</FieldLabel>
                     <Input id={`${idPrefix}-deadline`} data-error-key="deadline" name="deadline" type="date" min={currentDateValue()} value={draft.deadline} onChange={event => updateDraft('deadline', event.target.value)} required aria-invalid={!!errors.deadline} aria-describedby={errors.deadline ? `${idPrefix}-deadline-error` : undefined} />
                     <FieldError id={`${idPrefix}-deadline-error`}>{errors.deadline}</FieldError>
                   </Field>
@@ -551,7 +522,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
               </FieldGroup>
             )}
 
-            {step === 4 && (
+            {step === 3 && (
               <FieldGroup>
                 <div className={styles.budgetTop} data-enquiry-motion="">
                   <span className={styles.amount}>{draft.budgetUndecided ? '—' : formatBudget(draft.budget, draft.currency, true)}</span>
@@ -575,32 +546,14 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
               </FieldGroup>
             )}
 
-            {step === 5 && (
-              <FieldGroup>
-                <div className={styles.contactFields}>
-                  {([
-                    { key: 'name', label: 'Name', type: 'text', autocomplete: 'name', placeholder: 'Your name', max: 100 },
-                    { key: 'email', label: 'Email', type: 'email', autocomplete: 'email', placeholder: 'you@company.com', max: 254 },
-                  ] as const).map(({ key, label, type, autocomplete, placeholder, max }) => (
-                    <Field key={key} data-enquiry-motion="" data-invalid={!!errors[key]}>
-                      <FieldLabel htmlFor={`${idPrefix}-${key}`}>{label}</FieldLabel>
-                      <Input id={`${idPrefix}-${key}`} data-error-key={key} name={key} type={type} autoComplete={autocomplete} placeholder={placeholder} maxLength={max} required value={draft[key]} onChange={event => updateDraft(key, event.target.value)} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `${idPrefix}-${key}-error` : undefined} />
-                      <FieldError id={`${idPrefix}-${key}-error`}>{errors[key]}</FieldError>
-                    </Field>
-                  ))}
-                </div>
-              </FieldGroup>
-            )}
-
-            {step === 6 && (
+            {step === 4 && (
               <>
                 <dl className={styles.review} data-enquiry-motion="">
                   <ReviewRow label="company" lines={companySummary} editLabel="Edit company details" onEdit={() => goTo(0)} />
+                  <ReviewRow label="contact" lines={contactSummary} editLabel="Edit contact details" onEdit={() => goTo(0)} />
                   <ReviewRow label="project" lines={projectSummary} editLabel="Edit project details" onEdit={() => goTo(1)} />
-                  <ReviewRow label="context" lines={contextSummary} editLabel="Edit project context" onEdit={() => goTo(2)} />
-                  <ReviewRow label="timing" lines={timingSummary} editLabel="Edit project timing" onEdit={() => goTo(3)} />
-                  <ReviewRow label="budget" lines={[budgetLabel(draft)]} editLabel="Edit budget" onEdit={() => goTo(4)} />
-                  <ReviewRow label="contact" lines={[draft.name.trim(), draft.email.trim()]} editLabel="Edit your details" onEdit={() => goTo(5)} />
+                  <ReviewRow label="timing" lines={timingSummary} editLabel="Edit project timing" onEdit={() => goTo(2)} />
+                  <ReviewRow label="budget" lines={[budgetLabel(draft)]} editLabel="Edit budget" onEdit={() => goTo(3)} />
                 </dl>
                 <p className={styles.copyStatus} role="status">{copyState === 'copied' ? `Copied. Paste it into an email to ${recipient}.` : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
                 {copyState === 'manual' && <Field><FieldLabel className="sr-only" htmlFor={`${idPrefix}-copy`}>Enquiry</FieldLabel><Textarea id={`${idPrefix}-copy`} data-enquiry-copy="" className={styles.copyText} readOnly value={enquiry.text} rows={8} onFocus={event => event.target.select()} /></Field>}
