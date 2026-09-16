@@ -62,46 +62,45 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
             )
 
           case 'media':
+            if (!module.item.src) return null
             return (
               <Reveal key={index}>
                 <MediaFrame item={module.item} />
               </Reveal>
             )
 
-          case 'mediaPair':
+          case 'mediaPair': {
+            const items = module.items.filter(item => item.src)
+            if (items.length === 0) return null
             return (
-              <Reveal key={index} className="case-media-row">
-                <MediaFrame item={module.items[0]} />
-                <MediaFrame item={module.items[1]} />
+              <Reveal key={index} className={items.length > 1 ? 'case-media-row' : undefined}>
+                {items.map(item => <MediaFrame key={item.src} item={item} />)}
               </Reveal>
             )
+          }
 
           case 'mediaSplit':
             return (
-              <Reveal key={index} className="case-module">
-                <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
-                <div className="case-module-body">
-                  {module.body.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                  <MediaFrame item={module.item} />
+              <Reveal key={index} className={module.item.src ? `case-split case-split-${module.split.replace('/', '-')}` : 'case-module'}>
+                <div className="case-split-copy">
+                  <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
+                  <div className="case-module-body">
+                    {module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+                  </div>
                 </div>
+                <MediaFrame item={module.item} />
               </Reveal>
             )
 
-          case 'mediaGrid':
+          case 'mediaGrid': {
+            const items = module.items.filter(item => item.src)
+            if (items.length === 0) return null
             return (
-              <Reveal
-                key={index}
-                className={`case-media-row ${
-                  module.items.length > 2 ? 'case-media-row-3' : ''
-                }`}
-              >
-                {module.items.map((item) => (
-                  <MediaFrame key={item.label} item={item} />
-                ))}
+              <Reveal key={index} className={items.length > 2 ? 'case-media-row case-media-row-3' : items.length > 1 ? 'case-media-row' : undefined}>
+                {items.map(item => <MediaFrame key={item.src} item={item} />)}
               </Reveal>
             )
+          }
 
           case 'quote':
             return (
@@ -114,14 +113,14 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
             return (
               <Reveal key={index} as="section" className="case-module">
                 <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
-                <div className="page-hero-columns" style={{ border: 0, padding: 0 }}>
-                  {module.steps.map((step) => (
-                    <div key={sentenceCase(step.title)}>
-                      <h3 className="page-hero-column-title">{sentenceCase(step.title)}</h3>
-                      <p className="page-hero-column-body">{step.body}</p>
-                    </div>
+                <ol className="case-process">
+                  {module.steps.map(step => (
+                    <li key={step.title}>
+                      <h3>{sentenceCase(step.title)}</h3>
+                      <p>{step.body}</p>
+                    </li>
                   ))}
-                </div>
+                </ol>
               </Reveal>
             )
 

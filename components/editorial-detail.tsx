@@ -1,76 +1,42 @@
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import Link from '@/components/transition-link'
+import { PageHero } from '@/components/page-hero'
+import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
-import {
-  getIdeaReadingTime,
-  ideas,
-  type IdeaPost,
-} from '@/lib/editorial'
+import { getIdeaReadingTime, ideas, type IdeaPost } from '@/lib/editorial'
 import styles from './editorial.module.css'
 
 export function EditorialDetail({ idea }: { idea: IdeaPost }) {
-  const currentIndex = ideas.findIndex((entry) => entry.slug === idea.slug)
+  const currentIndex = ideas.findIndex(entry => entry.slug === idea.slug)
   const previous = currentIndex > 0 ? ideas[currentIndex - 1] : undefined
   const next = currentIndex < ideas.length - 1 ? ideas[currentIndex + 1] : undefined
 
   return (
-    <div className={styles.detailPage}>
-      <header className={styles.articleHero}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/ideas">back to ideas</Link>
-        </nav>
-
-        <div className={styles.articleHeading}>
-          <p className={styles.categoryPill}>{idea.categories[0]}</p>
-          <h1 className="font-serif">{idea.title}</h1>
-          <p className={styles.articleDeck}>{idea.deck}</p>
-          <p className={styles.readingTime}>{getIdeaReadingTime(idea)} min read</p>
+    <div className="studio-page">
+      <article aria-labelledby="article-title">
+        <PageHero wordmark={idea.title} titleId="article-title" compact surface="navy" nextSurface="powder" intro={[idea.deck]} breadcrumb={<Link href="/ideas">back to ideas</Link>} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
+        <div className="studio-band" data-surface="powder">
+          <div className={`studio-reading ${styles.articleBody}`}>
+            {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
+            <div className="studio-actions">
+              <Link href={idea.internalLink.href} className={`pill ${styles.internalLink}`}><span>{idea.internalLink.label}</span><CircularArrowIcon className={styles.inlineArrow} /></Link>
+            </div>
+            <details className={styles.sources}>
+              <summary>Sources and further reading</summary>
+              <ul>{idea.sources.map(source => <li key={source.href}><a href={source.href} target="_blank" rel="noreferrer">{source.label}</a></li>)}</ul>
+            </details>
+          </div>
+          <SectionRise surface="blue-slate" direction="left" />
         </div>
-      </header>
-
-      <main className={styles.readingSection}>
-        <article className={styles.articleBody}>
-          {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
-
-          <Link href={idea.internalLink.href} className={styles.internalLink}>
-            <span>{idea.internalLink.label}</span>
-            <CircularArrowIcon className={styles.inlineArrow} />
-          </Link>
-
-          <details className={styles.sources}>
-            <summary>Sources and further reading</summary>
-            <ul>
-              {idea.sources.map((source) => (
-                <li key={source.href}>
-                  <a href={source.href} target="_blank" rel="noreferrer">{source.label}</a>
-                </li>
-              ))}
-            </ul>
-          </details>
-        </article>
-      </main>
-
-      <nav className={styles.articleNavigation} aria-label="More ideas">
-        {previous ? (
-          <Link href={`/ideas/${previous.slug}`} className={styles.articleNavLink}>
-            <span className={styles.navDot} aria-hidden="true" />
-            <span>
-              <small>Previous</small>
-              <strong className="font-serif">{previous.title}</strong>
-            </span>
-          </Link>
-        ) : <span aria-hidden="true" />}
-
-        <Link href={next ? `/ideas/${next.slug}` : '/ideas'} className={styles.articleNavLink}>
-          <span className={styles.navDot} aria-hidden="true" />
-          <span>
-            <small>{next ? 'Next' : 'All ideas'}</small>
-            <strong className="font-serif">{next?.title ?? 'Return to the index'}</strong>
-          </span>
-        </Link>
-      </nav>
-
-      <SiteFooter />
+      </article>
+      <section className="studio-band" data-surface="blue-slate" aria-label="More ideas">
+        <nav className={`studio-width ${styles.articleNavigation}`} aria-label="More ideas">
+          {previous ? <Link href={`/ideas/${previous.slug}`} className={styles.articleNavLink}><span className={styles.ideaDot} aria-hidden="true" /><span><small>Previous</small><strong>{previous.title}</strong></span></Link> : null}
+          <Link href={next ? `/ideas/${next.slug}` : '/ideas'} className={styles.articleNavLink}><span className={styles.ideaDot} aria-hidden="true" /><span><small>{next ? 'Next' : 'All ideas'}</small><strong>{next?.title ?? 'Return to the index'}</strong></span></Link>
+        </nav>
+        <SectionRise surface="powder-deep" />
+      </section>
+      <SiteFooter enquiryHeading="tell us what you’re thinking" />
     </div>
   )
 }

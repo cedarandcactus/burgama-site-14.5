@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useSmoothScroll } from '@/components/smooth-scroll'
 import styles from './nav-project-form.module.css'
 
 const companyTypes = ['startup', 'small business', 'established company', 'agency', 'nonprofit', 'other']
@@ -60,14 +61,16 @@ export { ProjectEnquiryForm as NavProjectForm }
 
 type ProjectEnquiryProps = {
   variant?: 'navbar' | 'inline'
+  introHeading?: string
   active?: boolean
   id?: string
   onMenu?: () => void
   onHeightChange?: (height: number) => void
 }
 
-export function ProjectEnquiryForm({ variant = 'navbar', active = true, id, onMenu, onHeightChange }: ProjectEnquiryProps) {
+export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us a bit about your project', active = true, id, onMenu, onHeightChange }: ProjectEnquiryProps) {
   const idPrefix = `enquiry-${useId()}`
+  const scroll = useSmoothScroll()
   const inline = variant === 'inline'
   const focusStep = useRef(false)
   const [brief, setBrief] = useState('')
@@ -97,11 +100,19 @@ export function ProjectEnquiryForm({ variant = 'navbar', active = true, id, onMe
     if (!active || (inline && !focusStep.current)) return
     const frame = requestAnimationFrame(() => {
       focusStep.current = false
+      if (inline && form.current && heading.current) {
+        const clearance = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 84
+        const bounds = heading.current.getBoundingClientRect()
+        if (bounds.top < clearance || bounds.bottom > window.innerHeight) {
+          scroll?.cancelScroll()
+          window.scrollTo({ top: Math.max(0, Math.round(window.scrollY + form.current.getBoundingClientRect().top - clearance)), behavior: 'instant' })
+        }
+      }
       heading.current?.focus({ preventScroll: true })
       if (!inline) form.current?.closest('.header-inner')?.scrollTo({ top: 0, behavior: 'instant' })
     })
     return () => cancelAnimationFrame(frame)
-  }, [active, step, inline])
+  }, [active, step, inline, scroll])
 
   useEffect(() => {
     if (copyState !== 'manual') return
@@ -178,7 +189,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', active = true, id, onMe
       </div>
       <section key={step} className={styles.step} data-direction={direction < 0 ? 'back' : 'forward'} aria-labelledby={`${idPrefix}-step-heading`}>
         <div className={styles.intro}>
-          <h2 ref={heading} id={`${idPrefix}-step-heading`} tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{inline && step === 0 ? 'tell us a bit about your project' : headings[step]}</h2>
+          <h2 ref={heading} id={`${idPrefix}-step-heading`} tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{inline && step === 0 ? introHeading : headings[step]}</h2>
         </div>
         {step === 0 && (
           <FieldGroup>

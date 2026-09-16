@@ -52,7 +52,7 @@ function RollingLabel({ text }: { text: string }) {
   )
 }
 
-export function SiteFooter({ home = false, work = false }: { home?: boolean; work?: boolean }) {
+export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const leadRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLSpanElement>(null)
@@ -81,7 +81,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       const svg = svgRef.current
       const path = pathRef.current
       const text = textRef.current
-      if (!home || !svg || !path || !text || lead.dataset.curved !== 'true') return
+      if (!svg || !path || !text || lead.dataset.curved !== 'true') return
       const width = lead.clientWidth
       const height = lead.clientHeight
       const rise = root.querySelector<SVGSVGElement>('[data-footer-lead] > svg')?.getBoundingClientRect().height ?? 100
@@ -122,74 +122,26 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
     }, (context) => {
       if (context.conditions?.reduced) return
 
-      if (context.conditions?.desktop) {
-        lead.dataset.rolling = 'true'
-        if (home) {
-          lead.dataset.curved = 'true'
-          measureCurve()
-        }
-        const entrance = () => lead.clientWidth * 0.72
-        const destination = () => Math.min(0, lead.clientWidth * 0.92 - track.scrollWidth)
+      if (context.conditions?.desktop && textPathRef.current) {
+        lead.dataset.curved = 'true'
+        measureCurve()
         const timeline = gsap.timeline({
           scrollTrigger: {
             id: `footer-roll-${titleId}`,
             trigger: lead,
-            start: home ? 'top bottom' : 'top top',
-            end: home ? 'bottom 35%' : () => `+=${Math.max(600, Math.min(1300, track.scrollWidth * 0.55))}`,
+            start: 'top bottom',
+            end: 'bottom 35%',
             onRefreshInit: measureCurve,
-            pin: !home,
-            // Page wrappers use transforms, which change the containing block for fixed pins.
-            pinType: 'transform',
             scrub: 0.65,
-            anticipatePin: 1,
             invalidateOnRefresh: true,
           },
         })
-
-        if (home && textPathRef.current) {
-          timeline.fromTo(textPathRef.current, { attr: { startOffset: () => curveEntrance } }, {
-            attr: { startOffset: () => curveDestination },
-            duration: 3,
-            ease: 'none',
-          }, 0)
-        } else {
-          timeline.fromTo(track, { x: entrance }, {
-            x: destination,
-            duration: 3,
-            ease: 'none',
-          }, 0)
-
-          letters.forEach((letter) => {
-            const word = letter.parentElement!
-            const offset = word.offsetLeft + letter.offsetLeft
-            const distance = entrance() - destination()
-            const arrival = Math.max(0, (entrance() + offset - lead.clientWidth * 0.9) / distance * 3)
-            timeline.fromTo(letter, {
-              yPercent: 65,
-              rotation: 16,
-            }, {
-              yPercent: 0,
-              rotation: 0,
-              duration: 0.45,
-              ease: 'power2.out',
-            }, Math.min(2.5, arrival))
-          })
-        }
-
+        timeline.fromTo(textPathRef.current, { attr: { startOffset: () => curveEntrance } }, {
+          attr: { startOffset: () => curveDestination },
+          duration: 3,
+          ease: 'none',
+        }, 0)
         timeline.to({}, { duration: 0.2 })
-      } else if (!home) {
-        gsap.fromTo(track.children, { y: 42, rotation: 4 }, {
-          y: 0,
-          rotation: 0,
-          stagger: 0.1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: lead,
-            start: 'top 85%',
-            end: 'center 55%',
-            scrub: 0.5,
-          },
-        })
       }
 
       groups.forEach((group, index) => {
@@ -223,7 +175,6 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       })
 
       return () => {
-        delete lead.dataset.rolling
         delete lead.dataset.curved
         for (const element of [track, ...Array.from(track.children), ...letters, ...groups, identity]) {
           element?.removeAttribute('style')
@@ -231,7 +182,7 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       }
     })
 
-    // Entrance transforms must settle before pin coordinates are measured.
+    // Ancestor entrance transforms must settle before scroll coordinates are measured.
     const entranceAnimations: Animation[] = []
     for (let parent = root.parentElement; parent; parent = parent.parentElement) {
       entranceAnimations.push(...parent.getAnimations())
@@ -259,11 +210,11 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
       document.fonts.removeEventListener('loadingdone', refresh)
       media.revert()
     }
-  }, [titleId, home])
+  }, [titleId])
 
   return (
-    <div ref={rootRef} className={styles.ending} data-site-ending="" data-home={home}>
-      <section ref={leadRef} className={styles.lead} aria-labelledby={titleId} data-footer-lead="" data-nav-surface={home ? 'frost' : undefined}>
+    <div ref={rootRef} className={styles.ending} data-site-ending="">
+      <section ref={leadRef} className={styles.lead} aria-labelledby={titleId} data-footer-lead="" data-nav-surface="frost">
         <div className={styles.leadViewport}>
           <h2 id={titleId} className={styles.headline} aria-label={headline}>
             <span ref={trackRef} className={styles.track} aria-hidden="true">
@@ -276,26 +227,24 @@ export function SiteFooter({ home = false, work = false }: { home?: boolean; wor
               ))}
             </span>
           </h2>
-          {home && (
-            <svg ref={svgRef} className={styles.curvedHeadline} aria-hidden="true" focusable="false">
+          <svg ref={svgRef} className={styles.curvedHeadline} aria-hidden="true" focusable="false">
               <defs><path ref={pathRef} id={curveId} d={homeCurvePath(1440, 144, 220, 3200)} /></defs>
               <text ref={textRef}>
                 <textPath ref={textPathRef} href={`#${curveId}`} startOffset="3200">{headline}</textPath>
               </text>
-            </svg>
-          )}
+          </svg>
         </div>
-        {home && <SectionRise surface="powder" />}
+        <SectionRise surface="powder" />
       </section>
-      {home && <section id="start-a-project" className={styles.enquiry} data-inline-enquiry="" data-nav-surface="frost" aria-label="Start a project">
+      <section id="start-a-project" className={styles.enquiry} data-inline-enquiry="" data-nav-surface="frost" aria-label="Start a project">
         <Reveal className={styles.enquiryInner}>
-          <ProjectEnquiryForm variant="inline" />
+          <ProjectEnquiryForm variant="inline" introHeading={enquiryHeading} />
           <noscript><style>{'[data-inline-enquiry] form { display: none; }'}</style><p>Email <a href="mailto:hello@burgama.com">hello@burgama.com</a> to start a project.</p></noscript>
         </Reveal>
         <SectionRise surface="navy" direction="left" />
-      </section>}
-      <div className={styles.footerFrame} data-home={home}>
-        <footer className={styles.footer} data-site-footer="" data-home={home} data-work={work} data-nav-surface={home ? 'ink' : undefined}>
+      </section>
+      <div className={styles.footerFrame}>
+        <footer className={styles.footer} data-site-footer="" data-nav-surface="ink">
           <FooterFilm />
           <div className={styles.content}>
             <div className={styles.topRow}>

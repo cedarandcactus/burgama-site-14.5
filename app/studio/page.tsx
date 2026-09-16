@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
+import { PageHero } from '@/components/page-hero'
+import { SectionRise } from '@/components/home/section-rise'
 import styles from './studio.module.css'
 
 export const metadata: Metadata = {
@@ -36,15 +38,11 @@ const TEAM = [
 
 export default function StudioPage() {
   return (
-    <div className={styles.page}>
-      <section className={styles.hero} aria-labelledby="about-title">
-        <h1 id="about-title" className={`${styles.title} font-serif`}>about</h1>
-        <p className={styles.intro}>
-          Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.
-        </p>
-      </section>
+    <div className="studio-page">
+      <PageHero wordmark="about" titleId="about-title" intro={['Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.']} nextSurface="blue-slate" />
 
-      <section className={styles.teamSection} aria-labelledby="team-title">
+      <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
+        <div className="studio-width">
         <Reveal className={styles.sectionHeading}>
           <h2 id="team-title" className="font-serif">the people in the room make the work.</h2>
         </Reveal>
@@ -69,9 +67,12 @@ export default function StudioPage() {
             </Reveal>
           ))}
         </ul>
+        </div>
+        <SectionRise surface="navy" direction="left" />
       </section>
 
-      <section aria-labelledby="small-title">
+      <section className="studio-band" data-surface="navy" aria-labelledby="small-title">
+        <div className="studio-width">
         <Reveal className={styles.smallSection}>
           <h2 id="small-title" className="font-serif">
             ideas stay sharper when they do not get passed down a line.
@@ -80,11 +81,12 @@ export default function StudioPage() {
             The same people who frame the problem carry the work through strategy, design, build, and growth. No account layer. No handoff to a separate delivery team.
           </p>
         </Reveal>
-      </section>
-
-      <section className={styles.actions} aria-label="Next steps">
-        <ModularButton href="/work">see the work</ModularButton>
-        <ModularButton href="/contact">start a project</ModularButton>
+        <nav className="studio-actions" aria-label="Next steps">
+          <ModularButton href="/work">see the work</ModularButton>
+          <ModularButton href="#start-a-project">start a project</ModularButton>
+        </nav>
+        </div>
+        <SectionRise surface="powder-deep" />
       </section>
 
       <SiteFooter />
