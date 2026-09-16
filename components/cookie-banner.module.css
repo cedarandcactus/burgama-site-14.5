@@ -1,0 +1,171 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background: color-mix(in srgb, var(--palette-navy) 34%, transparent);
+  animation: veil-in 220ms ease both;
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(100%, 440px);
+  max-height: calc(100svh - 40px);
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--palette-powder) 26%, transparent);
+  border-radius: 28px;
+  color: var(--palette-powder);
+  background: var(--palette-navy);
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--palette-navy) 38%, transparent);
+  text-align: center;
+  animation: dialog-in 320ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.copy h2 {
+  margin: 0;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.copy p {
+  max-width: 38ch;
+  margin: 0;
+  font-family: var(--font-pangram), sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.copy a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .25em;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px 20px;
+  border: 1px solid var(--palette-powder);
+  border-radius: 999px;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+.accept {
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+}
+
+.necessary {
+  color: var(--palette-powder);
+  background: transparent;
+}
+
+.actions button:focus-visible,
+.copy a:focus-visible {
+  outline: 2px solid var(--palette-powder);
+  outline-offset: 4px;
+}
+
+.overlay[data-state='leaving'] {
+  pointer-events: none;
+  animation: veil-out 180ms ease both;
+}
+
+.overlay[data-state='leaving'] .dialog {
+  animation: dialog-out 180ms ease both;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .accept:hover {
+    color: var(--palette-powder);
+    background: transparent;
+  }
+
+  .necessary:hover {
+    color: var(--palette-navy);
+    background: var(--palette-powder);
+  }
+}
+
+@media (min-width: 520px) {
+  .dialog {
+    padding: 28px;
+  }
+
+  .actions {
+    flex-direction: row;
+  }
+
+  .actions button {
+    flex: 1;
+  }
+}
+
+@keyframes veil-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes veil-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(14px) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes dialog-out {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(8px) scale(.99); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .dialog,
+  .overlay[data-state='leaving'],
+  .overlay[data-state='leaving'] .dialog {
+    animation: none;
+  }
+
+  .actions button {
+    transition: none;
+  }
+}

@@ -637,8 +637,14 @@
 
   .bottomLegal {
     width: 100%;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px 12px;
+  }
+
+  .legalLinks {
+    justify-content: flex-end;
+    gap: 4px 12px;
   }
 }
 

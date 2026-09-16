@@ -325,6 +325,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
               <div className={styles.bottomLegal}>
                 <p>© 2026 burgama</p>
                 <nav className={styles.legalLinks} aria-label="Legal">
+                  <Link href="/cookies">Cookies</Link>
                   <Link href="/privacy">Privacy</Link>
                   <Link href="/terms">Terms</Link>
                 </nav>

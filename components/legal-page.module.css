@@ -1,8 +1,110 @@
-.navigation { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
-.document a { color: inherit; text-decoration: underline; text-underline-offset: .2em; overflow-wrap: anywhere; }
-.updated { margin: 0 0 56px; font-size: 17px; font-weight: 400; line-height: 1.5; }
-.sections { display: flex; flex-direction: column; gap: 48px; font-size: var(--type-lead-size); font-weight: var(--type-lead-weight); line-height: var(--type-lead-leading); }
-.sections section { display: flex; flex-direction: column; gap: 20px; }
-.sections h2 { margin: 0; font-family: var(--font-cenura), sans-serif; font-size: var(--type-card-size); font-weight: var(--type-heading-weight); line-height: var(--type-card-leading); text-transform: none; text-wrap: balance; }
-.sections p { margin: 0; }
-.address { font-style: normal; }
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 20px;
+  width: 100%;
+}
+
+.navigation a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  text-decoration: none;
+  text-underline-offset: .25em;
+}
+
+.navigation a[aria-current='page'] {
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.document {
+  max-width: 680px;
+}
+
+.document a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+  overflow-wrap: anywhere;
+}
+
+.updated {
+  margin: 0 0 48px;
+  color: color-mix(in srgb, var(--palette-navy) 68%, var(--palette-blue-slate));
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.65;
+}
+
+.sections section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sections h2 {
+  max-width: 22ch;
+  margin: 0;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(27px, 4vw, 34px);
+  font-weight: 400;
+  line-height: 1.08;
+  text-transform: none;
+  text-wrap: balance;
+}
+
+.sections p {
+  margin: 0;
+}
+
+.address {
+  font-style: normal;
+}
+
+.relatedPolicies {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  font-size: 15px;
+}
+
+.relatedPolicies a,
+.relatedPolicies span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+@media (min-width: 700px) {
+  .updated {
+    margin-bottom: 56px;
+  }
+
+  .sections {
+    gap: 52px;
+    font-size: 18px;
+  }
+
+  .sections section {
+    gap: 18px;
+  }
+}

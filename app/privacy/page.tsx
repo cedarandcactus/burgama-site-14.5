@@ -41,9 +41,9 @@ const sections = [
     id: 'cookies',
     title: 'Cookies & tracking choices',
     paragraphs: [
-      'The current website does not use advertising pixels or set application cookies to store enquiry details, newsletter entries, or visitor profiles. Its Vercel Web Analytics integration does not rely on tracking cookies. Hosting and security services may use technologies necessary to deliver and protect the website.',
-      'You can manage cookies and other browser permissions through your browser settings. Blocking some technologies may affect website functionality. We do not use information from this website for targeted advertising or cross-context behavioral advertising, and we do not sell personal information collected through this website.',
-      'If we introduce nonessential tracking that requires consent, we will provide the required notice and choice before activating it. The website does not currently perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
+      'The website uses a necessary first-party cookie for 30 days to remember whether you accepted optional cookies or chose only necessary storage. If you accept, a second first-party preference cookie remembers the homepage introduction shown to you for 30 days. It contains only a number from 0 to 2 and is removed when you choose only necessary. Neither cookie stores enquiry details, newsletter entries, or an advertising identifier.',
+      'Vercel Web Analytics does not rely on tracking cookies. You can manage or delete cookies through your browser settings; deleting the consent cookie causes the choice notice to return. Our Cookie Policy describes each cookie, its purpose, duration, and attributes in more detail.',
+      'We do not use information from this website for targeted advertising or cross-context behavioral advertising, and we do not sell personal information collected through this website. If we introduce nonessential technology that requires consent, we will update our notice and provide the required choice before activating it. The website does not perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
     ],
   },
   {
