@@ -75,6 +75,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     const letters = Array.from(track.querySelectorAll<HTMLElement>('[data-footer-letter]'))
     let disposed = false
     let refreshFrame = 0
+    let refreshTimer: ReturnType<typeof setTimeout> | undefined
+    const enquiry = root.querySelector<HTMLElement>('[data-inline-enquiry]')
     let curveEntrance = 0
     let curveDestination = 0
     const measureCurve = () => {
@@ -106,13 +108,16 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     const refresh = () => {
       if (disposed) return
       cancelAnimationFrame(refreshFrame)
-      refreshFrame = requestAnimationFrame(() => {
-        if (!disposed) {
+      clearTimeout(refreshTimer)
+      refreshTimer = setTimeout(() => {
+        if (disposed || enquiry?.querySelector('[data-layout-animating="true"]')) return
+        refreshFrame = requestAnimationFrame(() => {
+          if (disposed || enquiry?.querySelector('[data-layout-animating="true"]')) return
           measureWordmark()
           measureCurve()
           ScrollTrigger.refresh()
-        }
-      })
+        })
+      }, 100)
     }
 
     media.add({
@@ -192,7 +197,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     document.fonts.addEventListener('loadingdone', refresh)
     let previousWidth = root.clientWidth
     let previousFormHeight = 0
-    const enquiry = root.querySelector<HTMLElement>('[data-inline-enquiry]')
+    enquiry?.addEventListener('enquiry-layout-settled', refresh)
     const observer = new ResizeObserver(() => {
       const formHeight = enquiry?.offsetHeight ?? 0
       if (root.clientWidth === previousWidth && formHeight === previousFormHeight) return
@@ -206,6 +211,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     return () => {
       disposed = true
       cancelAnimationFrame(refreshFrame)
+      clearTimeout(refreshTimer)
+      enquiry?.removeEventListener('enquiry-layout-settled', refresh)
       observer.disconnect()
       document.fonts.removeEventListener('loadingdone', refresh)
       media.revert()

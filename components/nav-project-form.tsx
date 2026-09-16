@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useLayoutEffect, useId, useRef, useState, type FormEvent } from 'react'
+import { Check, Copy, Plus } from 'lucide-react'
+import { gsap, prefersReducedMotion } from '@/lib/motion'
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
@@ -43,12 +45,12 @@ function ContactFields({ idPrefix, contact, errors, onChange }: { idPrefix: stri
   return (
     <FieldGroup className={styles.contactFields}>
       {([
-        { key: 'name', label: 'name', type: 'text', autocomplete: 'name', placeholder: 'name', max: 100 },
-        { key: 'email', label: 'email', type: 'email', autocomplete: 'email', placeholder: 'email', max: 254 },
-        { key: 'phone', label: 'phone', type: 'tel', autocomplete: 'tel', placeholder: 'phone', max: 40 },
+        { key: 'name', label: 'your name', type: 'text', autocomplete: 'name', placeholder: 'Alex Morgan', max: 100 },
+        { key: 'email', label: 'email address', type: 'email', autocomplete: 'email', placeholder: 'alex@company.com', max: 254 },
+        { key: 'phone', label: 'phone number', type: 'tel', autocomplete: 'tel', placeholder: '+1 555 123 4567', max: 40 },
       ] as const).map(({ key, label, type, autocomplete, placeholder, max }) => (
-        <Field key={key} data-invalid={!!errors[key]}>
-          <FieldLabel className="sr-only" htmlFor={`${idPrefix}-${key}`}>{label}</FieldLabel>
+        <Field key={key} data-enquiry-motion="" data-invalid={!!errors[key]} data-filled={!!contact[key]}>
+          <FieldLabel htmlFor={`${idPrefix}-${key}`}>{label}</FieldLabel>
           <Input id={`${idPrefix}-${key}`} name={key} type={type} autoComplete={autocomplete} placeholder={placeholder} maxLength={max} required value={contact[key]} onChange={(event) => onChange(key, event.target.value)} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `${idPrefix}-${key}-error` : undefined} />
           <FieldError id={`${idPrefix}-${key}-error`}>{errors[key]}</FieldError>
         </Field>
@@ -75,7 +77,16 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
   const focusStep = useRef(false)
   const [brief, setBrief] = useState('')
   const [step, setStep] = useState(0)
-  const [direction, setDirection] = useState(1)
+  const direction = useRef(1)
+  const [busy, setBusy] = useState(false)
+  const busyRef = useRef(false)
+  const pendingStep = useRef<number | null>(null)
+  const viewport = useRef<HTMLDivElement>(null)
+  const content = useRef<HTMLDivElement>(null)
+  const transition = useRef<gsap.core.Timeline | null>(null)
+  const deadline = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const copyRequest = useRef(0)
+  const settleMotion = useRef<() => void>(() => {})
   const [company, setCompany] = useState('')
   const [customType, setCustomType] = useState('')
   const [budget, setBudget] = useState(2)
@@ -89,30 +100,116 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
   const heightCallback = useRef(onHeightChange)
   heightCallback.current = onHeightChange
 
-  useEffect(() => {
-    if (!active || !form.current || inline) return
-    const observer = new ResizeObserver(([entry]) => heightCallback.current?.(entry.borderBoxSize[0]?.blockSize ?? entry.target.getBoundingClientRect().height))
-    observer.observe(form.current)
-    return () => observer.disconnect()
-  }, [active, inline])
+  useLayoutEffect(() => {
+    const element = content.current
+    const frame = viewport.current
+    const root = form.current
+    if (!element || !frame || !root) return
+    let previousHeight = element.getBoundingClientRect().height
+    let resizeTween: gsap.core.Tween | null = null
+    const settled = () => {
+      delete root.dataset.layoutAnimating
+      root.dispatchEvent(new Event('enquiry-layout-settled', { bubbles: true }))
+    }
+    const measure = () => {
+      const height = element.getBoundingClientRect().height
+      if (!height) return
+      const formStyle = getComputedStyle(root)
+      const chrome = (root.firstElementChild?.getBoundingClientRect().height ?? 0) + parseFloat(formStyle.rowGap) + parseFloat(formStyle.paddingTop) + parseFloat(formStyle.paddingBottom)
+      heightCallback.current?.(height + chrome)
+      if (Math.abs(height - previousHeight) < 1) return
+      resizeTween?.kill()
+      if (!active || prefersReducedMotion() || document.hidden || !previousHeight) {
+        gsap.set(frame, { clearProps: 'height' })
+        settled()
+      } else {
+        if (!frame.style.height) gsap.set(frame, { height: previousHeight })
+        root.dataset.layoutAnimating = 'true'
+        resizeTween = gsap.to(frame, { height, duration: .42, ease: 'power3.inOut', onComplete: () => {
+          gsap.set(frame, { clearProps: 'height' })
+          settled()
+        } })
+      }
+      previousHeight = height
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    observer.observe(root.firstElementChild!)
+    measure()
+    const finishResize = () => {
+      resizeTween?.kill()
+      gsap.set(frame, { clearProps: 'height' })
+      settled()
+    }
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+    const onReduced = () => { if (reduced.matches) finishResize() }
+    const onVisibility = () => { if (document.hidden) finishResize() }
+    reduced.addEventListener('change', onReduced)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      observer.disconnect()
+      resizeTween?.kill()
+      gsap.set(frame, { clearProps: 'height' })
+      reduced.removeEventListener('change', onReduced)
+      document.removeEventListener('visibilitychange', onVisibility)
+      settled()
+    }
+  }, [active])
 
-  useEffect(() => {
-    if (!active || (inline && !focusStep.current)) return
-    const frame = requestAnimationFrame(() => {
+  useLayoutEffect(() => {
+    const element = content.current
+    if (!element) return
+    const items = element.querySelectorAll('[data-enquiry-motion]')
+    const focus = () => {
+      if (!active || document.hidden || (inline && !focusStep.current)) return
       focusStep.current = false
       if (inline && form.current && heading.current) {
         const clearance = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 84
         const bounds = heading.current.getBoundingClientRect()
         if (bounds.top < clearance || bounds.bottom > window.innerHeight) {
           scroll?.cancelScroll()
-          window.scrollTo({ top: Math.max(0, Math.round(window.scrollY + form.current.getBoundingClientRect().top - clearance)), behavior: 'instant' })
+          window.scrollTo({ top: Math.max(0, window.scrollY + form.current.getBoundingClientRect().top - clearance), behavior: 'instant' })
         }
       }
       heading.current?.focus({ preventScroll: true })
       if (!inline) form.current?.closest('.header-inner')?.scrollTo({ top: 0, behavior: 'instant' })
-    })
-    return () => cancelAnimationFrame(frame)
+    }
+    const finish = () => {
+      if (deadline.current) clearTimeout(deadline.current)
+      transition.current?.kill()
+      gsap.set(items, { clearProps: 'opacity,transform' })
+      busyRef.current = false
+      element.inert = false
+      setBusy(false)
+      if (pendingStep.current !== null) {
+        const next = pendingStep.current
+        pendingStep.current = null
+        setStep(next)
+      } else focus()
+    }
+    settleMotion.current = finish
+    if (!active || prefersReducedMotion() || document.hidden) finish()
+    else if (focusStep.current) {
+      transition.current = gsap.timeline({ onComplete: finish }).fromTo(items,
+        { opacity: 0, x: direction.current * (innerWidth < 700 ? 8 : 14) },
+        { opacity: 1, x: 0, duration: .36, stagger: .035, ease: 'power3.out' })
+      deadline.current = setTimeout(finish, 900)
+    } else focus()
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+    const onReduced = () => { if (reduced.matches) finish() }
+    const onVisibility = () => { if (document.hidden) finish() }
+    reduced.addEventListener('change', onReduced)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      transition.current?.kill()
+      if (deadline.current) clearTimeout(deadline.current)
+      gsap.set(items, { clearProps: 'opacity,transform' })
+      reduced.removeEventListener('change', onReduced)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
   }, [active, step, inline, scroll])
+
+  useEffect(() => () => { copyRequest.current += 1 }, [])
 
   useEffect(() => {
     if (copyState !== 'manual') return
@@ -134,15 +231,32 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
   const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
   function goTo(next: number) {
+    if (busyRef.current || !active || next === step) return
+    busyRef.current = true
+    setBusy(true)
     focusStep.current = true
-    setDirection(next < step ? -1 : 1)
-    setErrors({})
-    setCopyState('idle')
-    setStep(next)
+    direction.current = next < step ? -1 : 1
+    pendingStep.current = next
+    copyRequest.current += 1
+    const commit = () => {
+      if (pendingStep.current === null) return
+      pendingStep.current = null
+      setErrors({})
+      setCopyState('idle')
+      setStep(next)
+    }
+    if (prefersReducedMotion() || document.hidden) { commit(); return }
+    if (content.current) content.current.inert = true
+    transition.current?.kill()
+    transition.current = gsap.timeline({ onComplete: commit }).to(content.current?.querySelectorAll('[data-enquiry-motion]') ?? [], {
+      opacity: 0, x: direction.current * -8, duration: .14, ease: 'power2.in',
+    })
+    deadline.current = setTimeout(() => settleMotion.current(), 800)
   }
 
   function submit(event: FormEvent) {
     event.preventDefault()
+    if (busyRef.current || !active) return
     const nextErrors: Errors = step === 0
       ? !company ? { company: 'Choose the type that fits best.' } : company === 'other' && !customType.trim() ? { customType: 'Tell us a little about your company type.' } : {}
       : step === 2 ? validateContact(contact) : {}
@@ -160,16 +274,19 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
   }
 
   async function copyEnquiry() {
+    if (busyRef.current || copyState === 'copying') return
+    const request = ++copyRequest.current
     setCopyState('copying')
     try {
       await navigator.clipboard.writeText(enquiryText)
-      setCopyState('copied')
+      if (request === copyRequest.current) setCopyState('copied')
     } catch {
-      setCopyState('manual')
+      if (request === copyRequest.current) setCopyState('manual')
     }
   }
 
   function reset() {
+    if (busyRef.current) return
     setBrief('')
     setCompany('')
     setCustomType('')
@@ -184,42 +301,49 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
     <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Project enquiry' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={(event) => {
       if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
     }}>
-      <div id={`${idPrefix}-progress`} className={styles.progress} role="progressbar" aria-label="Enquiry progress" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={step + 1} aria-valuetext={`${steps[step]}, step ${step + 1} of ${steps.length}`}>
-        <span style={{ transform: `scaleX(${(step + 1) / steps.length})` }} />
+      <div className={styles.progressHeader}>
+        <div className={styles.progressCaption}><span>start a project</span><span id={`${idPrefix}-progress`}>step {step + 1} of 4</span></div>
+        <ol className={styles.stages} aria-label="Enquiry stages">
+          {steps.map((label, index) => <li key={label} aria-current={index === step ? 'step' : undefined} data-complete={index < step}><span className={styles.stageMarker} aria-hidden="true">{index < step ? <Check /> : index + 1}</span>{label}</li>)}
+        </ol>
+        <div className={styles.progress} aria-hidden="true"><span style={{ transform: `scaleX(${(step + 1) / steps.length})` }} /></div>
       </div>
-      <section key={step} className={styles.step} data-direction={direction < 0 ? 'back' : 'forward'} aria-labelledby={`${idPrefix}-step-heading`}>
-        <div className={styles.intro}>
+      <div ref={viewport} className={styles.viewport}>
+      <div ref={content} className={styles.content} inert={busy}>
+      <section key={step} className={styles.step} aria-labelledby={`${idPrefix}-step-heading`}>
+        <div className={styles.intro} data-enquiry-motion="">
           <h2 ref={heading} id={`${idPrefix}-step-heading`} tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{inline && step === 0 ? introHeading : headings[step]}</h2>
+          <p>{['a little context helps us see the bigger picture.', 'a starting point, not a commitment.', 'who should we get in touch with? all fields are required.', 'a quick look before the next step.'][step]}</p>
         </div>
         {step === 0 && (
           <FieldGroup>
-            <Field data-invalid={!!errors.company}>
+            <Field data-enquiry-motion="" data-invalid={!!errors.company}>
               <ToggleGroup className={styles.companyChoices} value={company ? [company] : []} onValueChange={(values) => {
                 setCompany(values[0] ?? '')
                 setErrors({})
               }} aria-label="Company type" aria-invalid={!!errors.company} aria-describedby={errors.company ? `${idPrefix}-company-error` : undefined}>
-                {companyTypes.map((type) => <ToggleGroupItem key={type} value={type}>{type}</ToggleGroupItem>)}
+                {companyTypes.map((type) => <ToggleGroupItem key={type} value={type}><span className={styles.choiceMarker} aria-hidden="true">{company === type ? <Check /> : <Plus />}</span>{type}</ToggleGroupItem>)}
               </ToggleGroup>
               <FieldError id={`${idPrefix}-company-error`}>{errors.company}</FieldError>
             </Field>
             {company === 'other' && (
-              <Field data-invalid={!!errors.customType}>
-                <FieldLabel className="sr-only" htmlFor={`${idPrefix}-customType`}>company type</FieldLabel>
+              <Field className={styles.revealField} data-invalid={!!errors.customType}>
+                <FieldLabel htmlFor={`${idPrefix}-customType`}>how would you describe your company?</FieldLabel>
                 <Input id={`${idPrefix}-customType`} name="companyType" maxLength={100} value={customType} onChange={(event) => { setCustomType(event.target.value); setErrors({}) }} placeholder="company type" required aria-invalid={!!errors.customType} aria-describedby={errors.customType ? `${idPrefix}-customType-error` : undefined} />
                 <FieldError id={`${idPrefix}-customType-error`}>{errors.customType}</FieldError>
               </Field>
             )}
-            {inline && <Field data-invalid={!!errors.brief}>
-              <FieldLabel className="sr-only" htmlFor={`${idPrefix}-brief`}>project brief</FieldLabel>
-              <Textarea id={`${idPrefix}-brief`} name="brief" className={styles.brief} placeholder={inline ? 'project details' : 'a little about your project'} maxLength={1200} rows={3} required value={brief} onChange={(event) => { setBrief(event.target.value); setErrors((previous) => ({ ...previous, brief: undefined })) }} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
+            {inline && <Field data-enquiry-motion="" data-invalid={!!errors.brief}>
+              <FieldLabel htmlFor={`${idPrefix}-brief`}>a little about your project</FieldLabel>
+              <Textarea id={`${idPrefix}-brief`} name="brief" className={styles.brief} placeholder="what are you imagining? what would you like to change?" maxLength={1200} rows={3} required value={brief} onChange={(event) => { setBrief(event.target.value); setErrors((previous) => ({ ...previous, brief: undefined })) }} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
               <FieldError id={`${idPrefix}-brief-error`}>{errors.brief}</FieldError>
             </Field>}
           </FieldGroup>
         )}
         {step === 1 && (
           <FieldGroup>
-            <div className={styles.budgetTop}>
-              <span className={styles.amount}>{undecided ? '—' : formatBudget(budget, currency, true)}</span>
+            <div className={styles.budgetTop} data-enquiry-motion="">
+              <div className={styles.budgetValue}><span className={styles.rangeLabel}>{undecided ? 'we can work it out together' : 'your estimated investment'}</span><span className={styles.amount} data-undecided={undecided}>{undecided ? 'let’s talk' : formatBudget(budget, currency, true)}</span></div>
               <Field className={styles.currencyField}>
                 <FieldLabel className="sr-only" htmlFor={`${idPrefix}-currency`}>currency</FieldLabel>
                 <NativeSelect id={`${idPrefix}-currency`} name="currency" value={currency} onChange={(event) => setCurrency(event.target.value as Currency)}>
@@ -227,11 +351,12 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
                 </NativeSelect>
               </Field>
             </div>
-            <Field>
+            <Field data-enquiry-motion="">
               <div className={styles.budgetControl} data-undecided={undecided}>
                 <Slider value={[budget]} min={0} max={budgetBands.length - 1} step={1} className={styles.budgetSlider} onValueChange={(values) => { setBudget(Array.isArray(values) ? values[0] : values); setUndecided(false) }} thumbProps={{ 'aria-label': 'Budget', getAriaValueText: () => undecided ? 'Not sure yet; adjust to choose a budget' : budgetLabel }} />
               </div>
-              <button type="button" className={styles.unsure} aria-pressed={undecided} onClick={() => setUndecided((value) => !value)}>not sure yet</button>
+              <div className={styles.rangeLabels} aria-hidden="true"><span>{formatBudget(0, currency, true)}</span><span>{formatBudget(5, currency, true)}</span></div>
+              <button type="button" className={styles.unsure} aria-pressed={undecided} onClick={() => setUndecided((value) => !value)}><span className={styles.choiceMarker} aria-hidden="true">{undecided ? <Check /> : <Plus />}</span>not sure yet</button>
             </Field>
           </FieldGroup>
         )}
@@ -241,28 +366,30 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
         }} />}
         {step === 3 && (
           <>
-            <dl className={styles.review}>
+            <dl className={styles.review} data-enquiry-motion="">
               <div><dt>company</dt><dd>{companyLabel}</dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(0)} aria-label="Edit company type">edit</button></dd></div>
               {inline && <div><dt>project</dt><dd className={styles.reviewBrief}>{brief.trim()}</dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(0)} aria-label="Edit project brief">edit</button></dd></div>}
               <div><dt>budget</dt><dd>{budgetLabel}</dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(1)} aria-label="Edit budget">edit</button></dd></div>
               <div><dt>contact</dt><dd>{contact.name.trim()}<span>{contact.email.trim()}</span><span>{contact.phone.trim()}</span></dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(2)} aria-label="Edit contact details">edit</button></dd></div>
             </dl>
-            <div className={styles.handoff}>
-              {inline ? <p id={`${idPrefix}-delivery`}>email delivery isn&apos;t connected yet</p> : <a href={`mailto:${recipient}`}>{recipient}</a>}
-              <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'} aria-label={copyState === 'copied' ? 'Enquiry copied' : 'Copy enquiry'}>{copyState === 'copied' ? 'copied' : inline ? 'copy enquiry' : 'copy'}</button>
+            <div className={styles.handoff} data-enquiry-motion="">
+              <div className={styles.delivery}><a href={`mailto:${recipient}`}>{recipient}</a><p id={`${idPrefix}-delivery`}>{inline ? 'sending isn’t connected yet. copy your enquiry and email us.' : 'open a draft in your email app, or copy your enquiry.'}</p></div>
+              <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'} aria-label={copyState === 'copied' ? 'Enquiry copied' : 'Copy enquiry'}><span key={copyState} className={styles.copyLabel}>{copyState === 'copied' ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}{copyState === 'copied' ? 'copied' : 'copy enquiry'}</span></button>
             </div>
             <p className={styles.copyStatus} role="status">{copyState === 'copied' ? <span className="sr-only">Enquiry copied.</span> : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
             {copyState === 'manual' && <Field><FieldLabel className="sr-only" htmlFor={`${idPrefix}-copy`}>enquiry</FieldLabel><Textarea id={`${idPrefix}-copy`} data-enquiry-copy="" className={styles.copyText} readOnly value={enquiryText} rows={6} onFocus={(event) => event.target.select()} /></Field>}
           </>
         )}
       </section>
-      <footer className={styles.footer}>
+      <footer className={styles.footer} data-enquiry-motion="">
         <div className={styles.actions}>
           {(!inline || step > 0) && <button type="button" className={styles.back} onClick={() => step === 0 ? onMenu?.() : goTo(step - 1)}><CircularArrowIcon direction="left" />{step === 0 ? 'menu' : 'back'}</button>}
           {step < 3 ? <button type="submit" className={styles.continue}>{step === 2 ? 'review' : 'continue'}<CircularArrowIcon /></button> : inline ? <button type="button" className={styles.continue} disabled aria-describedby={`${idPrefix}-delivery`}>send enquiry<CircularArrowIcon /></button> : <a className={styles.continue} href={mailto}>open email draft<CircularArrowIcon /></a>}
         </div>
         {step === 3 && <div className={styles.footerNote}><button type="button" onClick={reset}>start over</button>{!inline && <p>opens your email app</p>}</div>}
       </footer>
+      </div>
+      </div>
     </form>
   )
 }
