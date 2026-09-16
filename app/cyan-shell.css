@@ -277,7 +277,7 @@ body .cyan-header .cyan-menu-trigger {
   margin-left: var(--header-control-gap);
   overflow: hidden;
   border-radius: 999px;
-  color: var(--palette-navy);
+  color: var(--header-ink);
   background: transparent;
   border: 1.5px solid currentColor;
   cursor: pointer;

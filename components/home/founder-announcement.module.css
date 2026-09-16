@@ -24,10 +24,12 @@
   align-items: stretch;
   gap: 20px;
   overflow-y: auto;
+  border: 0;
   color: var(--palette-powder);
   background: transparent;
   box-shadow: none;
   outline: 0;
+  --tw-ring-shadow: 0 0 #0000;
   translate: -50% -50%;
   transition:
     opacity 360ms var(--ease-module),
@@ -146,12 +148,6 @@
   font-family: var(--font-cenura), sans-serif;
   font-size: 1rem;
   font-weight: 400;
-}
-
-.action:first-child {
-  border-color: currentColor;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
 }
 
 .action:is(:hover, :focus-visible) {
