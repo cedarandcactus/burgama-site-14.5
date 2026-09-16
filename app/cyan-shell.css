@@ -134,7 +134,7 @@ body .cyan-header .cyan-header-wordmark {
   display: flex;
   opacity: 1;
   font: 400 30px/1.25 var(--font-cenura), sans-serif;
-  letter-spacing: -.1em;
+  letter-spacing: -2px;
   white-space: nowrap;
 }
 

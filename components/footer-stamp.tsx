@@ -14,7 +14,7 @@ export function FooterStamp() {
       </g>
       <image href="/burgama-symbol.svg" x="99" y="62" width="42" height="42" />
       <path d="M 31,114 H 209 M 31,153 H 209" fill="none" stroke="currentColor" strokeWidth="1" />
-      <text x="120" y="144" textAnchor="middle" fill="currentColor" fontSize="39" className="font-serif">burgama</text>
+      <text x="120" y="144" textAnchor="middle" fill="currentColor" fontSize="39" letterSpacing="-2" className="font-serif">burgama</text>
       <text x="120" y="175" textAnchor="middle" fill="currentColor" fontSize="15" fontWeight="300">ideas into identities.</text>
     </svg>
   )
