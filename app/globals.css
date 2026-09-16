@@ -2227,32 +2227,64 @@
 */
 
 /* ------------------------------------------------------------------
-   Smooth reveal — one shared entrance for every block
+   Scroll reveals — quick blocks and overlapping section entrances
 ------------------------------------------------------------------ */
 
-/*
-  Long distance, long duration, single ease. Driven by an
-  IntersectionObserver that sets data-visible, so blocks resolve as they are
-  reached rather than all at once on load.
-*/
+/* The observer arms offscreen blocks only; SSR and no-JS remain readable. */
 .reveal {
-  opacity: 0;
-  transform: translate3d(0, 1.75rem, 0);
-  transition:
-    opacity var(--dur-slow) var(--ease-smooth),
-    transform var(--dur-slow) var(--ease-smooth);
+  --reveal-travel: 24px;
+  --heading-travel: 42px;
+  --reveal-ease: cubic-bezier(.16, 1, .3, 1);
 }
 
-.reveal[data-visible='true'] {
-  opacity: 1;
-  transform: none;
+.reveal[data-reveal='block'][data-ready='true'] {
+  transition: opacity 400ms ease-out, transform 560ms var(--reveal-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal[data-reveal='block'][data-ready='true'][data-visible='false'] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-travel), 0);
+}
+
+.reveal[data-reveal='section'][data-ready='true'] > * {
+  transition: opacity 360ms ease-out, transform 600ms var(--reveal-ease), clip-path 600ms var(--reveal-ease);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--child-delay, 0ms));
+}
+
+.reveal[data-reveal='section'] > :nth-child(2) { --child-delay: 75ms; }
+.reveal[data-reveal='section'] > :nth-child(n + 3) { --child-delay: 140ms; }
+
+.reveal[data-reveal='section'][data-ready='true'][data-visible='false'] > * {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-travel), 0);
+}
+
+.reveal[data-reveal='section'][data-ready='true'] > :is(h2, h3) {
+  clip-path: inset(-8% -2% -8% -2%);
+  transition-duration: 320ms, 680ms, 680ms;
+}
+
+.reveal[data-reveal='section'][data-ready='true'][data-visible='false'] > :is(h2, h3) {
+  transform: translate3d(0, var(--heading-travel), 0);
+  clip-path: inset(0 -2% 100% -2%);
+}
+
+@media (max-width: 699px) {
+  .reveal {
+    --reveal-travel: 16px;
+    --heading-travel: 28px;
+    --reveal-delay: 0ms !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .reveal[data-reveal][data-ready],
+  .reveal[data-reveal='section'][data-ready] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
   }
 }
 

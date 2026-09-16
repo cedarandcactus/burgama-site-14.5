@@ -16,11 +16,11 @@ export function ActCapabilities() {
       </div>
       <div className={styles.processInner}>
         <div className={styles.processContent}>
-          <Reveal>
+          <Reveal variant="section">
             <h2 id="capabilities-heading" className={styles.processHeading}>How we work</h2>
             <p className={styles.processDescription}>We start by listening, getting to know your business and what makes it different. Together, we shape a clear direction and bring it to life through identity, websites, content, and campaigns. We stay close to the work after launch, learning from what connects and refining what comes next.</p>
           </Reveal>
-          <Reveal className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>
+          <Reveal delay={140} className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>
         </div>
       </div>
       <SectionRise surface="navy" />

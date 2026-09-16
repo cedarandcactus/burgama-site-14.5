@@ -11,7 +11,7 @@ type Navigation = { id: number; target: Destination; source: string; sent: boole
 const TransitionContext = createContext<((destination: Destination) => void) | null>(null)
 export const usePageTransition = () => useContext(TransitionContext)
 
-const timing = { cover: 140, hold: 70, reveal: 280, deadline: 3000 }
+const timing = { cover: 100, hold: 0, reveal: 200, deadline: 3000 }
 const frostReady = timing.cover + timing.hold
 const transitionStyle = {
   '--cover-duration': `${timing.cover}ms`,
