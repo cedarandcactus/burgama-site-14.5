@@ -508,20 +508,19 @@
 .bottomLegal {
   display: flex;
   flex: none;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: baseline;
+  justify-content: flex-start;
   gap: 20px;
-  margin-left: auto;
 }
 
 .bottomRow {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 12px 24px;
   padding-top: 20px;
-  font-size: clamp(12px, .95vw, 15px);
+  font-size: 14px;
   font-weight: 300;
   line-height: 1.5;
 }
@@ -632,19 +631,18 @@
 
   .address {
     flex-basis: 100%;
-    font-size: 12px;
   }
 
   .bottomLegal {
     width: 100%;
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px 12px;
+    gap: 0;
   }
 
   .legalLinks {
-    justify-content: flex-end;
-    gap: 4px 12px;
+    justify-content: flex-start;
+    gap: 4px 16px;
   }
 }
 
@@ -668,9 +666,6 @@
   }
 
   .bottomRow {
-    flex-direction: row;
-    align-items: center;
-    gap: 0 14px;
     padding-top: 16px;
   }
 }

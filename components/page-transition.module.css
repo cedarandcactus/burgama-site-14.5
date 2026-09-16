@@ -12,15 +12,14 @@
 }
 
 .frost {
+  --frost-radius: 8px;
   position: absolute;
-  inset: -3%;
-  background: var(--palette-powder-frost);
-  background: color-mix(in srgb, var(--palette-powder) 42%, transparent);
-  -webkit-backdrop-filter: blur(18px) saturate(.72) brightness(1.08);
-  backdrop-filter: blur(18px) saturate(.72) brightness(1.08);
+  inset: 0;
+  background: color-mix(in srgb, var(--palette-powder) 10%, transparent);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
   opacity: 0;
-  transform: scale(1.025);
-  will-change: opacity, transform;
+  animation: frost-flow var(--transition-duration) linear both;
 }
 
 .skip {
@@ -40,27 +39,29 @@
   outline-offset: -6px;
 }
 
-.overlay[data-phase='covering'] .frost {
-  animation: frost-arrive var(--cover-duration) cubic-bezier(.2, .75, .3, 1) both;
+/* One timeline avoids restarting the blur when React commits the next route. */
+@keyframes frost-flow {
+  0% {
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+    animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+  }
+  30% {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(var(--frost-radius));
+    backdrop-filter: blur(var(--frost-radius));
+    animation-timing-function: cubic-bezier(.16, 1, .3, 1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
 }
 
-.overlay[data-phase='covered'] .frost {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.overlay[data-phase='revealing'] .frost {
-  animation: frost-reveal var(--reveal-duration) cubic-bezier(.22, 1, .36, 1) both;
-}
-
-@keyframes frost-arrive {
-  from { opacity: 0; transform: scale(1.025); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes frost-reveal {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(.985); }
+@media (max-width: 699px) {
+  .frost { --frost-radius: 5px; }
 }
 
 @keyframes fail-open {

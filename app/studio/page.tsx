@@ -50,7 +50,7 @@ export default function StudioPage() {
 
       <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
         <div className="studio-width">
-        <Reveal className={styles.sectionHeading}>
+        <Reveal variant="section" className={styles.sectionHeading}>
           <h2 id="team-title" className="font-serif">Different disciplines. A shared responsibility for the work.</h2>
         </Reveal>
 
@@ -80,7 +80,7 @@ export default function StudioPage() {
 
       <section className="studio-band" data-surface="navy" aria-labelledby="small-title">
         <div className="studio-width">
-        <Reveal className={styles.smallSection}>
+        <Reveal variant="section" className={styles.smallSection}>
           <h2 id="small-title" className="font-serif">
             Fewer handoffs. More room to get the details right.
           </h2>
