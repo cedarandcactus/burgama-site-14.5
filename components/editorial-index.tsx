@@ -15,7 +15,6 @@ export function EditorialIndex() {
         titleId="research-title"
         surface="navy"
         nextSurface="powder"
-        metadata={<p>Research</p>}
         intro={['Practical observations and analysis from our work on websites, ecommerce, and search. What we test, what we question, and how it informs the next decision.']}
       />
       <section className="studio-band" data-surface="powder" aria-label="All research articles">

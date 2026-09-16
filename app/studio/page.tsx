@@ -39,7 +39,7 @@ const TEAM = [
 export default function StudioPage() {
   return (
     <div className="studio-page">
-      <PageHero variant="centered" wordmark="The people shaping your strategy are the ones bringing it to life." titleId="about-title" intro={['Burgama is an independent creative and marketing studio in Austin. Our team works across strategy, design, digital, and growth, so the thinking behind a project stays connected to the details that make it work.']} nextSurface="blue-slate" />
+      <PageHero variant="centered" wordmark="The people shaping your strategy are the ones bringing it to life." titleId="about-title" intro={['You work directly with a small team across strategy, design, digital, and growth. We make the thinking behind our recommendations clear and stay involved through delivery, so you know who is responsible for the work and why each decision matters.']} nextSurface="blue-slate" />
 
       <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
         <div className="studio-width">

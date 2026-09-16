@@ -126,14 +126,23 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (excluded) return
     cancelScroll()
+    let cancelled = false
+    const alignHash = () => {
+      if (!cancelled && location.hash) scrollToHash(location.hash, true)
+    }
     let frame = requestAnimationFrame(() => {
       frame = requestAnimationFrame(() => {
         lenis.current?.resize()
         ScrollTrigger.refresh()
+        alignHash()
       })
     })
-    return () => cancelAnimationFrame(frame)
-  }, [pathname, excluded, cancelScroll])
+    void document.fonts.ready.then(alignHash)
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(frame)
+    }
+  }, [pathname, excluded, cancelScroll, scrollToHash])
 
   const value = useMemo(() => ({ scrollToHash, setScrollLock, cancelScroll }), [scrollToHash, setScrollLock, cancelScroll])
   return <ScrollContext.Provider value={value}>{children}</ScrollContext.Provider>
