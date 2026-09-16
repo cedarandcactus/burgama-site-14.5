@@ -6,16 +6,14 @@ import { useSmoothScroll } from './smooth-scroll'
 import styles from './page-transition.module.css'
 
 type Destination = { href: string; replace?: boolean; scroll?: boolean }
-type Phase = 'idle' | 'covering' | 'covered' | 'revealing'
+type Phase = 'idle' | 'covering' | 'revealing'
 type Navigation = { id: number; target: Destination; source: string; sent: boolean; completed: boolean }
 const TransitionContext = createContext<((destination: Destination) => void) | null>(null)
 export const usePageTransition = () => useContext(TransitionContext)
 
-const timing = { cover: 100, hold: 0, reveal: 200, deadline: 3000 }
-const frostReady = timing.cover + timing.hold
+const timing = { cover: 120, reveal: 280, deadline: 600 }
 const transitionStyle = {
-  '--cover-duration': `${timing.cover}ms`,
-  '--reveal-duration': `${timing.reveal}ms`,
+  '--transition-duration': `${timing.cover + timing.reveal}ms`,
   '--transition-deadline': `${timing.deadline}ms`,
 } as React.CSSProperties
 
@@ -36,7 +34,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const focusFrame = useRef(0)
   const bodyLock = useRef<{ overflow: string; padding: string; appliedPadding: string } | null>(null)
   const reduced = useRef(false)
-  const startedAt = useRef(0)
 
   const clearAnimation = useCallback(() => {
     if (animationTimer.current !== null) clearTimeout(animationTimer.current)
@@ -117,12 +114,11 @@ export function PageTransition({ children }: { children: ReactNode }) {
     const request = navigation.current
     if (!request || request.id !== id || request.sent) return
     request.sent = true
-    if (phaseRef.current === 'covering') changePhase('covered')
     startTransition(() => {
       if (request.target.replace) router.replace(request.target.href, { scroll: request.target.scroll })
       else router.push(request.target.href, { scroll: request.target.scroll })
     })
-  }, [router, changePhase])
+  }, [router])
   const skip = useCallback(() => {
     if (phaseRef.current === 'idle') return
     const id = sequenceRef.current
@@ -176,8 +172,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     if (current === request.source && current !== target.pathname + target.search) return
     request.completed = true
     if (phaseRef.current === 'idle') focusDestination(request)
-    else scheduleAnimation(request.id, () => reveal(request.id), Math.max(0, frostReady - (performance.now() - startedAt.current)))
-  }, [pathname, pending, phase, focusDestination, reveal, scheduleAnimation])
+  }, [pathname, pending, phase, focusDestination])
 
   const active = phase !== 'idle'
   const onKey = useEffectEvent((event: KeyboardEvent) => {
@@ -205,7 +200,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
       navigate(id)
       return
     }
-    startedAt.current = performance.now()
     setSequence(id)
     const scrollbar = window.innerWidth - document.documentElement.clientWidth
     const overflow = document.body.style.overflow
@@ -216,10 +210,12 @@ export function PageTransition({ children }: { children: ReactNode }) {
     if (content.current) content.current.inert = true
     scroll?.setScrollLock('transition', true)
     changePhase('covering')
-    scheduleAnimation(id, () => navigate(id), timing.cover)
+    navigate(id)
+    // The visual cycle never waits on a slow route; focus follows its eventual commit.
+    scheduleAnimation(id, () => reveal(id), timing.cover)
     // This deadline is independent of animation scheduling and React's pending route state.
     deadlineTimer.current = setTimeout(() => { navigate(id); finishVisual(id) }, timing.deadline)
-  }, [changePhase, clearAnimation, clearDeadline, clearFocus, finishVisual, navigate, scheduleAnimation, scroll])
+  }, [changePhase, clearAnimation, clearDeadline, clearFocus, finishVisual, navigate, reveal, scheduleAnimation, scroll])
 
   return (
     <TransitionContext.Provider value={begin}>
@@ -227,7 +223,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
       {active && <div key={sequence} className={styles.overlay} style={transitionStyle} data-phase={phase} data-page-transition="" onAnimationEnd={event => {
         if (event.target === event.currentTarget) finishVisual(sequence)
       }}>
-        <div className={styles.frost} aria-hidden="true" />
+        <div className={styles.frost} aria-hidden="true" onAnimationEnd={() => finishVisual(sequence)} />
         <span className="sr-only" role="status">Loading page</span>
         <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip page transition" />
       </div>}
