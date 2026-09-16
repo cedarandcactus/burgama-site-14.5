@@ -71,6 +71,7 @@ export function ProjectCard({
               ))}
             </ul>
             <h3 className="project-tile-title">{project.title}</h3>
+            {actionLabel && <p className="project-mobile-summary">{project.tagline}</p>}
             {!concise && <p className="project-tile-summary">{project.summary}</p>}
           </div>
           {actionLabel ? (

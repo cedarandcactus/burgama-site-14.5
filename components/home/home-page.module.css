@@ -1162,6 +1162,10 @@
   font-weight: 500;
 }
 
+.page .workTrack :global(.project-mobile-summary) {
+  display: none;
+}
+
 .page .workTrack :global(.project-link-prompt) {
   display: inline-flex;
   grid-area: action;
@@ -1189,32 +1193,8 @@
   display: flex;
   width: min(calc(100% - 2 * var(--home-inset)), 1120px);
   margin: 32px auto 0;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 32px;
-}
-
-.reelPosition {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  max-width: 160px;
-}
-
-.reelProgress {
-  height: 4px;
-  flex: 1;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--palette-navy-raised);
-}
-
-.reelProgress span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: currentColor;
-  transition: width 400ms ease;
 }
 
 .reelArrows {
@@ -1296,7 +1276,7 @@
   .page .workTrack :global(.project-tile-caption) {
     grid-template-areas:
       'title action'
-      'tags tags';
+      'description description';
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px 12px;
     align-items: center;
@@ -1304,7 +1284,18 @@
   }
 
   .page .workTrack :global(.project-category-pills) {
-    justify-self: start;
+    display: none;
+  }
+
+  .page .workTrack :global(.project-mobile-summary) {
+    display: block;
+    grid-area: description;
+    max-width: 34ch;
+    margin: 0;
+    color: color-mix(in srgb, currentColor 78%, transparent);
+    font-size: 14px;
+    line-height: 1.45;
+    text-wrap: pretty;
   }
 
   .page .workTrack :global(.project-link-prompt) {
@@ -1314,12 +1305,11 @@
   }
 
   .reelControls {
-    margin-top: 24px;
-    gap: 20px;
+    margin-top: 20px;
   }
 
-  .reelPosition {
-    max-width: 120px;
+  .reelArrows {
+    justify-content: center;
   }
 
   .reelArrows button {
@@ -1328,7 +1318,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reelProgress span,
   .reelArrows button > span,
   .page .workTrack :global(.project-link-prompt) {
     transition: none;
