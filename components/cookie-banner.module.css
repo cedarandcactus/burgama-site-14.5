@@ -1,10 +1,3 @@
-.filter {
-  position: fixed;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
 .overlay {
   position: fixed;
   right: max(12px, env(safe-area-inset-right, 0px));
@@ -25,11 +18,16 @@
   gap: 12px;
   overflow: hidden;
   padding: 14px;
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--palette-powder) 20%, transparent);
   border-radius: 20px;
-  color: var(--palette-navy);
-  background: transparent;
-  box-shadow: none;
+  color: var(--palette-powder);
+  background: color-mix(in srgb, var(--palette-navy) 91%, transparent);
+  box-shadow:
+    0 12px 32px color-mix(in srgb, var(--palette-navy) 34%, transparent),
+    inset 0 0 32px color-mix(in srgb, var(--palette-powder) 5%, transparent),
+    inset 0 1px 1px color-mix(in srgb, var(--palette-soft-white) 18%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+  backdrop-filter: blur(8px) saturate(1.05);
   text-align: left;
 }
 
@@ -37,29 +35,26 @@
 .dialog::after {
   position: absolute;
   inset: 0;
+  z-index: -1;
   border-radius: inherit;
   content: '';
   pointer-events: none;
 }
 
 .dialog::before {
-  z-index: -1;
-  background: color-mix(in srgb, var(--palette-powder) 44%, transparent);
-  box-shadow:
-    inset 0 2px 2px color-mix(in srgb, var(--palette-soft-white) 92%, transparent),
-    inset 2px 0 3px color-mix(in srgb, var(--palette-soft-white) 42%, transparent),
-    inset 0 -2px 3px color-mix(in srgb, var(--palette-navy) 18%, transparent),
-    0 0 22px -10px color-mix(in srgb, var(--palette-soft-white) 54%, transparent),
-    0 14px 34px -20px color-mix(in srgb, var(--palette-navy) 88%, transparent);
+  background: linear-gradient(
+    to left top,
+    color-mix(in srgb, var(--palette-soft-white) 8%, transparent),
+    transparent 52%
+  );
 }
 
 .dialog::after {
-  z-index: -2;
-  background: color-mix(in srgb, var(--palette-powder) 14%, transparent);
-  -webkit-backdrop-filter: blur(11px) saturate(1.28) contrast(1.08);
-  backdrop-filter: blur(11px) saturate(1.28) contrast(1.08);
-  -webkit-filter: url('#cookie-glass-distortion');
-  filter: url('#cookie-glass-distortion');
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--palette-soft-white) 5%, transparent),
+    transparent 46%
+  );
 }
 
 .copy {
@@ -79,7 +74,7 @@
 
 .copy p {
   margin: 0;
-  color: color-mix(in srgb, var(--palette-navy) 76%, transparent);
+  color: color-mix(in srgb, var(--palette-powder) 76%, transparent);
   font-family: var(--font-pangram), sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -120,18 +115,15 @@
 }
 
 .accept {
-  color: var(--palette-powder);
-  background: var(--palette-navy);
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--palette-navy) 24%, transparent);
 }
 
 .necessary {
-  color: var(--palette-navy);
-  background: color-mix(in srgb, var(--palette-soft-white) 24%, transparent);
-  box-shadow:
-    inset 0 1px 1px color-mix(in srgb, var(--palette-soft-white) 72%, transparent),
-    inset 0 -1px 1px color-mix(in srgb, var(--palette-navy) 10%, transparent);
-  -webkit-backdrop-filter: blur(8px) saturate(1.2);
-  backdrop-filter: blur(8px) saturate(1.2);
+  color: var(--palette-powder);
+  background: color-mix(in srgb, var(--palette-powder) 9%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--palette-powder) 16%, transparent);
 }
 
 .actions button:focus-visible,
@@ -147,17 +139,17 @@
 
 @media (hover: hover) and (pointer: fine) {
   .accept:hover {
-    color: var(--palette-powder);
-    background: var(--palette-navy-raised);
+    color: var(--palette-navy);
+    background: var(--palette-soft-white);
   }
 
   .necessary:hover {
-    color: var(--palette-navy);
-    background: color-mix(in srgb, var(--palette-powder) 60%, transparent);
+    color: var(--palette-powder);
+    background: color-mix(in srgb, var(--palette-powder) 16%, transparent);
   }
 
   .copy a:hover {
-    color: var(--palette-navy);
+    color: var(--palette-soft-white);
   }
 }
 
