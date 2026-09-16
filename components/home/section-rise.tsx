@@ -2,7 +2,7 @@ import { homeCurvePath } from '@/lib/home-curve'
 import styles from './home-page.module.css'
 
 type SectionRiseProps = {
-  surface: 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blue-mid'
+  surface: 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blue-mid' | 'white'
   direction?: 'left' | 'right'
   cutout?: boolean
 }

@@ -1,4 +1,4 @@
-import Link from '@/components/transition-link'
+import { DirectionLink } from '@/components/direction-link'
 import { PageHero } from '@/components/page-hero'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
@@ -15,7 +15,7 @@ export function LegalPage({ title, current, introduction, sections }: LegalPageP
   return (
     <div className="studio-page">
       <article aria-labelledby="legal-title">
-        <PageHero wordmark={title} titleId="legal-title" compact surface="navy" intro={[introduction]} nextSurface="powder" breadcrumbLabel="Legal pages" breadcrumb={<div className={styles.navigation}><Link href="/privacy" aria-current={current === 'privacy' ? 'page' : undefined}>privacy</Link><Link href="/terms" aria-current={current === 'terms' ? 'page' : undefined}>terms</Link></div>} />
+        <PageHero wordmark={title} titleId="legal-title" compact surface="navy" intro={[introduction]} nextSurface="powder" breadcrumbLabel="Legal pages" breadcrumb={<div className={styles.navigation}><DirectionLink href="/" direction="left" label="home" /><span className="sr-only" aria-current="page">{current}</span><DirectionLink href={current === 'privacy' ? '/terms' : '/privacy'} label={current === 'privacy' ? 'terms' : 'privacy'} /></div>} />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.document}`}>
             <aside className={styles.notice} aria-label="Draft notice">

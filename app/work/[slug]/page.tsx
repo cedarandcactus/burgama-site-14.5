@@ -5,7 +5,8 @@ import { PageHero } from '@/components/page-hero'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
 import Link from '@/components/transition-link'
-import { getProject, getPublishedProjects, getRelatedProjects } from '@/lib/projects'
+import { DirectionLink } from '@/components/direction-link'
+import { getProject, getProjectNavigation, getPublishedProjects, getRelatedProjects } from '@/lib/projects'
 
 export function generateStaticParams() {
   return getPublishedProjects().map(project => ({ slug: project.slug }))
@@ -23,13 +24,14 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
   const project = getProject(slug)
   if (!project) notFound()
   const relatedProjects = getRelatedProjects(project)
+  const { previous, next, backHref } = getProjectNavigation(project)
   const hasFacts = project.services.length > 0 || project.period || project.status
 
   return (
     <div className="studio-page">
       <article className="portfolio" aria-labelledby="project-title">
-        <PageHero wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="powder-deep" breadcrumb={
-          <ol><li><Link href="/work">Work</Link></li><li aria-hidden="true">/</li><li aria-current="page">{project.title}</li></ol>
+        <PageHero wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="powder" breadcrumbLabel="Back to work" breadcrumb={
+          <DirectionLink href={backHref} direction="left" label="work" />
         }>
           {hasFacts && <dl className="portfolio-facts">
             {project.services.length > 0 && <div><dt>Services</dt><dd>{project.services.join(', ')}</dd></div>}
@@ -37,18 +39,23 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
             {project.status && <div><dt>Status</dt><dd>{project.status}</dd></div>}
           </dl>}
         </PageHero>
-        <div className="studio-band" data-surface="powder-deep">
+        <div className="studio-band" data-surface="powder">
           <div className="portfolio-story studio-width">
             {project.heroMedia.src && <MediaFrame item={project.heroMedia} className="portfolio-detail-hero" priority />}
             <ProjectModules modules={project.contentModules} />
-            {(project.source || project.note || project.credits.length > 0) && <section className="portfolio-source" aria-labelledby="project-notes">
-              <h2 id="project-notes">project notes.</h2>
-              {project.source && <p><strong>Source:</strong> {project.source}</p>}
-              {project.note && <p>{project.note}</p>}
-              {project.credits.map(credit => <p key={`${credit.role}-${credit.name}`}><strong>{credit.role}:</strong> {credit.name}</p>)}
-            </section>}
-            {project.links.length > 0 && <nav className="studio-actions" aria-label="Project links">
-              {project.links.map(link => <a href={link.href} className="pill" key={link.href} target="_blank" rel="noreferrer">{link.label}</a>)}
+            {(project.links.length > 0 || project.source || project.note || project.credits.length > 0) && <footer className="portfolio-project-ending">
+              {project.links.length > 0 && <nav className="studio-actions" aria-label="Project links">
+                {project.links.map(link => <a href={link.href} className="pill" key={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}
+              </nav>}
+              {(project.source || project.note || project.credits.length > 0) && <aside className="portfolio-footnotes" aria-label="Project sources and credits">
+                {project.source && <p><strong>Source:</strong> {project.source}</p>}
+                {project.note && <p>{project.note}</p>}
+                {project.credits.map(credit => <p key={`${credit.role}-${credit.name}`}><strong>{credit.role}:</strong> {credit.name}</p>)}
+              </aside>}
+            </footer>}
+            {(previous || next) && <nav className="studio-sequence portfolio-sequence" aria-label="Browse projects">
+              {previous && <DirectionLink href={`/work/${previous.slug}`} rel="prev" direction="left" eyebrow="previous" label={previous.title} />}
+              {next && <DirectionLink href={`/work/${next.slug}`} rel="next" eyebrow="next" label={next.title} />}
             </nav>}
           </div>
           <SectionRise surface={relatedProjects.length > 0 ? 'navy' : 'powder-deep'} direction="left" />

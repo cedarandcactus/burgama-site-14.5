@@ -163,6 +163,10 @@
   transform: scaleX(-1);
 }
 
+.sectionRise[data-surface='white'] {
+  color: #ffffff;
+}
+
 .sectionRise[data-surface='powder'] {
   color: var(--palette-powder);
 }

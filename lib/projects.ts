@@ -420,6 +420,17 @@ export const featuredProjects = featuredProjectOrder.flatMap(slug => {
   const item = getProject(slug)
   return item?.collection === 'featured' ? [item] : []
 })
+export function getProjectNavigation(current: Project) {
+  const collection = current.collection === 'featured' ? featuredProjects : getPublishedProjects(current.collection)
+  const index = collection.findIndex(item => item.slug === current.slug)
+  const anchor = current.collection === 'case-study' ? 'studies' : current.collection
+  return {
+    backHref: `/work#${anchor}`,
+    previous: index > 0 ? collection[index - 1] : undefined,
+    next: index >= 0 && index < collection.length - 1 ? collection[index + 1] : undefined,
+  }
+}
+
 export function getRelatedProjects(current: Project) {
   const published = getPublishedProjects()
   const siblings = published.filter(item => item.slug !== current.slug && (item.parentSlug === current.slug || (current.parentSlug && (item.slug === current.parentSlug || item.parentSlug === current.parentSlug))))

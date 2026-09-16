@@ -1,4 +1,5 @@
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
+import { DirectionLink } from '@/components/direction-link'
 import Link from '@/components/transition-link'
 import { PageHero } from '@/components/page-hero'
 import { EditorialArtwork } from '@/components/editorial-artwork'
@@ -15,7 +16,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
   return (
     <div className="studio-page">
       <article aria-labelledby="article-title">
-        <PageHero wordmark={idea.title} titleId="article-title" compact surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="hero" />} intro={[idea.deck]} breadcrumb={<Link href="/ideas">back to ideas</Link>} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
+        <PageHero wordmark={idea.title} titleId="article-title" compact surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="hero" />} intro={[idea.deck]} breadcrumbLabel="Back to ideas" breadcrumb={<DirectionLink href="/ideas" direction="left" label="ideas" />} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.articleBody}`}>
             {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
@@ -31,9 +32,9 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
         </div>
       </article>
       <section className="studio-band" data-surface="blue-slate" aria-label="More ideas">
-        <nav className={`studio-width ${styles.articleNavigation}`} aria-label="More ideas">
-          {previous ? <Link href={`/ideas/${previous.slug}`} className={styles.articleNavLink}><span className={styles.ideaDot} aria-hidden="true" /><span><small>Previous</small><strong>{previous.title}</strong></span></Link> : null}
-          <Link href={next ? `/ideas/${next.slug}` : '/ideas'} className={styles.articleNavLink}><span className={styles.ideaDot} aria-hidden="true" /><span><small>{next ? 'Next' : 'All ideas'}</small><strong>{next?.title ?? 'Return to the index'}</strong></span></Link>
+        <nav className="studio-width studio-sequence" aria-label="Browse ideas">
+          {previous && <DirectionLink href={`/ideas/${previous.slug}`} direction="left" rel="prev" eyebrow="previous" label={previous.title} />}
+          <DirectionLink href={next ? `/ideas/${next.slug}` : '/ideas'} rel={next ? 'next' : undefined} eyebrow={next ? 'next' : undefined} label={next?.title ?? 'all ideas'} />
         </nav>
         <SectionRise surface="powder-deep" />
       </section>
