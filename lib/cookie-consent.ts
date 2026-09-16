@@ -2,7 +2,7 @@ export const COOKIE_CONSENT_NAME = 'burgama-cookie-consent'
 export const COOKIE_CONSENT_EVENT = 'burgama:cookie-consent'
 export const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30
 
-const COOKIE_CONSENT_VERSION = 'v2'
+const COOKIE_CONSENT_VERSION = 'v3'
 const HEADLINE_COOKIE_NAME = 'burgama-hero-message'
 
 type CookieConsent = 'accepted' | 'necessary'

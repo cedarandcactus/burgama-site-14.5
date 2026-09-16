@@ -33,24 +33,34 @@ export function CookieBanner() {
   if (state === 'hidden') return null
 
   return (
-    <div className={styles.overlay} data-state={state} aria-hidden={state === 'leaving'} inert={state === 'leaving'}>
-      <aside
-        className={styles.dialog}
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-      >
-        <div className={styles.copy}>
-          <h2 id={titleId}>A small cookie, your call.</h2>
-          <p id={descriptionId}>We use one optional cookie to keep our homepage hello feeling fresh. Accept it, or keep things essential—either way, the site works.</p>
-        </div>
-        <div className={styles.footer}>
-          <Link href="/cookies">Cookie details</Link>
+    <>
+      <svg className={styles.filter} width="0" height="0" aria-hidden="true">
+        <defs>
+          <filter id="cookie-glass-distortion" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.012" numOctaves="2" seed="92" result="noise" />
+            <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+            <feDisplacementMap in="SourceGraphic" in2="blurred" scale="72" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+      </svg>
+      <div className={styles.overlay} data-state={state} aria-hidden={state === 'leaving'} inert={state === 'leaving'}>
+        <aside
+          className={styles.dialog}
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
+          <div className={styles.copy}>
+            <h2 id={titleId}>A small cookie, your call.</h2>
+            <p id={descriptionId}>
+              One optional cookie keeps our homepage hello fresh. <Link href="/cookies">See details.</Link>
+            </p>
+          </div>
           <div className={styles.actions}>
-            <button className={styles.necessary} type="button" onClick={() => choose('necessary')}>Only necessary</button>
+            <button className={styles.necessary} type="button" onClick={() => choose('necessary')}>Necessary only</button>
             <button className={styles.accept} type="button" onClick={() => choose('accepted')}>Accept</button>
           </div>
-        </div>
-      </aside>
-    </div>
+        </aside>
+      </div>
+    </>
   )
 }
