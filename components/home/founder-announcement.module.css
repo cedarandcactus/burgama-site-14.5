@@ -193,7 +193,8 @@
 @media (max-width: 699px) {
   .popup {
     width: min(400px, calc(100vw - 24px));
-    max-height: calc(100dvh - 20px);
+    top: calc((100dvh + env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px);
     padding: 22px 18px;
     gap: 20px;
   }

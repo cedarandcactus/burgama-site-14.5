@@ -719,8 +719,9 @@
   }
 
   .heroFrame {
-    padding-top: clamp(128px, 20svh, 160px);
-    padding-bottom: 72px;
+    padding-top: max(calc(var(--header-clearance) + 24px), clamp(104px, 16svh, 136px));
+    padding-bottom: max(clamp(40px, 8svh, 72px), calc(env(safe-area-inset-bottom, 0px) + 24px));
+    padding-inline: max(var(--home-inset), env(safe-area-inset-left, 0px)) max(var(--home-inset), env(safe-area-inset-right, 0px));
   }
 
   .heroStatement {
