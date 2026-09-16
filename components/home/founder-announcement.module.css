@@ -53,10 +53,10 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
   gap: 16px;
-  text-align: center;
+  text-align: left;
 }
 
 .portrait {
@@ -65,8 +65,9 @@
   aspect-ratio: 1;
   margin: 0;
   overflow: hidden;
+  isolation: isolate;
   border-radius: 999px;
-  background: transparent;
+  background: var(--palette-powder);
 }
 
 .portrait img {
@@ -75,15 +76,17 @@
   height: 100%;
   object-fit: cover;
   object-position: center 18%;
+  filter: grayscale(1);
+  mix-blend-mode: multiply;
 }
 
 .intro {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   gap: 4px;
   color: inherit;
-  text-align: center;
+  text-align: left;
 }
 
 .title {
@@ -121,7 +124,7 @@
   width: 100%;
   flex-direction: column;
   gap: 12px;
-  text-align: center;
+  text-align: left;
   font-family: var(--font-pangram), sans-serif;
   font-size: 1rem;
   font-weight: 400;
