@@ -1,6 +1,7 @@
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import Link from '@/components/transition-link'
 import { PageHero } from '@/components/page-hero'
+import { EditorialArtwork } from '@/components/editorial-artwork'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
 import { getIdeaReadingTime, ideas, type IdeaPost } from '@/lib/editorial'
@@ -14,7 +15,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
   return (
     <div className="studio-page">
       <article aria-labelledby="article-title">
-        <PageHero wordmark={idea.title} titleId="article-title" compact surface="navy" nextSurface="powder" intro={[idea.deck]} breadcrumb={<Link href="/ideas">back to ideas</Link>} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
+        <PageHero wordmark={idea.title} titleId="article-title" compact surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="hero" />} intro={[idea.deck]} breadcrumb={<Link href="/ideas">back to ideas</Link>} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.articleBody}`}>
             {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}

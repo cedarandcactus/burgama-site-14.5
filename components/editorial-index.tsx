@@ -1,5 +1,6 @@
 import Link from '@/components/transition-link'
 import { PageHero } from '@/components/page-hero'
+import { EditorialArtwork } from '@/components/editorial-artwork'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
 import { ideas } from '@/lib/editorial'
@@ -13,7 +14,7 @@ export function EditorialIndex() {
         <ul className={`studio-width ${styles.ideaList}`}>
           {ideas.map(idea => <li key={idea.slug}>
             <Link href={`/ideas/${idea.slug}`} className={styles.ideaLink}>
-              <span className={styles.ideaDot} aria-hidden="true" />
+              <EditorialArtwork visual={idea.visual} />
               <article className={styles.ideaEntry}>
                 <p className={styles.categoryPill}>{idea.categories[0]}</p>
                 <h2>{idea.title}</h2>
