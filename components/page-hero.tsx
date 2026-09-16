@@ -10,6 +10,7 @@ type PageHeroProps = {
   introAsTagline?: boolean
   artifactId?: string
   panel?: ReactNode
+  mediaFullWidth?: boolean
   headingLevel?: 'h1' | 'h2'
   titleId?: string
   compact?: boolean
@@ -22,7 +23,7 @@ type PageHeroProps = {
   children?: ReactNode
 }
 
-export function PageHero({ wordmark, intro = [], introAsTagline = false, artifactId, panel, headingLevel: Heading = 'h1', titleId, compact = false, surface = 'powder', nextSurface = 'blue-slate', breadcrumb, breadcrumbLabel = 'Breadcrumb', metadata, actions, children }: PageHeroProps) {
+export function PageHero({ wordmark, intro = [], introAsTagline = false, artifactId, panel, mediaFullWidth = false, headingLevel: Heading = 'h1', titleId, compact = false, surface = 'powder', nextSurface = 'blue-slate', breadcrumb, breadcrumbLabel = 'Breadcrumb', metadata, actions, children }: PageHeroProps) {
   const media = panel ?? (artifactId ? <ArtifactSlot id={artifactId} /> : null)
 
   return (
@@ -34,8 +35,9 @@ export function PageHero({ wordmark, intro = [], introAsTagline = false, artifac
         {intro.length > 0 && <div className="studio-intro" data-tagline={introAsTagline}>{intro.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
         {children}
         {actions && <div className="studio-actions">{actions}</div>}
-        {media && <div className="studio-hero-media">{media}</div>}
+        {media && !mediaFullWidth && <div className="studio-hero-media">{media}</div>}
       </div>
+      {media && mediaFullWidth && <div className="studio-hero-media" data-full-width="true">{media}</div>}
       <SectionRise surface={nextSurface} />
     </header>
   )

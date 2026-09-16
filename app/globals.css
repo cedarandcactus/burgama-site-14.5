@@ -4724,7 +4724,7 @@ body:has(.lot-poster) > .mobile-console {
 }
 
 /*
-  Text links are set back by tone and resolve to the sanctioned hover �����������������������������������������
+  Text links are set back by tone and resolve to the sanctioned hover ������������������������������������������
   an ink plate with paper type — instead of gaining an underline.
 */
 .studio-more,
@@ -5758,6 +5758,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
 .studio-intro { display: flex; flex-direction: column; gap: 20px; max-width: 52ch; font-size: var(--studio-prose); font-weight: 300; line-height: 1.55; }
 .studio-intro p { margin: 0; }
 .studio-hero-media { width: 100%; min-width: 0; }
+.studio-hero-media[data-full-width='true'] { margin-top: 32px; }
 .studio-breadcrumb { width: 100%; font-size: 15px; font-weight: 500; }
 .studio-page .studio-direction-link { display: inline-flex; align-items: center; gap: 12px; min-width: 0; min-height: 44px; color: inherit; font-family: var(--font-pangram), sans-serif; font-size: 16px; font-weight: 400; text-decoration: none; }
 .studio-direction-copy { display: flex; flex-direction: column; min-width: 0; gap: 4px; line-height: 1.5; overflow-wrap: anywhere; }
@@ -5802,6 +5803,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
 @media (min-width: 700px) {
   .studio-page { --home-rise: clamp(80px, 10vw, 144px); }
   .studio-hero-inner { gap: 40px; }
+  .studio-hero-media[data-full-width='true'] { margin-top: 40px; }
 }
 @media (hover: hover) and (pointer: fine) {
   .studio-page .studio-actions .pill:hover { color: var(--studio-ink); background: transparent; border-color: currentColor; }
