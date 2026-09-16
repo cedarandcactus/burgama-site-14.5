@@ -2,6 +2,27 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+/* Safari may expose native play overlays even when controls are disabled. */
+video[data-background-video] {
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+video[data-background-video]:not([data-visible='true']) {
+  visibility: hidden;
+}
+
+video[data-background-video]::-webkit-media-controls,
+video[data-background-video]::-webkit-media-controls-panel,
+video[data-background-video]::-webkit-media-controls-start-playback-button,
+video[data-background-video]::-webkit-media-controls-play-button,
+video[data-background-video]::-webkit-media-controls-overlay-play-button,
+video[data-background-video]::-webkit-media-controls-enclosure {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 /* ------------------------------------------------------------------
    Burgama design tokens — one source of truth.
    Flat, fully opaque surfaces. No borders, no fades, no gradients.

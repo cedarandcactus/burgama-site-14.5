@@ -307,6 +307,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
       })
       if (request !== sendRequest.current) return
       setSendState(response.ok ? 'sent' : 'failed')
+      if (response.ok) window.dispatchEvent(new Event('burgama:submission-success'))
     } catch {
       if (request === sendRequest.current) setSendState('failed')
     }

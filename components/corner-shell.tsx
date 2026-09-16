@@ -160,7 +160,7 @@ export function CornerShell() {
   return (
     <header ref={header} className="site-header cyan-header" data-home={pathname === '/'} data-brand={symbolVisible ? 'symbol' : 'wordmark'} data-condensed={condensed} data-menu-open={open} data-project-open={projectOpen} data-work={pathname.startsWith('/work')}>
       <div className="header-inner" data-lenis-prevent={open || projectOpen || undefined}>
-        <Link className="cyan-header-mark-link" href="/" aria-label="Home">
+        <Link className="cyan-header-mark-link" href="/" aria-label="Home" data-haptics="logo">
           <span className="cyan-header-mark" data-glass-ink aria-hidden="true" />
           <span className="cyan-header-wordmark" aria-hidden="true">
             {Array.from('burgama').map((letter, index) => (
