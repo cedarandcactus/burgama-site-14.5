@@ -100,23 +100,14 @@
   text-wrap: balance;
 }
 
-.lede,
 .copy p {
   margin: 0;
 }
 
-.lede,
 .copy,
 .signature,
 .action {
   color: inherit;
-}
-
-.lede {
-  font-size: 0.9rem;
-  font-weight: 400;
-  line-height: 1.45;
-  opacity: 0.78;
 }
 
 .copy {
