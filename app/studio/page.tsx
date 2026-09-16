@@ -9,7 +9,7 @@ import styles from './studio.module.css'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Meet the small, multidisciplinary team behind Burgama—an independent creative and marketing studio in Austin, Texas.',
+  description: 'Meet the small, multidisciplinary team behind Burgama, an independent creative and marketing studio in Austin, Texas.',
 }
 
 const TEAM = [
@@ -39,7 +39,7 @@ const TEAM = [
 export default function StudioPage() {
   return (
     <div className="studio-page">
-      <PageHero variant="centered" wordmark="The people shaping your strategy are the ones bringing it to life." titleId="about-title" intro={['Burgama brings strategy, design, digital, and growth into one close-knit team. You work directly with the people shaping and making the work—partners who ask the hard questions, turn ambition into a clear direction, and stay accountable from the first conversation to the final detail.']} nextSurface="blue-slate" />
+      <PageHero variant="centered" wordmark="The people shaping your strategy are the ones bringing it to life." titleId="about-title" intro={['Burgama brings strategy, design, digital, and growth into one close-knit team. You work directly with the people shaping and making the work. They ask the hard questions, turn ambition into a clear direction, and stay accountable from the first conversation to the final detail.']} nextSurface="blue-slate" />
 
       <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
         <div className="studio-width">
