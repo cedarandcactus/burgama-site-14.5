@@ -11,7 +11,7 @@ export const viewport: Viewport = { themeColor: '#afc8f2', colorScheme: 'light' 
 const sections = [
   {
     id: 'scope',
-    title: 'what this policy covers',
+    title: 'What this policy covers',
     paragraphs: [
       'This Privacy Policy explains how Burgama (“we,” “us,” or “our”) handles personal information when you visit our website, use its enquiry tools, or communicate with the studio. Burgama is based in Austin, Texas, and is responsible for the information it handles for these purposes.',
       'A separate contract, confidentiality agreement, or data-processing agreement may apply to information handled as part of a client project. This policy does not replace those agreements or cover websites and services operated by other organizations.',
@@ -19,7 +19,7 @@ const sections = [
   },
   {
     id: 'information',
-    title: 'information you provide',
+    title: 'Information you provide',
     paragraphs: [
       'When you contact us by email, telephone, or another communication channel, we receive the information you choose to share. This may include your name, email address, telephone number, company or company type, project description, budget range and currency, attachments, and correspondence with us.',
       'Our website’s project enquiry tools hold the details you enter temporarily in the current page to prepare a message. They do not automatically send those details to Burgama or save them in a website database. Opening an email draft passes the prepared message to your chosen email application; Burgama receives it only if you send it. The inline enquiry tool currently supports copying a message, not direct delivery.',
@@ -30,7 +30,7 @@ const sections = [
   },
   {
     id: 'website-data',
-    title: 'website data & analytics',
+    title: 'Website data & analytics',
     paragraphs: [
       'The website is hosted on Vercel. Hosting and delivery infrastructure may process technical information such as your IP address, browser and device details, request times, requested URLs, and diagnostic or security logs to deliver pages, troubleshoot issues, and protect the service.',
       'The production website includes Vercel Web Analytics to understand website usage through aggregated statistics. Analytics data may include pages visited, referring websites, filtered URL parameters, visit times, approximate location, device type, operating system, and browser. We do not configure enquiry fields or newsletter email addresses as analytics events.',
@@ -39,7 +39,7 @@ const sections = [
   },
   {
     id: 'cookies',
-    title: 'cookies & tracking choices',
+    title: 'Cookies & tracking choices',
     paragraphs: [
       'The current website does not use advertising pixels or set application cookies to store enquiry details, newsletter entries, or visitor profiles. Its Vercel Web Analytics integration does not rely on tracking cookies. Hosting and security services may use technologies necessary to deliver and protect the website.',
       'You can manage cookies and other browser permissions through your browser settings. Blocking some technologies may affect website functionality. We do not use information from this website for targeted advertising or cross-context behavioral advertising, and we do not sell personal information collected through this website.',
@@ -48,7 +48,7 @@ const sections = [
   },
   {
     id: 'use-and-sharing',
-    title: 'how we use information',
+    title: 'How we use information',
     paragraphs: [
       'We use information to respond to enquiries, evaluate potential projects, communicate with you, prepare proposals, and administer agreed services. We also use it to maintain relevant business records, improve the website, investigate technical or security issues, prevent misuse, and meet legal obligations.',
       'We do not treat a project enquiry or acceptance of our Terms of Service as permission to subscribe you to marketing. If you separately request marketing communications, you can opt out using any unsubscribe instructions provided or by contacting us. Necessary replies and service-related communications may continue.',
@@ -57,7 +57,7 @@ const sections = [
   },
   {
     id: 'disclosures',
-    title: 'when information is shared',
+    title: 'When information is shared',
     paragraphs: [
       'Information may be handled by service providers supporting website hosting and analytics, email and communications, and business administration, where needed for those purposes. Vercel provides hosting and web analytics. Information you choose to send by email also passes through the email services used by you and Burgama.',
       'We may disclose information to professional advisers when necessary, to comply with a legal obligation or lawful request, to establish or defend legal claims, or to protect rights, safety, and security. If a business reorganization or transfer involves personal information, that information may be reviewed or transferred subject to appropriate confidentiality protections and applicable law.',
@@ -66,7 +66,7 @@ const sections = [
   },
   {
     id: 'retention',
-    title: 'retention & security',
+    title: 'Retention & security',
     paragraphs: [
       'We retain personal information for as long as reasonably necessary for the purpose for which it was received, including following up on enquiries, managing an ongoing relationship, complying with legal and recordkeeping obligations, and resolving disputes. The period depends on the type of information, the nature of the relationship, and applicable requirements; there is no single retention period for all records.',
       'When information is no longer needed, we delete it or de-identify it, subject to applicable legal obligations and ordinary backup cycles. Details entered into the current website’s enquiry and newsletter interfaces are not retained by Burgama unless you send them through a separate communication channel.',
@@ -75,14 +75,14 @@ const sections = [
   },
   {
     id: 'international',
-    title: 'international visitors',
+    title: 'International visitors',
     paragraphs: [
       'Burgama operates in the United States. Information may be processed in the United States or other countries where our service providers operate, whose privacy laws may differ from those where you live. Where applicable law requires safeguards for an international transfer, we use the legally required transfer arrangements and protections. Contact us for information about safeguards relevant to your information.',
     ],
   },
   {
     id: 'choices',
-    title: 'your privacy rights & requests',
+    title: 'Your privacy rights & requests',
     paragraphs: [
       'Depending on where you live, the law that applies, and any relevant exemptions, you may have rights to know whether we process your personal information; access, correct, or delete it; receive a portable copy; object to or restrict processing; withdraw consent; or opt out of sale, targeted advertising, or certain profiling. Not every right applies in every situation. We do not sell website personal information or use it for targeted advertising or significant-effect profiling.',
       'To ask a question or exercise a right, email legal@burgama.com with the subject “Privacy request” and describe your request. We may ask for information reasonably necessary to verify your identity and authority, and we will use verification information for that purpose. An authorized agent may submit a request where applicable law permits, subject to verification of their authority.',
@@ -92,21 +92,21 @@ const sections = [
   },
   {
     id: 'children',
-    title: 'children’s privacy',
+    title: 'Children’s privacy',
     paragraphs: [
       'The website is intended for businesses and people seeking professional services, not children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided information to us, contact legal@burgama.com so we can investigate and take appropriate steps to delete it.',
     ],
   },
   {
     id: 'external-services',
-    title: 'external websites & services',
+    title: 'External websites & services',
     paragraphs: [
       'Links to client sites, social platforms, articles, and other third-party services take you outside this website. Those services have their own privacy policies, and Burgama does not control their information practices. Review their policies before sharing information with them.',
     ],
   },
   {
     id: 'updates',
-    title: 'changes to this policy',
+    title: 'Changes to this policy',
     paragraphs: [
       'We may update this policy when our website, information practices, or legal obligations change. The current version and its last-updated date will appear on this page. For material changes, we will provide additional notice or obtain consent where required by applicable law. Changes do not remove rights you already have under applicable law.',
     ],
@@ -114,5 +114,5 @@ const sections = [
 ]
 
 export default function PrivacyPage() {
-  return <LegalPage title="privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} />
+  return <LegalPage title="Privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} />
 }

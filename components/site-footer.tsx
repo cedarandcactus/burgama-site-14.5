@@ -12,7 +12,7 @@ import { gsap, ScrollTrigger } from '@/lib/motion'
 import { homeCurveExtensionLength, homeCurvePath } from '@/lib/home-curve'
 import styles from '@/components/site-footer.module.css'
 
-const headline = 'ready for what comes next'
+const headline = 'Ready for what comes next'
 const words = headline.split(' ')
 const socialLinks = [
   {
@@ -53,7 +53,7 @@ const navigationGroups = [
   {
     label: 'The studio',
     links: [
-      { label: 'Ideas', href: '/ideas' },
+      { label: 'Research', href: '/research' },
       { label: 'Contact', href: '/contact' },
     ],
   },

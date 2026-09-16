@@ -15,23 +15,23 @@ export async function generateMetadata({
   const { slug } = await params
   const idea = getIdea(slug)
 
-  if (!idea) return { title: 'Ideas' }
+  if (!idea) return { title: 'Research' }
 
   return {
     title: idea.metaTitle,
     description: idea.metaDescription,
     keywords: [idea.targetKeyword, ...idea.categories],
-    alternates: { canonical: `/ideas/${idea.slug}` },
+    alternates: { canonical: `/research/${idea.slug}` },
     openGraph: {
       title: idea.metaTitle,
       description: idea.metaDescription,
       type: 'article',
-      url: `/ideas/${idea.slug}`,
+      url: `/research/${idea.slug}`,
     },
   }
 }
 
-export default async function IdeaDetailPage({
+export default async function ResearchDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>
@@ -41,7 +41,7 @@ export default async function IdeaDetailPage({
 
   if (!idea) notFound()
 
-  const canonicalUrl = `https://burgama.com/ideas/${idea.slug}`
+  const canonicalUrl = `https://burgama.com/research/${idea.slug}`
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',

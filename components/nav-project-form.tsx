@@ -16,7 +16,7 @@ const companyTypes = ['startup', 'small business', 'established company', 'agenc
 const currencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD'] as const
 const budgetBands = [[0, 5000], [5000, 10000], [10000, 25000], [25000, 50000], [50000, 100000], [100000, null]] as const
 const steps = ['company', 'budget', 'you', 'review']
-const headings = ['company type', 'budget', 'your details', 'review']
+const headings = ['Company type', 'Budget', 'Your details', 'Review']
 const recipient = 'hello@burgama.com'
 type Currency = typeof currencies[number]
 type Contact = { name: string; email: string; phone: string }
@@ -69,7 +69,7 @@ type ProjectEnquiryProps = {
   onHeightChange?: (height: number) => void
 }
 
-export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us a bit about your project', active = true, id, onMenu, onHeightChange }: ProjectEnquiryProps) {
+export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us a bit about your project', active = true, id, onMenu, onHeightChange }: ProjectEnquiryProps) {
   const idPrefix = `enquiry-${useId()}`
   const scroll = useSmoothScroll()
   const inline = variant === 'inline'

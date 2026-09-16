@@ -8,7 +8,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 const destinations = [
   { label: 'work', href: '/work' },
   { label: 'about', href: '/studio' },
-  { label: 'ideas', href: '/ideas' },
+  { label: 'research', href: '/research' },
 ]
 
 export function CornerShell() {

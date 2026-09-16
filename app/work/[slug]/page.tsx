@@ -62,7 +62,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
         </div>
         {relatedProjects.length > 0 && <section className="studio-band" data-surface="navy" aria-labelledby="related-title">
           <div className="studio-width">
-            <h2 id="related-title" className="studio-heading">more work.</h2>
+            <h2 id="related-title" className="studio-heading">More work.</h2>
             <nav className="portfolio-related-grid" aria-label="More work">
               {relatedProjects.map(related => <Link href={`/work/${related.slug}`} className="portfolio-related-link" key={related.slug}>
                 <span>{(related.categories ?? related.disciplines).join(' · ')}</span>
@@ -73,7 +73,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
           <SectionRise surface="powder-deep" />
         </section>}
       </article>
-      <SiteFooter enquiryHeading="what could we make together?" />
+      <SiteFooter enquiryHeading="What could we make together?" />
     </div>
   )
 }

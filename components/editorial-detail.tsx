@@ -16,7 +16,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
   return (
     <div className="studio-page">
       <article aria-labelledby="article-title">
-        <PageHero wordmark={idea.title} titleId="article-title" compact mediaFullWidth surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="hero" />} intro={[idea.deck]} breadcrumbLabel="Back to ideas" breadcrumb={<DirectionLink href="/ideas" direction="left" label="ideas" />} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
+        <PageHero variant="centered" wordmark={idea.title} titleId="article-title" compact mediaFullWidth surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="hero" />} intro={[idea.deck]} breadcrumbLabel="Back to Research" breadcrumb={<DirectionLink href="/research" direction="left" label="Research" />} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.articleBody}`}>
             {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
@@ -31,14 +31,14 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
           <SectionRise surface="blue-slate" direction="left" />
         </div>
       </article>
-      <section className="studio-band" data-surface="blue-slate" aria-label="More ideas">
-        <nav className="studio-width studio-sequence" aria-label="Browse ideas">
-          {previous && <DirectionLink href={`/ideas/${previous.slug}`} direction="left" rel="prev" eyebrow="previous" label={previous.title} />}
-          <DirectionLink href={next ? `/ideas/${next.slug}` : '/ideas'} rel={next ? 'next' : undefined} eyebrow={next ? 'next' : undefined} label={next?.title ?? 'all ideas'} />
+      <section className="studio-band" data-surface="blue-slate" aria-label="More research">
+        <nav className="studio-width studio-sequence" aria-label="Browse research">
+          {previous && <DirectionLink href={`/research/${previous.slug}`} direction="left" rel="prev" eyebrow="previous" label={previous.title} />}
+          <DirectionLink href={next ? `/research/${next.slug}` : '/research'} rel={next ? 'next' : undefined} eyebrow={next ? 'next' : undefined} label={next?.title ?? 'All research'} />
         </nav>
         <SectionRise surface="powder-deep" />
       </section>
-      <SiteFooter enquiryHeading="tell us what you’re thinking" />
+      <SiteFooter enquiryHeading="Tell us what you’re thinking" />
     </div>
   )
 }

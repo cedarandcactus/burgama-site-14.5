@@ -8,9 +8,9 @@ import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
 const headlines = [
-  ['we turn what makes you', 'different into brands', 'the right people remember.'],
-  ['we find what sets you apart', 'and build a brand', 'that makes it matter.'],
-  ['your next chapter deserves', 'a brand that feels like you', 'and moves you forward.'],
+  ['We turn what makes you', 'different into brands', 'the right people remember.'],
+  ['We find what sets you apart', 'and build a brand', 'that makes it matter.'],
+  ['Your next chapter deserves', 'a brand that feels like you', 'and moves you forward.'],
 ]
 
 const headlineCookie = 'burgama-hero-message'
@@ -126,7 +126,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
             ))}
           </h1>
           <div className={styles.heroStatement}>
-            <p>a creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
+            <p>A creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
             <ModularButton href="#studio-introduction">meet the studio</ModularButton>
           </div>
         </div>

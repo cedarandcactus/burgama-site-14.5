@@ -10,12 +10,12 @@ export const metadata: Metadata = { title: 'Contact', description: 'Start a proj
 export default function ContactPage() {
   return (
     <div className="studio-page studio-contact">
-      <PageHero wordmark="contact" intro={['Tell us what you are making, what needs to change, and when it matters.']} nextSurface="navy" actions={<Link href="#start-a-project" className="pill">start a project</Link>} />
+      <PageHero variant="centered" wordmark="Tell us what needs to change. We’ll work out what comes next." intro={['Share a little about your business, the challenge, and any timing you have in mind. An early question is as welcome as a detailed brief.']} nextSurface="navy" actions={<Link href="#start-a-project" className="pill">start a project</Link>} />
       <section className="studio-band" data-surface="navy" aria-label="Email the studio">
         <div className="studio-width"><LiquidEmail /></div>
         <SectionRise surface="powder-deep" direction="left" />
       </section>
-      <SiteFooter enquiryHeading="let’s talk about your project" />
+      <SiteFooter enquiryHeading="Let’s talk about your project" />
     </div>
   )
 }

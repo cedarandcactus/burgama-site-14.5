@@ -5,7 +5,7 @@ import Link from '@/components/transition-link'
 export default function NotFound() {
   return (
     <div className="studio-page">
-      <PageHero wordmark="not here." intro={['We couldn’t find that page.']} nextSurface="powder-deep" actions={<><Link href="/" className="pill">back home</Link><Link href="/work" className="pill">see the work</Link></>} />
+      <PageHero wordmark="Not here." intro={['We couldn’t find that page.']} nextSurface="powder-deep" actions={<><Link href="/" className="pill">back home</Link><Link href="/work" className="pill">see the work</Link></>} />
       <SiteFooter />
     </div>
   )

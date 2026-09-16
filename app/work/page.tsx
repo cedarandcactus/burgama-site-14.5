@@ -22,7 +22,7 @@ export default function WorkPage() {
   return (
     <div className="studio-page">
       <div className="portfolio portfolio-index">
-        <PageHero variant="centered" wordmark="our work brings brands, websites, and campaigns together." intro={['Packaging, photography, branding, websites, and marketing for organizations with something worth saying.']} nextSurface="powder-deep" actions={
+        <PageHero variant="centered" wordmark="Strategy, design, and digital experiences with a shared direction." intro={['Brand identities, packaging, photography, websites, and campaigns. Explore the finished work and the decisions that brought it together.']} nextSurface="powder-deep" actions={
           <nav className="studio-actions" aria-label="Work collections">
             <Link href="#featured" className="pill">featured</Link>
             <Link href="#studies" className="pill">strategy</Link>
@@ -31,7 +31,7 @@ export default function WorkPage() {
         } />
         <section id="featured" className="studio-band" data-surface="powder-deep" aria-labelledby="featured-title">
           <div className="studio-width">
-            <h2 id="featured-title" className="studio-heading">full systems, built together.</h2>
+            <h2 id="featured-title" className="studio-heading">Full systems, built together.</h2>
             <WorkShowcase>
               {featuredProjects.map(project => <ProjectCard key={project.slug} project={project} showcase />)}
             </WorkShowcase>
@@ -40,7 +40,7 @@ export default function WorkPage() {
         </section>
         <section id="studies" className="studio-band" data-surface="navy" aria-labelledby="studies-title">
           <div className="studio-width">
-            <h2 id="studies-title" className="studio-heading">strategy, put to work.</h2>
+            <h2 id="studies-title" className="studio-heading">Strategy, put to work.</h2>
             <div className="portfolio-study-grid">
               {studies.map(project => (
                 <Reveal className="portfolio-study-reveal" key={project.slug}>
@@ -58,13 +58,13 @@ export default function WorkPage() {
         </section>
         <section id="archive" className="studio-band" data-surface="white" data-nav-surface="frost" aria-labelledby="archive-title">
           <div className="studio-width">
-            <h2 id="archive-title" className="studio-heading">the wider archive.</h2>
+            <h2 id="archive-title" className="studio-heading">The wider archive.</h2>
             <WorkIndex projects={archive} />
           </div>
           <SectionRise surface="powder-deep" direction="left" />
         </section>
       </div>
-      <SiteFooter enquiryHeading="what could we make together?" />
+      <SiteFooter enquiryHeading="What could we make together?" />
     </div>
   )
 }

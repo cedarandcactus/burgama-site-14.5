@@ -48,8 +48,8 @@ export const ideas: IdeaPost[] = [
   {
     slug: 'wix-vs-vercel',
     issue: '01',
-    title: 'Wix vs Vercel: Which One Actually Works for Your Website',
-    metaTitle: 'Wix vs Vercel: Which One Actually Works for Your Site',
+    title: 'Wix vs Vercel: Which one actually works for your website',
+    metaTitle: 'Wix vs Vercel: Which one actually works for your site',
     metaDescription:
       'Wix or Vercel for a business website? The honest breakdown on cost, control, speed and who each one is for, from an agency that just made the switch.',
     targetKeyword: 'wix vs vercel',
@@ -86,8 +86,8 @@ export const ideas: IdeaPost[] = [
   {
     slug: 'klaviyo-popup-best-practices',
     issue: '02',
-    title: 'How to Build an Email Popup People Actually Use',
-    metaTitle: 'Klaviyo Popup Best Practices That Actually Convert',
+    title: 'How to build an email popup people actually use',
+    metaTitle: 'Klaviyo popup best practices that actually convert',
     metaDescription:
       'Most popups collect an email and then lose the sale. Here is how to structure the offer, the timing and the discount code so the popup pays for itself.',
     targetKeyword: 'klaviyo popup best practices',
@@ -131,8 +131,8 @@ export const ideas: IdeaPost[] = [
   {
     slug: 'ai-website-audits',
     issue: '03',
-    title: 'Why AI Website Audits Get It Wrong',
-    metaTitle: 'AI Website Audits Miss Nearly Half the Time. Here Is Why',
+    title: 'Why AI website audits get it wrong',
+    metaTitle: 'AI website audits miss nearly half the time. Here is why',
     metaDescription:
       'We checked an AI generated site audit line by line against the live site. What we found changed how we report website problems to clients.',
     targetKeyword: 'ai website audit',
@@ -171,8 +171,8 @@ export const ideas: IdeaPost[] = [
   {
     slug: 'judgeme-vs-yotpo',
     issue: '04',
-    title: 'Judge.me vs Yotpo: Which Review App Actually Works for Shopify',
-    metaTitle: 'Judge.me vs Yotpo: Which Review App Actually Works',
+    title: 'Judge.me vs Yotpo: Which review app actually works for Shopify',
+    metaTitle: 'Judge.me vs Yotpo: Which review app actually works',
     metaDescription:
       'A clear answer on Judge.me vs Yotpo for Shopify, covering cost, migration, retail syndication and why running both at once quietly hurts your store.',
     targetKeyword: 'judge.me vs yotpo',
@@ -210,8 +210,8 @@ export const ideas: IdeaPost[] = [
   {
     slug: 'squarespace-sitemap-not-updating',
     issue: '05',
-    title: 'New Pages Not Showing on Google? Check Your Squarespace Sitemap',
-    metaTitle: 'Squarespace Sitemap Not Updating? Here Is the Fix',
+    title: 'New pages not showing on Google? Check your Squarespace sitemap',
+    metaTitle: 'Squarespace sitemap not updating? Here is the fix',
     metaDescription:
       'Published new pages and Google cannot find them. Here is why the Squarespace sitemap lags behind and what to do before you touch Search Console.',
     targetKeyword: 'squarespace sitemap not updating',
@@ -250,8 +250,8 @@ export const ideas: IdeaPost[] = [
   {
     slug: 'squarespace-vs-custom-website',
     issue: '06',
-    title: 'Squarespace vs a Custom Website: How to Choose for a Local Business',
-    metaTitle: 'Squarespace vs Custom Website: How to Choose',
+    title: 'Squarespace vs a custom website: How to choose for a local business',
+    metaTitle: 'Squarespace vs custom website: How to choose',
     metaDescription:
       'Squarespace or a custom build for a local business? What actually differs on mobile speed, cost and control, plus a simple rule for choosing.',
     targetKeyword: 'squarespace vs custom website',

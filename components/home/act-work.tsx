@@ -10,7 +10,7 @@ export function ActWork() {
   return (
     <section id="selected-work" className={styles.selectedWork} data-nav-surface="ink" aria-labelledby="featured-title">
       <Reveal className={styles.workIntro}>
-        <h2 id="featured-title" className="font-serif">a few things<br />we&apos;ve put into the world.</h2>
+        <h2 id="featured-title" className="font-serif">A few things<br />we&apos;ve put into the world.</h2>
       </Reveal>
       <WorkReel count={featuredProjects.length}>
         {featuredProjects.map(project => <ProjectCard key={project.id} project={project} concise actionLabel="view project" />)}

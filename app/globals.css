@@ -5776,7 +5776,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
   font-weight: var(--type-heading-weight);
   line-height: var(--type-hero-leading);
   letter-spacing: normal;
-  text-transform: lowercase;
+  text-transform: none;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
@@ -5786,7 +5786,9 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
 .studio-hero[data-variant='centered'] .studio-hero-inner { max-width: 880px; align-items: center; gap: 24px; text-align: center; }
 .studio-hero[data-variant='centered'] .studio-title { max-width: 100%; }
 .studio-hero[data-variant='centered'] .studio-intro { max-width: 44ch; }
-.studio-hero[data-variant='centered'] .studio-actions { justify-content: center; }
+.studio-hero[data-variant='centered'] .studio-actions,
+.studio-hero[data-variant='centered'] .studio-meta { justify-content: center; }
+.studio-hero[data-variant='centered'] .studio-breadcrumb { text-align: center; }
 .studio-hero-media { width: 100%; min-width: 0; }
 .studio-hero-media[data-full-width='true'] { margin-top: 32px; }
 .studio-breadcrumb { width: 100%; font-size: 15px; font-weight: 500; }
@@ -5823,7 +5825,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
   line-height: 1.15; text-decoration: none; text-transform: lowercase;
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
-.studio-page .studio-heading { max-width: 19ch; margin: 0 0 40px; font-family: var(--font-cenura), sans-serif; font-size: var(--studio-heading); font-weight: var(--type-heading-weight); line-height: var(--type-section-leading); letter-spacing: normal; text-transform: lowercase; text-wrap: balance; }
+.studio-page .studio-heading { max-width: 19ch; margin: 0 0 40px; font-family: var(--font-cenura), sans-serif; font-size: var(--studio-heading); font-weight: var(--type-heading-weight); line-height: var(--type-section-leading); letter-spacing: normal; text-transform: none; text-wrap: balance; }
 
 .studio-contact .contact-address { min-width: 0; gap: 28px; }
 .studio-contact .contact-address-line { width: fit-content; max-width: 100%; color: inherit; font-family: var(--font-cenura), sans-serif; font-size: clamp(27px, 5.8vw, 80px); line-height: 1.15; letter-spacing: normal; text-decoration: none; }

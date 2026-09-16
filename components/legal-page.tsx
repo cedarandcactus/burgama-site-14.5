@@ -22,7 +22,7 @@ export function LegalPage({ title, current, introduction, sections }: LegalPageP
             <div className={styles.sections}>
               {sections.map(section => <section key={section.id} aria-labelledby={section.id}><h2 id={section.id}>{section.title}</h2>{section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</section>)}
               <section aria-labelledby="legal-contact">
-                <h2 id="legal-contact">questions &amp; contact</h2>
+                <h2 id="legal-contact">Questions &amp; contact</h2>
                 <p>For questions about {current === 'privacy' ? 'this Privacy Policy or your personal information' : 'these Terms of Service'}, contact Burgama:</p>
                 <address className={styles.address}>
                   Email: <a href="mailto:legal@burgama.com">legal@burgama.com</a><br />
