@@ -10,6 +10,17 @@ type Phase = 'idle' | 'covering' | 'covered' | 'revealing'
 const TransitionContext = createContext<((destination: Destination) => void) | null>(null)
 export const usePageTransition = () => useContext(TransitionContext)
 
+const wordmark = Array.from('burgama')
+const timing = { cover: 180, start: 70, letter: 520, stagger: 35, hold: 60, reveal: 440 }
+const wordmarkReady = timing.start + timing.letter + timing.stagger * (wordmark.length - 1) + timing.hold
+const transitionStyle = {
+  '--cover-duration': `${timing.cover}ms`,
+  '--letter-start': `${timing.start}ms`,
+  '--letter-duration': `${timing.letter}ms`,
+  '--letter-stagger': `${timing.stagger}ms`,
+  '--reveal-duration': `${timing.reveal}ms`,
+} as React.CSSProperties
+
 export function PageTransition({ children }: { children: ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -27,6 +38,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const previousPath = useRef(pathname)
   const focusAfter = useRef(false)
   const reduced = useRef(false)
+  const startedAt = useRef(0)
 
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout)
@@ -56,7 +68,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     if (phaseRef.current === 'idle' || phaseRef.current === 'revealing') return
     clearTimers()
     changePhase('revealing')
-    later(finish, reduced.current ? 0 : 540)
+    later(finish, reduced.current ? 0 : timing.reveal + 20)
   }, [changePhase, clearTimers, finish, later])
   const navigate = useCallback(() => {
     const target = destination.current
@@ -93,7 +105,8 @@ export function PageTransition({ children }: { children: ReactNode }) {
     previousPath.current = pathname
     if (changed && !destination.current) finish()
     else if (destination.current && sent.current && !pending && phase === 'covered') {
-      later(reveal, 0)
+      // Load the route behind the wordmark without cutting its entrance short.
+      later(reveal, Math.max(0, wordmarkReady - (performance.now() - startedAt.current)))
     }
   }, [pathname, pending, phase, finish, later, reveal])
 
@@ -135,23 +148,28 @@ export function PageTransition({ children }: { children: ReactNode }) {
     }
     destination.current = target
     sent.current = false
+    startedAt.current = performance.now()
     setSequence(value => value + 1)
     changePhase('covering')
-    later(navigate, 380)
+    later(navigate, timing.cover)
     // A failed or interrupted route must never leave the site behind a curtain.
     later(finish, 6000)
   }, [changePhase, clearTimers, finish, later, navigate, router, scroll])
 
-  const transitionPath = destination.current?.href.split(/[?#]/)[0] ?? pathname
-  const workTransition = transitionPath === '/work' || transitionPath.startsWith('/work/')
-
   return (
     <TransitionContext.Provider value={begin}>
       <div ref={content} className={styles.content}>{children}</div>
-      {active && <div key={sequence} className={styles.overlay} data-work={workTransition} data-phase={phase} data-direction={sequence % 2 === 0 ? 'left' : 'right'} data-hydrated={hydrated} data-page-transition="">
+      {active && <div key={sequence} className={styles.overlay} style={transitionStyle} data-phase={phase} data-hydrated={hydrated} data-page-transition="">
         <div className={styles.curtain} aria-hidden="true">
-          <div className={styles.logo}>burgama</div>
+          <div className={`${styles.logo} font-serif`}>
+            {wordmark.map((letter, index) => (
+              <span className={styles.letterMask} key={index} style={{ '--letter-index': index } as React.CSSProperties}>
+                <span className={styles.letter} data-transition-letter="">{letter}</span>
+              </span>
+            ))}
+          </div>
         </div>
+        <span className="sr-only" role="status">Loading page</span>
         <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip page transition" />
       </div>}
       <noscript><style>{`[data-page-transition] { display: none !important; }`}</style></noscript>
