@@ -14,6 +14,33 @@ import styles from '@/components/site-footer.module.css'
 
 const headline = 'ready for what comes next'
 const words = headline.split(' ')
+const socialLinks = [
+  {
+    label: 'Instagram',
+    href: 'https://instagram.com/byburgama/?hl=af',
+    paths: [
+      'M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4l0 -8',
+      'M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0',
+      'M16.5 7.5v.01',
+    ],
+  },
+  {
+    label: 'TikTok',
+    href: 'https://tiktok.com/@byburgama',
+    paths: ['M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917'],
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://linkedin.com/company/cedarandcactus',
+    paths: [
+      'M8 11v5',
+      'M8 8v.01',
+      'M12 16v-5',
+      'M16 16v-3a2 2 0 1 0 -4 0',
+      'M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10',
+    ],
+  },
+]
 const navigationGroups = [
   {
     label: 'Explore',
@@ -247,6 +274,15 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
         <Reveal className={styles.enquiryInner}>
           <ProjectEnquiryForm variant="inline" introHeading={enquiryHeading} />
           <noscript><style>{'[data-inline-enquiry] form { display: none; }'}</style><p>Email <a href="mailto:hello@burgama.com">hello@burgama.com</a> to start a project.</p></noscript>
+          <nav className={styles.socialLinks} aria-label="Follow Burgama">
+            {socialLinks.map(({ label, href, paths }) => (
+              <a key={label} className={styles.socialLink} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (opens in a new tab)`}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                  {paths.map((path) => <path key={path} d={path} />)}
+                </svg>
+              </a>
+            ))}
+          </nav>
         </Reveal>
         <SectionRise surface="navy" direction="left" />
       </section>

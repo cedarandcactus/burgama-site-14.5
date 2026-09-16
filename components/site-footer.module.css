@@ -130,6 +130,38 @@
   margin-inline: auto;
 }
 
+.socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--palette-navy);
+  background: transparent;
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+
+.socialLink:is(:hover, :focus-visible) {
+  color: var(--palette-navy);
+  background: var(--palette-powder-deep);
+}
+
+.socialLink:focus-visible {
+  outline: 1.5px solid var(--palette-navy);
+  outline-offset: 3px;
+}
+
 .footer {
   position: relative;
   isolation: isolate;
@@ -624,6 +656,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .socialLink,
   .updatesAction > span,
   .footer .rollGlyph,
   .video {
