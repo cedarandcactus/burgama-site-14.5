@@ -11,18 +11,13 @@ import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useSmoothScroll } from '@/components/smooth-scroll'
 import styles from './nav-project-form.module.css'
+import {
+  serviceOptions, timingOptions, currencies, budgetBands, recipient, mailtoLengthLimit,
+  createEmptyDraft, currentDateValue, formatBudget, optionLabel, normalizeWebsite,
+  budgetLabel, timingLabel, validateStep, validateDraft, fieldStep, buildEnquiry,
+  type Currency, type Service, type Timing, type EnquiryDraft, type Errors,
+} from '@/lib/enquiry'
 
-const serviceOptions = [
-  ['strategy-design', 'strategy / design'],
-  ['website-growth', 'website / growth'],
-] as const
-const timingOptions = [
-  ['soon', 'as soon as practical'],
-  ['flexible', 'flexible'],
-  ['date', 'I have a date'],
-] as const
-const currencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD'] as const
-const budgetBands = [[0, 5000], [5000, 10000], [10000, 25000], [25000, 50000], [50000, 100000], [100000, null]] as const
 const stepDefinitions = [
   { id: 'company', heading: 'A few details' },
   { id: 'project', heading: 'What are we making?' },
@@ -30,138 +25,6 @@ const stepDefinitions = [
   { id: 'budget', heading: 'Budget' },
   { id: 'review', heading: 'Looks good?' },
 ] as const
-const recipient = 'hello@burgama.com'
-const mailtoLengthLimit = 1800
-
-type Currency = typeof currencies[number]
-type Service = typeof serviceOptions[number][0]
-type Timing = typeof timingOptions[number][0]
-type EnquiryDraft = {
-  companyName: string
-  website: string
-  name: string
-  email: string
-  services: Service[]
-  brief: string
-  timing: Timing | ''
-  deadline: string
-  budget: number
-  budgetUndecided: boolean
-  currency: Currency
-}
-type Errors = Partial<Record<keyof EnquiryDraft, string>>
-
-const fieldStep: Record<keyof EnquiryDraft, number> = {
-  companyName: 0,
-  website: 0,
-  name: 0,
-  email: 0,
-  services: 1,
-  brief: 1,
-  timing: 2,
-  deadline: 2,
-  budget: 3,
-  budgetUndecided: 3,
-  currency: 3,
-}
-
-function createEmptyDraft(): EnquiryDraft {
-  return {
-    companyName: '', website: '', name: '', email: '', services: [], brief: '',
-    timing: '', deadline: '', budget: 2, budgetUndecided: false, currency: 'USD',
-  }
-}
-
-function currentDateValue() {
-  const now = new Date()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const day = String(now.getDate()).padStart(2, '0')
-  return `${now.getFullYear()}-${month}-${day}`
-}
-
-function formatBudget(index: number, currency: Currency, compact = false) {
-  const [min, max] = budgetBands[index]
-  const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0, ...(compact ? { notation: 'compact' as const } : {}) })
-  if (!min) return `under ${formatter.format(max!)}`
-  if (max === null) return `${formatter.format(min)}+`
-  return `${formatter.format(min)}–${formatter.format(max)}`
-}
-
-function optionLabel<T extends readonly (readonly [string, string])[]>(options: T, value: string) {
-  return options.find(option => option[0] === value)?.[1] ?? value
-}
-
-function normalizeWebsite(value: string) {
-  const trimmed = value.trim()
-  if (!trimmed) return ''
-  try {
-    const url = new URL(/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`)
-    if (!['http:', 'https:'].includes(url.protocol) || !url.hostname.includes('.')) return null
-    return url.toString().replace(/\/$/, '')
-  } catch {
-    return null
-  }
-}
-
-function budgetLabel(draft: EnquiryDraft) {
-  return draft.budgetUndecided ? `not sure yet (${draft.currency})` : `${formatBudget(draft.budget, draft.currency)} ${draft.currency}`
-}
-
-function timingLabel(draft: EnquiryDraft) {
-  if (draft.timing === 'date') {
-    const date = new Date(`${draft.deadline}T12:00:00`)
-    return Number.isNaN(date.getTime()) ? draft.deadline : new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date)
-  }
-  return optionLabel(timingOptions, draft.timing)
-}
-
-function validateStep(index: number, draft: EnquiryDraft): Errors {
-  const errors: Errors = {}
-  if (index === 0) {
-    if (!draft.companyName.trim()) errors.companyName = 'Enter your company name.'
-    if (draft.website && !normalizeWebsite(draft.website)) errors.website = 'Enter a valid website, such as example.com.'
-    if (!draft.name.trim()) errors.name = 'Enter your name.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errors.email = 'Enter a valid email address.'
-  }
-  if (index === 1) {
-    if (!draft.services.length) errors.services = 'Choose at least one area.'
-    if (!draft.brief.trim()) errors.brief = 'Tell us what you want to accomplish.'
-  }
-  if (index === 2) {
-    if (!draft.timing) errors.timing = 'Choose a timeframe.'
-    if (draft.timing === 'date') {
-      if (!draft.deadline) errors.deadline = 'Choose a target date.'
-      else if (draft.deadline < currentDateValue()) errors.deadline = 'Choose today or a future date.'
-    }
-  }
-  return errors
-}
-
-function validateDraft(draft: EnquiryDraft) {
-  return [0, 1, 2].reduce<Errors>((all, index) => ({ ...all, ...validateStep(index, draft) }), {})
-}
-
-function buildEnquiry(draft: EnquiryDraft) {
-  const serviceLabels = draft.services.map(service => optionLabel(serviceOptions, service)).join(', ')
-  const body = [
-    'Hello Burgama,', '',
-    `Company: ${draft.companyName.trim()}`,
-    ...(draft.website.trim() ? [`Website: ${draft.website.trim()}`] : []), '',
-    `Project: ${serviceLabels}`,
-    draft.brief.trim(), '',
-    `Timing: ${timingLabel(draft)}`,
-    `Budget: ${budgetLabel(draft)}`, '',
-    draft.name.trim(),
-    draft.email.trim(),
-  ].join('\n')
-  const subject = 'Let’s start a project — Burgama'
-  return {
-    body,
-    subject,
-    text: `To: ${recipient}\nSubject: ${subject}\n\n${body}`,
-    mailto: `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-  }
-}
 
 function ReviewRow({ label, lines, editLabel, onEdit }: { label: string; lines: string[]; editLabel: string; onEdit: () => void }) {
   const visibleLines = lines.filter(Boolean)
@@ -207,6 +70,9 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
   const settleMotion = useRef<() => void>(() => {})
   const [errors, setErrors] = useState<Errors>({})
   const [copyState, setCopyState] = useState<'idle' | 'copying' | 'copied' | 'manual'>('idle')
+  const [sendState, setSendState] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle')
+  const sendRequest = useRef(0)
+  const honeypot = useRef<HTMLInputElement>(null)
   const form = useRef<HTMLFormElement>(null)
   const heading = useRef<HTMLHeadingElement>(null)
   const heightCallback = useRef(onHeightChange)
@@ -344,7 +210,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
     }
   }, [active, step, inline, scroll])
 
-  useEffect(() => () => { copyRequest.current += 1 }, [])
+  useEffect(() => () => { copyRequest.current += 1; sendRequest.current += 1 }, [])
 
   useEffect(() => {
     if (copyState !== 'manual') return
@@ -423,10 +289,35 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
     }
   }
 
+  /*
+    The enquiry is posted rather than handed to a mail client. A failure
+    here is not a dead end: `failed` puts the old mailto (or the copy
+    fallback for an over-long enquiry) back in front of the visitor.
+  */
+  async function sendEnquiry() {
+    if (busyRef.current || sendState === 'sending' || !validateEverything()) return
+    const request = ++sendRequest.current
+    setSendState('sending')
+    setCopyState('idle')
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...draft, company: honeypot.current?.value ?? '' }),
+      })
+      if (request !== sendRequest.current) return
+      setSendState(response.ok ? 'sent' : 'failed')
+    } catch {
+      if (request === sendRequest.current) setSendState('failed')
+    }
+  }
+
   function reset() {
     if (busyRef.current) return
     setDraft(createEmptyDraft())
     setErrors({})
+    sendRequest.current += 1
+    setSendState('idle')
     focusError.current = null
     goTo(0)
   }
@@ -444,6 +335,10 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
     <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Project enquiry' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={event => {
       if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
     }}>
+      {/* Hidden from people and from assistive technology; only a bot fills it. */}
+      <div className={styles.honeypot} aria-hidden="true">
+        <input ref={honeypot} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+      </div>
       <div id={`${idPrefix}-progress`} className={styles.progress} role="progressbar" aria-label="Enquiry progress" aria-valuemin={1} aria-valuemax={stepDefinitions.length} aria-valuenow={step + 1} aria-valuetext={`${stepDefinitions[step].heading}, step ${step + 1} of ${stepDefinitions.length}`}>
         <span style={{ transform: `scaleX(${(step + 1) / stepDefinitions.length})` }} />
       </div>
@@ -555,7 +450,21 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                   <ReviewRow label="timing" lines={timingSummary} editLabel="Edit project timing" onEdit={() => goTo(2)} />
                   <ReviewRow label="budget" lines={[budgetLabel(draft)]} editLabel="Edit budget" onEdit={() => goTo(3)} />
                 </dl>
-                <p className={styles.copyStatus} role="status">{copyState === 'copied' ? `Copied. Paste it into an email to ${recipient}.` : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
+                <p className={styles.copyStatus} role="status">{
+                  sendState === 'sent' ? `Sent. We’ll reply to ${draft.email.trim()}.`
+                  : sendState === 'failed' ? 'That did not send.'
+                  : copyState === 'copied' ? `Copied. Paste it into an email to ${recipient}.`
+                  : copyState === 'manual' ? 'Select the text below to copy.'
+                  : ''
+                }</p>
+                {sendState === 'failed' && (
+                  <p className={styles.fallbackNote}>
+                    {mailtoFits
+                      ? <a href={enquiry.mailto}>Open an email draft instead</a>
+                      : <button type="button" onClick={copyEnquiry}>Copy the enquiry</button>}
+                    {' '}or write to <a href={`mailto:${recipient}`}>{recipient}</a>.
+                  </p>
+                )}
                 {copyState === 'manual' && <Field><FieldLabel className="sr-only" htmlFor={`${idPrefix}-copy`}>Enquiry</FieldLabel><Textarea id={`${idPrefix}-copy`} data-enquiry-copy="" className={styles.copyText} readOnly value={enquiry.text} rows={8} onFocus={event => event.target.select()} /></Field>}
               </>
             )}
@@ -565,10 +474,10 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
               {(!inline || step > 0) && <button type="button" className={styles.back} onClick={() => step === 0 ? onMenu?.() : goTo(step - 1)}><CircularArrowIcon direction="left" />{step === 0 ? 'menu' : 'back'}</button>}
               {step < stepDefinitions.length - 1 ? (
                 <button type="submit" className={styles.continue}>{step === stepDefinitions.length - 2 ? 'review' : 'continue'}<CircularArrowIcon /></button>
-              ) : mailtoFits ? (
-                <a className={styles.continue} href={enquiry.mailto} onClick={event => { if (!validateEverything()) event.preventDefault() }}>open email draft<CircularArrowIcon /></a>
-              ) : (
-                <button type="button" className={styles.continue} onClick={copyEnquiry}>copy for email<CircularArrowIcon /></button>
+              ) : sendState === 'sent' ? null : (
+                <button type="button" className={styles.continue} disabled={sendState === 'sending'} onClick={sendEnquiry}>
+                  {sendState === 'sending' ? 'sending' : sendState === 'failed' ? 'try again' : 'send enquiry'}<CircularArrowIcon />
+                </button>
               )}
             </div>
             {step === stepDefinitions.length - 1 && (
