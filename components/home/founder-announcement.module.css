@@ -16,13 +16,13 @@
 .popup {
   z-index: 1001;
   display: flex;
-  width: min(760px, calc(100vw - 32px));
-  max-width: 760px;
+  width: min(480px, calc(100vw - 40px));
+  max-width: 480px;
   max-height: calc(100dvh - 32px);
-  padding: clamp(24px, 5vw, 44px);
+  padding: clamp(24px, 4vw, 36px);
   flex-direction: column;
-  align-items: center;
-  gap: clamp(18px, 3vw, 26px);
+  align-items: stretch;
+  gap: 20px;
   overflow-y: auto;
   color: var(--palette-powder);
   background: transparent;
@@ -45,13 +45,14 @@
 .header {
   display: flex;
   align-items: center;
-  flex-direction: column;
-  gap: 14px;
-  text-align: center;
+  flex-direction: row;
+  gap: 16px;
+  text-align: left;
 }
 
 .portrait {
-  width: 82px;
+  flex: none;
+  width: 64px;
   aspect-ratio: 1;
   margin: 0;
   overflow: hidden;
@@ -69,20 +70,20 @@
 
 .intro {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   color: inherit;
 }
 
 .title {
   margin: 0;
   color: inherit;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: 0;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: clamp(1.65rem, 4vw, 2.15rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: normal;
   text-wrap: balance;
 }
 
@@ -99,18 +100,20 @@
 }
 
 .lede {
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.45;
+  opacity: 0.78;
 }
 
 .copy {
   display: flex;
-  width: min(100%, 680px);
+  width: 100%;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   text-align: left;
-  font-size: clamp(0.95rem, 1.55vw, 1.05rem);
+  font-family: var(--font-pangram), sans-serif;
+  font-size: 0.95rem;
   font-weight: 400;
   line-height: 1.55;
 }
@@ -123,25 +126,26 @@
 .actions {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 20px;
   margin: 0;
-  padding: 0;
+  padding: 14px 0 0;
   border: 0;
+  border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent);
   background: transparent;
 }
 
 .action {
   min-height: 36px;
-  padding-inline: 10px;
+  padding: 0;
   border: 0;
   border-radius: 0;
   color: inherit;
   background: transparent;
   box-shadow: none;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 400;
 }
 
@@ -158,13 +162,17 @@
 
 @media (max-width: 520px) {
   .popup {
-    width: calc(100vw - 20px);
+    width: calc(100vw - 24px);
     max-height: calc(100dvh - 20px);
-    padding-inline: 18px;
+    padding: 22px 18px;
+  }
+
+  .header {
+    align-items: flex-start;
   }
 
   .portrait {
-    width: 72px;
+    width: 54px;
   }
 }
 

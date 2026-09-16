@@ -79,7 +79,7 @@ export function FounderAnnouncement() {
               alt="Deniz Sipahi, founder of Burgama"
               width={1264}
               height={1583}
-              sizes="96px"
+              sizes="72px"
               priority
             />
           </figure>
@@ -104,10 +104,10 @@ export function FounderAnnouncement() {
 
         <div className={styles.actions}>
           <Button variant="ghost" className={styles.action} onClick={openProjectForm}>
-            work with us
+            start a project
           </Button>
           <Button variant="ghost" className={styles.action} onClick={() => setOpen(false)}>
-            skip
+            close
           </Button>
         </div>
       </DialogContent>
