@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { ArtifactSlot } from '@/components/artifact-slot'
 import { SectionRise } from '@/components/home/section-rise'
 
-type Surface = 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blue-mid'
+type Surface = 'white' | 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blue-mid'
 
 type PageHeroProps = {
   wordmark: string

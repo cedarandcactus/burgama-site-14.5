@@ -20,20 +20,33 @@ body .portfolio .project-tile-image { position: relative; width: 100%; aspect-ra
 .portfolio-related-link h3 { max-width: 18ch; margin: 0; font-size: clamp(34px, 4vw, 56px); font-weight: 400; line-height: 1.02; text-wrap: balance; }
 .portfolio-study p { max-width: 43ch; margin: 0; font-size: 17px; font-weight: 300; line-height: 1.55; }
 .portfolio-related-link > span { font-size: 14px; line-height: 1.5; }
-.portfolio-browser { display: flex; flex-direction: column; gap: 36px; }
-.portfolio-filters { display: flex; flex-wrap: wrap; gap: 10px; }
-.portfolio .portfolio-filters .pill { min-height: 48px; padding: 8px 20px; border: 1px solid transparent; border-radius: 999px; color: var(--palette-navy); background: var(--palette-powder-deep); font-family: var(--font-cenura), sans-serif; font-size: 20px; font-weight: 400; line-height: 1.15; }
-.portfolio .portfolio-filters .pill[aria-pressed='true'] { color: var(--palette-powder); background: var(--palette-navy); }
-.portfolio-library { display: flex; flex-direction: column; gap: 32px; }
-.portfolio-library-entry { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-block: 8px; color: inherit; text-decoration: none; }
-.portfolio-library-copy h3 { margin: 0; font-family: var(--font-pangram), sans-serif; font-size: 19px; font-weight: 500; line-height: 1.45; }
-.portfolio-library-copy > span { display: block; padding-top: 8px; font-size: 15px; }
-.portfolio-library .archive-categories span { background: var(--palette-powder-deep); }
+.portfolio-browser { display: flex; flex-direction: column; gap: 24px; }
+.portfolio-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.portfolio .portfolio-filters .pill { min-height: 44px; padding: 8px 20px; border: 1px solid var(--rule); border-radius: 999px; color: var(--studio-ink); background: transparent; font-family: var(--font-pangram), sans-serif; font-size: 16px; font-weight: 400; line-height: 1.5; }
+.portfolio .portfolio-filters .pill[aria-pressed='true'] { border-color: var(--palette-navy); color: var(--palette-powder); background: var(--palette-navy); }
+.portfolio-result-count { margin: 0; color: var(--palette-navy-raised); font-size: 14px; font-weight: 400; line-height: 1.5; }
+.portfolio-results { min-width: 0; overflow: clip; overflow-clip-margin: 8px; }
+.portfolio-library { display: flex; flex-direction: column; }
+.portfolio-library-entry { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; padding-block: 24px; border-top: 1px solid var(--rule); color: inherit; background: transparent; text-decoration: none; }
+.portfolio-library-entry:last-child { border-bottom: 1px solid var(--rule); }
+.portfolio-library-copy { min-width: 0; }
+.portfolio-library-copy h3 { margin: 0; font-family: var(--font-pangram), sans-serif; font-size: clamp(20px, 2vw, 24px); font-weight: 400; line-height: 1.4; overflow-wrap: anywhere; }
+.portfolio-library-copy > span { display: block; padding-top: 8px; font-size: 14px; }
+.portfolio-library .archive-categories { gap: 4px 16px; min-width: 0; }
+.portfolio-library .archive-categories span { display: inline; min-height: 0; padding: 0; border-radius: 0; color: var(--palette-navy-raised); background: transparent; font-size: 14px; font-weight: 400; line-height: 1.5; overflow-wrap: anywhere; }
+.portfolio-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.portfolio-empty p { margin: 0; font-size: 16px; line-height: 1.5; }
 .portfolio-facts { display: flex; flex-wrap: wrap; gap: 24px 48px; max-width: 70ch; margin: 0; }
 .portfolio-facts > div { flex: 1 1 200px; }
 .portfolio-facts dt { margin-bottom: 8px; font-size: 14px; font-weight: 600; }
 .portfolio-facts dd { margin: 0; font-size: 16px; font-weight: 300; line-height: 1.55; }
 .portfolio-story { display: flex; flex-direction: column; gap: clamp(48px, 7vw, 100px); }
+.portfolio-detail .portfolio-project-ending { display: flex; flex-direction: column; gap: 32px; }
+/* Project actions retain their original powder/navy treatment on the white story surface. */
+.portfolio-detail .portfolio-project-links { --studio-surface: var(--palette-powder); --studio-ink: var(--palette-navy); }
+.portfolio-detail .portfolio-footnotes { display: flex; flex-direction: column; gap: 12px; max-width: 70ch; border-top: 1px solid var(--rule); padding-top: 20px; color: var(--palette-navy-raised); font-family: var(--font-pangram), sans-serif; font-size: 14px; font-weight: 400; line-height: 1.6; }
+.portfolio-detail .portfolio-footnotes p { margin: 0; overflow-wrap: anywhere; }
+.portfolio-detail .portfolio-footnotes strong { color: var(--palette-navy); font-weight: 500; }
 .portfolio .case-module-title,
 .portfolio .case-process h3 { text-transform: lowercase; }
 .portfolio .case-module { display: flex; flex-direction: column; gap: 24px; margin: 0; padding: 0; }
@@ -63,7 +76,8 @@ body .portfolio .case-media-frame[data-media-ratio='square'] { max-width: 900px;
   .portfolio-featured-grid .project-tile:last-child { grid-column: 1 / -1; }
   .portfolio-study-grid,
   .portfolio-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
-  .portfolio-library-entry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+  .portfolio-library-entry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: baseline; gap: 32px; }
+  .portfolio-library .archive-categories { justify-content: flex-end; text-align: right; }
   .portfolio .case-media-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .portfolio .case-split-60-40 { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
   .portfolio .case-split-40-60 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
@@ -81,6 +95,7 @@ body .portfolio .case-media-frame[data-media-ratio='square'] { max-width: 900px;
   .portfolio .portfolio-filters .pill:hover { border-color: currentColor; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .portfolio .portfolio-filters .pill { transition: none; }
   .portfolio .project-tile-image img,
   .portfolio .project-tile:hover .project-tile-image img { transform: none; transition: none; }
 }
