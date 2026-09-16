@@ -141,10 +141,7 @@ export function WorkReel({ children, count }: { children: ReactNode; count: numb
         {children}
       </div>
       <div className={styles.reelControls}>
-        <div className={styles.reelPosition}>
-          <span className="sr-only" aria-live="polite" aria-atomic="true">Project {active + 1} of {count}</span>
-          <div className={styles.reelProgress} aria-hidden="true"><span style={{ width: `${((active + 1) / count) * 100}%` }} /></div>
-        </div>
+        <span className="sr-only" aria-live="polite" aria-atomic="true">Project {active + 1} of {count}</span>
         <div className={styles.reelArrows}>
           <button type="button" aria-label="Previous project" aria-controls="featured-project-reel" aria-disabled={active === 0} onClick={() => targetRef.current > 0 && scrollToCard(targetRef.current - 1)}><span className="arrow-capsule"><CircularArrowIcon direction="left" /></span></button>
           <button type="button" aria-label="Next project" aria-controls="featured-project-reel" aria-disabled={active === count - 1} onClick={() => targetRef.current < count - 1 && scrollToCard(targetRef.current + 1)}><span className="arrow-capsule"><CircularArrowIcon /></span></button>

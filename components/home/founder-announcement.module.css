@@ -24,10 +24,12 @@
   align-items: stretch;
   gap: 20px;
   overflow-y: auto;
+  border: 0;
   color: var(--palette-powder);
   background: transparent;
   box-shadow: none;
   outline: 0;
+  --tw-ring-shadow: 0 0 #0000;
   translate: -50% -50%;
   transition:
     opacity 360ms var(--ease-module),
@@ -149,9 +151,9 @@
 }
 
 .action:first-child {
-  border-color: currentColor;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
+  border-color: color-mix(in srgb, currentColor 54%, transparent);
+  color: inherit;
+  background: transparent;
 }
 
 .action:is(:hover, :focus-visible) {
