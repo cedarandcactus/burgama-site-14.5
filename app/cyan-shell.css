@@ -107,15 +107,6 @@ body .cyan-header[data-home='true'][data-condensed='false'] .header-inner {
   width: var(--header-expanded-width);
 }
 
-body .cyan-header[data-work='true'] {
-  --header-action-bg: var(--brand-navy);
-  --header-action-ink: var(--brand-white);
-}
-
-body .cyan-header[data-work='true'] .header-inner {
-  color: var(--brand-navy);
-}
-
 body .cyan-header .cyan-header-mark-link {
   display: inline-grid;
   grid-template-columns: minmax(0, 1fr);

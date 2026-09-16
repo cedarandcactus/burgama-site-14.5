@@ -32,11 +32,6 @@
   clip-path: ellipse(160% 140% at var(--sweep-origin) 50%);
 }
 
-.overlay[data-work='true'] .curtain {
-  color: var(--brand-navy);
-  background: var(--brand-white);
-}
-
 .logo {
   padding: .15em;
   font-family: var(--font-cenura), sans-serif;

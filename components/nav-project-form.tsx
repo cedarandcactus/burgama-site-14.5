@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -258,8 +258,8 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
       </section>
       <footer className={styles.footer}>
         <div className={styles.actions}>
-          {(!inline || step > 0) && <button type="button" className={styles.back} onClick={() => step === 0 ? onMenu?.() : goTo(step - 1)}><ArrowLeft aria-hidden="true" />{step === 0 ? 'menu' : 'back'}</button>}
-          {step < 3 ? <button type="submit" className={styles.continue}>{step === 2 ? 'review' : 'continue'}<ArrowRight aria-hidden="true" /></button> : inline ? <button type="button" className={styles.continue} disabled aria-describedby={`${idPrefix}-delivery`}>send enquiry<ArrowUpRight aria-hidden="true" /></button> : <a className={styles.continue} href={mailto}>open email draft<ArrowUpRight aria-hidden="true" /></a>}
+          {(!inline || step > 0) && <button type="button" className={styles.back} onClick={() => step === 0 ? onMenu?.() : goTo(step - 1)}><CircularArrowIcon direction="left" />{step === 0 ? 'menu' : 'back'}</button>}
+          {step < 3 ? <button type="submit" className={styles.continue}>{step === 2 ? 'review' : 'continue'}<CircularArrowIcon /></button> : inline ? <button type="button" className={styles.continue} disabled aria-describedby={`${idPrefix}-delivery`}>send enquiry<CircularArrowIcon /></button> : <a className={styles.continue} href={mailto}>open email draft<CircularArrowIcon /></a>}
         </div>
         {step === 3 && <div className={styles.footerNote}><button type="button" onClick={reset}>start over</button>{!inline && <p>opens your email app</p>}</div>}
       </footer>

@@ -308,18 +308,6 @@
   cursor: pointer;
 }
 
-.updatesAction > span {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 36px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: var(--palette-powder);
-  color: var(--palette-navy);
-  transition: background-color 180ms ease, color 180ms ease;
-}
-
 .updatesAction svg { width: 20px; height: 20px; }
 .updatesEdit { width: 44px; }
 .updatesEdit svg { width: 15px; height: 15px; }
@@ -414,14 +402,6 @@
   letter-spacing: normal;
   text-transform: lowercase;
   text-decoration: none;
-}
-
-.linkColumn a > svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  opacity: 1;
-  stroke-width: 2;
 }
 
 .address {
@@ -622,11 +602,6 @@
     font-size: 20px;
   }
 
-  .linkColumn a > svg {
-    width: 16px;
-    height: 16px;
-  }
-
   .bottomRow {
     flex-direction: row;
     align-items: center;
@@ -638,14 +613,12 @@
 @media (prefers-reduced-motion: reduce) {
   .updatesAction > span,
   .footer .rollGlyph,
-  .linkColumn a > svg,
   .video {
     transition: none;
   }
 
   .footer a .rollGlyph,
-  .footer a:is(:hover, :focus-visible) .rollGlyph,
-  .footer .linkColumn a > svg {
+  .footer a:is(:hover, :focus-visible) .rollGlyph {
     transform: none;
   }
 

@@ -5,6 +5,7 @@ import { ProjectCard } from '@/components/project-card'
 import { SiteFooter } from '@/components/site-footer'
 import Link from '@/components/transition-link'
 import { WorkIndex } from '@/components/work-index'
+import { WorkShowcase } from '@/components/work-showcase'
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { Reveal } from '@/components/reveal'
 import { featuredProjects, getPublishedProjects } from '@/lib/projects'
@@ -20,26 +21,26 @@ export default function WorkPage() {
 
   return (
     <div className="studio-page">
-      <div className="portfolio">
-        <PageHero wordmark="selected work." intro={['Packaging, photography, branding, websites, and marketing for organizations with something worth saying.']} nextSurface="blue-slate" actions={
+      <div className="portfolio portfolio-index">
+        <PageHero wordmark="selected work." intro={['Packaging, photography, branding, websites, and marketing for organizations with something worth saying.']} nextSurface="powder-deep" actions={
           <nav className="studio-actions" aria-label="Work collections">
             <Link href="#featured" className="pill">featured</Link>
-            <Link href="#studies" className="pill">focused studies</Link>
+            <Link href="#studies" className="pill">strategy</Link>
             <Link href="#archive" className="pill">archive</Link>
           </nav>
         } />
-        <section id="featured" className="studio-band" data-surface="blue-slate" aria-labelledby="featured-title">
+        <section id="featured" className="studio-band" data-surface="powder-deep" aria-labelledby="featured-title">
           <div className="studio-width">
             <h2 id="featured-title" className="studio-heading">full systems, built together.</h2>
-            <div className="portfolio-featured-grid">
-              {featuredProjects.map(project => <ProjectCard key={project.slug} project={project} showArrow={false} />)}
-            </div>
+            <WorkShowcase>
+              {featuredProjects.map(project => <ProjectCard key={project.slug} project={project} showcase />)}
+            </WorkShowcase>
           </div>
           <SectionRise surface="navy" direction="left" />
         </section>
         <section id="studies" className="studio-band" data-surface="navy" aria-labelledby="studies-title">
           <div className="studio-width">
-            <h2 id="studies-title" className="studio-heading">focused studies.</h2>
+            <h2 id="studies-title" className="studio-heading">strategy, put to work.</h2>
             <div className="portfolio-study-grid">
               {studies.map(project => (
                 <Reveal className="portfolio-study-reveal" key={project.slug}>
@@ -47,7 +48,7 @@ export default function WorkPage() {
                     <div className="archive-categories">{(project.categories ?? project.disciplines).map(discipline => <span key={discipline}>{discipline.toLowerCase()}</span>)}</div>
                     <h3>{project.title}</h3>
                     <p>{project.summary}</p>
-                    <span className="studio-arrow-capsule"><CircularArrowIcon /></span>
+                    <span className="arrow-capsule" aria-hidden="true"><CircularArrowIcon /></span>
                   </Link>
                 </Reveal>
               ))}

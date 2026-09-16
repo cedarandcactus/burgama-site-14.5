@@ -1228,23 +1228,6 @@
   touch-action: manipulation;
 }
 
-.reelArrows button > span {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 36px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
-  transition: background-color 180ms ease;
-}
-
-.reelArrows button svg {
-  width: 20px;
-  height: 20px;
-}
-
 .reelArrows button[aria-disabled='true'] { cursor: default; }
 
 .reelArrows button[aria-disabled='true'] > span {

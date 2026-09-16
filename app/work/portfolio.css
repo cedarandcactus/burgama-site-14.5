@@ -1,5 +1,22 @@
 .portfolio { min-width: 0; }
-.portfolio-featured-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 56px; }
+.portfolio-index .portfolio-showcase { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(64px, 9vw, 144px); }
+.portfolio-index .portfolio-showcase > .project-tile { width: 100%; }
+.portfolio-index .portfolio-showcase-media-space { padding-block: 16px; }
+.portfolio-index .portfolio-showcase-media { width: 100%; }
+.portfolio-index .portfolio-showcase .project-tile-caption { justify-content: space-between; padding-top: 8px; }
+.portfolio-index .portfolio-showcase .project-link-arrow { --arrow-surface: var(--palette-navy); --arrow-ink: var(--palette-powder); }
+.portfolio-index .portfolio-showcase .project-tile-image { overflow: visible; }
+.portfolio-index .portfolio-showcase .project-tile-image img { border-radius: inherit; }
+.portfolio-index .portfolio-showcase .project-tile:hover .project-tile-image img { transform: none; }
+.portfolio-index .portfolio-study-grid { gap: 24px; align-items: stretch; }
+.portfolio-index .portfolio-study-reveal { display: flex; min-width: 0; }
+.portfolio-index .portfolio-study { flex: 1; width: 100%; padding: clamp(24px, 3.4vw, 48px); border-radius: 28px; color: var(--palette-navy); background: var(--palette-powder); transition: transform 300ms ease; }
+.portfolio-index .portfolio-study .archive-categories { gap: 8px 16px; }
+.portfolio-index .portfolio-study .archive-categories span { padding: 0; min-height: 0; font-size: 14px; line-height: 1.5; }
+.portfolio-index .portfolio-study h3 { font-size: clamp(34px, 3.6vw, 52px); line-height: 1.08; }
+.portfolio-index .portfolio-study .arrow-capsule { --arrow-width: 64px; --arrow-height: 44px; --arrow-surface: var(--palette-navy); --arrow-ink: var(--palette-powder); align-self: flex-end; margin-top: auto; }
+.portfolio-index :is(.portfolio-study, .portfolio-showcase .project-tile):focus-visible { outline: 2px solid currentColor; outline-offset: 8px; }
+.portfolio-index .portfolio-study:focus-visible { outline-color: var(--palette-powder); }
 .portfolio .project-tile { display: flex; min-width: 0; color: inherit; text-decoration: none; }
 .portfolio .project-tile-content { display: flex; flex-direction: column; min-width: 0; width: 100%; }
 body .portfolio .project-tile-image { position: relative; width: 100%; aspect-ratio: auto; padding: 0; overflow: hidden; border: 0; border-radius: 20px; background: transparent; }
@@ -71,9 +88,9 @@ body .portfolio .case-media-frame[data-media-ratio='square'] { max-width: 900px;
 .portfolio-source strong { font-weight: 600; }
 
 @media (min-width: 700px) {
-  .portfolio-featured-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 80px 32px; }
-  .portfolio-featured-grid .project-tile:first-child,
-  .portfolio-featured-grid .project-tile:last-child { grid-column: 1 / -1; }
+  .portfolio-index .portfolio-showcase-media-space { padding-block: 32px; }
+  .portfolio-index .portfolio-showcase > .project-tile:nth-child(even) { width: 86%; align-self: flex-end; }
+  .portfolio-index .portfolio-showcase > .project-tile:nth-child(3) { width: 92%; }
   .portfolio-study-grid,
   .portfolio-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
   .portfolio-library-entry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: baseline; gap: 32px; }
@@ -94,7 +111,14 @@ body .portfolio .case-media-frame[data-media-ratio='square'] { max-width: 900px;
   .portfolio-library-entry:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; }
   .portfolio .portfolio-filters .pill:hover { border-color: currentColor; }
 }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .portfolio-index .portfolio-study:hover { transform: translateY(-4px); }
+  .portfolio-index :is(.portfolio-study, .portfolio-showcase .project-tile):hover .arrow-capsule svg { transform: translateX(3px); }
+}
 @media (prefers-reduced-motion: reduce) {
+  .portfolio-index .portfolio-showcase-media-space { padding-block: 0; }
+  .portfolio-index .portfolio-showcase .project-tile-caption { padding-top: 20px; }
+  .portfolio-index .portfolio-study { transition: none; }
   .portfolio .portfolio-filters .pill { transition: none; }
   .portfolio .project-tile-image img,
   .portfolio .project-tile:hover .project-tile-image img { transform: none; transition: none; }

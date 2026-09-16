@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { ArrowUpRight } from 'lucide-react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import Link from '@/components/transition-link'
 import type { MediaRatio, Project } from '@/lib/projects'
 
@@ -24,11 +24,13 @@ export function ProjectCard({
   showArrow = true,
   concise = false,
   actionLabel,
+  showcase = false,
 }: {
   project: Project
   showArrow?: boolean
   concise?: boolean
   actionLabel?: string
+  showcase?: boolean
 }) {
   const media = project.thumbnailMedia ?? project.heroMedia
   const style = {
@@ -37,22 +39,27 @@ export function ProjectCard({
     '--project-media-width-cap': widthCaps[media.ratio],
     '--project-media-aspect': aspectRatios[media.ratio],
   } as CSSProperties
+  const artwork = media.src ? (
+    <div className="project-tile-image">
+      <img
+        src={media.src}
+        alt={media.label}
+        width={media.width}
+        height={media.height}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  ) : null
 
   return (
-    <Link className="project-tile" href={`/work/${project.slug}`} aria-label={concise ? `${project.title} — ${actionLabel ?? 'view project'}` : undefined}>
+    <Link className="project-tile" href={`/work/${project.slug}`} data-showcase={showcase || undefined} aria-label={concise ? `${project.title} — ${actionLabel ?? 'view project'}` : project.title}>
       <article className="project-tile-content" style={style}>
-        {media.src ? (
-          <div className="project-tile-image">
-            <img
-              src={media.src}
-              alt={media.label}
-              width={media.width}
-              height={media.height}
-              loading="lazy"
-              decoding="async"
-            />
+        {showcase && artwork ? (
+          <div className="portfolio-showcase-media-space">
+            <div className="portfolio-showcase-media">{artwork}</div>
           </div>
-        ) : null}
+        ) : artwork}
         <div className="project-tile-caption">
           <div className="project-tile-copy">
             <ul
@@ -69,8 +76,8 @@ export function ProjectCard({
           {actionLabel ? (
             <span className="project-link-prompt">{actionLabel}</span>
           ) : showArrow ? (
-            <span className="project-link-arrow" aria-hidden="true">
-              <ArrowUpRight size={26} strokeWidth={2.5} aria-hidden="true" focusable="false" />
+            <span className="project-link-arrow arrow-capsule" aria-hidden="true">
+              <CircularArrowIcon />
             </span>
           ) : null}
         </div>
