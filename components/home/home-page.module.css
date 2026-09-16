@@ -98,9 +98,9 @@
   width: 100%;
   max-width: 26ch;
   margin: 0;
-  font-size: clamp(2.8125rem, calc(6.7vw - 0.5rem), 5.25rem);
-  font-weight: 400;
-  line-height: 1.08;
+  font-size: var(--type-hero-size);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--type-hero-leading);
   letter-spacing: normal;
 }
 
@@ -134,9 +134,9 @@
   max-width: 44ch;
   margin: 0;
   color: inherit;
-  font-size: clamp(16px, 1.35vw, 20px);
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: var(--type-support-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-support-leading);
 }
 
 .heroStatement :global(.pill) {
@@ -723,10 +723,6 @@
     padding-bottom: 72px;
   }
 
-  .heroFrame h1 {
-    font-size: clamp(2.25rem, calc(1.125rem + 5.25vw), 2.8125rem);
-  }
-
   .heroStatement {
     align-items: center;
     gap: 28px;
@@ -841,18 +837,18 @@
 .introduction h2,
 .workIntro h2 {
   margin: 0;
-  font-size: clamp(42px, 6.3vw, 88px);
-  font-weight: 400;
-  line-height: 1.03;
+  font-size: var(--type-section-size);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--type-section-leading);
   text-wrap: balance;
 }
 
 .introduction p {
   max-width: 43ch;
   margin: 0;
-  font-size: clamp(16px, 1.45vw, 19px);
-  font-weight: 500;
-  line-height: 1.6;
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-leading);
   text-wrap: pretty;
 }
 
@@ -953,9 +949,9 @@
   max-width: 56ch;
   margin: 0 auto;
   font-family: var(--font-pangram), sans-serif;
-  font-size: clamp(17px, 1.8vw, 21px);
-  font-weight: 400;
-  line-height: 1.65;
+  font-size: var(--type-lead-size);
+  font-weight: var(--type-lead-weight);
+  line-height: var(--type-lead-leading);
   text-align: center;
   text-wrap: pretty;
 }
@@ -1057,7 +1053,7 @@
 }
 
 .workIntro h2 {
-  font-size: clamp(38px, 5.7vw, 78px);
+  font-size: var(--type-section-compact-size);
 }
 
 .workReel {
@@ -1141,8 +1137,8 @@
 
 .page .workTrack :global(.project-tile-title) {
   order: -1;
-  font-size: clamp(28px, 3vw, 42px);
-  line-height: 1.1;
+  font-size: var(--type-card-size);
+  line-height: var(--type-card-leading);
 }
 
 .page .workTrack :global(.project-category-pills) {
@@ -1271,14 +1267,6 @@
     gap: 24px;
   }
 
-  .introduction h2 {
-    font-size: clamp(40px, 10.8vw, 64px);
-  }
-
-  .workIntro h2 {
-    font-size: clamp(36px, 9.5vw, 54px);
-  }
-
   .workReel {
     --reel-card-width: 84vw;
   }
@@ -1294,10 +1282,6 @@
     gap: 20px;
     align-items: flex-start;
     padding-top: 18px;
-  }
-
-  .page .workTrack :global(.project-tile-title) {
-    font-size: 28px;
   }
 
   .reelControls {

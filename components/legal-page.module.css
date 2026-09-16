@@ -1,8 +1,8 @@
 .navigation { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
 .document a { color: inherit; text-decoration: underline; text-underline-offset: .2em; overflow-wrap: anywhere; }
 .updated { margin: 0 0 56px; font-size: 17px; font-weight: 400; line-height: 1.5; }
-.sections { display: flex; flex-direction: column; gap: 48px; font-size: clamp(17px, 1.5vw, 20px); font-weight: 300; line-height: 1.7; }
+.sections { display: flex; flex-direction: column; gap: 48px; font-size: var(--type-lead-size); font-weight: var(--type-lead-weight); line-height: var(--type-lead-leading); }
 .sections section { display: flex; flex-direction: column; gap: 20px; }
-.sections h2 { margin: 0; font-family: var(--font-cenura), sans-serif; font-size: clamp(32px, 3.5vw, 48px); font-weight: 400; line-height: 1.1; text-transform: lowercase; text-wrap: balance; }
+.sections h2 { margin: 0; font-family: var(--font-cenura), sans-serif; font-size: var(--type-card-size); font-weight: var(--type-heading-weight); line-height: var(--type-card-leading); text-transform: lowercase; text-wrap: balance; }
 .sections p { margin: 0; }
 .address { font-style: normal; }

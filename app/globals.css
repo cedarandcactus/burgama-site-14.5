@@ -57,6 +57,23 @@
 }
 
 :root {
+  --type-heading-weight: 400;
+  --type-hero-size: clamp(2.8125rem, calc(6.7vw - 0.5rem), 5.25rem);
+  --type-hero-leading: 1.08;
+  --type-section-size: clamp(42px, 6.3vw, 88px);
+  --type-section-compact-size: clamp(38px, 5.7vw, 78px);
+  --type-section-leading: 1.03;
+  --type-card-size: clamp(28px, 3vw, 42px);
+  --type-card-leading: 1.1;
+  --type-body-size: clamp(16px, 1.45vw, 19px);
+  --type-body-leading: 1.6;
+  --type-body-weight: 500;
+  --type-lead-size: clamp(17px, 1.8vw, 21px);
+  --type-lead-leading: 1.65;
+  --type-lead-weight: 400;
+  --type-support-size: clamp(16px, 1.35vw, 20px);
+  --type-support-leading: 1.5;
+
   /* Dark again — the ground is deep navy, so form controls and scrollbars
      should render dark rather than light. */
   color-scheme: dark;
@@ -5702,12 +5719,21 @@ body .case-media-frame img,
   .project-tile:hover .project-tile-image img { transform: none; }
 }
 
+@media (max-width: 699px) {
+  :root {
+    --type-hero-size: clamp(2.25rem, calc(1.125rem + 5.25vw), 2.8125rem);
+    --type-section-size: clamp(40px, 10.8vw, 64px);
+    --type-section-compact-size: clamp(36px, 9.5vw, 54px);
+    --type-card-size: 28px;
+  }
+}
+
 /* Interior studio pages share the homepage geometry without changing its composition. */
 .studio-page {
   --home-rise: clamp(48px, 14vw, 80px);
   --studio-space: clamp(64px, 8vw, 128px);
-  --studio-heading: clamp(38px, 6vw, 80px);
-  --studio-prose: clamp(17px, 1.5vw, 22px);
+  --studio-heading: var(--type-section-compact-size);
+  --studio-prose: var(--type-lead-size);
   --studio-ink: var(--palette-navy);
   --studio-surface: var(--palette-powder);
   min-width: 0;
@@ -5746,17 +5772,22 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
   margin: 0;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(64px, 15vw, 208px);
-  font-weight: 400;
-  line-height: .95;
+  font-size: var(--type-hero-size);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--type-hero-leading);
   letter-spacing: normal;
   text-transform: lowercase;
   text-wrap: balance;
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
 }
-.studio-page [data-compact='true'] .studio-title { max-width: 20ch; font-size: clamp(38px, 6.8vw, 104px); line-height: 1.02; }
-.studio-intro { display: flex; flex-direction: column; gap: 20px; max-width: 52ch; font-size: var(--studio-prose); font-weight: 300; line-height: 1.55; }
+.studio-page [data-compact='true'] .studio-title { max-width: 20ch; }
+.studio-intro { display: flex; flex-direction: column; gap: 20px; max-width: 52ch; font-size: var(--type-body-size); font-weight: var(--type-body-weight); line-height: var(--type-body-leading); }
 .studio-intro p { margin: 0; }
+.studio-hero-label { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.5; text-transform: lowercase; }
+.studio-hero[data-variant='centered'] .studio-hero-inner { max-width: 880px; align-items: center; gap: 24px; text-align: center; }
+.studio-hero[data-variant='centered'] .studio-title { max-width: 100%; }
+.studio-hero[data-variant='centered'] .studio-intro { max-width: 44ch; }
+.studio-hero[data-variant='centered'] .studio-actions { justify-content: center; }
 .studio-hero-media { width: 100%; min-width: 0; }
 .studio-hero-media[data-full-width='true'] { margin-top: 32px; }
 .studio-breadcrumb { width: 100%; font-size: 15px; font-weight: 500; }
@@ -5793,7 +5824,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
   line-height: 1.15; text-decoration: none; text-transform: lowercase;
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
-.studio-page .studio-heading { max-width: 19ch; margin: 0 0 40px; font-size: var(--studio-heading); font-weight: 400; line-height: 1.02; letter-spacing: normal; text-transform: lowercase; text-wrap: balance; }
+.studio-page .studio-heading { max-width: 19ch; margin: 0 0 40px; font-family: var(--font-cenura), sans-serif; font-size: var(--studio-heading); font-weight: var(--type-heading-weight); line-height: var(--type-section-leading); letter-spacing: normal; text-transform: lowercase; text-wrap: balance; }
 
 .studio-contact .contact-address { min-width: 0; gap: 28px; }
 .studio-contact .contact-address-line { width: fit-content; max-width: 100%; color: inherit; font-family: var(--font-cenura), sans-serif; font-size: clamp(27px, 5.8vw, 80px); line-height: 1.15; letter-spacing: normal; text-decoration: none; }
@@ -5803,6 +5834,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
 @media (min-width: 700px) {
   .studio-page { --home-rise: clamp(80px, 10vw, 144px); }
   .studio-hero-inner { gap: 40px; }
+  .studio-hero[data-variant='centered'] .studio-hero-inner { gap: 28px; }
   .studio-hero-media[data-full-width='true'] { margin-top: 40px; }
 }
 @media (hover: hover) and (pointer: fine) {

@@ -39,7 +39,7 @@ const TEAM = [
 export default function StudioPage() {
   return (
     <div className="studio-page">
-      <PageHero wordmark="about" titleId="about-title" intro={['Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.']} nextSurface="blue-slate" />
+      <PageHero variant="centered" eyebrow="about" wordmark="small team. close to the work." titleId="about-title" intro={['Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.']} nextSurface="blue-slate" />
 
       <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
         <div className="studio-width">
@@ -81,7 +81,7 @@ export default function StudioPage() {
             The same people who frame the problem carry the work through strategy, design, build, and growth. No account layer. No handoff to a separate delivery team.
           </p>
         </Reveal>
-        <nav className="studio-actions" aria-label="Next steps">
+        <nav className={`studio-actions ${styles.smallActions}`} aria-label="Next steps">
           <ModularButton href="/work">see the work</ModularButton>
           <ModularButton href="#start-a-project">start a project</ModularButton>
         </nav>

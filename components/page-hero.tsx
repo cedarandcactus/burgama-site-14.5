@@ -6,6 +6,8 @@ type Surface = 'white' | 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blu
 
 type PageHeroProps = {
   wordmark: string
+  eyebrow?: string
+  variant?: 'default' | 'centered'
   intro?: string[]
   introAsTagline?: boolean
   artifactId?: string
@@ -23,15 +25,16 @@ type PageHeroProps = {
   children?: ReactNode
 }
 
-export function PageHero({ wordmark, intro = [], introAsTagline = false, artifactId, panel, mediaFullWidth = false, headingLevel: Heading = 'h1', titleId, compact = false, surface = 'powder', nextSurface = 'blue-slate', breadcrumb, breadcrumbLabel = 'Breadcrumb', metadata, actions, children }: PageHeroProps) {
+export function PageHero({ wordmark, eyebrow, variant = 'default', intro = [], introAsTagline = false, artifactId, panel, mediaFullWidth = false, headingLevel: Heading = 'h1', titleId, compact = false, surface = 'powder', nextSurface = 'blue-slate', breadcrumb, breadcrumbLabel = 'Breadcrumb', metadata, actions, children }: PageHeroProps) {
   const media = panel ?? (artifactId ? <ArtifactSlot id={artifactId} /> : null)
 
   return (
-    <header className="studio-hero" data-surface={surface} data-compact={compact} data-nav-surface={surface === 'navy' || surface === 'blue-mid' ? 'ink' : 'frost'}>
+    <header className="studio-hero" data-variant={variant} data-surface={surface} data-compact={compact} data-nav-surface={surface === 'navy' || surface === 'blue-mid' ? 'ink' : 'frost'}>
       <div className="studio-width studio-hero-inner">
         {breadcrumb && <nav className="studio-breadcrumb" aria-label={breadcrumbLabel}>{breadcrumb}</nav>}
         {metadata && <div className="studio-meta">{metadata}</div>}
-        <Heading id={titleId} className="studio-title">{wordmark}</Heading>
+        {eyebrow && <p className="studio-hero-label">{eyebrow}</p>}
+        <Heading id={titleId} className="studio-title font-serif">{wordmark}</Heading>
         {intro.length > 0 && <div className="studio-intro" data-tagline={introAsTagline}>{intro.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
         {children}
         {actions && <div className="studio-actions">{actions}</div>}
