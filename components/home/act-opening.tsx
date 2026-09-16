@@ -12,7 +12,7 @@ import {
   setHeadlinePreference,
   type CookieConsent,
 } from '@/lib/cookie-consent'
-import { gsap, ScrollTrigger } from '@/lib/motion'
+import { createScrollMomentum, gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
 const headlines = [
@@ -96,7 +96,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
           invalidateOnRefresh: true,
         },
       })
-        .to(film, { y: () => Math.max(0, -parseFloat(getComputedStyle(film).top) - 12), scale: 1.025, ease: 'none', duration: 1 }, 0)
+        .to(film, { y: () => Math.max(0, -parseFloat(getComputedStyle(film).top) - 44), scale: 1.025, ease: 'none', duration: 1 }, 0)
         .to(content, { y: desktop ? -88 : -32, ease: 'none', duration: 1 }, 0)
         .to(hero.querySelectorAll('[data-headline-active="true"] [data-hero-depth]'), {
           y: (_index: number, word: HTMLElement) => -Number(word.dataset.heroDepth) * (desktop ? 14 : 5),
@@ -104,6 +104,12 @@ export function ActOpening({ children }: { children: ReactNode }) {
           duration: 1,
         }, 0)
         .to(frost, { opacity: 0.55, ease: 'none', duration: 0.7 }, 0)
+
+      const headline = hero.querySelector<HTMLElement>('h1')
+      return createScrollMomentum(hero, [
+        { element: film, distance: desktop ? 32 : 10 },
+        ...(headline ? [{ element: headline, distance: desktop ? -16 : -5 }] : []),
+      ])
     })
 
     document.fonts.ready.then(() => {

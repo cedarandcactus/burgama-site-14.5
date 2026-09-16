@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { gsap } from '@/lib/motion'
+import { createScrollMomentum, gsap } from '@/lib/motion'
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
 import { SectionRise } from '@/components/home/section-rise'
@@ -17,7 +17,7 @@ export function ActCapabilities() {
     const media = gsap.matchMedia()
     media.add({ motion: '(prefers-reduced-motion: no-preference)', wide: '(min-width: 700px)' }, (context) => {
       if (!context.conditions?.motion) return
-      const travel = () => Math.max(0, -parseFloat(getComputedStyle(video).top) - 12) * (context.conditions?.wide ? 1 : 0.55)
+      const travel = () => Math.max(0, -parseFloat(getComputedStyle(video).top) - 36) * (context.conditions?.wide ? 1 : 0.55)
       gsap.fromTo(video, { y: () => -travel() }, {
         y: travel,
         ease: 'none',
@@ -29,6 +29,11 @@ export function ActCapabilities() {
           invalidateOnRefresh: true,
         },
       })
+      const heading = section.querySelector<HTMLElement>('h2')
+      return createScrollMomentum(section, [
+        { element: video, distance: context.conditions?.wide ? 24 : 8 },
+        ...(heading ? [{ element: heading, distance: context.conditions?.wide ? -12 : -4 }] : []),
+      ])
     })
     return () => media.revert()
   }, [])
