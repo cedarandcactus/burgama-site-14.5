@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useId, useRef, useState, type FormEvent } from 'react'
-import { Check, Copy, Plus } from 'lucide-react'
 import { gsap, prefersReducedMotion } from '@/lib/motion'
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
@@ -45,12 +44,12 @@ function ContactFields({ idPrefix, contact, errors, onChange }: { idPrefix: stri
   return (
     <FieldGroup className={styles.contactFields}>
       {([
-        { key: 'name', label: 'your name', type: 'text', autocomplete: 'name', placeholder: 'Alex Morgan', max: 100 },
-        { key: 'email', label: 'email address', type: 'email', autocomplete: 'email', placeholder: 'alex@company.com', max: 254 },
-        { key: 'phone', label: 'phone number', type: 'tel', autocomplete: 'tel', placeholder: '+1 555 123 4567', max: 40 },
+        { key: 'name', label: 'name', type: 'text', autocomplete: 'name', placeholder: 'name', max: 100 },
+        { key: 'email', label: 'email', type: 'email', autocomplete: 'email', placeholder: 'email', max: 254 },
+        { key: 'phone', label: 'phone', type: 'tel', autocomplete: 'tel', placeholder: 'phone', max: 40 },
       ] as const).map(({ key, label, type, autocomplete, placeholder, max }) => (
-        <Field key={key} data-enquiry-motion="" data-invalid={!!errors[key]} data-filled={!!contact[key]}>
-          <FieldLabel htmlFor={`${idPrefix}-${key}`}>{label}</FieldLabel>
+        <Field key={key} data-enquiry-motion="" data-invalid={!!errors[key]}>
+          <FieldLabel className="sr-only" htmlFor={`${idPrefix}-${key}`}>{label}</FieldLabel>
           <Input id={`${idPrefix}-${key}`} name={key} type={type} autoComplete={autocomplete} placeholder={placeholder} maxLength={max} required value={contact[key]} onChange={(event) => onChange(key, event.target.value)} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `${idPrefix}-${key}-error` : undefined} />
           <FieldError id={`${idPrefix}-${key}-error`}>{errors[key]}</FieldError>
         </Field>
@@ -184,6 +183,8 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
       if (pendingStep.current !== null) {
         const next = pendingStep.current
         pendingStep.current = null
+        setErrors({})
+        setCopyState('idle')
         setStep(next)
       } else focus()
     }
@@ -301,19 +302,14 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
     <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Project enquiry' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={(event) => {
       if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
     }}>
-      <div className={styles.progressHeader}>
-        <div className={styles.progressCaption}><span>start a project</span><span id={`${idPrefix}-progress`}>step {step + 1} of 4</span></div>
-        <ol className={styles.stages} aria-label="Enquiry stages">
-          {steps.map((label, index) => <li key={label} aria-current={index === step ? 'step' : undefined} data-complete={index < step}><span className={styles.stageMarker} aria-hidden="true">{index < step ? <Check /> : index + 1}</span>{label}</li>)}
-        </ol>
-        <div className={styles.progress} aria-hidden="true"><span style={{ transform: `scaleX(${(step + 1) / steps.length})` }} /></div>
+      <div id={`${idPrefix}-progress`} className={styles.progress} role="progressbar" aria-label="Enquiry progress" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={step + 1} aria-valuetext={`${steps[step]}, step ${step + 1} of ${steps.length}`}>
+        <span style={{ transform: `scaleX(${(step + 1) / steps.length})` }} />
       </div>
       <div ref={viewport} className={styles.viewport}>
       <div ref={content} className={styles.content} inert={busy}>
       <section key={step} className={styles.step} aria-labelledby={`${idPrefix}-step-heading`}>
         <div className={styles.intro} data-enquiry-motion="">
           <h2 ref={heading} id={`${idPrefix}-step-heading`} tabIndex={-1}><span className="sr-only">Step {step + 1} of 4. </span>{inline && step === 0 ? introHeading : headings[step]}</h2>
-          <p>{['a little context helps us see the bigger picture.', 'a starting point, not a commitment.', 'who should we get in touch with? all fields are required.', 'a quick look before the next step.'][step]}</p>
         </div>
         {step === 0 && (
           <FieldGroup>
@@ -322,20 +318,20 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
                 setCompany(values[0] ?? '')
                 setErrors({})
               }} aria-label="Company type" aria-invalid={!!errors.company} aria-describedby={errors.company ? `${idPrefix}-company-error` : undefined}>
-                {companyTypes.map((type) => <ToggleGroupItem key={type} value={type}><span className={styles.choiceMarker} aria-hidden="true">{company === type ? <Check /> : <Plus />}</span>{type}</ToggleGroupItem>)}
+                {companyTypes.map((type) => <ToggleGroupItem key={type} value={type}>{type}</ToggleGroupItem>)}
               </ToggleGroup>
               <FieldError id={`${idPrefix}-company-error`}>{errors.company}</FieldError>
             </Field>
             {company === 'other' && (
-              <Field className={styles.revealField} data-invalid={!!errors.customType}>
-                <FieldLabel htmlFor={`${idPrefix}-customType`}>how would you describe your company?</FieldLabel>
+              <Field className={styles.revealField} data-enquiry-motion="" data-invalid={!!errors.customType}>
+                <FieldLabel className="sr-only" htmlFor={`${idPrefix}-customType`}>company type</FieldLabel>
                 <Input id={`${idPrefix}-customType`} name="companyType" maxLength={100} value={customType} onChange={(event) => { setCustomType(event.target.value); setErrors({}) }} placeholder="company type" required aria-invalid={!!errors.customType} aria-describedby={errors.customType ? `${idPrefix}-customType-error` : undefined} />
                 <FieldError id={`${idPrefix}-customType-error`}>{errors.customType}</FieldError>
               </Field>
             )}
             {inline && <Field data-enquiry-motion="" data-invalid={!!errors.brief}>
-              <FieldLabel htmlFor={`${idPrefix}-brief`}>a little about your project</FieldLabel>
-              <Textarea id={`${idPrefix}-brief`} name="brief" className={styles.brief} placeholder="what are you imagining? what would you like to change?" maxLength={1200} rows={3} required value={brief} onChange={(event) => { setBrief(event.target.value); setErrors((previous) => ({ ...previous, brief: undefined })) }} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
+              <FieldLabel className="sr-only" htmlFor={`${idPrefix}-brief`}>project brief</FieldLabel>
+              <Textarea id={`${idPrefix}-brief`} name="brief" className={styles.brief} placeholder={inline ? 'project details' : 'a little about your project'} maxLength={1200} rows={3} required value={brief} onChange={(event) => { setBrief(event.target.value); setErrors((previous) => ({ ...previous, brief: undefined })) }} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
               <FieldError id={`${idPrefix}-brief-error`}>{errors.brief}</FieldError>
             </Field>}
           </FieldGroup>
@@ -343,7 +339,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
         {step === 1 && (
           <FieldGroup>
             <div className={styles.budgetTop} data-enquiry-motion="">
-              <div className={styles.budgetValue}><span className={styles.rangeLabel}>{undecided ? 'we can work it out together' : 'your estimated investment'}</span><span className={styles.amount} data-undecided={undecided}>{undecided ? 'let’s talk' : formatBudget(budget, currency, true)}</span></div>
+              <span className={styles.amount}>{undecided ? '—' : formatBudget(budget, currency, true)}</span>
               <Field className={styles.currencyField}>
                 <FieldLabel className="sr-only" htmlFor={`${idPrefix}-currency`}>currency</FieldLabel>
                 <NativeSelect id={`${idPrefix}-currency`} name="currency" value={currency} onChange={(event) => setCurrency(event.target.value as Currency)}>
@@ -355,8 +351,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
               <div className={styles.budgetControl} data-undecided={undecided}>
                 <Slider value={[budget]} min={0} max={budgetBands.length - 1} step={1} className={styles.budgetSlider} onValueChange={(values) => { setBudget(Array.isArray(values) ? values[0] : values); setUndecided(false) }} thumbProps={{ 'aria-label': 'Budget', getAriaValueText: () => undecided ? 'Not sure yet; adjust to choose a budget' : budgetLabel }} />
               </div>
-              <div className={styles.rangeLabels} aria-hidden="true"><span>{formatBudget(0, currency, true)}</span><span>{formatBudget(5, currency, true)}</span></div>
-              <button type="button" className={styles.unsure} aria-pressed={undecided} onClick={() => setUndecided((value) => !value)}><span className={styles.choiceMarker} aria-hidden="true">{undecided ? <Check /> : <Plus />}</span>not sure yet</button>
+              <button type="button" className={styles.unsure} aria-pressed={undecided} onClick={() => setUndecided((value) => !value)}>not sure yet</button>
             </Field>
           </FieldGroup>
         )}
@@ -373,8 +368,8 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
               <div><dt>contact</dt><dd>{contact.name.trim()}<span>{contact.email.trim()}</span><span>{contact.phone.trim()}</span></dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(2)} aria-label="Edit contact details">edit</button></dd></div>
             </dl>
             <div className={styles.handoff} data-enquiry-motion="">
-              <div className={styles.delivery}><a href={`mailto:${recipient}`}>{recipient}</a><p id={`${idPrefix}-delivery`}>{inline ? 'sending isn’t connected yet. copy your enquiry and email us.' : 'open a draft in your email app, or copy your enquiry.'}</p></div>
-              <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'} aria-label={copyState === 'copied' ? 'Enquiry copied' : 'Copy enquiry'}><span key={copyState} className={styles.copyLabel}>{copyState === 'copied' ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}{copyState === 'copied' ? 'copied' : 'copy enquiry'}</span></button>
+              {inline ? <p id={`${idPrefix}-delivery`}>email delivery isn&apos;t connected yet</p> : <a href={`mailto:${recipient}`}>{recipient}</a>}
+              <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'} aria-label={copyState === 'copied' ? 'Enquiry copied' : 'Copy enquiry'}>{copyState === 'copied' ? 'copied' : inline ? 'copy enquiry' : 'copy'}</button>
             </div>
             <p className={styles.copyStatus} role="status">{copyState === 'copied' ? <span className="sr-only">Enquiry copied.</span> : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
             {copyState === 'manual' && <Field><FieldLabel className="sr-only" htmlFor={`${idPrefix}-copy`}>enquiry</FieldLabel><Textarea id={`${idPrefix}-copy`} data-enquiry-copy="" className={styles.copyText} readOnly value={enquiryText} rows={6} onFocus={(event) => event.target.select()} /></Field>}
