@@ -384,7 +384,7 @@ export const projects: Project[] = [
     note: 'Reported visibility and engagement do not establish booking or revenue uplift. Net follower additions are not total-audience growth.',
   }),
   project({
-    slug: 'clement-local-search', title: 'Clement local search', client: 'Clement Senior Solutions', parentSlug: 'clement-senior-solutions', collection: 'case-study',
+    slug: 'clement-local-search', title: 'Clement Senior Solutions Local SEO setup', client: 'Clement Senior Solutions', parentSlug: 'clement-senior-solutions', collection: 'case-study',
     tagline: 'An early foothold in local search.',
     summary: 'Clearer service content and foundational local SEO for families looking for guidance around Austin.',
     disciplines: ['Growth', 'Web'], services: ['Local SEO', 'Website optimization'], period: 'November 19, 2025 snapshot',

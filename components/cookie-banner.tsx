@@ -25,20 +25,29 @@ export function CookieBanner() {
     if (value === 'necessary') clearHeadlinePreference()
     window.dispatchEvent(new CustomEvent<CookieConsent>(COOKIE_CONSENT_EVENT, { detail: value }))
     setState('leaving')
-    window.setTimeout(() => setState('hidden'), 360)
   }
 
   if (state === 'hidden') return null
 
   return (
-    <div className={styles.overlay} data-state={state} aria-hidden={state === 'leaving'} inert={state === 'leaving'}>
+    <div
+      className={styles.overlay}
+      data-cookie-banner
+      data-state={state}
+      aria-hidden={state === 'leaving'}
+      inert={state === 'leaving'}
+      onAnimationEnd={(event) => {
+        if (event.target === event.currentTarget && state === 'leaving') setState('hidden')
+      }}
+    >
       <aside className={styles.dialog} aria-labelledby={titleId}>
         <div className={styles.copy}>
           <h2 id={titleId}>This site uses cookies.</h2>
+          <a className={styles.policy} href="/cookies">Cookie policy</a>
         </div>
         <div className={styles.actions}>
-          <button className={styles.necessary} type="button" onClick={() => choose('necessary')}>Necessary only</button>
-          <button className={styles.accept} type="button" onClick={() => choose('accepted')}>Accept</button>
+          <button className={styles.action} type="button" onClick={() => choose('necessary')}>Necessary only</button>
+          <button className={styles.action} type="button" onClick={() => choose('accepted')}>Accept all</button>
         </div>
       </aside>
     </div>
