@@ -46,25 +46,6 @@
   text-wrap: balance;
 }
 
-.copy p {
-  margin: 0;
-  color: color-mix(in srgb, var(--palette-powder) 78%, transparent);
-  font-family: var(--font-pangram), sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.3;
-  text-wrap: pretty;
-}
-
-.copy a {
-  color: inherit;
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: .2em;
-  transition: color 180ms ease;
-}
-
 .actions {
   display: flex;
   width: auto;
@@ -109,14 +90,9 @@
   box-shadow: none;
 }
 
-.actions button:focus-visible,
-.copy a:focus-visible {
+.actions button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -4px;
-}
-
-.copy a:focus-visible {
-  outline-offset: 3px;
 }
 
 .overlay[data-state='leaving'] {
@@ -134,10 +110,6 @@
     border-color: var(--palette-powder);
     color: var(--palette-navy);
     background: var(--palette-powder);
-  }
-
-  .copy a:hover {
-    color: var(--palette-powder-deep);
   }
 }
 
@@ -170,41 +142,43 @@
   }
 
   .dialog {
-    height: auto;
-    min-height: var(--header-compact-height);
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px;
-    border-radius: 28px;
+    height: var(--header-compact-height);
+    gap: 6px;
+    padding: var(--header-shell-padding) 8px;
   }
 
   .copy {
-    width: 100%;
-    align-items: center;
-    text-align: center;
+    width: auto;
+    flex: 1 1 auto;
   }
 
-  .copy p {
-    max-width: 36ch;
+  .copy h2 {
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .actions {
-    width: 100%;
-    gap: 8px;
+    width: auto;
+    gap: 4px;
   }
 
   .actions button {
     min-width: 0;
-    min-height: var(--header-control-height);
-    flex: 1 1 0;
-    padding-inline: 10px;
+    min-height: 44px;
+    flex: none;
+    padding-inline: 9px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 340px) {
   .copy h2,
   .actions button {
-    font-size: 15px;
+    font-size: 12px;
+  }
+
+  .actions button {
+    padding-inline: 7px;
   }
 }
 
@@ -214,8 +188,7 @@
     animation-duration: 1ms;
   }
 
-  .actions button,
-  .copy a {
+  .actions button {
     transition: none;
   }
 }

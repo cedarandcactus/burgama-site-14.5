@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useId, useState } from 'react'
-import Link from '@/components/transition-link'
 import {
   COOKIE_CONSENT_EVENT,
   clearHeadlinePreference,
@@ -15,7 +14,6 @@ type BannerState = 'hidden' | 'visible' | 'leaving'
 
 export function CookieBanner() {
   const titleId = useId()
-  const descriptionId = useId()
   const [state, setState] = useState<BannerState>('hidden')
 
   useEffect(() => {
@@ -34,16 +32,9 @@ export function CookieBanner() {
 
   return (
     <div className={styles.overlay} data-state={state} aria-hidden={state === 'leaving'} inert={state === 'leaving'}>
-      <aside
-        className={styles.dialog}
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-      >
+      <aside className={styles.dialog} aria-labelledby={titleId}>
         <div className={styles.copy}>
-          <h2 id={titleId}>A small cookie, your call.</h2>
-          <p id={descriptionId}>
-            One optional cookie keeps our homepage hello fresh. <Link href="/cookies">See details.</Link>
-          </p>
+          <h2 id={titleId}>Cookies, your call.</h2>
         </div>
         <div className={styles.actions}>
           <button className={styles.necessary} type="button" onClick={() => choose('necessary')}>Necessary only</button>
