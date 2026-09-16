@@ -90,6 +90,7 @@ export function FooterUpdates() {
       })
       if (ticket !== request.current) return
       setResult(response.ok ? 'subscribed' : 'failed')
+      if (response.ok) window.dispatchEvent(new Event('burgama:submission-success'))
     } catch {
       if (ticket === request.current) setResult('failed')
     }

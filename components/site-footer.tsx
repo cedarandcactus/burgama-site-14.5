@@ -315,7 +315,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
             </div>
             <div className={styles.identityReveal} data-footer-identity-reveal="">
               <div className={styles.identity} data-footer-identity="">
-                <Link href="/" className={styles.wordmark} aria-label="burgama home"><span data-footer-wordmark="">burgama</span></Link>
+                <Link href="/" className={styles.wordmark} aria-label="burgama home" data-haptics="logo"><span data-footer-wordmark="">burgama</span></Link>
               </div>
             </div>
             <div className={styles.bottomRow}>
