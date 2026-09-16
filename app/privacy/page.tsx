@@ -22,9 +22,9 @@ const sections = [
     title: 'Information you provide',
     paragraphs: [
       'When you contact us by email, telephone, or another communication channel, we receive the information you choose to share. This may include your name, email address, telephone number, company or company type, project description, budget range and currency, attachments, and correspondence with us.',
-      'Our website’s project enquiry tools hold the details you enter temporarily in the current page to prepare a message. They do not automatically send those details to Burgama or save them in a website database. Opening an email draft passes the prepared message to your chosen email application; Burgama receives it only if you send it. The inline enquiry tool currently supports copying a message, not direct delivery.',
+      'When you complete our project enquiry form and choose to send it, the details you entered are transmitted to Burgama through our website and delivered to us by email. Those details are not saved in a website database; they reach us as an email message. If sending is unavailable, the form instead offers to open a draft in your own email application or to copy the message, in which case Burgama receives it only if you send it yourself.',
       'If you choose “copy enquiry,” the prepared message is written to your device’s clipboard. Your browser, operating system, clipboard settings, and email provider govern how they handle that information. The website does not save enquiry details in local storage or cookies.',
-      'The newsletter signup shown on the site is not currently connected to a subscription service. Entering an email and continuing through that interface does not save your email with Burgama or subscribe you to updates.',
+      'The newsletter signup shown on the site subscribes you to our updates. Your email address is sent to our email marketing provider and added to our subscriber list, along with a record of your consent and where it was given. You can unsubscribe at any time using the link in any update we send, or by contacting us.',
       'Please provide only information needed for your enquiry and only information you are authorized to share. Do not send passwords, payment-card details, government identification numbers, sensitive personal information, or confidential client materials unless we have agreed on an appropriate way to exchange them.',
     ],
   },
@@ -59,7 +59,7 @@ const sections = [
     id: 'disclosures',
     title: 'When information is shared',
     paragraphs: [
-      'Information may be handled by service providers supporting website hosting and analytics, email and communications, and business administration, where needed for those purposes. Vercel provides hosting and web analytics. Information you choose to send by email also passes through the email services used by you and Burgama.',
+      'Information may be handled by service providers supporting website hosting and analytics, email and communications, and business administration, where needed for those purposes. Vercel provides hosting and web analytics. Resend delivers project enquiries submitted through the website to us by email. Klaviyo stores our newsletter subscriber list and sends our updates. Information you choose to send by email also passes through the email services used by you and Burgama.',
       'We may disclose information to professional advisers when necessary, to comply with a legal obligation or lawful request, to establish or defend legal claims, or to protect rights, safety, and security. If a business reorganization or transfer involves personal information, that information may be reviewed or transferred subject to appropriate confidentiality protections and applicable law.',
       'We may also share information when you specifically ask us to do so or give permission. We do not authorize service providers to use enquiry information for their own unrelated marketing.',
     ],

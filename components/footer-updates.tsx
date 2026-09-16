@@ -10,10 +10,15 @@ export function FooterUpdates() {
   const [email, setEmail] = useState('')
   const [step, setStep] = useState<'email' | 'terms' | 'complete'>('email')
   const [error, setError] = useState('')
+  const [result, setResult] = useState<'pending' | 'subscribed' | 'unconfigured' | 'failed'>('pending')
+  const request = useRef(0)
+  const honeypot = useRef<HTMLInputElement>(null)
   const input = useRef<HTMLInputElement>(null)
   const confirm = useRef<HTMLButtonElement>(null)
   const completion = useRef<HTMLSpanElement>(null)
   const focusNext = useRef(false)
+
+  useEffect(() => () => { request.current += 1 }, [])
 
   useEffect(() => {
     if (!focusNext.current) return
@@ -25,7 +30,34 @@ export function FooterUpdates() {
   function advance(next: typeof step) {
     focusNext.current = true
     setError('')
+    if (next !== 'complete') {
+      request.current += 1
+      setResult('pending')
+    }
     setStep(next)
+  }
+
+  /*
+    Consent is the trigger: the address is only sent once the visitor has
+    agreed to the terms, never on the email step. A failure is reported
+    rather than swallowed, so nobody is told they subscribed when they did
+    not.
+  */
+  async function subscribe() {
+    const ticket = ++request.current
+    advance('complete')
+    try {
+      const response = await fetch('/api/updates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company: honeypot.current?.value ?? '' }),
+      })
+      if (ticket !== request.current) return
+      if (response.ok) setResult('subscribed')
+      else setResult(response.status === 503 ? 'unconfigured' : 'failed')
+    } catch {
+      if (ticket === request.current) setResult('failed')
+    }
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -45,6 +77,10 @@ export function FooterUpdates() {
       <form className={styles.updatesPill} aria-labelledby={`${id}-heading`} aria-describedby={`${id}-status`} noValidate onSubmit={submit} onKeyDown={(event) => {
         if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
       }}>
+        {/* Hidden from people and from assistive technology; only a bot fills it. */}
+        <div className={styles.honeypot} aria-hidden="true">
+          <input ref={honeypot} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </div>
         <div key={step} className={styles.updatesStep}>
           {step === 'email' ? (
             <>
@@ -56,18 +92,26 @@ export function FooterUpdates() {
             <>
               <span className={styles.updatesConsent}>agree to our <a href="/terms" target="_blank" rel="noopener noreferrer" aria-label="Terms (opens in a new tab)">terms</a></span>
               <button className={styles.updatesEdit} type="button" aria-label="Edit email address" onClick={() => advance('email')}><Pencil aria-hidden="true" /></button>
-              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and continue" onClick={() => advance('complete')}><span className="arrow-capsule"><Check aria-hidden="true" /></span></button>
+              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and subscribe" onClick={subscribe}><span className="arrow-capsule"><Check aria-hidden="true" /></span></button>
             </>
           ) : (
             <>
-              <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>signup unavailable</span>
-              <button className={styles.updatesAction} type="button" aria-label="Try another email address" onClick={() => { setEmail(''); advance('email') }}><span className="arrow-capsule"><RotateCcw aria-hidden="true" /></span></button>
+              <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>{
+                result === 'subscribed' ? 'you’re on the list'
+                : result === 'pending' ? 'subscribing…'
+                : 'signup unavailable'
+              }</span>
+              <button className={styles.updatesAction} type="button" aria-label={result === 'subscribed' ? 'Subscribe another email address' : 'Try another email address'} onClick={() => { setEmail(''); advance('email') }}><span className="arrow-capsule"><RotateCcw aria-hidden="true" /></span></button>
             </>
           )}
         </div>
       </form>
       <noscript><style>{`.${styles.updatesPill} { display: none; }`}</style></noscript>
-      <p id={`${id}-status`} className={styles.updatesStatus} role="status" aria-live="polite" aria-atomic="true">{error || (step === 'complete' ? 'signup isn’t connected yet. your email hasn’t been saved.' : '')}</p>
+      <p id={`${id}-status`} className={styles.updatesStatus} role="status" aria-live="polite" aria-atomic="true">{error || (step !== 'complete' ? ''
+        : result === 'pending' ? 'adding you to the list…'
+        : result === 'subscribed' ? 'thanks — check your inbox if we ask you to confirm. unsubscribe any time.'
+        : result === 'unconfigured' ? 'signup isn’t connected yet. your email hasn’t been saved.'
+        : 'that didn’t save. please try again, or email hello@burgama.com.')}</p>
     </div>
   )
 }
