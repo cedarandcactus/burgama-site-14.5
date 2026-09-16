@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
+import { CookieBanner } from '@/components/cookie-banner'
 import { CornerShell } from '@/components/corner-shell'
 import { PageTransition } from '@/components/page-transition'
 import { SmoothScroll } from '@/components/smooth-scroll'
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <main id="main" tabIndex={-1}>{children}</main>
           </PageTransition>
         </SmoothScroll>
+        <CookieBanner />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

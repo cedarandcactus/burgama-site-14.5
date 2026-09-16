@@ -2,9 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { LegalPage } from '@/components/legal-page'
 
 export const metadata: Metadata = {
-  title: 'Privacy — Draft',
-  description: 'Draft privacy policy for the Burgama website, pending review.',
-  robots: { index: false, follow: true },
+  title: 'Privacy Policy',
+  description: 'How Burgama handles website information, project enquiries, analytics, and privacy requests, including your choices and contact details.',
 }
 
 export const viewport: Viewport = { themeColor: '#afc8f2', colorScheme: 'light' }
@@ -12,60 +11,108 @@ export const viewport: Viewport = { themeColor: '#afc8f2', colorScheme: 'light' 
 const sections = [
   {
     id: 'scope',
-    title: 'what this covers',
+    title: 'What this policy covers',
     paragraphs: [
-      'This proposed policy describes how Burgama handles personal information connected with this website and inquiries sent to the studio. A separate agreement or notice may apply to client projects.',
+      'This Privacy Policy explains how Burgama (“we,” “us,” or “our”) handles personal information when you visit our website, use its enquiry tools, or communicate with the studio. Burgama is based in Austin, Texas, and is responsible for the information it handles for these purposes.',
+      'A separate contract, confidentiality agreement, or data-processing agreement may apply to information handled as part of a client project. This policy does not replace those agreements or cover websites and services operated by other organizations.',
     ],
   },
   {
     id: 'information',
-    title: 'information you share',
+    title: 'Information you provide',
     paragraphs: [
-      'When you email Burgama, you may provide your name, email address, company, project details, and any other information included in your message. The contact links on this website open your email application; they do not submit a website form.',
-      'Please share only what is needed to discuss your inquiry, and avoid sending sensitive personal information or confidential materials before agreeing on an appropriate way to exchange them.',
+      'When you contact us by email, telephone, or another communication channel, we receive the information you choose to share. This may include your name, email address, telephone number, company or company type, project description, budget range and currency, attachments, and correspondence with us.',
+      'Our website’s project enquiry tools hold the details you enter temporarily in the current page to prepare a message. They do not automatically send those details to Burgama or save them in a website database. Opening an email draft passes the prepared message to your chosen email application; Burgama receives it only if you send it. The inline enquiry tool currently supports copying a message, not direct delivery.',
+      'If you choose “copy enquiry,” the prepared message is written to your device’s clipboard. Your browser, operating system, clipboard settings, and email provider govern how they handle that information. The website does not save enquiry details in local storage or cookies.',
+      'The newsletter signup shown on the site is not currently connected to a subscription service. Entering an email and continuing through that interface does not save your email with Burgama or subscribe you to updates.',
+      'Please provide only information needed for your enquiry and only information you are authorized to share. Do not send passwords, payment-card details, government identification numbers, sensitive personal information, or confidential client materials unless we have agreed on an appropriate way to exchange them.',
     ],
   },
   {
     id: 'website-data',
-    title: 'website data & analytics',
+    title: 'Website data & analytics',
     paragraphs: [
-      'The production website includes Vercel Web Analytics to help understand site usage. Hosting and delivery services may also process technical information such as IP addresses, browser details, request times, and requested pages to operate and protect the site.',
-      'Before this policy is adopted, confirm the live analytics configuration, any cookies or similar technologies, embedded services, and consent requirements. Update this section to describe the tools actually used.',
+      'The website is hosted on Vercel. Hosting and delivery infrastructure may process technical information such as your IP address, browser and device details, request times, requested URLs, and diagnostic or security logs to deliver pages, troubleshoot issues, and protect the service.',
+      'The production website includes Vercel Web Analytics to understand website usage through aggregated statistics. Analytics data may include pages visited, referring websites, filtered URL parameters, visit times, approximate location, device type, operating system, and browser. We do not configure enquiry fields or newsletter email addresses as analytics events.',
+      'Vercel describes its Web Analytics as using a request-derived identifier rather than tracking cookies, with visitor identifiers discarded after 24 hours. This identifier lifetime is separate from the retention of aggregated statistics or hosting logs. The analytics service is not designed to track an individual’s browsing across unrelated websites.',
+    ],
+  },
+  {
+    id: 'cookies',
+    title: 'Cookies & tracking choices',
+    paragraphs: [
+      'The website uses a necessary first-party cookie for 30 days to remember whether you accepted optional cookies or chose only necessary storage. If you accept, a second first-party preference cookie remembers the homepage introduction shown to you for 30 days. It contains only a number from 0 to 2 and is removed when you choose only necessary. Neither cookie stores enquiry details, newsletter entries, or an advertising identifier.',
+      'Vercel Web Analytics does not rely on tracking cookies. You can manage or delete cookies through your browser settings; deleting the consent cookie causes the choice notice to return. Our Cookie Policy describes each cookie, its purpose, duration, and attributes in more detail.',
+      'We do not use information from this website for targeted advertising or cross-context behavioral advertising, and we do not sell personal information collected through this website. If we introduce nonessential technology that requires consent, we will update our notice and provide the required choice before activating it. The website does not perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
     ],
   },
   {
     id: 'use-and-sharing',
-    title: 'how information is used',
+    title: 'How we use information',
     paragraphs: [
-      'Proposed uses include responding to inquiries, discussing and delivering agreed services, maintaining business records, improving the website, and addressing security or legal obligations.',
-      'Information may be processed by service providers supporting website hosting, analytics, email, and business operations, or disclosed where required by law. Confirm the providers, processing locations, and any other sharing before adopting this policy.',
+      'We use information to respond to enquiries, evaluate potential projects, communicate with you, prepare proposals, and administer agreed services. We also use it to maintain relevant business records, improve the website, investigate technical or security issues, prevent misuse, and meet legal obligations.',
+      'We do not treat a project enquiry or acceptance of our Terms of Service as permission to subscribe you to marketing. If you separately request marketing communications, you can opt out using any unsubscribe instructions provided or by contacting us. Necessary replies and service-related communications may continue.',
+      'Where applicable data-protection law requires a legal basis, we process information as needed to take steps at your request before a contract or to perform a contract, comply with legal obligations, pursue legitimate interests such as responding to business enquiries and securing the website where your rights do not override those interests, or act on your consent where required. You may withdraw consent without affecting processing that was lawful before withdrawal.',
+    ],
+  },
+  {
+    id: 'disclosures',
+    title: 'When information is shared',
+    paragraphs: [
+      'Information may be handled by service providers supporting website hosting and analytics, email and communications, and business administration, where needed for those purposes. Vercel provides hosting and web analytics. Information you choose to send by email also passes through the email services used by you and Burgama.',
+      'We may disclose information to professional advisers when necessary, to comply with a legal obligation or lawful request, to establish or defend legal claims, or to protect rights, safety, and security. If a business reorganization or transfer involves personal information, that information may be reviewed or transferred subject to appropriate confidentiality protections and applicable law.',
+      'We may also share information when you specifically ask us to do so or give permission. We do not authorize service providers to use enquiry information for their own unrelated marketing.',
     ],
   },
   {
     id: 'retention',
-    title: 'retention & security',
+    title: 'Retention & security',
     paragraphs: [
-      'The proposed approach is to retain personal information only for as long as needed for the purpose it was collected, applicable recordkeeping requirements, or resolving disputes. Specific retention periods and deletion procedures need to be confirmed before adoption.',
-      'Appropriate safeguards should be used to protect personal information. No method of transmission or storage can be guaranteed completely secure.',
+      'We retain personal information for as long as reasonably necessary for the purpose for which it was received, including following up on enquiries, managing an ongoing relationship, complying with legal and recordkeeping obligations, and resolving disputes. The period depends on the type of information, the nature of the relationship, and applicable requirements; there is no single retention period for all records.',
+      'When information is no longer needed, we delete it or de-identify it, subject to applicable legal obligations and ordinary backup cycles. Details entered into the current website’s enquiry and newsletter interfaces are not retained by Burgama unless you send them through a separate communication channel.',
+      'We use reasonable administrative, technical, and organizational measures appropriate to the information we handle. No website, email service, transmission method, or storage system can be guaranteed completely secure. Contact us promptly if you believe information shared with Burgama has been compromised.',
+    ],
+  },
+  {
+    id: 'international',
+    title: 'International visitors',
+    paragraphs: [
+      'Burgama operates in the United States. Information may be processed in the United States or other countries where our service providers operate, whose privacy laws may differ from those where you live. Where applicable law requires safeguards for an international transfer, we use the legally required transfer arrangements and protections. Contact us for information about safeguards relevant to your information.',
     ],
   },
   {
     id: 'choices',
-    title: 'your choices',
+    title: 'Your privacy rights & requests',
     paragraphs: [
-      'Depending on your location and applicable law, you may have rights to access, correct, delete, or obtain a copy of personal information, or to object to or restrict certain processing. Contact the studio to ask about your information or submit a request.',
-      'The final policy should confirm applicable rights, identity-verification procedures, response deadlines, appeal options, and any regulator contact information required by law.',
+      'Depending on where you live, the law that applies, and any relevant exemptions, you may have rights to know whether we process your personal information; access, correct, or delete it; receive a portable copy; object to or restrict processing; withdraw consent; or opt out of sale, targeted advertising, or certain profiling. Not every right applies in every situation. We do not sell website personal information or use it for targeted advertising or significant-effect profiling.',
+      'To ask a question or exercise a right, email legal@burgama.com with the subject “Privacy request” and describe your request. We may ask for information reasonably necessary to verify your identity and authority, and we will use verification information for that purpose. An authorized agent may submit a request where applicable law permits, subject to verification of their authority.',
+      'We respond within the time required by applicable law and explain any extension or denial where required. If you are entitled to appeal a decision, reply to our response or email legal@burgama.com with the subject “Privacy appeal.” We will review the appeal and provide the outcome and any further options required by law.',
+      'You may also have the right to complain to your state attorney general or relevant data-protection authority. Exercising applicable privacy rights will not result in unlawful discrimination. We may retain or withhold information where a legal obligation, protected interest, or applicable exception requires or permits it.',
+    ],
+  },
+  {
+    id: 'children',
+    title: 'Children’s privacy',
+    paragraphs: [
+      'The website is intended for businesses and people seeking professional services, not children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided information to us, contact legal@burgama.com so we can investigate and take appropriate steps to delete it.',
+    ],
+  },
+  {
+    id: 'external-services',
+    title: 'External websites & services',
+    paragraphs: [
+      'Links to client sites, social platforms, articles, and other third-party services take you outside this website. Those services have their own privacy policies, and Burgama does not control their information practices. Review their policies before sharing information with them.',
     ],
   },
   {
     id: 'updates',
-    title: 'policy updates',
+    title: 'Changes to this policy',
     paragraphs: [
-      'An effective date will be added when this policy is reviewed and adopted. Material changes should be reflected here and communicated where required by applicable law.',
+      'We may update this policy when our website, information practices, or legal obligations change. The current version and its last-updated date will appear on this page. For material changes, we will provide additional notice or obtain consent where required by applicable law. Changes do not remove rights you already have under applicable law.',
     ],
   },
 ]
 
 export default function PrivacyPage() {
-  return <LegalPage title="privacy policy" current="privacy" introduction="A draft overview of how information is handled when you visit the site or get in touch." sections={sections} />
+  return <LegalPage title="Privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} />
 }

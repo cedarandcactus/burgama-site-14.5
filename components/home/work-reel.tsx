@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { gsap } from '@/lib/motion'
 import styles from './home-page.module.css'
 
@@ -146,8 +146,8 @@ export function WorkReel({ children, count }: { children: ReactNode; count: numb
           <div className={styles.reelProgress} aria-hidden="true"><span style={{ width: `${((active + 1) / count) * 100}%` }} /></div>
         </div>
         <div className={styles.reelArrows}>
-          <button type="button" aria-label="Previous project" aria-controls="featured-project-reel" aria-disabled={active === 0} onClick={() => targetRef.current > 0 && scrollToCard(targetRef.current - 1)}><span><ArrowLeft size={20} aria-hidden="true" /></span></button>
-          <button type="button" aria-label="Next project" aria-controls="featured-project-reel" aria-disabled={active === count - 1} onClick={() => targetRef.current < count - 1 && scrollToCard(targetRef.current + 1)}><span><ArrowRight size={20} aria-hidden="true" /></span></button>
+          <button type="button" aria-label="Previous project" aria-controls="featured-project-reel" aria-disabled={active === 0} onClick={() => targetRef.current > 0 && scrollToCard(targetRef.current - 1)}><span className="arrow-capsule"><CircularArrowIcon direction="left" /></span></button>
+          <button type="button" aria-label="Next project" aria-controls="featured-project-reel" aria-disabled={active === count - 1} onClick={() => targetRef.current < count - 1 && scrollToCard(targetRef.current + 1)}><span className="arrow-capsule"><CircularArrowIcon /></span></button>
         </div>
       </div>
     </div>

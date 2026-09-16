@@ -2,13 +2,14 @@
 
 import Link from '@/components/transition-link'
 import { NavProjectForm } from '@/components/nav-project-form'
+import { useHeaderGlass } from '@/hooks/use-header-glass'
 import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
 
 const destinations = [
   { label: 'work', href: '/work' },
   { label: 'about', href: '/studio' },
-  { label: 'ideas', href: '/ideas' },
+  { label: 'research', href: '/research' },
 ]
 
 export function CornerShell() {
@@ -22,6 +23,7 @@ export function CornerShell() {
   const trigger = useRef<HTMLButtonElement>(null)
   const projectTrigger = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
+  useHeaderGlass(header, pathname)
 
   const [symbolVisible, setSymbolVisible] = useState(false)
   const symbolVisibleRef = useRef(false)
@@ -63,6 +65,17 @@ export function CornerShell() {
     setProjectOpen(false)
     setOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    function onOpenProject() {
+      projectOpenRef.current = true
+      setProjectOpen(true)
+      setOpen(true)
+    }
+
+    window.addEventListener('burgama:open-project', onOpenProject)
+    return () => window.removeEventListener('burgama:open-project', onOpenProject)
+  }, [])
 
   useEffect(() => {
     const compactViewport = window.matchMedia('(max-width: 699px)')

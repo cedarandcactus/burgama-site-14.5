@@ -12,8 +12,35 @@ import { gsap, ScrollTrigger } from '@/lib/motion'
 import { homeCurveExtensionLength, homeCurvePath } from '@/lib/home-curve'
 import styles from '@/components/site-footer.module.css'
 
-const headline = 'ready for what comes next'
+const headline = 'Ready for what comes next'
 const words = headline.split(' ')
+const socialLinks = [
+  {
+    label: 'Instagram',
+    href: 'https://instagram.com/byburgama/?hl=af',
+    paths: [
+      'M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4l0 -8',
+      'M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0',
+      'M16.5 7.5v.01',
+    ],
+  },
+  {
+    label: 'TikTok',
+    href: 'https://tiktok.com/@byburgama',
+    paths: ['M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917'],
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://linkedin.com/company/cedarandcactus',
+    paths: [
+      'M8 11v5',
+      'M8 8v.01',
+      'M12 16v-5',
+      'M16 16v-3a2 2 0 1 0 -4 0',
+      'M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10',
+    ],
+  },
+]
 const navigationGroups = [
   {
     label: 'Explore',
@@ -26,8 +53,8 @@ const navigationGroups = [
   {
     label: 'The studio',
     links: [
-      { label: 'Ideas', href: '/ideas' },
-      { label: 'Contact', href: '/contact' },
+      { label: 'Research', href: '/research' },
+      { label: 'Contact', href: '#start-a-project' },
     ],
   },
 ]
@@ -75,6 +102,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     const letters = Array.from(track.querySelectorAll<HTMLElement>('[data-footer-letter]'))
     let disposed = false
     let refreshFrame = 0
+    let refreshTimer: ReturnType<typeof setTimeout> | undefined
+    const enquiry = root.querySelector<HTMLElement>('[data-inline-enquiry]')
     let curveEntrance = 0
     let curveDestination = 0
     const measureCurve = () => {
@@ -106,13 +135,16 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     const refresh = () => {
       if (disposed) return
       cancelAnimationFrame(refreshFrame)
-      refreshFrame = requestAnimationFrame(() => {
-        if (!disposed) {
+      clearTimeout(refreshTimer)
+      refreshTimer = setTimeout(() => {
+        if (disposed || enquiry?.querySelector('[data-layout-animating="true"]')) return
+        refreshFrame = requestAnimationFrame(() => {
+          if (disposed || enquiry?.querySelector('[data-layout-animating="true"]')) return
           measureWordmark()
           measureCurve()
           ScrollTrigger.refresh()
-        }
-      })
+        })
+      }, 100)
     }
 
     media.add({
@@ -192,7 +224,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     document.fonts.addEventListener('loadingdone', refresh)
     let previousWidth = root.clientWidth
     let previousFormHeight = 0
-    const enquiry = root.querySelector<HTMLElement>('[data-inline-enquiry]')
+    enquiry?.addEventListener('enquiry-layout-settled', refresh)
     const observer = new ResizeObserver(() => {
       const formHeight = enquiry?.offsetHeight ?? 0
       if (root.clientWidth === previousWidth && formHeight === previousFormHeight) return
@@ -206,6 +238,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
     return () => {
       disposed = true
       cancelAnimationFrame(refreshFrame)
+      clearTimeout(refreshTimer)
+      enquiry?.removeEventListener('enquiry-layout-settled', refresh)
       observer.disconnect()
       document.fonts.removeEventListener('loadingdone', refresh)
       media.revert()
@@ -254,14 +288,27 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
               <div className={styles.utilities}>
                 <div className={styles.navigation}>
                   {navigationGroups.map((group) => (
-                    <nav key={group.label} className={styles.linkColumn} aria-label={group.label} data-footer-group="">
-                      {group.links.map((link) => (
-                        <Link key={link.href} href={link.href}>
-                          <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
-                          <ArrowUpRight aria-hidden="true" />
-                        </Link>
-                      ))}
-                    </nav>
+                    <div key={group.label} className={styles.navigationGroup} data-footer-group="">
+                      <nav className={styles.linkColumn} aria-label={group.label}>
+                        {group.links.map((link) => (
+                          <Link key={link.href} href={link.href}>
+                            <span className={styles.linkLabel}><RollingLabel text={link.label} /></span>
+                            <ArrowUpRight aria-hidden="true" />
+                          </Link>
+                        ))}
+                      </nav>
+                      {group.label === 'The studio' && (
+                        <nav className={styles.socialLinks} aria-label="Follow Burgama">
+                          {socialLinks.map(({ label, href, paths }) => (
+                            <a key={label} className={styles.socialLink} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (opens in a new tab)`}>
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                                {paths.map((path) => <path key={path} d={path} />)}
+                              </svg>
+                            </a>
+                          ))}
+                        </nav>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -278,6 +325,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
               <div className={styles.bottomLegal}>
                 <p>© 2026 burgama</p>
                 <nav className={styles.legalLinks} aria-label="Legal">
+                  <Link href="/cookies">Cookies</Link>
                   <Link href="/privacy">Privacy</Link>
                   <Link href="/terms">Terms</Link>
                 </nav>

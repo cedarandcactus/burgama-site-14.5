@@ -8,7 +8,8 @@ export function CircularArrowIcon({ className, direction = 'right' }: { classNam
       className={cn('circular-arrow-icon', className)}
       aria-hidden="true"
       focusable="false"
-      strokeWidth={1.5}
+      size={20}
+      strokeWidth={2}
     />
   )
 }

@@ -130,6 +130,51 @@
   margin-inline: auto;
 }
 
+.navigationGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 36px;
+  min-width: 28px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--palette-powder);
+  background: transparent;
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+
+.socialLink:first-child {
+  justify-content: flex-start;
+}
+
+.socialLink:last-child {
+  justify-content: flex-end;
+}
+
+.socialLink > svg {
+  flex: none;
+}
+
+.socialLink:is(:hover, :focus-visible) {
+  color: var(--palette-powder);
+  background: color-mix(in srgb, var(--palette-powder) 12%, transparent);
+}
+
 .footer {
   position: relative;
   isolation: isolate;
@@ -308,18 +353,6 @@
   cursor: pointer;
 }
 
-.updatesAction > span {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 36px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: var(--palette-powder);
-  color: var(--palette-navy);
-  transition: background-color 180ms ease, color 180ms ease;
-}
-
 .updatesAction svg { width: 20px; height: 20px; }
 .updatesEdit { width: 44px; }
 .updatesEdit svg { width: 15px; height: 15px; }
@@ -454,13 +487,14 @@
   display: block;
   width: 100%;
   min-width: 0;
-  padding-bottom: .13em;
+  /* Cenura's ascender exceeds the tight line box; reserve clearance at every logo size. */
+  padding-block: .12em .13em;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
   font-size: var(--footer-wordmark-size, 25.6cqw);
   font-weight: 400;
   line-height: .78;
-  letter-spacing: normal;
+  letter-spacing: -2px;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
@@ -603,8 +637,14 @@
 
   .bottomLegal {
     width: 100%;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px 12px;
+  }
+
+  .legalLinks {
+    justify-content: flex-end;
+    gap: 4px 12px;
   }
 }
 
@@ -636,16 +676,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .socialLink,
   .updatesAction > span,
   .footer .rollGlyph,
-  .linkColumn a > svg,
   .video {
     transition: none;
   }
 
   .footer a .rollGlyph,
-  .footer a:is(:hover, :focus-visible) .rollGlyph,
-  .footer .linkColumn a > svg {
+  .footer a:is(:hover, :focus-visible) .rollGlyph {
     transform: none;
   }
 

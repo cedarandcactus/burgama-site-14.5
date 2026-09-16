@@ -4,16 +4,22 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 're
 import { ModularButton } from '@/components/modular-button'
 import { HeroFilm } from '@/components/home/hero-film'
 import { SectionRise } from '@/components/home/section-rise'
+import {
+  COOKIE_CONSENT_EVENT,
+  clearHeadlinePreference,
+  getCookieConsent,
+  readHeadlinePreference,
+  setHeadlinePreference,
+  type CookieConsent,
+} from '@/lib/cookie-consent'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
 const headlines = [
-  ['we turn what makes you', 'different into brands', 'the right people remember.'],
-  ['we find what sets you apart', 'and build a brand', 'that makes it matter.'],
-  ['your next chapter deserves', 'a brand that feels like you', 'and moves you forward.'],
+  ['We turn what makes you', 'different into brands', 'the right people remember.'],
+  ['We find what sets you apart', 'and build a brand', 'that makes it matter.'],
+  ['Your next chapter deserves', 'a brand that feels like you', 'and moves you forward.'],
 ]
-
-const headlineCookie = 'burgama-hero-message'
 
 export function ActOpening({ children }: { children: ReactNode }) {
   const heroRef = useRef<HTMLElement>(null)
@@ -25,22 +31,31 @@ export function ActOpening({ children }: { children: ReactNode }) {
 
   useLayoutEffect(() => {
     if (chosenHeadline.current === null) {
-      let previous = -1
-      try {
-        const value = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${headlineCookie}=`))?.split('=')[1]
-        if (value !== undefined && /^[0-2]$/.test(value)) previous = Number(value)
-      } catch {
-        // A blocked cookie must not prevent the hero from rendering.
-      }
+      const consent = getCookieConsent()
+      const previous = consent === 'accepted' ? (readHeadlinePreference() ?? -1) : -1
       const choices = headlines.map((_, index) => index).filter((index) => index !== previous)
       chosenHeadline.current = choices[Math.floor(Math.random() * choices.length)]
-      try {
-        document.cookie = `${headlineCookie}=${chosenHeadline.current}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`
-      } catch {
-        // Without preference cookies, selection remains random on every visit.
+      if (consent === 'accepted') {
+        setHeadlinePreference(chosenHeadline.current)
+      } else {
+        clearHeadlinePreference()
       }
     }
     setHeadlineIndex(chosenHeadline.current)
+  }, [])
+
+  useEffect(() => {
+    function updatePreference(event: Event) {
+      const consent = (event as CustomEvent<CookieConsent>).detail
+      if (consent === 'accepted' && chosenHeadline.current !== null) {
+        setHeadlinePreference(chosenHeadline.current)
+      } else {
+        clearHeadlinePreference()
+      }
+    }
+
+    window.addEventListener(COOKIE_CONSENT_EVENT, updatePreference)
+    return () => window.removeEventListener(COOKIE_CONSENT_EVENT, updatePreference)
   }, [])
 
   useEffect(() => {
@@ -126,7 +141,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
             ))}
           </h1>
           <div className={styles.heroStatement}>
-            <p>a creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
+            <p>A creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
             <ModularButton href="#studio-introduction">meet the studio</ModularButton>
           </div>
         </div>

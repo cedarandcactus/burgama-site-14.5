@@ -29,8 +29,8 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div className="studio-page">
-      <article className="portfolio" aria-labelledby="project-title">
-        <PageHero wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="powder" breadcrumbLabel="Back to work" breadcrumb={
+      <article className="portfolio portfolio-detail" aria-labelledby="project-title">
+        <PageHero wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="white" breadcrumbLabel="Back to work" breadcrumb={
           <DirectionLink href={backHref} direction="left" label="work" />
         }>
           {hasFacts && <dl className="portfolio-facts">
@@ -39,12 +39,12 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
             {project.status && <div><dt>Status</dt><dd>{project.status}</dd></div>}
           </dl>}
         </PageHero>
-        <div className="studio-band" data-surface="powder">
+        <div className="studio-band" data-surface="white">
           <div className="portfolio-story studio-width">
             {project.heroMedia.src && <MediaFrame item={project.heroMedia} className="portfolio-detail-hero" priority />}
             <ProjectModules modules={project.contentModules} />
             {(project.links.length > 0 || project.source || project.note || project.credits.length > 0) && <footer className="portfolio-project-ending">
-              {project.links.length > 0 && <nav className="studio-actions" aria-label="Project links">
+              {project.links.length > 0 && <nav className="studio-actions portfolio-project-links" aria-label="Project links">
                 {project.links.map(link => <a href={link.href} className="pill" key={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}
               </nav>}
               {(project.source || project.note || project.credits.length > 0) && <aside className="portfolio-footnotes" aria-label="Project sources and credits">
@@ -62,7 +62,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
         </div>
         {relatedProjects.length > 0 && <section className="studio-band" data-surface="navy" aria-labelledby="related-title">
           <div className="studio-width">
-            <h2 id="related-title" className="studio-heading">more work.</h2>
+            <h2 id="related-title" className="studio-heading">More work.</h2>
             <nav className="portfolio-related-grid" aria-label="More work">
               {relatedProjects.map(related => <Link href={`/work/${related.slug}`} className="portfolio-related-link" key={related.slug}>
                 <span>{(related.categories ?? related.disciplines).join(' · ')}</span>
@@ -73,7 +73,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
           <SectionRise surface="powder-deep" />
         </section>}
       </article>
-      <SiteFooter enquiryHeading="what could we make together?" />
+      <SiteFooter enquiryHeading="What could we make together?" />
     </div>
   )
 }

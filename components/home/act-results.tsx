@@ -100,7 +100,7 @@ export function ActResults() {
 
   return (
     <section ref={sectionRef} className={styles.results} aria-labelledby="results-heading">
-      <h2 id="results-heading" className="sr-only">a little of the impact.</h2>
+      <h2 id="results-heading" className="sr-only">A little of the impact.</h2>
       {results.map((result, index) => (
         <div className={styles.impactBand} key={result.surface} data-impact-band={result.surface} data-nav-surface={result.surface === 'blue-mid' ? 'ink' : 'frost'}>
           <h3 className={styles.impactPhrase}>{result.phrase}</h3>

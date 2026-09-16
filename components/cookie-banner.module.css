@@ -1,0 +1,174 @@
+.overlay {
+  position: fixed;
+  right: var(--shell-inset);
+  bottom: calc(var(--shell-inset) + var(--shell-h) + 0.625rem);
+  z-index: 1000;
+  width: min(268px, calc(100vw - 2 * var(--shell-inset)));
+  pointer-events: auto;
+  transform-origin: bottom center;
+  will-change: opacity, transform;
+  animation: card-in 480ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.dialog {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--palette-navy) 22%, transparent);
+  border-radius: 16px;
+  color: var(--palette-navy);
+  background: var(--palette-powder-deep);
+  text-align: center;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--palette-navy) 18%, transparent);
+}
+
+.copy {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 29ch;
+}
+
+.copy h2 {
+  margin: 0;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.copy p {
+  margin: 0;
+  color: color-mix(in srgb, var(--palette-navy) 78%, transparent);
+  font-family: var(--font-pangram), sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.copy a {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+  transition: color 180ms ease;
+}
+
+.actions {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 6px;
+}
+
+.actions button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 34px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-cenura), sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease,
+    transform 220ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.accept {
+  color: var(--palette-powder);
+  background: var(--palette-navy);
+  box-shadow: none;
+}
+
+.necessary {
+  border: 1px solid color-mix(in srgb, var(--palette-navy) 34%, transparent) !important;
+  color: var(--palette-navy);
+  background: transparent;
+  box-shadow: none;
+}
+
+.actions button:focus-visible,
+.copy a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.overlay[data-state='leaving'] {
+  pointer-events: none;
+  animation: card-out 360ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .accept:hover {
+    color: var(--palette-powder);
+    background: var(--palette-navy-raised);
+  }
+
+  .necessary:hover {
+    border-color: var(--palette-navy) !important;
+    color: var(--palette-navy);
+    background: color-mix(in srgb, var(--palette-powder) 34%, transparent);
+  }
+
+  .copy a:hover {
+    color: var(--palette-navy-raised);
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes card-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(.985);
+  }
+}
+
+@media (max-width: 420px) {
+  .overlay {
+    right: var(--shell-inset);
+    left: var(--shell-inset);
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .overlay[data-state='leaving'] {
+    animation-duration: 1ms;
+  }
+
+  .actions button,
+  .copy a {
+    transition: none;
+  }
+}

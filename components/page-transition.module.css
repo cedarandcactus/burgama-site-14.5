@@ -3,48 +3,24 @@
 }
 
 .overlay {
-  --sweep-origin: 100%;
   position: fixed;
   inset: 0;
   z-index: 10000;
   isolation: isolate;
-  pointer-events: none;
-  animation: fail-open 0s 7s forwards;
-}
-
-.overlay[data-hydrated='true'] {
   pointer-events: auto;
+  animation: fail-open 0s var(--transition-deadline) forwards;
 }
 
-.overlay[data-direction='left'] {
-  --sweep-origin: 0%;
-}
-
-.curtain {
+.frost {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
-  clip-path: ellipse(160% 140% at var(--sweep-origin) 50%);
-}
-
-.overlay[data-work='true'] .curtain {
-  color: var(--brand-navy);
-  background: var(--brand-white);
-}
-
-.logo {
-  padding: .15em;
-  font-family: var(--font-cenura), sans-serif;
-  font-size: clamp(64px, 20vw, 280px);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: normal;
-  animation: logo-arrive 300ms 60ms ease-out both;
+  inset: -3%;
+  background: var(--palette-powder-frost);
+  background: color-mix(in srgb, var(--palette-powder) 42%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(.72) brightness(1.08);
+  backdrop-filter: blur(18px) saturate(.72) brightness(1.08);
+  opacity: 0;
+  transform: scale(1.025);
+  will-change: opacity, transform;
 }
 
 .skip {
@@ -54,6 +30,7 @@
   height: 100%;
   padding: 0;
   border: 0;
+  color: var(--palette-navy);
   background: transparent;
   cursor: default;
 }
@@ -63,43 +40,27 @@
   outline-offset: -6px;
 }
 
-.overlay[data-phase='covering'] .curtain {
-  animation: sweep-cover 380ms cubic-bezier(.65, 0, .35, 1) both;
+.overlay[data-phase='covering'] .frost {
+  animation: frost-arrive var(--cover-duration) cubic-bezier(.2, .75, .3, 1) both;
 }
 
-.overlay[data-phase='revealing'] {
-  pointer-events: none;
+.overlay[data-phase='covered'] .frost {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.overlay[data-phase='revealing'] .curtain {
-  animation: sweep-reveal 520ms cubic-bezier(.65, 0, .25, 1) forwards;
+.overlay[data-phase='revealing'] .frost {
+  animation: frost-reveal var(--reveal-duration) cubic-bezier(.22, 1, .36, 1) both;
 }
 
-.overlay[data-phase='revealing'] .logo {
-  animation: logo-depart 200ms ease-in forwards;
+@keyframes frost-arrive {
+  from { opacity: 0; transform: scale(1.025); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.overlay[data-phase='revealing'] .skip {
-  pointer-events: none;
-}
-
-@keyframes sweep-cover {
-  from { clip-path: ellipse(160% 140% at var(--sweep-origin) 245%); }
-  to { clip-path: ellipse(160% 140% at var(--sweep-origin) 50%); }
-}
-
-@keyframes sweep-reveal {
-  from { clip-path: ellipse(160% 140% at var(--sweep-origin) 50%); }
-  to { clip-path: ellipse(160% 140% at var(--sweep-origin) -145%); }
-}
-
-@keyframes logo-arrive {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes logo-depart {
-  to { opacity: 0; transform: translateY(-8px); }
+@keyframes frost-reveal {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(.985); }
 }
 
 @keyframes fail-open {
@@ -112,8 +73,7 @@
     pointer-events: none;
   }
 
-  .overlay .curtain,
-  .overlay .logo {
+  .overlay .frost {
     animation: none;
   }
 }

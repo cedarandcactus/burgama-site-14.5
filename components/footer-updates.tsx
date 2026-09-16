@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
-import { ArrowRight, Check, Pencil, RotateCcw } from 'lucide-react'
+import { Check, Pencil, RotateCcw } from 'lucide-react'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import styles from '@/components/site-footer.module.css'
 
 export function FooterUpdates() {
@@ -40,7 +41,7 @@ export function FooterUpdates() {
 
   return (
     <div className={styles.updates}>
-      <h2 id={`${id}-heading`}>subscribe for updates</h2>
+      <h2 id={`${id}-heading`}>Subscribe for updates</h2>
       <form className={styles.updatesPill} aria-labelledby={`${id}-heading`} aria-describedby={`${id}-status`} noValidate onSubmit={submit} onKeyDown={(event) => {
         if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
       }}>
@@ -49,18 +50,18 @@ export function FooterUpdates() {
             <>
               <label className="sr-only" htmlFor={`${id}-email`}>Email address</label>
               <input ref={input} id={`${id}-email`} name="email" type="email" autoComplete="email" autoCapitalize="none" spellCheck={false} required maxLength={254} placeholder="your email" value={email} onChange={(event) => { setEmail(event.target.value); setError('') }} aria-invalid={!!error} aria-describedby={`${id}-status`} />
-              <button className={styles.updatesAction} type="submit" aria-label="Continue to terms"><span><ArrowRight aria-hidden="true" /></span></button>
+              <button className={styles.updatesAction} type="submit" aria-label="Continue to terms"><span className="arrow-capsule"><CircularArrowIcon /></span></button>
             </>
           ) : step === 'terms' ? (
             <>
               <span className={styles.updatesConsent}>agree to our <a href="/terms" target="_blank" rel="noopener noreferrer" aria-label="Terms (opens in a new tab)">terms</a></span>
               <button className={styles.updatesEdit} type="button" aria-label="Edit email address" onClick={() => advance('email')}><Pencil aria-hidden="true" /></button>
-              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and continue" onClick={() => advance('complete')}><span><Check aria-hidden="true" /></span></button>
+              <button ref={confirm} className={styles.updatesAction} type="button" aria-label="Agree to terms and continue" onClick={() => advance('complete')}><span className="arrow-capsule"><Check aria-hidden="true" /></span></button>
             </>
           ) : (
             <>
               <span ref={completion} tabIndex={-1} className={styles.updatesCompletion}>signup unavailable</span>
-              <button className={styles.updatesAction} type="button" aria-label="Try another email address" onClick={() => { setEmail(''); advance('email') }}><span><RotateCcw aria-hidden="true" /></span></button>
+              <button className={styles.updatesAction} type="button" aria-label="Try another email address" onClick={() => { setEmail(''); advance('email') }}><span className="arrow-capsule"><RotateCcw aria-hidden="true" /></span></button>
             </>
           )}
         </div>

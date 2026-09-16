@@ -17,7 +17,7 @@ export function ActCapabilities() {
       <div className={styles.processInner}>
         <div className={styles.processContent}>
           <Reveal>
-            <h2 id="capabilities-heading" className={styles.processHeading}>how we work</h2>
+            <h2 id="capabilities-heading" className={styles.processHeading}>How we work</h2>
             <p className={styles.processDescription}>We start by listening, getting to know your business and what makes it different. Together, we shape a clear direction and bring it to life through identity, websites, content, and campaigns. We stay close to the work after launch, learning from what connects and refining what comes next.</p>
           </Reveal>
           <Reveal className={styles.processAction}><ModularButton href="#start-a-project">start a project</ModularButton></Reveal>

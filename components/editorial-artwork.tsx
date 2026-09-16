@@ -146,7 +146,7 @@ function GradientDefinition({ id, gradient }: { id: string; gradient: Gradient }
   return <linearGradient id={id} gradientUnits="userSpaceOnUse" x1={x1} y1={y1} x2={x2} y2={y2}>{stops}</linearGradient>
 }
 
-export function EditorialArtwork({ visual, variant = 'cover' }: { visual: IdeaVisual; variant?: 'cover' | 'hero' }) {
+export function EditorialArtwork({ visual, variant = 'cover' }: { visual: IdeaVisual; variant?: 'cover' | 'hero' | 'background' }) {
   const frameRef = useRef<HTMLDivElement>(null)
   const id = `editorial-${useId().replace(/:/g, '')}`
   const composition = compositions[visual]

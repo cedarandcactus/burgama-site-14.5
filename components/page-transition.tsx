@@ -1,14 +1,23 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState, useTransition, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useEffectEvent, useRef, useState, useTransition, type ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useSmoothScroll } from './smooth-scroll'
 import styles from './page-transition.module.css'
 
 type Destination = { href: string; replace?: boolean; scroll?: boolean }
 type Phase = 'idle' | 'covering' | 'covered' | 'revealing'
+type Navigation = { id: number; target: Destination; source: string; sent: boolean; completed: boolean }
 const TransitionContext = createContext<((destination: Destination) => void) | null>(null)
 export const usePageTransition = () => useContext(TransitionContext)
+
+const timing = { cover: 140, hold: 70, reveal: 280, deadline: 3000 }
+const frostReady = timing.cover + timing.hold
+const transitionStyle = {
+  '--cover-duration': `${timing.cover}ms`,
+  '--reveal-duration': `${timing.reveal}ms`,
+  '--transition-deadline': `${timing.deadline}ms`,
+} as React.CSSProperties
 
 export function PageTransition({ children }: { children: ReactNode }) {
   const router = useRouter()
@@ -16,142 +25,210 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const scroll = useSmoothScroll()
   const [phase, setPhase] = useState<Phase>('idle')
   const [sequence, setSequence] = useState(0)
-  const [hydrated, setHydrated] = useState(false)
   const [pending, startTransition] = useTransition()
   const phaseRef = useRef<Phase>('idle')
-  const destination = useRef<Destination | null>(null)
-  const sent = useRef(false)
+  const sequenceRef = useRef(0)
+  const navigation = useRef<Navigation | null>(null)
   const content = useRef<HTMLDivElement>(null)
   const skipButton = useRef<HTMLButtonElement>(null)
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([])
-  const previousPath = useRef(pathname)
-  const focusAfter = useRef(false)
+  const animationTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const deadlineTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const focusFrame = useRef(0)
+  const bodyLock = useRef<{ overflow: string; padding: string; appliedPadding: string } | null>(null)
   const reduced = useRef(false)
+  const startedAt = useRef(0)
 
-  const clearTimers = useCallback(() => {
-    timers.current.forEach(clearTimeout)
-    timers.current = []
+  const clearAnimation = useCallback(() => {
+    if (animationTimer.current !== null) clearTimeout(animationTimer.current)
+    animationTimer.current = null
   }, [])
-  const later = useCallback((callback: () => void, delay: number) => {
-    timers.current.push(setTimeout(callback, delay))
+  const clearDeadline = useCallback(() => {
+    if (deadlineTimer.current !== null) clearTimeout(deadlineTimer.current)
+    deadlineTimer.current = null
   }, [])
+  const clearFocus = useCallback(() => {
+    cancelAnimationFrame(focusFrame.current)
+    focusFrame.current = 0
+  }, [])
+  const scheduleAnimation = useCallback((id: number, callback: () => void, delay: number) => {
+    clearAnimation()
+    animationTimer.current = setTimeout(() => {
+      animationTimer.current = null
+      if (sequenceRef.current === id) callback()
+    }, delay)
+  }, [clearAnimation])
   const changePhase = useCallback((next: Phase) => {
     phaseRef.current = next
-    scroll?.setScrollLock('transition', next !== 'idle')
     setPhase(next)
-  }, [scroll])
-  useEffect(() => () => scroll?.setScrollLock('transition', false), [scroll])
-  const finish = useCallback(() => {
-    clearTimers()
-    destination.current = null
-    sent.current = false
+  }, [])
+  const releasePage = useCallback(() => {
     if (content.current) content.current.inert = false
-    changePhase('idle')
-    if (focusAfter.current || document.activeElement === skipButton.current) {
-      document.getElementById('main')?.focus({ preventScroll: true })
+    const lock = bodyLock.current
+    if (lock) {
+      if (document.body.style.overflow === 'hidden') document.body.style.overflow = lock.overflow
+      if (document.body.style.paddingRight === lock.appliedPadding) document.body.style.paddingRight = lock.padding
+      bodyLock.current = null
     }
-    focusAfter.current = false
-  }, [changePhase, clearTimers])
-  const reveal = useCallback(() => {
-    if (phaseRef.current === 'idle' || phaseRef.current === 'revealing') return
-    clearTimers()
+    scroll?.setScrollLock('transition', false)
+  }, [scroll])
+  const focusDestination = useCallback((request: Navigation) => {
+    clearFocus()
+    const focus = () => {
+      focusFrame.current = 0
+      if (navigation.current !== request || !request.completed || phaseRef.current !== 'idle') return
+      navigation.current = null
+      const hash = new URL(request.target.href, location.href).hash
+      if (hash && request.target.scroll !== false && scroll?.scrollToHash(hash, true)) return
+      let target = document.getElementById('main')
+      if (hash) {
+        try { target = document.getElementById(decodeURIComponent(hash.slice(1))) ?? target } catch { /* A malformed fragment still focuses the destination page. */ }
+      }
+      if (!target) return
+      const temporary = !target.hasAttribute('tabindex') && !target.matches('a,button,input,select,textarea')
+      if (temporary) target.tabIndex = -1
+      target.focus({ preventScroll: true })
+      if (temporary) target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true })
+    }
+    // Follow Next's scroll reset and the smooth-scroll provider's two-frame layout refresh.
+    focusFrame.current = requestAnimationFrame(() => {
+      focusFrame.current = requestAnimationFrame(() => {
+        focusFrame.current = requestAnimationFrame(focus)
+      })
+    })
+  }, [clearFocus, scroll])
+  const finishVisual = useCallback((id: number) => {
+    if (sequenceRef.current !== id) return
+    clearAnimation()
+    clearDeadline()
+    const skipHadFocus = document.activeElement === skipButton.current
+    releasePage()
+    changePhase('idle')
+    const request = navigation.current
+    // Visual recovery must not discard a still-loading route or its eventual focus transfer.
+    if (request?.completed) focusDestination(request)
+    else if (skipHadFocus) document.getElementById('main')?.focus({ preventScroll: true })
+  }, [changePhase, clearAnimation, clearDeadline, focusDestination, releasePage])
+  const reveal = useCallback((id: number) => {
+    if (sequenceRef.current !== id || phaseRef.current === 'idle' || phaseRef.current === 'revealing') return
     changePhase('revealing')
-    later(finish, reduced.current ? 0 : 540)
-  }, [changePhase, clearTimers, finish, later])
-  const navigate = useCallback(() => {
-    const target = destination.current
-    if (!target || sent.current) return
-    sent.current = true
-    changePhase('covered')
+    scheduleAnimation(id, () => finishVisual(id), reduced.current ? 0 : timing.reveal + 20)
+  }, [changePhase, finishVisual, scheduleAnimation])
+  const navigate = useCallback((id: number) => {
+    const request = navigation.current
+    if (!request || request.id !== id || request.sent) return
+    request.sent = true
+    if (phaseRef.current === 'covering') changePhase('covered')
     startTransition(() => {
-      if (target.replace) router.replace(target.href, { scroll: target.scroll })
-      else router.push(target.href, { scroll: target.scroll })
+      if (request.target.replace) router.replace(request.target.href, { scroll: request.target.scroll })
+      else router.push(request.target.href, { scroll: request.target.scroll })
     })
   }, [router, changePhase])
-  const skip = useCallback(() => { navigate(); finish() }, [navigate, finish])
+  const skip = useCallback(() => {
+    if (phaseRef.current === 'idle') return
+    const id = sequenceRef.current
+    navigate(id)
+    finishVisual(id)
+  }, [navigate, finishVisual])
+
+  const onMotion = useEffectEvent((matches: boolean) => {
+    reduced.current = matches
+    if (matches) skip()
+  })
+  const onHistory = useEffectEvent(() => {
+    clearFocus()
+    navigation.current = null
+    finishVisual(sequenceRef.current)
+  })
+  const onVisibility = useEffectEvent(() => {
+    if (document.hidden) skip()
+  })
+  const onUnmount = useEffectEvent(() => {
+    sequenceRef.current += 1
+    navigation.current = null
+    clearFocus()
+    clearAnimation()
+    clearDeadline()
+    releasePage()
+  })
 
   useEffect(() => {
-    setHydrated(true)
     const media = matchMedia('(prefers-reduced-motion: reduce)')
-    reduced.current = media.matches
-    const onMotion = () => { reduced.current = media.matches; if (media.matches) skip() }
-    const onHistory = () => { destination.current = null; finish() }
-    const onVisibility = () => { if (document.hidden) skip() }
-    media.addEventListener('change', onMotion)
-    window.addEventListener('popstate', onHistory)
-    document.addEventListener('visibilitychange', onVisibility)
+    onMotion(media.matches)
+    const motion = () => onMotion(media.matches)
+    const history = () => onHistory()
+    const visibility = () => onVisibility()
+    media.addEventListener('change', motion)
+    window.addEventListener('popstate', history)
+    document.addEventListener('visibilitychange', visibility)
     return () => {
-      clearTimers()
-      media.removeEventListener('change', onMotion)
-      window.removeEventListener('popstate', onHistory)
-      document.removeEventListener('visibilitychange', onVisibility)
+      media.removeEventListener('change', motion)
+      window.removeEventListener('popstate', history)
+      document.removeEventListener('visibilitychange', visibility)
+      onUnmount()
     }
-  }, [clearTimers, finish, later, reveal, skip])
+  }, [])
 
   useEffect(() => {
-    const changed = previousPath.current !== pathname
-    previousPath.current = pathname
-    if (changed && !destination.current) finish()
-    else if (destination.current && sent.current && !pending && phase === 'covered') {
-      later(reveal, 0)
-    }
-  }, [pathname, pending, phase, finish, later, reveal])
+    const request = navigation.current
+    if (!request?.sent || pending || request.completed) return
+    const current = location.pathname + location.search
+    const target = new URL(request.target.href, location.href)
+    if (current === request.source && current !== target.pathname + target.search) return
+    request.completed = true
+    if (phaseRef.current === 'idle') focusDestination(request)
+    else scheduleAnimation(request.id, () => reveal(request.id), Math.max(0, frostReady - (performance.now() - startedAt.current)))
+  }, [pathname, pending, phase, focusDestination, reveal, scheduleAnimation])
 
   const active = phase !== 'idle'
+  const onKey = useEffectEvent((event: KeyboardEvent) => {
+    if (event.isComposing || event.keyCode === 229) return
+    if (event.key === 'Escape') { event.preventDefault(); skip() }
+    if (event.key === 'Tab') { event.preventDefault(); skipButton.current?.focus() }
+  })
   useEffect(() => {
-    if (!active || !hydrated) return
-    const wrapper = content.current
-    const oldOverflow = document.body.style.overflow
-    const oldPadding = document.body.style.paddingRight
-    const scrollbar = window.innerWidth - document.documentElement.clientWidth
-    if (wrapper) wrapper.inert = true
-    document.body.style.overflow = 'hidden'
-    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`
-    const onKey = (event: KeyboardEvent) => {
-      if (event.isComposing || event.keyCode === 229) return
-      if (event.key === 'Escape') { event.preventDefault(); skip() }
-      if (event.key === 'Tab') { event.preventDefault(); skipButton.current?.focus() }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => {
-      if (wrapper) wrapper.inert = false
-      document.body.style.overflow = oldOverflow
-      document.body.style.paddingRight = oldPadding
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [active, hydrated, skip])
+    if (!active) return
+    const key = (event: KeyboardEvent) => onKey(event)
+    document.addEventListener('keydown', key)
+    return () => document.removeEventListener('keydown', key)
+  }, [active])
 
   const begin = useCallback((target: Destination) => {
     if (phaseRef.current !== 'idle') return
-    focusAfter.current = true
     scroll?.cancelScroll()
-    clearTimers()
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      startTransition(() => {
-        if (target.replace) router.replace(target.href, { scroll: target.scroll })
-        else router.push(target.href, { scroll: target.scroll })
-      })
+    clearFocus()
+    clearAnimation()
+    clearDeadline()
+    const id = ++sequenceRef.current
+    navigation.current = { id, target, source: location.pathname + location.search, sent: false, completed: false }
+    reduced.current = matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced.current || document.hidden) {
+      navigate(id)
       return
     }
-    destination.current = target
-    sent.current = false
-    setSequence(value => value + 1)
+    startedAt.current = performance.now()
+    setSequence(id)
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth
+    const overflow = document.body.style.overflow
+    const padding = document.body.style.paddingRight
+    if (scrollbar > 0) document.body.style.paddingRight = `${(parseFloat(getComputedStyle(document.body).paddingRight) || 0) + scrollbar}px`
+    bodyLock.current = { overflow, padding, appliedPadding: document.body.style.paddingRight }
+    document.body.style.overflow = 'hidden'
+    if (content.current) content.current.inert = true
+    scroll?.setScrollLock('transition', true)
     changePhase('covering')
-    later(navigate, 380)
-    // A failed or interrupted route must never leave the site behind a curtain.
-    later(finish, 6000)
-  }, [changePhase, clearTimers, finish, later, navigate, router, scroll])
-
-  const transitionPath = destination.current?.href.split(/[?#]/)[0] ?? pathname
-  const workTransition = transitionPath === '/work' || transitionPath.startsWith('/work/')
+    scheduleAnimation(id, () => navigate(id), timing.cover)
+    // This deadline is independent of animation scheduling and React's pending route state.
+    deadlineTimer.current = setTimeout(() => { navigate(id); finishVisual(id) }, timing.deadline)
+  }, [changePhase, clearAnimation, clearDeadline, clearFocus, finishVisual, navigate, scheduleAnimation, scroll])
 
   return (
     <TransitionContext.Provider value={begin}>
       <div ref={content} className={styles.content}>{children}</div>
-      {active && <div key={sequence} className={styles.overlay} data-work={workTransition} data-phase={phase} data-direction={sequence % 2 === 0 ? 'left' : 'right'} data-hydrated={hydrated} data-page-transition="">
-        <div className={styles.curtain} aria-hidden="true">
-          <div className={styles.logo}>burgama</div>
-        </div>
+      {active && <div key={sequence} className={styles.overlay} style={transitionStyle} data-phase={phase} data-page-transition="" onAnimationEnd={event => {
+        if (event.target === event.currentTarget) finishVisual(sequence)
+      }}>
+        <div className={styles.frost} aria-hidden="true" />
+        <span className="sr-only" role="status">Loading page</span>
         <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip page transition" />
       </div>}
       <noscript><style>{`[data-page-transition] { display: none !important; }`}</style></noscript>
