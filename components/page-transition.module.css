@@ -11,34 +11,16 @@
   animation: fail-open 0s var(--transition-deadline) forwards;
 }
 
-.curtain {
+.frost {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
-  clip-path: inset(0);
-}
-
-.symbolFrame {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(176px, 34vw, 420px);
-  aspect-ratio: 1;
-  user-select: none;
-}
-
-.symbol {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  animation: symbol-arrive var(--symbol-duration) cubic-bezier(.22, 1, .36, 1) both;
-  will-change: transform, opacity, filter;
+  inset: -3%;
+  background: var(--palette-powder-frost);
+  background: color-mix(in srgb, var(--palette-powder) 42%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(.72) brightness(1.08);
+  backdrop-filter: blur(18px) saturate(.72) brightness(1.08);
+  opacity: 0;
+  transform: scale(1.025);
+  will-change: opacity, transform;
 }
 
 .skip {
@@ -58,37 +40,27 @@
   outline-offset: -6px;
 }
 
-.overlay[data-phase='covering'] .curtain {
-  animation: field-arrive var(--cover-duration) ease-out both;
+.overlay[data-phase='covering'] .frost {
+  animation: frost-arrive var(--cover-duration) cubic-bezier(.2, .75, .3, 1) both;
 }
 
-.overlay[data-phase='revealing'] .curtain {
-  animation: field-reveal calc(var(--reveal-duration) - 100ms) 100ms cubic-bezier(.65, 0, .35, 1) both;
+.overlay[data-phase='covered'] .frost {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.overlay[data-phase='revealing'] .symbol {
-  animation: symbol-depart 360ms cubic-bezier(.55, 0, 1, .45) both;
+.overlay[data-phase='revealing'] .frost {
+  animation: frost-reveal var(--reveal-duration) cubic-bezier(.22, 1, .36, 1) both;
 }
 
-@keyframes field-arrive {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes frost-arrive {
+  from { opacity: 0; transform: scale(1.025); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes symbol-arrive {
-  from { opacity: 0; transform: scale(.94); filter: blur(4px); }
-  18% { opacity: 1; }
-  to { opacity: 1; transform: scale(1.02); filter: blur(0); }
-}
-
-@keyframes symbol-depart {
-  from { opacity: 1; transform: scale(1.02); filter: blur(0); }
-  to { opacity: 0; transform: scale(1.08); filter: blur(3px); }
-}
-
-@keyframes field-reveal {
-  from { clip-path: inset(0); }
-  to { clip-path: inset(0 0 100% 0); }
+@keyframes frost-reveal {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(.985); }
 }
 
 @keyframes fail-open {
@@ -101,8 +73,7 @@
     pointer-events: none;
   }
 
-  .overlay .curtain,
-  .overlay .symbol {
+  .overlay .frost {
     animation: none;
   }
 }

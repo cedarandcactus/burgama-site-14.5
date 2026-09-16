@@ -11,11 +11,10 @@ type Navigation = { id: number; target: Destination; source: string; sent: boole
 const TransitionContext = createContext<((destination: Destination) => void) | null>(null)
 export const usePageTransition = () => useContext(TransitionContext)
 
-const timing = { cover: 180, symbol: 3200, hold: 80, reveal: 560, deadline: 6000 }
-const symbolReady = timing.symbol + timing.hold
+const timing = { cover: 140, hold: 70, reveal: 280, deadline: 3000 }
+const frostReady = timing.cover + timing.hold
 const transitionStyle = {
   '--cover-duration': `${timing.cover}ms`,
-  '--symbol-duration': `${timing.symbol}ms`,
   '--reveal-duration': `${timing.reveal}ms`,
   '--transition-deadline': `${timing.deadline}ms`,
 } as React.CSSProperties
@@ -177,7 +176,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     if (current === request.source && current !== target.pathname + target.search) return
     request.completed = true
     if (phaseRef.current === 'idle') focusDestination(request)
-    else scheduleAnimation(request.id, () => reveal(request.id), Math.max(0, symbolReady - (performance.now() - startedAt.current)))
+    else scheduleAnimation(request.id, () => reveal(request.id), Math.max(0, frostReady - (performance.now() - startedAt.current)))
   }, [pathname, pending, phase, focusDestination, reveal, scheduleAnimation])
 
   const active = phase !== 'idle'
@@ -228,19 +227,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
       {active && <div key={sequence} className={styles.overlay} style={transitionStyle} data-phase={phase} data-page-transition="" onAnimationEnd={event => {
         if (event.target === event.currentTarget) finishVisual(sequence)
       }}>
-        <div className={styles.curtain} aria-hidden="true">
-          <div className={styles.symbolFrame}>
-            <img
-              className={styles.symbol}
-              src={`/burgama-symbol-animated.svg?sequence=${sequence}`}
-              alt=""
-              width="2200"
-              height="2200"
-              decoding="sync"
-              data-transition-symbol=""
-            />
-          </div>
-        </div>
+        <div className={styles.frost} aria-hidden="true" />
         <span className="sr-only" role="status">Loading page</span>
         <button ref={skipButton} type="button" className={styles.skip} onClick={skip} aria-label="Skip page transition" />
       </div>}
