@@ -27,7 +27,7 @@ export function CookieBanner() {
     if (value === 'necessary') clearHeadlinePreference()
     window.dispatchEvent(new CustomEvent<CookieConsent>(COOKIE_CONSENT_EVENT, { detail: value }))
     setState('leaving')
-    window.setTimeout(() => setState('hidden'), 620)
+    window.setTimeout(() => setState('hidden'), 360)
   }
 
   if (state === 'hidden') return null
