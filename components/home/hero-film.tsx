@@ -40,6 +40,7 @@ export function HeroFilm() {
       }
     }
 
+    const onPause = () => setShowVideo(false)
     const onPlaying = () => {
       setShowVideo(true)
       updatePlayback()
@@ -60,6 +61,7 @@ export function HeroFilm() {
     })
     observer.observe(media)
     video.addEventListener('playing', onPlaying)
+    video.addEventListener('pause', onPause)
     video.addEventListener('error', onError)
     document.addEventListener('visibilitychange', updatePlayback)
     preference.addEventListener('change', onPreference)
@@ -69,6 +71,7 @@ export function HeroFilm() {
       disposed = true
       observer.disconnect()
       video.removeEventListener('playing', onPlaying)
+      video.removeEventListener('pause', onPause)
       video.removeEventListener('error', onError)
       document.removeEventListener('visibilitychange', updatePlayback)
       preference.removeEventListener('change', onPreference)
@@ -93,6 +96,9 @@ export function HeroFilm() {
         ref={videoRef}
         className={styles.heroVideo}
         data-visible={showVideo}
+        data-background-video=""
+        disableRemotePlayback
+        controlsList="nodownload nofullscreen noremoteplayback"
         autoPlay
         controls={false}
         muted

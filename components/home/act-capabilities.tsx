@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createScrollMomentum, gsap } from '@/lib/motion'
 import { ModularButton } from '@/components/modular-button'
 import { Reveal } from '@/components/reveal'
@@ -9,6 +9,7 @@ import styles from './home-page.module.css'
 
 export function ActCapabilities() {
   const sectionRef = useRef<HTMLElement>(null)
+  const [showVideo, setShowVideo] = useState(false)
 
   useEffect(() => {
     const section = sectionRef.current
@@ -16,7 +17,13 @@ export function ActCapabilities() {
     if (!section || !video) return
     const media = gsap.matchMedia()
     media.add({ motion: '(prefers-reduced-motion: no-preference)', wide: '(min-width: 700px)' }, (context) => {
-      if (!context.conditions?.motion) return
+      if (!context.conditions?.motion) {
+        video.pause()
+        return
+      }
+      // Explicit playback lets Safari start the video before its first frame is revealed.
+      video.muted = true
+      void video.play().catch(() => setShowVideo(false))
       const travel = () => Math.max(0, -parseFloat(getComputedStyle(video).top) - 36) * (context.conditions?.wide ? 1 : 0.55)
       gsap.fromTo(video, { y: () => -travel() }, {
         y: travel,
@@ -41,7 +48,18 @@ export function ActCapabilities() {
   return (
     <section ref={sectionRef} id="capabilities" className={styles.capabilities} data-nav-surface="ink" aria-labelledby="capabilities-heading">
       <div className={styles.processMedia} aria-hidden="true">
-        <video className={styles.processVideo} autoPlay muted loop playsInline preload="metadata" tabIndex={-1}>
+        <video
+          className={styles.processVideo}
+          data-background-video=""
+          data-visible={showVideo}
+          onPlaying={() => setShowVideo(true)}
+          onPause={() => setShowVideo(false)}
+          onError={() => setShowVideo(false)}
+          autoPlay muted loop playsInline controls={false}
+          disablePictureInPicture disableRemotePlayback
+          controlsList="nodownload nofullscreen noremoteplayback"
+          preload="metadata" tabIndex={-1}
+        >
           <source src="/videos/bg-2.mp4" type="video/mp4" />
         </video>
         <div className={styles.processVideoShade} />

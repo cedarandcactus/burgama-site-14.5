@@ -17,7 +17,7 @@ export function SiteHaptics() {
       if (!target || target.matches(':disabled') || target.closest('[aria-disabled="true"], [aria-busy="true"], [inert], [data-haptics="off"]')) return
 
       // Keep native navigation and form actions independent of optional device feedback.
-      void trigger(15, { intensity: 0.4 })?.catch(() => {})
+      void trigger(35, { intensity: 1 })?.catch(() => {})
     }
     const onPreferenceChange = () => {
       if (reducedMotion.matches) cancel()

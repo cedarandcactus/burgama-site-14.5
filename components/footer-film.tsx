@@ -90,6 +90,10 @@ export function FooterFilm() {
         ref={videoRef}
         className={styles.video}
         data-visible={showVideo}
+        data-background-video=""
+        onPause={() => setShowVideo(false)}
+        disableRemotePlayback
+        controlsList="nodownload nofullscreen noremoteplayback"
         autoPlay
         controls={false}
         muted
