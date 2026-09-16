@@ -34,6 +34,13 @@ const TEAM = [
     image: '/team/josiah.jpg',
     alt: 'Josiah, Design and Direction at Burgama',
   },
+  {
+    name: 'Luisa',
+    role: 'PR, Advertising & Design',
+    description: 'Luisa brings public relations, advertising, and design together to help brands communicate clearly. She connects the story a business wants to tell with the campaigns and creative that bring it to an audience, keeping messaging and visuals aligned across each touchpoint.',
+    image: '/team/luisa.jpg',
+    alt: 'Luisa, PR, Advertising and Design at Burgama',
+  },
 ]
 
 export default function StudioPage() {
@@ -56,7 +63,7 @@ export default function StudioPage() {
                   alt={person.alt}
                   width={3712}
                   height={4608}
-                  sizes="(max-width: 699px) 100vw, (max-width: 999px) 50vw, 33vw"
+                  sizes="(max-width: 699px) 100vw, 50vw"
                 />
               </figure>
               <div className={styles.personHeading}>
