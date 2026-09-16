@@ -11,7 +11,7 @@ export function EditorialIndex() {
     <div className="studio-page">
       <PageHero
         variant="centered"
-        wordmark="A closer look at the decisions behind better digital work."
+        wordmark="Research into the decisions behind better digital work."
         titleId="research-title"
         surface="navy"
         nextSurface="powder"

@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { gsap, prefersReducedMotion } from '@/lib/motion'
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
+import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
@@ -12,31 +12,17 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useSmoothScroll } from '@/components/smooth-scroll'
 import styles from './nav-project-form.module.css'
 
-const companyTypes = ['startup', 'small business', 'established company', 'agency', 'nonprofit', 'other'] as const
 const serviceOptions = [
-  ['strategy', 'strategy'],
-  ['brand-design', 'brand / design'],
-  ['website-digital', 'website / digital'],
-  ['ecommerce', 'ecommerce'],
-  ['marketing-growth', 'marketing / growth'],
-  ['not-sure', 'not sure yet'],
+  ['strategy-design', 'strategy / design'],
+  ['website-growth', 'website / growth'],
 ] as const
 const preferredStartOptions = [
-  ['asap', 'as soon as possible'],
-  ['one-three-months', 'within 1–3 months'],
-  ['three-six-months', 'within 3–6 months'],
+  ['soon', 'as soon as practical'],
   ['flexible', 'flexible / not sure'],
 ] as const
 const launchOptions = [
   ['flexible', 'flexible / not sure'],
-  ['quarter', 'quarter / year'],
-  ['date', 'specific date'],
-] as const
-const roleOptions = [
-  ['decision-maker', 'decision maker'],
-  ['team', 'part of the team'],
-  ['researching', 'researching options'],
-  ['other', 'other'],
+  ['date', 'I have a date'],
 ] as const
 const currencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD'] as const
 const budgetBands = [[0, 5000], [5000, 10000], [10000, 25000], [25000, 50000], [50000, 100000], [100000, null]] as const
@@ -54,14 +40,10 @@ const mailtoLengthLimit = 1800
 
 type Currency = typeof currencies[number]
 type Service = typeof serviceOptions[number][0]
-type CompanyType = typeof companyTypes[number]
 type PreferredStart = typeof preferredStartOptions[number][0]
 type LaunchMode = typeof launchOptions[number][0]
-type DecisionRole = typeof roleOptions[number][0]
 type EnquiryDraft = {
   companyName: string
-  companyType: CompanyType | ''
-  customType: string
   website: string
   services: Service[]
   brief: string
@@ -69,24 +51,17 @@ type EnquiryDraft = {
   assets: string
   preferredStart: PreferredStart | ''
   launchMode: LaunchMode | ''
-  launchQuarter: string
-  launchYear: string
   deadline: string
   budget: number
   budgetUndecided: boolean
   currency: Currency
   name: string
   email: string
-  phone: string
-  role: DecisionRole | ''
-  customRole: string
 }
 type Errors = Partial<Record<keyof EnquiryDraft, string>>
 
 const fieldStep: Record<keyof EnquiryDraft, number> = {
   companyName: 0,
-  companyType: 0,
-  customType: 0,
   website: 0,
   services: 1,
   brief: 1,
@@ -94,24 +69,19 @@ const fieldStep: Record<keyof EnquiryDraft, number> = {
   assets: 2,
   preferredStart: 3,
   launchMode: 3,
-  launchQuarter: 3,
-  launchYear: 3,
   deadline: 3,
   budget: 4,
   budgetUndecided: 4,
   currency: 4,
   name: 5,
   email: 5,
-  phone: 5,
-  role: 5,
-  customRole: 5,
 }
 
 function createEmptyDraft(): EnquiryDraft {
   return {
-    companyName: '', companyType: '', customType: '', website: '', services: [], brief: '', audience: '', assets: '',
-    preferredStart: '', launchMode: '', launchQuarter: '', launchYear: '', deadline: '', budget: 2,
-    budgetUndecided: false, currency: 'USD', name: '', email: '', phone: '', role: '', customRole: '',
+    companyName: '', website: '', services: [], brief: '', audience: '', assets: '',
+    preferredStart: '', launchMode: '', deadline: '', budget: 2,
+    budgetUndecided: false, currency: 'USD', name: '', email: '',
   }
 }
 
@@ -146,16 +116,11 @@ function normalizeWebsite(value: string) {
   }
 }
 
-function companyTypeLabel(draft: EnquiryDraft) {
-  return draft.companyType === 'other' ? `other — ${draft.customType.trim()}` : draft.companyType
-}
-
 function budgetLabel(draft: EnquiryDraft) {
   return draft.budgetUndecided ? `not sure yet (${draft.currency})` : `${formatBudget(draft.budget, draft.currency)} ${draft.currency}`
 }
 
 function launchLabel(draft: EnquiryDraft) {
-  if (draft.launchMode === 'quarter') return `${draft.launchQuarter} ${draft.launchYear}`
   if (draft.launchMode === 'date') {
     const date = new Date(`${draft.deadline}T12:00:00`)
     return Number.isNaN(date.getTime()) ? draft.deadline : new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date)
@@ -166,42 +131,24 @@ function launchLabel(draft: EnquiryDraft) {
 function validateStep(index: number, draft: EnquiryDraft): Errors {
   const errors: Errors = {}
   if (index === 0) {
-    if (!draft.companyName.trim()) errors.companyName = 'Tell us the name of your company.'
-    if (!draft.companyType) errors.companyType = 'Choose the type that fits best.'
-    if (draft.companyType === 'other' && !draft.customType.trim()) errors.customType = 'Tell us a little about your company type.'
+    if (!draft.companyName.trim()) errors.companyName = 'Enter your company name.'
     if (draft.website && !normalizeWebsite(draft.website)) errors.website = 'Enter a valid website, such as example.com.'
   }
   if (index === 1) {
-    if (!draft.services.length) errors.services = 'Choose at least one area, or select not sure yet.'
-    if (!draft.brief.trim()) errors.brief = 'Tell us what you would like the project to accomplish.'
+    if (!draft.services.length) errors.services = 'Choose at least one area.'
+    if (!draft.brief.trim()) errors.brief = 'Tell us what you want to accomplish.'
   }
   if (index === 3) {
-    if (!draft.preferredStart) errors.preferredStart = 'Choose a preferred start window.'
-    if (!draft.launchMode) errors.launchMode = 'Choose how you would like to describe the launch timing.'
-    if (draft.launchMode === 'quarter') {
-      if (!draft.launchQuarter) errors.launchQuarter = 'Choose a target quarter.'
-      if (!draft.launchYear) errors.launchYear = 'Choose a target year.'
-      if (draft.launchQuarter && draft.launchYear) {
-        const now = new Date()
-        const selectedQuarter = Number(draft.launchQuarter.slice(1))
-        const currentQuarter = Math.floor(now.getMonth() / 3) + 1
-        if (Number(draft.launchYear) < now.getFullYear() || (Number(draft.launchYear) === now.getFullYear() && selectedQuarter < currentQuarter)) {
-          errors.launchQuarter = 'Choose the current quarter or a future quarter.'
-        }
-      }
-    }
+    if (!draft.preferredStart) errors.preferredStart = 'Choose a start window.'
+    if (!draft.launchMode) errors.launchMode = 'Choose a launch option.'
     if (draft.launchMode === 'date') {
       if (!draft.deadline) errors.deadline = 'Choose a target launch date.'
       else if (draft.deadline < currentDateValue()) errors.deadline = 'Choose today or a future date.'
     }
   }
   if (index === 5) {
-    if (!draft.name.trim()) errors.name = 'Tell us your name.'
+    if (!draft.name.trim()) errors.name = 'Enter your name.'
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errors.email = 'Enter a valid email address.'
-    const digits = draft.phone.replace(/\D/g, '')
-    if (!/^[+\d\s().-]+$/.test(draft.phone.trim()) || digits.length < 7 || digits.length > 15) errors.phone = 'Enter a phone number, including your country code.'
-    if (!draft.role) errors.role = 'Tell us your role in the decision.'
-    if (draft.role === 'other' && !draft.customRole.trim()) errors.customRole = 'Tell us how you are involved.'
   }
   return errors
 }
@@ -212,24 +159,19 @@ function validateDraft(draft: EnquiryDraft) {
 
 function buildEnquiry(draft: EnquiryDraft) {
   const serviceLabels = draft.services.map(service => optionLabel(serviceOptions, service)).join(', ')
-  const role = draft.role === 'other' ? draft.customRole.trim() : optionLabel(roleOptions, draft.role)
   const body = [
-    'Hello Burgama,', '', 'I’d love to talk about a project.', '',
+    'Hello Burgama,', '',
     `Company: ${draft.companyName.trim()}`,
-    `Company type: ${companyTypeLabel(draft)}`,
-    `Website: ${draft.website.trim() || 'Not provided'}`, '',
-    `Services needed: ${serviceLabels}`,
-    `Project goals: ${draft.brief.trim()}`, '',
-    `Target audience: ${draft.audience.trim() || 'Not provided'}`,
-    `Existing assets / context: ${draft.assets.trim() || 'Not provided'}`, '',
-    `Preferred start: ${optionLabel(preferredStartOptions, draft.preferredStart)}`,
-    `Target launch: ${launchLabel(draft)}`, '',
+    ...(draft.website.trim() ? [`Website: ${draft.website.trim()}`] : []), '',
+    `Project: ${serviceLabels}`,
+    draft.brief.trim(),
+    ...(draft.audience.trim() ? ['', `Audience: ${draft.audience.trim()}`] : []),
+    ...(draft.assets.trim() ? [`Existing work: ${draft.assets.trim()}`] : []), '',
+    `Start: ${optionLabel(preferredStartOptions, draft.preferredStart)}`,
+    `Launch: ${launchLabel(draft)}`,
     `Budget: ${budgetLabel(draft)}`, '',
-    `Name: ${draft.name.trim()}`,
-    `Email: ${draft.email.trim()}`,
-    `Phone: ${draft.phone.trim()}`,
-    `Decision-making role: ${role}`, '',
-    'Let’s make something good.',
+    draft.name.trim(),
+    draft.email.trim(),
   ].join('\n')
   const subject = 'Let’s start a project — Burgama'
   return {
@@ -241,10 +183,12 @@ function buildEnquiry(draft: EnquiryDraft) {
 }
 
 function ReviewRow({ label, lines, editLabel, onEdit }: { label: string; lines: string[]; editLabel: string; onEdit: () => void }) {
+  const visibleLines = lines.filter(Boolean)
+  if (!visibleLines.length) return null
   return (
     <div>
       <dt>{label}</dt>
-      <dd>{lines.map((line, index) => <span key={`${line}-${index}`}>{line || 'Not provided'}</span>)}</dd>
+      <dd>{visibleLines.map((line, index) => <span key={`${line}-${index}`}>{line}</span>)}</dd>
       <dd className={styles.reviewAction}><button type="button" onClick={onEdit} aria-label={editLabel}>edit</button></dd>
     </div>
   )
@@ -287,8 +231,6 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
   const heightCallback = useRef(onHeightChange)
   heightCallback.current = onHeightChange
 
-  const now = new Date()
-  const years = Array.from({ length: 6 }, (_, index) => String(now.getFullYear() + index))
   const enquiry = buildEnquiry(draft)
   const mailtoFits = enquiry.mailto.length <= mailtoLengthLimit
 
@@ -509,16 +451,13 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
   }
 
   function handleServices(values: string[]) {
-    const selected = values as Service[]
-    const choseUnsure = selected.includes('not-sure') && !draft.services.includes('not-sure')
-    updateDraft('services', choseUnsure ? ['not-sure'] : selected.filter(service => service !== 'not-sure'))
+    updateDraft('services', values as Service[])
   }
 
-  const companySummary = [draft.companyName.trim(), companyTypeLabel(draft), draft.website.trim() || 'Not provided']
+  const companySummary = [draft.companyName.trim(), draft.website.trim()]
   const projectSummary = [draft.services.map(service => optionLabel(serviceOptions, service)).join(', '), draft.brief.trim()]
-  const contextSummary = [draft.audience.trim() || 'Target audience not provided', draft.assets.trim() || 'Existing assets not provided']
+  const contextSummary = [draft.audience.trim(), draft.assets.trim()]
   const timingSummary = [optionLabel(preferredStartOptions, draft.preferredStart), launchLabel(draft)]
-  const roleSummary = draft.role === 'other' ? draft.customRole.trim() : optionLabel(roleOptions, draft.role)
 
   return (
     <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Project enquiry' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={event => {
@@ -541,27 +480,12 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                   <Input id={`${idPrefix}-companyName`} data-error-key="companyName" name="companyName" autoComplete="organization" maxLength={120} value={draft.companyName} onChange={event => updateDraft('companyName', event.target.value)} placeholder="Your company" required aria-invalid={!!errors.companyName} aria-describedby={errors.companyName ? `${idPrefix}-companyName-error` : undefined} />
                   <FieldError id={`${idPrefix}-companyName-error`}>{errors.companyName}</FieldError>
                 </Field>
-                <FieldSet data-enquiry-motion="" data-invalid={!!errors.companyType}>
-                  <FieldLegend variant="label">Company type</FieldLegend>
-                  <FieldDescription>Choose the closest fit.</FieldDescription>
-                  <ToggleGroup className={styles.companyChoices} data-error-key="companyType" tabIndex={0} value={draft.companyType ? [draft.companyType] : []} onValueChange={values => updateDraft('companyType', (values[0] ?? '') as CompanyType | '')} aria-label="Company type" aria-invalid={!!errors.companyType} aria-describedby={errors.companyType ? `${idPrefix}-companyType-error` : undefined}>
-                    {companyTypes.map(type => <ToggleGroupItem key={type} value={type}>{type}</ToggleGroupItem>)}
-                  </ToggleGroup>
-                  <FieldError id={`${idPrefix}-companyType-error`}>{errors.companyType}</FieldError>
-                </FieldSet>
-                {draft.companyType === 'other' && (
-                  <Field className={styles.revealField} data-enquiry-motion="" data-invalid={!!errors.customType}>
-                    <FieldLabel htmlFor={`${idPrefix}-customType`}>Your company type</FieldLabel>
-                    <Input id={`${idPrefix}-customType`} data-error-key="customType" name="companyTypeOther" maxLength={100} value={draft.customType} onChange={event => updateDraft('customType', event.target.value)} placeholder="Tell us what fits better" required aria-invalid={!!errors.customType} aria-describedby={errors.customType ? `${idPrefix}-customType-error` : undefined} />
-                    <FieldError id={`${idPrefix}-customType-error`}>{errors.customType}</FieldError>
-                  </Field>
-                )}
                 <Field data-enquiry-motion="" data-invalid={!!errors.website}>
-                  <FieldLabel htmlFor={`${idPrefix}-website`}>Website <span className={styles.optional}>optional</span></FieldLabel>
+                  <FieldLabel htmlFor={`${idPrefix}-website`}>Website</FieldLabel>
                   <Input id={`${idPrefix}-website`} data-error-key="website" name="website" type="url" inputMode="url" autoComplete="url" maxLength={240} value={draft.website} onChange={event => updateDraft('website', event.target.value)} onBlur={() => {
                     const normalized = normalizeWebsite(draft.website)
                     if (normalized) updateDraft('website', normalized)
-                  }} placeholder="example.com" aria-invalid={!!errors.website} aria-describedby={errors.website ? `${idPrefix}-website-error` : undefined} />
+                  }} placeholder="example.com, if you have one" aria-invalid={!!errors.website} aria-describedby={errors.website ? `${idPrefix}-website-error` : undefined} />
                   <FieldError id={`${idPrefix}-website-error`}>{errors.website}</FieldError>
                 </Field>
               </FieldGroup>
@@ -571,7 +495,6 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
               <FieldGroup>
                 <FieldSet data-enquiry-motion="" data-invalid={!!errors.services}>
                   <FieldLegend variant="label">Services needed</FieldLegend>
-                  <FieldDescription>Select as many as apply. Not sure yet is fine.</FieldDescription>
                   <ToggleGroup className={styles.companyChoices} data-error-key="services" tabIndex={0} multiple value={draft.services} onValueChange={handleServices} aria-label="Services needed" aria-invalid={!!errors.services} aria-describedby={errors.services ? `${idPrefix}-services-error` : undefined}>
                     {serviceOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
                   </ToggleGroup>
@@ -579,8 +502,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                 </FieldSet>
                 <Field data-enquiry-motion="" data-invalid={!!errors.brief}>
                   <FieldLabel htmlFor={`${idPrefix}-brief`}>Project goals</FieldLabel>
-                  <FieldDescription>What needs to change, and what would a useful outcome look like?</FieldDescription>
-                  <Textarea id={`${idPrefix}-brief`} data-error-key="brief" name="brief" className={styles.brief} placeholder="Share the challenge, opportunity, or result you are working toward" maxLength={1600} rows={4} required value={draft.brief} onChange={event => updateDraft('brief', event.target.value)} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
+                  <Textarea id={`${idPrefix}-brief`} data-error-key="brief" name="brief" className={styles.brief} placeholder="What needs to change, and what would a good outcome look like?" maxLength={1600} rows={4} required value={draft.brief} onChange={event => updateDraft('brief', event.target.value)} aria-invalid={!!errors.brief} aria-describedby={errors.brief ? `${idPrefix}-brief-error` : undefined} />
                   <FieldError id={`${idPrefix}-brief-error`}>{errors.brief}</FieldError>
                 </Field>
               </FieldGroup>
@@ -589,14 +511,12 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
             {step === 2 && (
               <FieldGroup>
                 <Field data-enquiry-motion="">
-                  <FieldLabel htmlFor={`${idPrefix}-audience`}>Target audience <span className={styles.optional}>optional</span></FieldLabel>
-                  <FieldDescription>Who are you trying to reach or serve?</FieldDescription>
-                  <Textarea id={`${idPrefix}-audience`} data-error-key="audience" name="audience" className={styles.contextArea} placeholder="Customers, partners, teams, or communities" maxLength={600} rows={3} value={draft.audience} onChange={event => updateDraft('audience', event.target.value)} />
+                  <FieldLabel htmlFor={`${idPrefix}-audience`}>Target audience</FieldLabel>
+                  <Textarea id={`${idPrefix}-audience`} data-error-key="audience" name="audience" className={styles.contextArea} placeholder="Who are you trying to reach? Leave blank if unsure." maxLength={600} rows={3} value={draft.audience} onChange={event => updateDraft('audience', event.target.value)} />
                 </Field>
                 <Field data-enquiry-motion="">
-                  <FieldLabel htmlFor={`${idPrefix}-assets`}>Existing assets and context <span className={styles.optional}>optional</span></FieldLabel>
-                  <FieldDescription>Note anything already in place: a website, brand system, content, research, or internal support.</FieldDescription>
-                  <Textarea id={`${idPrefix}-assets`} data-error-key="assets" name="assets" className={styles.contextArea} placeholder="What should we know or build from?" maxLength={600} rows={3} value={draft.assets} onChange={event => updateDraft('assets', event.target.value)} />
+                  <FieldLabel htmlFor={`${idPrefix}-assets`}>Existing work</FieldLabel>
+                  <Textarea id={`${idPrefix}-assets`} data-error-key="assets" name="assets" className={styles.contextArea} placeholder="Website, brand, content, or research. Leave blank if none." maxLength={600} rows={3} value={draft.assets} onChange={event => updateDraft('assets', event.target.value)} />
                 </Field>
               </FieldGroup>
             )}
@@ -612,36 +532,15 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                 </FieldSet>
                 <FieldSet data-enquiry-motion="" data-invalid={!!errors.launchMode}>
                   <FieldLegend variant="label">Target launch</FieldLegend>
-                  <FieldDescription>A flexible answer is completely fine.</FieldDescription>
                   <ToggleGroup className={styles.companyChoices} data-error-key="launchMode" tabIndex={0} value={draft.launchMode ? [draft.launchMode] : []} onValueChange={values => {
                     const mode = (values[0] ?? '') as LaunchMode | ''
-                    setDraft(previous => ({ ...previous, launchMode: mode, launchQuarter: mode === 'quarter' ? previous.launchQuarter : '', launchYear: mode === 'quarter' ? previous.launchYear : '', deadline: mode === 'date' ? previous.deadline : '' }))
-                    setErrors(previous => ({ ...previous, launchMode: undefined, launchQuarter: undefined, launchYear: undefined, deadline: undefined }))
+                    setDraft(previous => ({ ...previous, launchMode: mode, deadline: mode === 'date' ? previous.deadline : '' }))
+                    setErrors(previous => ({ ...previous, launchMode: undefined, deadline: undefined }))
                   }} aria-label="Target launch format" aria-invalid={!!errors.launchMode} aria-describedby={errors.launchMode ? `${idPrefix}-launchMode-error` : undefined}>
                     {launchOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
                   </ToggleGroup>
                   <FieldError id={`${idPrefix}-launchMode-error`}>{errors.launchMode}</FieldError>
                 </FieldSet>
-                {draft.launchMode === 'quarter' && (
-                  <div className={styles.pairedFields} data-enquiry-motion="">
-                    <Field data-invalid={!!errors.launchQuarter}>
-                      <FieldLabel htmlFor={`${idPrefix}-launchQuarter`}>Quarter</FieldLabel>
-                      <NativeSelect className={styles.nativeSelect} id={`${idPrefix}-launchQuarter`} data-error-key="launchQuarter" name="launchQuarter" value={draft.launchQuarter} onChange={event => updateDraft('launchQuarter', event.target.value)} required aria-invalid={!!errors.launchQuarter} aria-describedby={errors.launchQuarter ? `${idPrefix}-launchQuarter-error` : undefined}>
-                        <NativeSelectOption value="">Choose quarter</NativeSelectOption>
-                        {['Q1', 'Q2', 'Q3', 'Q4'].map(quarter => <NativeSelectOption key={quarter} value={quarter}>{quarter}</NativeSelectOption>)}
-                      </NativeSelect>
-                      <FieldError id={`${idPrefix}-launchQuarter-error`}>{errors.launchQuarter}</FieldError>
-                    </Field>
-                    <Field data-invalid={!!errors.launchYear}>
-                      <FieldLabel htmlFor={`${idPrefix}-launchYear`}>Year</FieldLabel>
-                      <NativeSelect className={styles.nativeSelect} id={`${idPrefix}-launchYear`} data-error-key="launchYear" name="launchYear" value={draft.launchYear} onChange={event => updateDraft('launchYear', event.target.value)} required aria-invalid={!!errors.launchYear} aria-describedby={errors.launchYear ? `${idPrefix}-launchYear-error` : undefined}>
-                        <NativeSelectOption value="">Choose year</NativeSelectOption>
-                        {years.map(year => <NativeSelectOption key={year} value={year}>{year}</NativeSelectOption>)}
-                      </NativeSelect>
-                      <FieldError id={`${idPrefix}-launchYear-error`}>{errors.launchYear}</FieldError>
-                    </Field>
-                  </div>
-                )}
                 {draft.launchMode === 'date' && (
                   <Field className={styles.revealField} data-enquiry-motion="" data-invalid={!!errors.deadline}>
                     <FieldLabel htmlFor={`${idPrefix}-deadline`}>Target launch date</FieldLabel>
@@ -682,7 +581,6 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                   {([
                     { key: 'name', label: 'Name', type: 'text', autocomplete: 'name', placeholder: 'Your name', max: 100 },
                     { key: 'email', label: 'Email', type: 'email', autocomplete: 'email', placeholder: 'you@company.com', max: 254 },
-                    { key: 'phone', label: 'Phone', type: 'tel', autocomplete: 'tel', placeholder: '+1 512 555 0123', max: 40 },
                   ] as const).map(({ key, label, type, autocomplete, placeholder, max }) => (
                     <Field key={key} data-enquiry-motion="" data-invalid={!!errors[key]}>
                       <FieldLabel htmlFor={`${idPrefix}-${key}`}>{label}</FieldLabel>
@@ -691,20 +589,6 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                     </Field>
                   ))}
                 </div>
-                <FieldSet data-enquiry-motion="" data-invalid={!!errors.role}>
-                  <FieldLegend variant="label">Your role in the decision</FieldLegend>
-                  <ToggleGroup className={styles.companyChoices} data-error-key="role" tabIndex={0} value={draft.role ? [draft.role] : []} onValueChange={values => updateDraft('role', (values[0] ?? '') as DecisionRole | '')} aria-label="Your role in the decision" aria-invalid={!!errors.role} aria-describedby={errors.role ? `${idPrefix}-role-error` : undefined}>
-                    {roleOptions.map(([value, label]) => <ToggleGroupItem key={value} value={value}>{label}</ToggleGroupItem>)}
-                  </ToggleGroup>
-                  <FieldError id={`${idPrefix}-role-error`}>{errors.role}</FieldError>
-                </FieldSet>
-                {draft.role === 'other' && (
-                  <Field className={styles.revealField} data-enquiry-motion="" data-invalid={!!errors.customRole}>
-                    <FieldLabel htmlFor={`${idPrefix}-customRole`}>How are you involved?</FieldLabel>
-                    <Input id={`${idPrefix}-customRole`} data-error-key="customRole" name="customRole" maxLength={100} value={draft.customRole} onChange={event => updateDraft('customRole', event.target.value)} placeholder="Your role" required aria-invalid={!!errors.customRole} aria-describedby={errors.customRole ? `${idPrefix}-customRole-error` : undefined} />
-                    <FieldError id={`${idPrefix}-customRole-error`}>{errors.customRole}</FieldError>
-                  </Field>
-                )}
               </FieldGroup>
             )}
 
@@ -716,13 +600,9 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
                   <ReviewRow label="context" lines={contextSummary} editLabel="Edit project context" onEdit={() => goTo(2)} />
                   <ReviewRow label="timing" lines={timingSummary} editLabel="Edit project timing" onEdit={() => goTo(3)} />
                   <ReviewRow label="budget" lines={[budgetLabel(draft)]} editLabel="Edit budget" onEdit={() => goTo(4)} />
-                  <ReviewRow label="contact" lines={[draft.name.trim(), draft.email.trim(), draft.phone.trim(), roleSummary]} editLabel="Edit your details" onEdit={() => goTo(5)} />
+                  <ReviewRow label="contact" lines={[draft.name.trim(), draft.email.trim()]} editLabel="Edit your details" onEdit={() => goTo(5)} />
                 </dl>
-                <div className={styles.handoff} data-enquiry-motion="">
-                  {inline ? <p id={`${idPrefix}-delivery`}>email delivery isn&apos;t connected yet</p> : <a href={`mailto:${recipient}`}>{recipient}</a>}
-                  <button type="button" onClick={copyEnquiry} disabled={copyState === 'copying'} aria-label={copyState === 'copied' ? 'Enquiry copied' : 'Copy enquiry'}>{copyState === 'copied' ? 'copied' : inline ? 'copy enquiry' : 'copy'}</button>
-                </div>
-                <p className={styles.copyStatus} role="status">{copyState === 'copied' ? 'Enquiry copied.' : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
+                <p className={styles.copyStatus} role="status">{copyState === 'copied' ? `Copied. Paste it into an email to ${recipient}.` : copyState === 'manual' ? 'Select the text below to copy.' : ''}</p>
                 {copyState === 'manual' && <Field><FieldLabel className="sr-only" htmlFor={`${idPrefix}-copy`}>Enquiry</FieldLabel><Textarea id={`${idPrefix}-copy`} data-enquiry-copy="" className={styles.copyText} readOnly value={enquiry.text} rows={8} onFocus={event => event.target.select()} /></Field>}
               </>
             )}
@@ -732,8 +612,6 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
               {(!inline || step > 0) && <button type="button" className={styles.back} onClick={() => step === 0 ? onMenu?.() : goTo(step - 1)}><CircularArrowIcon direction="left" />{step === 0 ? 'menu' : 'back'}</button>}
               {step < stepDefinitions.length - 1 ? (
                 <button type="submit" className={styles.continue}>{step === stepDefinitions.length - 2 ? 'review' : 'continue'}<CircularArrowIcon /></button>
-              ) : inline ? (
-                <button type="button" className={styles.continue} disabled aria-describedby={`${idPrefix}-delivery`}>send enquiry<CircularArrowIcon /></button>
               ) : mailtoFits ? (
                 <a className={styles.continue} href={enquiry.mailto} onClick={event => { if (!validateEverything()) event.preventDefault() }}>open email draft<CircularArrowIcon /></a>
               ) : (
@@ -743,7 +621,6 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
             {step === stepDefinitions.length - 1 && (
               <div className={styles.footerNote}>
                 <button type="button" onClick={reset}>start over</button>
-                {!inline && <p>{mailtoFits ? 'opens your email app' : `copy, then paste into a new email to ${recipient}`}</p>}
               </div>
             )}
           </footer>
