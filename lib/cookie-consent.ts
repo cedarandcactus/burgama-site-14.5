@@ -2,6 +2,7 @@ export const COOKIE_CONSENT_NAME = 'burgama-cookie-consent'
 export const COOKIE_CONSENT_EVENT = 'burgama:cookie-consent'
 export const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30
 
+const COOKIE_CONSENT_VERSION = 'v2'
 const HEADLINE_COOKIE_NAME = 'burgama-hero-message'
 
 type CookieConsent = 'accepted' | 'necessary'
@@ -21,11 +22,13 @@ function writeCookie(name: string, value: string, maxAge = COOKIE_MAX_AGE_SECOND
 
 export function getCookieConsent(): CookieConsent | null {
   const value = readCookie(COOKIE_CONSENT_NAME)
-  return value === 'accepted' || value === 'necessary' ? value : null
+  if (value === `accepted-${COOKIE_CONSENT_VERSION}`) return 'accepted'
+  if (value === `necessary-${COOKIE_CONSENT_VERSION}`) return 'necessary'
+  return null
 }
 
 export function setCookieConsent(value: CookieConsent) {
-  writeCookie(COOKIE_CONSENT_NAME, value)
+  writeCookie(COOKIE_CONSENT_NAME, `${value}-${COOKIE_CONSENT_VERSION}`)
 }
 
 export function readHeadlinePreference() {
