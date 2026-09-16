@@ -13,10 +13,16 @@
 .articleBody > p { margin: 0 0 1.5em; font-size: var(--type-lead-size); font-weight: var(--type-lead-weight); line-height: var(--type-lead-leading); }
 .internalLink { gap: 12px; margin-top: 12px; }
 .inlineArrow { width: 24px; height: 24px; flex: none; }
-.sources { margin-top: 56px; }
-.sources summary { display: list-item; width: fit-content; min-height: 44px; padding-block: 12px; font-size: 16px; font-weight: 500; line-height: 1.5; cursor: pointer; }
-.sources ul { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
-.sources a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; font-size: 16px; line-height: 1.5; text-underline-offset: .25em; overflow-wrap: anywhere; }
+.sources { margin-top: 56px; color: color-mix(in srgb, var(--palette-navy) 68%, var(--palette-blue-slate)); text-align: center; }
+.sources summary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; margin-inline: auto; padding-block: 10px; list-style: none; font-size: 16px; font-weight: 500; line-height: 1.5; cursor: pointer; }
+.sources summary::-webkit-details-marker { display: none; }
+.sources summary::after { content: ''; display: block; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform 220ms ease; }
+.sources[open] summary::after { transform: translateY(2px) rotate(225deg); }
+.sources ul { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
+.sources a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: inherit; font-size: 16px; line-height: 1.5; text-align: center; text-underline-offset: .25em; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+  .sources summary::after { transition: none; }
+}
 @media (min-width: 900px) {
   .ideaList > li { flex-basis: calc(50% - 24px); max-width: 600px; }
 }
@@ -40,6 +46,7 @@
   pointer-events: none;
 }
 .artwork[data-variant="hero"] { aspect-ratio: 16 / 9; }
+.artwork[data-variant="background"] { height: 100%; aspect-ratio: auto; }
 .artwork[data-visual="email"] { --art-duration: 36s; }
 .artwork[data-visual="audit"] { --art-duration: 28s; }
 .artwork[data-visual="reviews"] { --art-duration: 40s; }
@@ -92,6 +99,7 @@
 }
 @media (max-width: 699px) {
   .artwork[data-variant="hero"] { aspect-ratio: 4 / 3; }
+  .artwork[data-variant="background"] { aspect-ratio: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .artwork .artworkLayer { animation: none; }

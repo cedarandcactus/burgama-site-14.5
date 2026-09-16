@@ -12,9 +12,9 @@ type DirectionLinkProps = Omit<ComponentProps<typeof Link>, 'children'> & {
 export function DirectionLink({ label, eyebrow, direction = 'right', className, ...props }: DirectionLinkProps) {
   return (
     <Link className={cn('studio-direction-link', className)} data-direction={direction} {...props}>
-      {direction === 'left' && <CircularArrowIcon direction="left" />}
+      {direction === 'left' && <span className="arrow-capsule" aria-hidden="true"><CircularArrowIcon direction="left" /></span>}
       <span className="studio-direction-copy">{eyebrow && <small>{eyebrow}</small>}<span>{label}</span></span>
-      {direction === 'right' && <CircularArrowIcon />}
+      {direction === 'right' && <span className="arrow-capsule" aria-hidden="true"><CircularArrowIcon /></span>}
     </Link>
   )
 }

@@ -16,7 +16,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
   return (
     <div className="studio-page">
       <article aria-labelledby="article-title">
-        <PageHero variant="centered" wordmark={idea.title} titleId="article-title" compact mediaFullWidth surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="hero" />} intro={[idea.deck]} breadcrumbLabel="Back to Research" breadcrumb={<DirectionLink href="/research" direction="left" label="Research" />} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
+        <PageHero variant="centered" wordmark={idea.title} titleId="article-title" compact backgroundMedia surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="background" />} intro={[idea.deck]} breadcrumbLabel="Back to Research" breadcrumb={<DirectionLink href="/research" direction="left" label="Research" />} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.articleBody}`}>
             {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
