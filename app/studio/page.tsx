@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const TEAM = [
   {
     name: 'Deniz',
-    role: 'Founder',
+    role: 'Founder & CMO',
     description: 'Deniz sets the direction for Burgama and shapes the strategy behind each project. As founder, he stays involved from the first conversation through delivery, keeping the team focused on the problem to solve and the decisions that move the work forward.',
     image: '/team/deniz.jpg',
     alt: 'Deniz, founder of Burgama',
