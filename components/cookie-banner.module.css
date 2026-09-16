@@ -1,11 +1,11 @@
 .overlay {
   position: fixed;
-  right: max(12px, env(safe-area-inset-right, 0px));
-  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  right: var(--shell-inset);
+  bottom: calc(var(--shell-inset) + var(--shell-h) + 0.625rem);
   z-index: 1000;
-  width: min(292px, calc(100vw - 24px));
+  width: min(268px, calc(100vw - 2 * var(--shell-inset)));
   pointer-events: auto;
-  transform-origin: bottom right;
+  transform-origin: bottom center;
   will-change: opacity, transform;
   animation: card-in 480ms cubic-bezier(.22, 1, .36, 1) both;
 }
@@ -14,25 +14,29 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--palette-powder) 24%, var(--palette-navy));
-  border-radius: 20px;
-  color: var(--palette-powder);
-  background: var(--palette-navy);
-  text-align: left;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--palette-navy) 22%, transparent);
+  border-radius: 16px;
+  color: var(--palette-navy);
+  background: var(--palette-powder-deep);
+  text-align: center;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--palette-navy) 18%, transparent);
 }
 
 .copy {
   display: flex;
+  align-items: center;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  max-width: 29ch;
 }
 
 .copy h2 {
   margin: 0;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.1;
   text-wrap: balance;
@@ -40,11 +44,11 @@
 
 .copy p {
   margin: 0;
-  color: color-mix(in srgb, var(--palette-powder) 76%, transparent);
+  color: color-mix(in srgb, var(--palette-navy) 78%, transparent);
   font-family: var(--font-pangram), sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.35;
   text-wrap: pretty;
 }
 
@@ -59,21 +63,23 @@
 
 .actions {
   display: flex;
+  width: 100%;
+  justify-content: center;
   gap: 6px;
 }
 
 .actions button {
   display: inline-flex;
   min-width: 0;
-  min-height: 40px;
+  min-height: 34px;
   flex: 1 1 0;
   align-items: center;
   justify-content: center;
-  padding: 7px 10px;
+  padding: 6px 9px;
   border: 0;
   border-radius: 999px;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1;
   cursor: pointer;
@@ -85,14 +91,14 @@
 }
 
 .accept {
-  color: var(--palette-navy);
-  background: var(--palette-powder);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--palette-navy) 24%, transparent);
+  color: var(--palette-powder);
+  background: var(--palette-navy);
+  box-shadow: none;
 }
 
 .necessary {
-  border: 1px solid color-mix(in srgb, var(--palette-powder) 48%, transparent) !important;
-  color: var(--palette-powder);
+  border: 1px solid color-mix(in srgb, var(--palette-navy) 34%, transparent) !important;
+  color: var(--palette-navy);
   background: transparent;
   box-shadow: none;
 }
@@ -110,18 +116,18 @@
 
 @media (hover: hover) and (pointer: fine) {
   .accept:hover {
-    color: var(--palette-navy);
-    background: var(--palette-soft-white);
+    color: var(--palette-powder);
+    background: var(--palette-navy-raised);
   }
 
   .necessary:hover {
-    border-color: var(--palette-powder) !important;
-    color: var(--palette-powder);
-    background: transparent;
+    border-color: var(--palette-navy) !important;
+    color: var(--palette-navy);
+    background: color-mix(in srgb, var(--palette-powder) 34%, transparent);
   }
 
   .copy a:hover {
-    color: var(--palette-soft-white);
+    color: var(--palette-navy-raised);
   }
 }
 
@@ -144,6 +150,14 @@
   to {
     opacity: 0;
     transform: translate3d(0, 8px, 0) scale(.985);
+  }
+}
+
+@media (max-width: 420px) {
+  .overlay {
+    right: var(--shell-inset);
+    left: var(--shell-inset);
+    width: auto;
   }
 }
 
