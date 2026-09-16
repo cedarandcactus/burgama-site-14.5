@@ -176,3 +176,10 @@
   .review > div { grid-template-columns: minmax(0, 1fr) auto; }
   .continue, .back { padding-inline: 14px; font-size: 17px; }
 }
+
+/* Visually hidden and out of the accessibility tree — bot bait, not a field. */
+.honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Only rendered when a send fails, offering the mail-client route instead. */
+.fallbackNote { font-size: 12px; line-height: 1.5; }
+.fallbackNote a, .fallbackNote button { color: inherit; background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
