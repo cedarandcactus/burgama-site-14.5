@@ -39,7 +39,7 @@ const TEAM = [
 export default function StudioPage() {
   return (
     <div className="studio-page">
-      <PageHero variant="centered" eyebrow="about" wordmark="small team. close to the work." titleId="about-title" intro={['Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.']} nextSurface="blue-slate" />
+      <PageHero variant="centered" wordmark="about burgama: a small team, close to the work." titleId="about-title" intro={['Burgama is a small, multidisciplinary team bringing strategy, design, digital, and growth into one connected practice. We work directly with the people behind every project, from the first question to the final detail.']} nextSurface="blue-slate" />
 
       <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
         <div className="studio-width">

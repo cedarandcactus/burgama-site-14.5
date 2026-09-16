@@ -8,12 +8,8 @@
   inset: 0;
   z-index: 10000;
   isolation: isolate;
-  pointer-events: none;
-  animation: fail-open 0s 7s forwards;
-}
-
-.overlay[data-hydrated='true'] {
   pointer-events: auto;
+  animation: fail-open 0s var(--transition-deadline) forwards;
 }
 
 .curtain {

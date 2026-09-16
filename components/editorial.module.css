@@ -25,7 +25,7 @@
   --art-navy: #011329;
   --art-powder: #afc8f2;
   --art-yellow: #f8e7a8;
-  --art-cream: #f7f2e8;
+  --art-cream: var(--palette-soft-white);
   --art-cobalt: #2454ef;
   --art-lilac: #b5afdb;
   --art-seafoam: #b9d6c8;

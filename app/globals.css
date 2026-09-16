@@ -5329,7 +5329,7 @@ body:has(.lot-poster) > .mobile-console {
   --palette-blue-slate: #7495bc;
   --palette-yellow-soft: var(--palette-powder-deep);
   --palette-yellow-deep: var(--palette-powder);
-  --palette-soft-white: #f7f2e8;
+  --palette-soft-white: #f2f2fc;
   --palette-blue-mid: #2d5380;
   --palette-soft-coral: var(--palette-blue-mid);
   --palette-brick: var(--palette-navy-raised);
@@ -5783,7 +5783,6 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
 .studio-page [data-compact='true'] .studio-title { max-width: 20ch; }
 .studio-intro { display: flex; flex-direction: column; gap: 20px; max-width: 52ch; font-size: var(--type-body-size); font-weight: var(--type-body-weight); line-height: var(--type-body-leading); }
 .studio-intro p { margin: 0; }
-.studio-hero-label { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.5; text-transform: lowercase; }
 .studio-hero[data-variant='centered'] .studio-hero-inner { max-width: 880px; align-items: center; gap: 24px; text-align: center; }
 .studio-hero[data-variant='centered'] .studio-title { max-width: 100%; }
 .studio-hero[data-variant='centered'] .studio-intro { max-width: 44ch; }

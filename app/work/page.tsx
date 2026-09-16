@@ -22,7 +22,7 @@ export default function WorkPage() {
   return (
     <div className="studio-page">
       <div className="portfolio portfolio-index">
-        <PageHero variant="centered" eyebrow="selected work" wordmark="brands, websites, and campaigns. built together." intro={['Packaging, photography, branding, websites, and marketing for organizations with something worth saying.']} nextSurface="powder-deep" actions={
+        <PageHero variant="centered" wordmark="our work brings brands, websites, and campaigns together." intro={['Packaging, photography, branding, websites, and marketing for organizations with something worth saying.']} nextSurface="powder-deep" actions={
           <nav className="studio-actions" aria-label="Work collections">
             <Link href="#featured" className="pill">featured</Link>
             <Link href="#studies" className="pill">strategy</Link>
