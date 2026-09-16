@@ -242,10 +242,10 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
         {step === 3 && (
           <>
             <dl className={styles.review}>
-              <div><dt>company</dt><dd>{companyLabel}</dd><button type="button" onClick={() => goTo(0)} aria-label="Edit company type">edit</button></div>
-              {inline && <div><dt>project</dt><dd className={styles.reviewBrief}>{brief.trim()}</dd><button type="button" onClick={() => goTo(0)} aria-label="Edit project brief">edit</button></div>}
-              <div><dt>budget</dt><dd>{budgetLabel}</dd><button type="button" onClick={() => goTo(1)} aria-label="Edit budget">edit</button></div>
-              <div><dt>contact</dt><dd>{contact.name.trim()}<span>{contact.email.trim()}</span><span>{contact.phone.trim()}</span></dd><button type="button" onClick={() => goTo(2)} aria-label="Edit contact details">edit</button></div>
+              <div><dt>company</dt><dd>{companyLabel}</dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(0)} aria-label="Edit company type">edit</button></dd></div>
+              {inline && <div><dt>project</dt><dd className={styles.reviewBrief}>{brief.trim()}</dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(0)} aria-label="Edit project brief">edit</button></dd></div>}
+              <div><dt>budget</dt><dd>{budgetLabel}</dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(1)} aria-label="Edit budget">edit</button></dd></div>
+              <div><dt>contact</dt><dd>{contact.name.trim()}<span>{contact.email.trim()}</span><span>{contact.phone.trim()}</span></dd><dd className={styles.reviewAction}><button type="button" onClick={() => goTo(2)} aria-label="Edit contact details">edit</button></dd></div>
             </dl>
             <div className={styles.handoff}>
               {inline ? <p id={`${idPrefix}-delivery`}>email delivery isn&apos;t connected yet</p> : <a href={`mailto:${recipient}`}>{recipient}</a>}

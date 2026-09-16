@@ -125,7 +125,7 @@
   .review > div { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; }
   .review dt { grid-column: 1; padding-top: 0; }
   .review dd { grid-column: 1; }
-  .review button { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+  .review .reviewAction { grid-column: 2; grid-row: 1 / 3; align-self: center; }
   .continue { padding-inline: 16px; font-size: 18px; gap: 8px; }
   .back { font-size: 18px; gap: 8px; padding-inline: 12px; }
 }

@@ -15,11 +15,11 @@ export function WorkIndex({ projects }: { projects: Entry[] }) {
     <div role="group" aria-label="Filter work by discipline" className="portfolio-filters">
       {filters.filter(filter => filter === 'All' || projects.some(project => project.disciplines.includes(filter))).map(filter => <button key={filter} type="button" aria-pressed={discipline === filter} aria-controls="portfolio-results" className="pill pill-small" onClick={() => setDiscipline(filter)}>{labels[filter]}</button>)}
     </div>
-    <p className="sr-only" role="status">{visible.length} projects</p>
+    <p className="sr-only" role="status">{visible.length} {visible.length === 1 ? 'project' : 'projects'}</p>
     <div id="portfolio-results" className="portfolio-library">
       {visible.map(project => <Link key={project.id} href={`/work/${project.slug}`} className="portfolio-library-entry">
         <div className="portfolio-library-copy"><h3 className="font-sans">{project.title}</h3>{project.year && <span>{project.year}</span>}</div>
-        <div className="archive-categories" aria-label="Project categories">{(project.categories ?? project.disciplines ?? []).map(category => <span key={category}>{labels[category] ?? category.toLowerCase()}</span>)}</div>
+        <div className="archive-categories">{(project.categories ?? project.disciplines ?? []).map(category => <span key={category}>{labels[category] ?? category.toLowerCase()}</span>)}</div>
       </Link>)}
       {visible.length === 0 && <button type="button" className="pill pill-small" onClick={() => setDiscipline('All')}>Show all work</button>}
     </div>

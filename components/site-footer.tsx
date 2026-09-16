@@ -272,8 +272,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
               </div>
             </div>
             <div className={styles.bottomRow}>
-              <address className={styles.address} aria-label="Mailing address">
-                701 Tillery St #12, Mailbox #289, Austin, TX 78702
+              <address className={styles.address}>
+                <span className="sr-only">Mailing address: </span>701 Tillery St #12, Mailbox #289, Austin, TX 78702
               </address>
               <div className={styles.bottomLegal}>
                 <p>© 2026 burgama</p>

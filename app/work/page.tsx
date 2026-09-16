@@ -41,7 +41,7 @@ export default function WorkPage() {
             <div className="portfolio-study-grid">
               {studies.map(project => (
                 <Link href={`/work/${project.slug}`} className="portfolio-study" key={project.slug}>
-                  <div className="archive-categories" aria-label="Project categories">{(project.categories ?? project.disciplines).map(discipline => <span key={discipline}>{discipline.toLowerCase()}</span>)}</div>
+                  <div className="archive-categories">{(project.categories ?? project.disciplines).map(discipline => <span key={discipline}>{discipline.toLowerCase()}</span>)}</div>
                   <h3>{project.title}</h3>
                   <p>{project.summary}</p>
                 </Link>

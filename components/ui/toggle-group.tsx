@@ -35,6 +35,9 @@ function ToggleGroup({
   }) {
   return (
     <ToggleGroupPrimitive
+      orientation={orientation}
+      // Base UI's composite adds aria-orientation, which is invalid for role="group".
+      aria-orientation={undefined}
       data-slot="toggle-group"
       data-variant={variant}
       data-size={size}
