@@ -105,6 +105,8 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
     const root = form.current
     if (!element || !frame || !root) return
     let previousHeight = element.getBoundingClientRect().height
+    let reportedHeight = 0
+    let measureFrame = 0
     let resizeTween: gsap.core.Tween | null = null
     const settled = () => {
       delete root.dataset.layoutAnimating
@@ -115,7 +117,11 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
       if (!height) return
       const formStyle = getComputedStyle(root)
       const chrome = (root.firstElementChild?.getBoundingClientRect().height ?? 0) + parseFloat(formStyle.rowGap) + parseFloat(formStyle.paddingTop) + parseFloat(formStyle.paddingBottom)
-      heightCallback.current?.(height + chrome)
+      const formHeight = Math.ceil(height + chrome)
+      if (formHeight !== reportedHeight) {
+        reportedHeight = formHeight
+        heightCallback.current?.(formHeight)
+      }
       if (Math.abs(height - previousHeight) < 1) return
       resizeTween?.kill()
       if (!active || prefersReducedMotion() || document.hidden || !previousHeight) {
@@ -131,7 +137,14 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
       }
       previousHeight = height
     }
-    const observer = new ResizeObserver(measure)
+    // Layout writes must run after observer delivery to avoid resizing observed ancestors mid-cycle.
+    const observer = new ResizeObserver(() => {
+      if (measureFrame) return
+      measureFrame = requestAnimationFrame(() => {
+        measureFrame = 0
+        measure()
+      })
+    })
     observer.observe(element)
     observer.observe(root.firstElementChild!)
     measure()
@@ -147,6 +160,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'tell us
     document.addEventListener('visibilitychange', onVisibility)
     return () => {
       observer.disconnect()
+      cancelAnimationFrame(measureFrame)
       resizeTween?.kill()
       gsap.set(frame, { clearProps: 'height' })
       reduced.removeEventListener('change', onReduced)
