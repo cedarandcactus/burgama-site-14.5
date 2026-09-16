@@ -1,4 +1,6 @@
 .portfolio { min-width: 0; }
+.portfolio-index #archive { --studio-surface: var(--palette-soft-white); --studio-ink: var(--palette-navy); }
+.portfolio-index #studies > [data-nav-curve][data-surface='white'] { color: var(--palette-soft-white); }
 .portfolio-index .studio-heading { max-width: 880px; margin-inline: auto; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
 .portfolio-index .portfolio-showcase { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(64px, 9vw, 144px); }
 .portfolio-index .portfolio-showcase > .project-tile { width: 100%; }
