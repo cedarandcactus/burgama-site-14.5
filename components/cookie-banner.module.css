@@ -1,85 +1,92 @@
 .overlay {
   position: fixed;
-  inset: 0;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
   z-index: 1000;
-  display: grid;
-  place-items: center;
-  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  background: color-mix(in srgb, var(--palette-navy) 34%, transparent);
-  animation: veil-in 220ms ease both;
+  width: min(360px, calc(100vw - 32px));
+  pointer-events: auto;
+  transform-origin: bottom right;
+  animation: card-in 620ms cubic-bezier(.16, 1, .3, 1) both;
 }
 
 .dialog {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  width: min(100%, 440px);
-  max-height: calc(100svh - 40px);
+  gap: 18px;
+  width: 100%;
+  max-height: calc(100svh - 32px);
   overflow-y: auto;
-  padding: 24px;
-  border: 1px solid color-mix(in srgb, var(--palette-powder) 26%, transparent);
-  border-radius: 28px;
-  color: var(--palette-powder);
-  background: var(--palette-navy);
-  box-shadow: 0 20px 60px color-mix(in srgb, var(--palette-navy) 38%, transparent);
-  text-align: center;
-  animation: dialog-in 320ms cubic-bezier(.22, 1, .36, 1) both;
+  padding: 20px;
+  border: 0;
+  border-radius: 24px;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+  box-shadow: none;
+  text-align: left;
 }
 
 .copy {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .copy h2 {
   margin: 0;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.05;
   text-wrap: balance;
 }
 
 .copy p {
-  max-width: 38ch;
   margin: 0;
+  color: color-mix(in srgb, var(--palette-navy) 76%, transparent);
   font-family: var(--font-pangram), sans-serif;
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 1.55;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
   text-wrap: pretty;
 }
 
-.copy a {
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer a {
   display: inline-flex;
+  width: fit-content;
   align-items: center;
-  min-height: 44px;
-  color: inherit;
+  min-height: 24px;
+  color: color-mix(in srgb, var(--palette-navy) 72%, transparent);
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 500;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: .25em;
+  transition: color 180ms ease;
 }
 
 .actions {
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
 .actions button {
   display: inline-flex;
+  min-width: 0;
+  min-height: 44px;
+  flex: 1 1 0;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 10px 20px;
-  border: 1px solid var(--palette-powder);
+  padding: 8px 14px;
+  border: 0;
   border-radius: 999px;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1;
   cursor: pointer;
@@ -87,85 +94,84 @@
 }
 
 .accept {
-  color: var(--palette-navy);
-  background: var(--palette-powder);
+  color: var(--palette-powder);
+  background: var(--palette-navy);
 }
 
 .necessary {
-  color: var(--palette-powder);
-  background: transparent;
+  color: var(--palette-navy);
+  background: color-mix(in srgb, var(--palette-navy) 10%, transparent);
 }
 
 .actions button:focus-visible,
-.copy a:focus-visible {
-  outline: 2px solid var(--palette-powder);
+.footer a:focus-visible {
+  outline: 2px solid currentColor;
   outline-offset: 4px;
 }
 
 .overlay[data-state='leaving'] {
   pointer-events: none;
-  animation: veil-out 180ms ease both;
+  animation: card-out 620ms cubic-bezier(.16, 1, .3, 1) both;
 }
 
-.overlay[data-state='leaving'] .dialog {
-  animation: dialog-out 180ms ease both;
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .dialog {
+    background: color-mix(in srgb, var(--palette-powder) 86%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(.9);
+    backdrop-filter: blur(24px) saturate(.9);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .accept:hover {
     color: var(--palette-powder);
-    background: transparent;
+    background: var(--palette-navy-raised);
   }
 
   .necessary:hover {
     color: var(--palette-navy);
-    background: var(--palette-powder);
+    background: color-mix(in srgb, var(--palette-navy) 18%, transparent);
+  }
+
+  .footer a:hover {
+    color: var(--palette-navy);
   }
 }
 
-@media (min-width: 520px) {
-  .dialog {
-    padding: 28px;
+@keyframes card-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(0, 24px, 0) scale(.96);
   }
-
-  .actions {
-    flex-direction: row;
-  }
-
-  .actions button {
-    flex: 1;
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
   }
 }
 
-@keyframes veil-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes veil-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes dialog-in {
-  from { opacity: 0; transform: translateY(14px) scale(.985); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes dialog-out {
-  from { opacity: 1; transform: none; }
-  to { opacity: 0; transform: translateY(8px) scale(.99); }
+@keyframes card-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translate3d(0, 16px, 0) scale(.97);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .overlay,
-  .dialog,
-  .overlay[data-state='leaving'],
-  .overlay[data-state='leaving'] .dialog {
-    animation: none;
+  .overlay[data-state='leaving'] {
+    animation-duration: 1ms;
   }
 
-  .actions button {
+  .actions button,
+  .footer a {
     transition: none;
   }
 }
