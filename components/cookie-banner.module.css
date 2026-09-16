@@ -1,36 +1,40 @@
 .overlay {
   position: fixed;
-  right: var(--shell-inset);
-  bottom: calc(var(--shell-inset) + var(--shell-h) + 0.625rem);
+  inset-inline: 0;
+  bottom: max(9px, env(safe-area-inset-bottom, 0px));
   z-index: 1000;
-  width: min(268px, calc(100vw - 2 * var(--shell-inset)));
+  width: min(var(--header-expanded-width), calc(100vw - 24px));
+  margin-inline: auto;
   pointer-events: auto;
   transform-origin: bottom center;
   will-change: opacity, transform;
-  animation: card-in 480ms cubic-bezier(.22, 1, .36, 1) both;
+  animation: bar-in 480ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
 .dialog {
   display: flex;
+  box-sizing: border-box;
   width: 100%;
-  flex-direction: column;
+  height: var(--header-compact-height);
   align-items: center;
-  gap: 8px;
-  padding: 10px;
+  justify-content: space-between;
+  gap: var(--header-control-gap);
+  padding: var(--header-shell-padding) var(--header-shell-inline-padding);
   border: 0;
-  border-radius: 16px;
-  color: var(--palette-navy);
-  background: var(--palette-powder-deep);
-  text-align: center;
+  border-radius: 999px;
+  color: var(--palette-powder);
+  background: var(--palette-navy);
   box-shadow: none;
 }
 
 .copy {
   display: flex;
-  align-items: center;
+  min-width: 0;
+  flex: 1 1 auto;
   flex-direction: column;
-  gap: 3px;
-  max-width: 29ch;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
 }
 
 .copy h2 {
@@ -44,11 +48,11 @@
 
 .copy p {
   margin: 0;
-  color: color-mix(in srgb, var(--palette-navy) 78%, transparent);
+  color: color-mix(in srgb, var(--palette-powder) 78%, transparent);
   font-family: var(--font-pangram), sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.3;
   text-wrap: pretty;
 }
 
@@ -63,25 +67,24 @@
 
 .actions {
   display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 6px;
+  width: auto;
+  flex: none;
+  justify-content: flex-end;
+  gap: var(--header-link-gap);
 }
 
 .actions button {
   display: inline-flex;
-  min-width: 0;
-  min-height: 34px;
-  flex: 1 1 0;
+  min-height: var(--header-control-height);
   align-items: center;
   justify-content: center;
-  padding: 6px 9px;
-  border: 0;
+  padding: 0 16px;
   border-radius: 999px;
   font-family: var(--font-cenura), sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     color 220ms ease,
@@ -91,14 +94,17 @@
 }
 
 .accept {
-  color: var(--palette-powder);
-  background: var(--palette-navy);
+  min-width: 76px;
+  border: 1.5px solid var(--palette-powder);
+  color: var(--palette-navy);
+  background: var(--palette-powder);
   box-shadow: none;
 }
 
 .necessary {
-  border: 1px solid color-mix(in srgb, var(--palette-navy) 34%, transparent) !important;
-  color: var(--palette-navy);
+  min-width: 116px;
+  border: 1.5px solid color-mix(in srgb, var(--palette-powder) 72%, transparent);
+  color: var(--palette-powder);
   background: transparent;
   box-shadow: none;
 }
@@ -106,35 +112,39 @@
 .actions button:focus-visible,
 .copy a:focus-visible {
   outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+.copy a:focus-visible {
   outline-offset: 3px;
 }
 
 .overlay[data-state='leaving'] {
   pointer-events: none;
-  animation: card-out 360ms cubic-bezier(.4, 0, .2, 1) both;
+  animation: bar-out 360ms cubic-bezier(.4, 0, .2, 1) both;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .accept:hover {
-    color: var(--palette-powder);
-    background: var(--palette-navy-raised);
+    border-color: var(--palette-powder-deep);
+    background: var(--palette-powder-deep);
   }
 
   .necessary:hover {
-    border-color: var(--palette-navy) !important;
+    border-color: var(--palette-powder);
     color: var(--palette-navy);
-    background: color-mix(in srgb, var(--palette-powder) 34%, transparent);
+    background: var(--palette-powder);
   }
 
   .copy a:hover {
-    color: var(--palette-navy-raised);
+    color: var(--palette-powder-deep);
   }
 }
 
-@keyframes card-in {
+@keyframes bar-in {
   from {
     opacity: 0;
-    transform: translate3d(0, 12px, 0) scale(.98);
+    transform: translate3d(0, 12px, 0) scale(.985);
   }
   to {
     opacity: 1;
@@ -142,7 +152,7 @@
   }
 }
 
-@keyframes card-out {
+@keyframes bar-out {
   from {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
@@ -153,11 +163,48 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 699px) {
   .overlay {
-    right: var(--shell-inset);
-    left: var(--shell-inset);
-    width: auto;
+    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    width: min(calc(100vw - 24px), 400px);
+  }
+
+  .dialog {
+    height: auto;
+    min-height: var(--header-compact-height);
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 28px;
+  }
+
+  .copy {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .copy p {
+    max-width: 36ch;
+  }
+
+  .actions {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .actions button {
+    min-width: 0;
+    min-height: var(--header-control-height);
+    flex: 1 1 0;
+    padding-inline: 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  .copy h2,
+  .actions button {
+    font-size: 15px;
   }
 }
 
