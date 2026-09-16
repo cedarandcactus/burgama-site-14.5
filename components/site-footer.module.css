@@ -488,12 +488,12 @@
   width: 100%;
   min-width: 0;
   /* Cenura's ascender exceeds the tight line box; reserve clearance at every logo size. */
-  padding-block: .12em .13em;
+  padding-block: .12em .24em;
   color: inherit;
   font-family: var(--font-cenura), sans-serif;
   font-size: var(--footer-wordmark-size, 25.6cqw);
   font-weight: 400;
-  line-height: .78;
+  line-height: .86;
   letter-spacing: -2px;
   text-align: center;
   text-decoration: none;
