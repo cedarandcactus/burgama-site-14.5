@@ -10,51 +10,17 @@
 }
 
 .dialog {
-  position: relative;
-  isolation: isolate;
   display: flex;
   width: 100%;
   flex-direction: column;
   gap: 10px;
-  overflow: hidden;
   padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--palette-powder) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--palette-powder) 24%, var(--palette-navy));
   border-radius: 20px;
   color: var(--palette-powder);
-  background: color-mix(in srgb, var(--palette-navy) 91%, transparent);
-  box-shadow:
-    0 12px 32px color-mix(in srgb, var(--palette-navy) 34%, transparent),
-    inset 0 0 32px color-mix(in srgb, var(--palette-powder) 5%, transparent),
-    inset 0 1px 1px color-mix(in srgb, var(--palette-soft-white) 18%, transparent);
-  -webkit-backdrop-filter: blur(8px) saturate(1.05);
-  backdrop-filter: blur(8px) saturate(1.05);
+  background: var(--palette-navy);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--palette-navy) 72%, transparent);
   text-align: left;
-}
-
-.dialog::before,
-.dialog::after {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  content: '';
-  pointer-events: none;
-}
-
-.dialog::before {
-  background: linear-gradient(
-    to left top,
-    color-mix(in srgb, var(--palette-soft-white) 8%, transparent),
-    transparent 52%
-  );
-}
-
-.dialog::after {
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--palette-soft-white) 5%, transparent),
-    transparent 46%
-  );
 }
 
 .copy {
