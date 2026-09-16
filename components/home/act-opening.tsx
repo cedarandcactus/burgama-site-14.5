@@ -92,12 +92,17 @@ export function ActOpening({ children }: { children: ReactNode }) {
           trigger: hero,
           start: 'top top',
           end: 'bottom top',
-          scrub: 0.85,
+          scrub: 0.55,
           invalidateOnRefresh: true,
         },
       })
-        .to(film, { y: desktop ? 96 : 40, ease: 'none', duration: 1 }, 0)
-        .to(content, { y: desktop ? -48 : -18, ease: 'none', duration: 1 }, 0)
+        .to(film, { y: () => Math.max(0, -parseFloat(getComputedStyle(film).top) - 12), scale: 1.025, ease: 'none', duration: 1 }, 0)
+        .to(content, { y: desktop ? -88 : -32, ease: 'none', duration: 1 }, 0)
+        .to(hero.querySelectorAll('[data-headline-active="true"] [data-hero-depth]'), {
+          y: (_index: number, word: HTMLElement) => -Number(word.dataset.heroDepth) * (desktop ? 14 : 5),
+          ease: 'none',
+          duration: 1,
+        }, 0)
         .to(frost, { opacity: 0.55, ease: 'none', duration: 0.7 }, 0)
     })
 
@@ -131,7 +136,9 @@ export function ActOpening({ children }: { children: ReactNode }) {
                   <span key={line} className={styles.heroHeadlineLine}>
                     {line.split(' ').map((word, wordIndex) => (
                       <span key={`${word}-${wordIndex}`}>
-                        <span className={styles.heroWord} data-hero-word="">{word}</span>{' '}
+                        <span className={styles.heroWord} data-hero-depth={index + wordIndex * 0.12}>
+                          <span className={styles.heroWord} data-hero-word="">{word}</span>
+                        </span>{' '}
                       </span>
                     ))}
                     {index < lines.length - 1 ? ' ' : null}

@@ -9,7 +9,7 @@ import styles from './home-page.module.css'
 export function ActWork() {
   return (
     <section id="selected-work" className={styles.selectedWork} data-nav-surface="ink" aria-labelledby="featured-title">
-      <Reveal variant="section" className={styles.workIntro}>
+      <Reveal variant="scroll" className={styles.workIntro}>
         <h2 id="featured-title" className="font-serif">A few things<br />we&apos;ve put into the world.</h2>
       </Reveal>
       <WorkReel count={featuredProjects.length}>
