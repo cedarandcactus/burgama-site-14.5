@@ -270,7 +270,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
         </div>
         <SectionRise surface="powder" />
       </section>
-      <section id="start-a-project" className={styles.enquiry} data-inline-enquiry="" data-nav-surface="frost" aria-label="Start a project">
+      <section id="start-a-project" className={styles.enquiry} data-inline-enquiry="" data-search-section="start-a-project" data-nav-surface="frost" aria-labelledby="start-a-project-heading">
+        <h2 id="start-a-project-heading" className="sr-only">Ready for what comes next</h2>
         <Reveal className={styles.enquiryInner}>
           <ProjectEnquiryForm variant="inline" introHeading={enquiryHeading} />
           <noscript><style>{'[data-inline-enquiry] form { display: none; }'}</style><p>Email <a href="mailto:hello@burgama.com">hello@burgama.com</a> to start a project.</p></noscript>

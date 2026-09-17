@@ -5374,17 +5374,18 @@ body:has(.lot-poster) > .mobile-console {
 */
 :root {
   /* Legacy accent aliases remain light so navy text retains its contrast. */
-  --palette-navy: #011329;
+  --palette-navy: #001328;
   --palette-navy-raised: #082443;
-  --palette-powder: #afc8f2;
-  --palette-powder-frost: rgba(175, 200, 242, .42);
-  --palette-powder-deep: #8eafe3;
-  --palette-butter: var(--palette-powder);
-  --palette-blue-slate: #7495bc;
-  --palette-yellow-soft: var(--palette-powder-deep);
-  --palette-yellow-deep: var(--palette-powder);
-  --palette-soft-white: #f2f2fc;
-  --palette-blue-mid: #2d5380;
+  --palette-powder: #95bce5;
+  --palette-powder-frost: rgba(149, 188, 229, .42);
+  --palette-blue-slate: #6ea5df;
+  --palette-powder-deep: var(--palette-blue-slate);
+  --palette-butter: #ffe493;
+  --palette-yellow-soft: var(--palette-butter);
+  --palette-yellow-deep: var(--palette-butter);
+  --palette-soft-white: #f0f0fa;
+  --palette-legal-black: #000000;
+  --palette-blue-mid: #326a9f;
   --palette-soft-coral: var(--palette-blue-mid);
   --palette-brick: var(--palette-navy-raised);
   --brand-navy: var(--palette-navy);
@@ -5817,6 +5818,7 @@ html:has(.studio-page), body:has(.studio-page) { background: var(--palette-powde
 .studio-page [data-surface='white'] { --studio-surface: var(--palette-soft-white); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='powder'] { --studio-surface: var(--palette-powder); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='powder-deep'] { --studio-surface: var(--palette-powder-deep); --studio-ink: var(--palette-navy); }
+.studio-page [data-surface='butter'] { --studio-surface: var(--palette-butter); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='blue-slate'] { --studio-surface: var(--palette-blue-slate); --studio-ink: var(--palette-navy); }
 .studio-page [data-surface='navy'] { --studio-surface: var(--palette-navy); --studio-ink: var(--palette-powder); }
 .studio-page [data-surface='blue-mid'] { --studio-surface: var(--palette-blue-mid); --studio-ink: var(--palette-powder); }

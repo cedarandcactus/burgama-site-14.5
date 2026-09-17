@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { EditorialDetail } from '@/components/editorial-detail'
 import { getIdea, ideas } from '@/lib/editorial'
+import { absoluteUrl, breadcrumbJsonLd, defaultSocialImage, JsonLd, siteUrl } from '@/lib/seo'
 
 export function generateStaticParams() {
   return ideas.map((idea) => ({ slug: idea.slug }))
@@ -17,17 +18,16 @@ export async function generateMetadata({
 
   if (!idea) return { title: 'Research' }
 
+  const title = `${idea.metaTitle} — Burgama`
+  const canonicalPath = `/research/${idea.slug}`
+
   return {
-    title: idea.metaTitle,
+    title: { absolute: title },
     description: idea.metaDescription,
     keywords: [idea.targetKeyword, ...idea.categories],
-    alternates: { canonical: `/research/${idea.slug}` },
-    openGraph: {
-      title: idea.metaTitle,
-      description: idea.metaDescription,
-      type: 'article',
-      url: `/research/${idea.slug}`,
-    },
+    alternates: { canonical: canonicalPath },
+    openGraph: { title, description: idea.metaDescription, type: 'article', url: canonicalPath, images: [{ url: defaultSocialImage, alt: `${idea.title} — Burgama Research` }] },
+    twitter: { card: 'summary_large_image', images: [defaultSocialImage] },
   }
 }
 
@@ -41,35 +41,31 @@ export default async function ResearchDetailPage({
 
   if (!idea) notFound()
 
-  const canonicalUrl = `https://burgama.com/research/${idea.slug}`
+  const canonicalPath = `/research/${idea.slug}`
+  const canonicalUrl = absoluteUrl(canonicalPath)
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    '@id': `${canonicalUrl}#article`,
     headline: idea.title,
     description: idea.metaDescription,
     keywords: idea.targetKeyword,
     articleSection: idea.categories,
-    mainEntityOfPage: canonicalUrl,
-    author: {
-      '@type': 'Organization',
-      name: 'Burgama',
-      url: 'https://burgama.com',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Burgama',
-      url: 'https://burgama.com',
-    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${canonicalUrl}#webpage` },
+    author: { '@id': `${siteUrl}/#organization` },
+    publisher: { '@id': `${siteUrl}/#organization` },
+    image: [defaultSocialImage],
   }
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Research', path: '/research' },
+    { name: idea.title, path: canonicalPath },
+  ])
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c'),
-        }}
-      />
+      <JsonLd data={articleJsonLd} />
+      <JsonLd data={breadcrumbs} />
       <EditorialDetail idea={idea} />
     </>
   )

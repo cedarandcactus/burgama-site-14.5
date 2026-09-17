@@ -33,7 +33,7 @@
   --art-yellow: #f8e7a8;
   --art-cream: var(--palette-soft-white);
   --art-cobalt: #2454ef;
-  --art-lilac: #b5afdb;
+  --art-lilac: var(--palette-blue-slate);
   --art-seafoam: #b9d6c8;
   --art-duration: 32s;
   position: relative;
