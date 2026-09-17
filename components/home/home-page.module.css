@@ -78,7 +78,7 @@
   display: flex;
   align-items: center;
   min-height: 100svh;
-  padding: clamp(128px, 16svh, 184px) var(--home-inset) clamp(80px, 10svh, 112px);
+  padding: clamp(120px, 14svh, 168px) var(--home-inset);
 }
 
 .heroFrameContent {
@@ -109,9 +109,12 @@
   min-width: 0;
   text-wrap: balance;
   visibility: hidden;
+  position: absolute;
+  inset-inline: 0;
 }
 
 .heroHeadlineVariant[data-headline-active='true'] {
+  position: relative;
   visibility: visible;
 }
 
@@ -131,10 +134,12 @@
 }
 
 .heroStatement p {
-  max-width: 44ch;
+  width: min(100%, 52ch);
+  max-width: none;
   margin: 0;
   color: inherit;
   font-size: var(--type-support-size);
+  text-wrap: balance;
   font-weight: var(--type-body-weight);
   line-height: var(--type-support-leading);
 }
@@ -734,7 +739,7 @@
   }
 
   .heroStatement p {
-    max-width: 34ch;
+    width: min(100%, 38ch);
   }
 
   .page :global(.featured-grid),
