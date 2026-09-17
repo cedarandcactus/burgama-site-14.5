@@ -45,6 +45,29 @@ export function ClientTicker() {
     let focused = false
     let lastWidth = 0
     let lastHeight = 0
+    let animationFrame = 0
+
+    const updateScrollDrift = () => {
+      if (reducedMotion.matches) return
+
+      const bounds = section.getBoundingClientRect()
+      const viewportCenter = window.innerHeight / 2
+      const sectionCenter = bounds.top + bounds.height / 2
+      const scrollProgress = Math.max(-1, Math.min(1, (sectionCenter - viewportCenter) / window.innerHeight))
+
+      nodes.forEach((node, index) => {
+        const drift = Math.sin(scrollProgress * Math.PI + index * 1.7) * 4 + scrollProgress * 2
+        node.style.setProperty('--ticker-drift', `${drift.toFixed(2)}px`)
+      })
+    }
+
+    const scheduleScrollDrift = () => {
+      if (animationFrame) return
+      animationFrame = requestAnimationFrame(() => {
+        animationFrame = 0
+        updateScrollDrift()
+      })
+    }
 
     const syncPlayback = () => {
       const paused = !inView || document.hidden || focused
@@ -64,6 +87,7 @@ export function ClientTicker() {
       for (const animation of animations) animation.cancel()
       animations = []
       if (reducedMotion.matches) {
+        nodes.forEach((node) => node.style.removeProperty('--ticker-drift'))
         delete section.dataset.animated
         return
       }
@@ -124,19 +148,26 @@ export function ClientTicker() {
     })
 
     rebuild()
+    updateScrollDrift()
     intersection.observe(section)
     resize.observe(windowElement)
     reducedMotion.addEventListener('change', rebuild)
     document.addEventListener('visibilitychange', syncPlayback)
+    window.addEventListener('scroll', scheduleScrollDrift, { passive: true })
+    window.addEventListener('resize', scheduleScrollDrift)
     section.addEventListener('focusin', focus)
     section.addEventListener('focusout', blur)
 
     return () => {
       animations.forEach((animation) => animation.cancel())
+      cancelAnimationFrame(animationFrame)
+      nodes.forEach((node) => node.style.removeProperty('--ticker-drift'))
       intersection.disconnect()
       resize.disconnect()
       reducedMotion.removeEventListener('change', rebuild)
       document.removeEventListener('visibilitychange', syncPlayback)
+      window.removeEventListener('scroll', scheduleScrollDrift)
+      window.removeEventListener('resize', scheduleScrollDrift)
       section.removeEventListener('focusin', focus)
       section.removeEventListener('focusout', blur)
       delete section.dataset.animated
