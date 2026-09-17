@@ -1,3 +1,5 @@
+import { createElement } from 'react'
+
 export const siteUrl = 'https://www.burgama.com'
 export const siteName = 'Burgama'
 export const defaultSocialImage = `${siteUrl}/images/burgama-social-share.png`
@@ -53,5 +55,8 @@ export function primaryImageUrl(src?: string) {
 }
 
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(data) }} />
+  return createElement('script', {
+    type: 'application/ld+json',
+    dangerouslySetInnerHTML: { __html: jsonLd(data) },
+  })
 }
