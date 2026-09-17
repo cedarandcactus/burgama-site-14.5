@@ -560,6 +560,22 @@
   transform: translateY(-100%);
 }
 
+@media (min-width: 700px) {
+  .footerFrame {
+    position: relative;
+    z-index: 20;
+    min-height: calc(100svh + 96px);
+    overflow: clip;
+    background: var(--palette-navy);
+  }
+
+  .footer {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .linkColumn a:hover .rollGlyph {
     transform: translateY(-100%);
