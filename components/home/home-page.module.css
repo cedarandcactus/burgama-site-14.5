@@ -1009,7 +1009,7 @@
 }
 
 .impactBand[data-impact-band='blue-slate'] { background: var(--palette-blue-slate); }
-.impactBand[data-impact-band='blue-mid'] { color: var(--palette-navy); background: var(--palette-blue-mid); }
+.impactBand[data-impact-band='blue-mid'] { color: var(--palette-powder); background: var(--palette-blue-mid); }
 .impactBand[data-impact-band='powder'] { background: var(--palette-powder); }
 
 .impactPhrase {
