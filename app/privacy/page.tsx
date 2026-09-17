@@ -35,6 +35,7 @@ const sections = [
       'The website is hosted on Vercel. Hosting and delivery infrastructure may process technical information such as your IP address, browser and device details, request times, requested URLs, and diagnostic or security logs to deliver pages, troubleshoot issues, and protect the service.',
       'The production website includes Vercel Web Analytics to understand website usage through aggregated statistics. Analytics data may include pages visited, referring websites, filtered URL parameters, visit times, approximate location, device type, operating system, and browser. We do not configure enquiry fields or newsletter email addresses as analytics events.',
       'Vercel describes its Web Analytics as using a request-derived identifier rather than tracking cookies, with visitor identifiers discarded after 24 hours. This identifier lifetime is separate from the retention of aggregated statistics or hosting logs. The analytics service is not designed to track an individual’s browsing across unrelated websites.',
+      'The production website also includes Vercel Speed Insights, which measures how quickly pages load and respond for real visitors. It reports performance timings together with the page or route, and general device, connection, and browser information. It is used to find slow pages, not to identify visitors, and it does not rely on tracking cookies.',
     ],
   },
   {
