@@ -91,7 +91,7 @@
   gap: clamp(24px, 3vw, 40px);
   color: var(--palette-powder);
   text-align: center;
-  transform: translateY(clamp(28px, 4svh, 44px));
+  transform: translateY(clamp(16px, 2.5svh, 28px));
 }
 
 .heroFrame h1 {
@@ -716,8 +716,8 @@
 
 @media (max-width: 699px) {
   .page {
-    --home-space: clamp(48px, 13vw, 74px);
-    --home-rise: clamp(48px, 14vw, 80px);
+    --home-space: clamp(64px, 16vw, 88px);
+    --home-rise: clamp(60px, 17vw, 96px);
   }
 
   .heroMedia {
@@ -732,12 +732,12 @@
 
   .heroFrameContent {
     width: min(100%, 38rem);
-    transform: translateY(clamp(12px, 3svh, 24px));
+    transform: translateY(clamp(4px, 1.5svh, 12px));
   }
 
   .heroStatement {
     align-items: center;
-    gap: 28px;
+    gap: 32px;
   }
 
   .heroStatement p {
@@ -769,15 +769,15 @@
   }
 
   .page :global(.capabilities-grid) {
-    gap: 14px;
+    gap: 20px;
   }
 
   .page :global(.capability-card) {
     position: relative;
     top: auto;
-    min-height: clamp(310px, 90vw, 366px);
-    gap: 40px;
-    padding: clamp(24px, 7.5vw, 32px);
+    min-height: clamp(336px, 96vw, 390px);
+    gap: 48px;
+    padding: clamp(28px, 8vw, 36px);
     border-radius: 26px;
   }
 
@@ -823,8 +823,8 @@
   }
 
   .page :global(.capability-card) {
-    min-height: 320px;
-    padding: 24px;
+    min-height: 340px;
+    padding: 28px;
   }
 }
 
@@ -1274,7 +1274,7 @@
 
 @media (max-width: 699px) {
   .introductionContent {
-    gap: 24px;
+    gap: 32px;
   }
 
   .workReel {
