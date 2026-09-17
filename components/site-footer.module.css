@@ -598,15 +598,21 @@
     --home-rise: clamp(48px, 14vw, 80px);
   }
 
+  .footerFrame {
+    position: relative;
+    z-index: 20;
+    min-height: calc(100svh + 64px);
+    overflow: clip;
+    background: var(--palette-navy);
+  }
+
   .footer {
-    display: flex;
-    min-height: 100svh;
+    position: sticky;
+    top: 64px;
+    min-height: calc(100svh - 64px);
   }
 
   .content {
-    display: flex;
-    flex: 1;
-    justify-content: space-between;
     padding-bottom: 28px;
   }
 
