@@ -5374,16 +5374,17 @@ body:has(.lot-poster) > .mobile-console {
 */
 :root {
   /* Legacy accent aliases remain light so navy text retains its contrast. */
-  --palette-navy: #011329;
+  --palette-navy: #001328;
   --palette-navy-raised: #082443;
-  --palette-powder: #afc8f2;
-  --palette-powder-frost: rgba(175, 200, 242, .42);
+  --palette-powder: #95bce5;
+  --palette-powder-frost: rgba(149, 188, 229, .42);
   --palette-powder-deep: #8eafe3;
-  --palette-butter: var(--palette-powder);
+  --palette-butter: #ffe493;
   --palette-blue-slate: var(--palette-powder);
-  --palette-yellow-soft: var(--palette-powder-deep);
-  --palette-yellow-deep: var(--palette-powder);
-  --palette-soft-white: #f2f2fc;
+  --palette-yellow-soft: var(--palette-butter);
+  --palette-yellow-deep: var(--palette-butter);
+  --palette-soft-white: #f0f0fa;
+  --palette-legal-black: #000000;
   --palette-blue-mid: #2d5380;
   --palette-soft-coral: var(--palette-blue-mid);
   --palette-brick: var(--palette-navy-raised);
