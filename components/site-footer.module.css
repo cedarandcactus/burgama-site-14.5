@@ -666,15 +666,16 @@
   }
 
   .bottomRow {
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 2px;
     padding-top: 16px;
-    font-size: 11px;
-    letter-spacing: -0.03em;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
     line-height: 1.2;
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
   }
 
@@ -693,6 +694,7 @@
     flex-direction: row;
     align-items: center;
     gap: 8px;
+    font-weight: inherit;
     line-height: 1.2;
   }
 
