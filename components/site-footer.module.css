@@ -598,7 +598,15 @@
     --home-rise: clamp(48px, 14vw, 80px);
   }
 
+  .footer {
+    display: flex;
+    min-height: 100svh;
+  }
+
   .content {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
     padding-bottom: 28px;
   }
 

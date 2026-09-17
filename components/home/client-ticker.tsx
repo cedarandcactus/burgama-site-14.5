@@ -61,10 +61,10 @@ export function ClientTicker() {
       previousProgress = scrollProgress
 
       targetDrifts = nodes.map((_, index) => {
-        const depth = 3.4 + (index % 4) * 0.65
+        const depth = 2.8 + (index % 5) * 0.65
         const directionalShift = -scrollProgress * depth
-        const motionLift = scrollDirection * (1.1 + (index % 3) * 0.3)
-        const gentleSway = Math.sin(scrollProgress * Math.PI * 1.25 + index * 1.45) * 1.8
+        const motionLift = scrollDirection * (0.85 + (index % 3) * 0.24)
+        const gentleSway = Math.sin(scrollProgress * Math.PI * 1.35 + index * 1.6) * (1.2 + (index % 4) * 0.28)
         return directionalShift + motionLift + gentleSway
       })
     }
