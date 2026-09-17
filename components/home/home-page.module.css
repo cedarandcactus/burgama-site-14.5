@@ -179,7 +179,11 @@
 
 .sectionRise[data-surface='powder-deep'] {
   color: var(--palette-powder-deep);
-}
+  }
+
+.sectionRise[data-surface='butter'] {
+  color: var(--palette-butter);
+  }
 
 .sectionRise[data-surface='navy'] {
   color: var(--palette-navy);

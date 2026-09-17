@@ -5,7 +5,7 @@ import { ArtifactSlot } from '@/components/artifact-slot'
 import { SectionRise } from '@/components/home/section-rise'
 import { gsap } from '@/lib/motion'
 
-type Surface = 'white' | 'powder' | 'powder-deep' | 'navy' | 'blue-slate' | 'blue-mid'
+type Surface = 'white' | 'powder' | 'powder-deep' | 'butter' | 'navy' | 'blue-slate' | 'blue-mid'
 
 type PageHeroProps = {
   wordmark: string
