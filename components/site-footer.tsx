@@ -129,7 +129,8 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
       const link = wordmark?.parentElement
       if (!wordmark || !link || !wordmark.offsetWidth) return
       const size = Number.parseFloat(getComputedStyle(wordmark).fontSize)
-      link.style.setProperty('--footer-wordmark-size', `${size * link.clientWidth * 0.995 / wordmark.offsetWidth}px`)
+      const wordmarkScale = window.matchMedia('(min-width: 700px)').matches ? 0.84 : 0.995
+  link.style.setProperty('--footer-wordmark-size', `${size * link.clientWidth * wordmarkScale / wordmark.offsetWidth}px`)
     }
     measureWordmark()
     const refresh = () => {
