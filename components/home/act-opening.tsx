@@ -17,8 +17,14 @@ import styles from './home-page.module.css'
 
 const headlines = [
   ['We turn what makes you', 'different into brands', 'the right people remember.'],
-  ['We find what sets you apart', 'and build a brand', 'that makes it matter.'],
+  ['We find what sets you apart', 'and build a brand', 'that makes it matter to the people who matter.'],
   ['Your next chapter deserves', 'a brand that feels like you', 'and moves you forward.'],
+]
+
+const statements = [
+  'At Burgama, we turn the thing that sets your brand apart into a clear idea, a distinctive identity, and work people remember.',
+  'Burgama gives your difference a sharper story, a stronger presence, and a reason for the right people to care.',
+  'Burgama helps ambitious brands make their next chapter tangible, with a point of view, a presence, and momentum built to last.',
 ]
 
 export function ActOpening({ children }: { children: ReactNode }) {
@@ -154,7 +160,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
             ))}
           </h1>
           <div className={styles.heroStatement}>
-            <p>A creative and marketing studio bringing strategy, identity, websites, and campaigns together.</p>
+            <p>{statements[headlineIndex ?? 0]}</p>
             <ModularButton href="#studio-introduction">meet the studio</ModularButton>
           </div>
         </div>
