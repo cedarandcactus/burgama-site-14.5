@@ -5384,7 +5384,7 @@ body:has(.lot-poster) > .mobile-console {
   --palette-yellow-soft: var(--palette-powder-deep);
   --palette-yellow-deep: var(--palette-powder);
   --palette-soft-white: #f2f2fc;
-  --palette-blue-mid: #8eafe3;
+  --palette-blue-mid: var(--palette-powder);
   --palette-soft-coral: var(--palette-blue-mid);
   --palette-brick: var(--palette-navy-raised);
   --brand-navy: var(--palette-navy);
