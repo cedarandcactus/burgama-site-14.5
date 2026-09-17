@@ -78,12 +78,12 @@
   display: flex;
   align-items: center;
   min-height: 100svh;
-  padding: clamp(144px, 20svh, 224px) var(--home-inset) clamp(72px, 10svh, 112px);
+  padding: clamp(184px, 25svh, 280px) var(--home-inset) clamp(64px, 8svh, 96px);
 }
 
 .heroFrameContent {
   display: flex;
-  width: min(100%, 1120px);
+  width: min(100%, 980px);
   min-width: 0;
   margin-inline: auto;
   flex-direction: column;
@@ -719,9 +719,13 @@
   }
 
   .heroFrame {
-    padding-top: max(calc(var(--header-clearance) + 24px), clamp(104px, 16svh, 136px));
+    padding-top: max(calc(var(--header-clearance) + 40px), clamp(132px, 20svh, 168px));
     padding-bottom: max(clamp(40px, 8svh, 72px), calc(env(safe-area-inset-bottom, 0px) + 24px));
     padding-inline: max(var(--home-inset), env(safe-area-inset-left, 0px)) max(var(--home-inset), env(safe-area-inset-right, 0px));
+  }
+
+  .heroFrameContent {
+    width: min(100%, 38rem);
   }
 
   .heroStatement {

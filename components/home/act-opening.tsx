@@ -24,7 +24,7 @@ const headlines = [
 const statements = [
   'At Burgama, we turn the thing that sets your brand apart into a clear idea, a distinctive identity, and work people remember.',
   'Burgama gives your difference somewhere to go: a sharper story, a stronger presence, and a reason for the right people to care.',
-  'Burgama helps ambitious brands make their next chapter tangible—with a point of view, a presence, and momentum built to last.',
+  'Burgama helps ambitious brands make their next chapter tangible, with a point of view, a presence, and momentum built to last.',
 ]
 
 export function ActOpening({ children }: { children: ReactNode }) {
