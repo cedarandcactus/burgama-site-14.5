@@ -598,6 +598,10 @@
     --home-rise: clamp(48px, 14vw, 80px);
   }
 
+  .content {
+    padding-bottom: 28px;
+  }
+
   .lead {
     min-height: 46svh;
   }
@@ -648,7 +652,7 @@
 
 @media (max-width: 450px) {
   .content {
-    padding: 32px 20px 16px;
+    padding: 32px 20px 24px;
   }
 
   .navigation {

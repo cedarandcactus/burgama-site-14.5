@@ -56,7 +56,10 @@ export function ClientTicker() {
       const scrollProgress = Math.max(-1, Math.min(1, (sectionCenter - viewportCenter) / window.innerHeight))
 
       nodes.forEach((node, index) => {
-        const drift = Math.sin(scrollProgress * Math.PI + index * 1.7) * 4 + scrollProgress * 2
+        const depth = 2.25 + (index % 4) * 0.55
+        const directionalShift = -scrollProgress * depth
+        const gentleSway = Math.sin(scrollProgress * Math.PI + index * 1.45) * 1.35
+        const drift = directionalShift + gentleSway
         node.style.setProperty('--ticker-drift', `${drift.toFixed(2)}px`)
       })
     }
