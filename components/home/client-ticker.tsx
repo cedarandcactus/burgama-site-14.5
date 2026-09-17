@@ -46,6 +46,9 @@ export function ClientTicker() {
     let lastWidth = 0
     let lastHeight = 0
     let animationFrame = 0
+    let previousProgress = 0
+    let targetDrifts = nodes.map(() => 0)
+    let renderedDrifts = nodes.map(() => 0)
 
     const updateScrollDrift = () => {
       if (reducedMotion.matches) return
@@ -54,22 +57,34 @@ export function ClientTicker() {
       const viewportCenter = window.innerHeight / 2
       const sectionCenter = bounds.top + bounds.height / 2
       const scrollProgress = Math.max(-1, Math.min(1, (sectionCenter - viewportCenter) / window.innerHeight))
+      const scrollDirection = Math.max(-1, Math.min(1, (scrollProgress - previousProgress) * 28))
+      previousProgress = scrollProgress
 
-      nodes.forEach((node, index) => {
-        const depth = 2.25 + (index % 4) * 0.55
+      targetDrifts = nodes.map((_, index) => {
+        const depth = 3.4 + (index % 4) * 0.65
         const directionalShift = -scrollProgress * depth
-        const gentleSway = Math.sin(scrollProgress * Math.PI + index * 1.45) * 1.35
-        const drift = directionalShift + gentleSway
-        node.style.setProperty('--ticker-drift', `${drift.toFixed(2)}px`)
+        const motionLift = scrollDirection * (1.1 + (index % 3) * 0.3)
+        const gentleSway = Math.sin(scrollProgress * Math.PI * 1.25 + index * 1.45) * 1.8
+        return directionalShift + motionLift + gentleSway
       })
     }
 
-    const scheduleScrollDrift = () => {
-      if (animationFrame) return
-      animationFrame = requestAnimationFrame(() => {
-        animationFrame = 0
-        updateScrollDrift()
+    const renderScrollDrift = () => {
+      let isSettling = false
+
+      nodes.forEach((node, index) => {
+        const nextDrift = renderedDrifts[index] + (targetDrifts[index] - renderedDrifts[index]) * 0.16
+        renderedDrifts[index] = nextDrift
+        node.style.setProperty('--ticker-drift', `${nextDrift.toFixed(2)}px`)
+        if (Math.abs(targetDrifts[index] - nextDrift) > 0.05) isSettling = true
       })
+
+      animationFrame = isSettling ? requestAnimationFrame(renderScrollDrift) : 0
+    }
+
+    const scheduleScrollDrift = () => {
+      updateScrollDrift()
+      if (!animationFrame) animationFrame = requestAnimationFrame(renderScrollDrift)
     }
 
     const syncPlayback = () => {
@@ -151,7 +166,7 @@ export function ClientTicker() {
     })
 
     rebuild()
-    updateScrollDrift()
+    scheduleScrollDrift()
     intersection.observe(section)
     resize.observe(windowElement)
     reducedMotion.addEventListener('change', rebuild)
