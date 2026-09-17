@@ -91,6 +91,7 @@
   gap: clamp(24px, 3vw, 40px);
   color: var(--palette-powder);
   text-align: center;
+  transform: translateY(clamp(28px, 4svh, 44px));
 }
 
 .heroFrame h1 {
@@ -731,6 +732,7 @@
 
   .heroFrameContent {
     width: min(100%, 38rem);
+    transform: translateY(clamp(12px, 3svh, 24px));
   }
 
   .heroStatement {
