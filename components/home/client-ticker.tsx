@@ -45,6 +45,47 @@ export function ClientTicker() {
     let focused = false
     let lastWidth = 0
     let lastHeight = 0
+    let animationFrame = 0
+    let previousProgress = 0
+    let targetDrifts = nodes.map(() => 0)
+    let renderedDrifts = nodes.map(() => 0)
+
+    const updateScrollDrift = () => {
+      if (reducedMotion.matches) return
+
+      const bounds = section.getBoundingClientRect()
+      const viewportCenter = window.innerHeight / 2
+      const sectionCenter = bounds.top + bounds.height / 2
+      const scrollProgress = Math.max(-1, Math.min(1, (sectionCenter - viewportCenter) / window.innerHeight))
+      const scrollDirection = Math.max(-1, Math.min(1, (scrollProgress - previousProgress) * 28))
+      previousProgress = scrollProgress
+
+      targetDrifts = nodes.map((_, index) => {
+        const depth = 2.8 + (index % 5) * 0.65
+        const directionalShift = -scrollProgress * depth
+        const motionLift = scrollDirection * (0.85 + (index % 3) * 0.24)
+        const gentleSway = Math.sin(scrollProgress * Math.PI * 1.35 + index * 1.6) * (1.2 + (index % 4) * 0.28)
+        return directionalShift + motionLift + gentleSway
+      })
+    }
+
+    const renderScrollDrift = () => {
+      let isSettling = false
+
+      nodes.forEach((node, index) => {
+        const nextDrift = renderedDrifts[index] + (targetDrifts[index] - renderedDrifts[index]) * 0.16
+        renderedDrifts[index] = nextDrift
+        node.style.setProperty('--ticker-drift', `${nextDrift.toFixed(2)}px`)
+        if (Math.abs(targetDrifts[index] - nextDrift) > 0.05) isSettling = true
+      })
+
+      animationFrame = isSettling ? requestAnimationFrame(renderScrollDrift) : 0
+    }
+
+    const scheduleScrollDrift = () => {
+      updateScrollDrift()
+      if (!animationFrame) animationFrame = requestAnimationFrame(renderScrollDrift)
+    }
 
     const syncPlayback = () => {
       const paused = !inView || document.hidden || focused
@@ -64,6 +105,7 @@ export function ClientTicker() {
       for (const animation of animations) animation.cancel()
       animations = []
       if (reducedMotion.matches) {
+        nodes.forEach((node) => node.style.removeProperty('--ticker-drift'))
         delete section.dataset.animated
         return
       }
@@ -124,19 +166,26 @@ export function ClientTicker() {
     })
 
     rebuild()
+    scheduleScrollDrift()
     intersection.observe(section)
     resize.observe(windowElement)
     reducedMotion.addEventListener('change', rebuild)
     document.addEventListener('visibilitychange', syncPlayback)
+    window.addEventListener('scroll', scheduleScrollDrift, { passive: true })
+    window.addEventListener('resize', scheduleScrollDrift)
     section.addEventListener('focusin', focus)
     section.addEventListener('focusout', blur)
 
     return () => {
       animations.forEach((animation) => animation.cancel())
+      cancelAnimationFrame(animationFrame)
+      nodes.forEach((node) => node.style.removeProperty('--ticker-drift'))
       intersection.disconnect()
       resize.disconnect()
       reducedMotion.removeEventListener('change', rebuild)
       document.removeEventListener('visibilitychange', syncPlayback)
+      window.removeEventListener('scroll', scheduleScrollDrift)
+      window.removeEventListener('resize', scheduleScrollDrift)
       section.removeEventListener('focusin', focus)
       section.removeEventListener('focusout', blur)
       delete section.dataset.animated

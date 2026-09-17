@@ -560,6 +560,26 @@
   transform: translateY(-100%);
 }
 
+@media (min-width: 700px) {
+  .footerFrame {
+    position: relative;
+    z-index: 20;
+    min-height: calc(100svh + 96px);
+    overflow: clip;
+    background: var(--palette-navy);
+  }
+
+  .footer {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+  }
+
+  .content {
+    padding-top: clamp(88px, 7vw, 112px);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .linkColumn a:hover .rollGlyph {
     transform: translateY(-100%);
@@ -596,6 +616,24 @@
 @media (max-width: 699px) {
   .ending {
     --home-rise: clamp(48px, 14vw, 80px);
+  }
+
+  .footerFrame {
+    position: relative;
+    z-index: 20;
+    min-height: calc(100svh + 64px);
+    overflow: clip;
+    background: var(--palette-navy);
+  }
+
+  .footer {
+    position: sticky;
+    top: 64px;
+    min-height: calc(100svh - 64px);
+  }
+
+  .content {
+    padding-bottom: 28px;
   }
 
   .lead {
@@ -648,7 +686,7 @@
 
 @media (max-width: 450px) {
   .content {
-    padding: 32px 20px 16px;
+    padding: 32px 20px 24px;
   }
 
   .navigation {

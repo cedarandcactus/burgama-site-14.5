@@ -720,7 +720,7 @@
 
 @media (max-width: 699px) {
   .page {
-    --home-space: clamp(64px, 16vw, 88px);
+    --home-space: clamp(72px, 18vw, 96px);
     --home-rise: clamp(60px, 17vw, 96px);
   }
 
