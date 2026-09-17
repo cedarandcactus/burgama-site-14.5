@@ -46,9 +46,9 @@ const TEAM = [
 export default function StudioPage() {
   return (
     <div className="studio-page">
-      <PageHero variant="centered" wordmark="The people shaping your strategy are the ones bringing it to life." titleId="about-title" intro={['Burgama brings strategy, design, digital, and growth into one close-knit team. You work directly with the people shaping and making the work. They ask the hard questions, turn ambition into a clear direction, and stay accountable from the first conversation to the final detail.']} nextSurface="powder-deep" />
+      <PageHero variant="centered" wordmark="The people shaping your strategy are the ones bringing it to life." titleId="about-title" intro={['Burgama brings strategy, design, digital, and growth into one close-knit team. You work directly with the people shaping and making the work. They ask the hard questions, turn ambition into a clear direction, and stay accountable from the first conversation to the final detail.']} nextSurface="blue-slate" />
 
-      <section className="studio-band" data-surface="powder-deep" aria-labelledby="team-title">
+      <section className="studio-band" data-surface="blue-slate" aria-labelledby="team-title">
         <div className="studio-width">
         <Reveal variant="section" className={styles.sectionHeading}>
           <h2 id="team-title" className="font-serif">Different disciplines. A shared responsibility for the work.</h2>
