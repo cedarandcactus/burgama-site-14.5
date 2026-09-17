@@ -58,7 +58,7 @@ export function HeroFilm() {
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting
       updatePlayback()
-    })
+    }, { rootMargin: '240px 0px', threshold: 0.01 })
     observer.observe(media)
     video.addEventListener('playing', onPlaying)
     video.addEventListener('pause', onPause)

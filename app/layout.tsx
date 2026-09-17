@@ -5,7 +5,7 @@ import { CookieBanner } from '@/components/cookie-banner'
 import { CornerShell } from '@/components/corner-shell'
 import { PageTransition } from '@/components/page-transition'
 import { SmoothScroll } from '@/components/smooth-scroll'
-import { SiteHaptics } from '@/components/site-haptics'
+import { DesktopHaptics } from '@/components/desktop-haptics'
 import 'lenis/dist/lenis.css'
 import './globals.css'
 import './cyan-shell.css'
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </PageTransition>
         </SmoothScroll>
         <CookieBanner />
-        <SiteHaptics />
+        <DesktopHaptics />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

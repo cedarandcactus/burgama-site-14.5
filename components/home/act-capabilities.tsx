@@ -21,10 +21,37 @@ export function ActCapabilities() {
         video.pause()
         return
       }
-      // Explicit playback lets Safari start the video before its first frame is revealed.
-      video.muted = true
-      void video.play().catch(() => setShowVideo(false))
-      const travel = () => Math.max(0, -parseFloat(getComputedStyle(video).top) - 36) * (context.conditions?.wide ? 1 : 0.55)
+
+      const isWide = Boolean(context.conditions?.wide)
+      let active = false
+      let inViewport = false
+      let sourceAttached = false
+      const updatePlayback = () => {
+        if (active && !sourceAttached) {
+          video.preload = 'metadata'
+          video.muted = true
+          video.src = '/videos/bg-2.mp4'
+          video.load()
+          sourceAttached = true
+        }
+        if (active && video.paused) {
+          void video.play().catch(() => setShowVideo(false))
+        } else if (!active) {
+          video.pause()
+        }
+      }
+      const observer = new IntersectionObserver(([entry]) => {
+        inViewport = entry.isIntersecting
+        active = inViewport && !document.hidden
+        updatePlayback()
+      }, { rootMargin: '320px 0px', threshold: 0.01 })
+      observer.observe(section)
+      const onVisibilityChange = () => {
+        active = inViewport && !document.hidden
+        updatePlayback()
+      }
+      document.addEventListener('visibilitychange', onVisibilityChange)
+      const travel = () => Math.max(0, -parseFloat(getComputedStyle(video).top) - 36) * (isWide ? 1 : 0.55)
       gsap.fromTo(video, { y: () => -travel() }, {
         y: travel,
         ease: 'none',
@@ -37,10 +64,18 @@ export function ActCapabilities() {
         },
       })
       const heading = section.querySelector<HTMLElement>('h2')
-      return createScrollMomentum(section, [
-        { element: video, distance: context.conditions?.wide ? 24 : 8 },
-        ...(heading ? [{ element: heading, distance: context.conditions?.wide ? -12 : -4 }] : []),
+      const momentumCleanup = createScrollMomentum(section, [
+        { element: video, distance: isWide ? 24 : 8 },
+        ...(heading ? [{ element: heading, distance: isWide ? -12 : -4 }] : []),
       ])
+      return () => {
+        momentumCleanup?.()
+        observer.disconnect()
+        document.removeEventListener('visibilitychange', onVisibilityChange)
+        video.pause()
+        video.removeAttribute('src')
+        video.load()
+      }
     })
     return () => media.revert()
   }, [])
@@ -59,9 +94,7 @@ export function ActCapabilities() {
           disablePictureInPicture disableRemotePlayback
           controlsList="nodownload nofullscreen noremoteplayback"
           preload="metadata" tabIndex={-1}
-        >
-          <source src="/videos/bg-2.mp4" type="video/mp4" />
-        </video>
+        />
         <div className={styles.processVideoShade} />
       </div>
       <div className={styles.processInner}>
