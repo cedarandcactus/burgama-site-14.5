@@ -333,7 +333,7 @@ export function ProjectEnquiryForm({ variant = 'navbar', introHeading = 'Tell us
   const timingSummary = [timingLabel(draft)]
 
   return (
-    <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Project enquiry' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={event => {
+    <form ref={form} id={id ?? `${idPrefix}-form`} className={styles.form} data-variant={variant} aria-label={inline ? 'Start a project with Burgama' : 'Start a project'} aria-describedby={`${idPrefix}-progress`} noValidate onSubmit={submit} onKeyDown={event => {
       if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.preventDefault()
     }}>
       {/* Hidden from people and from assistive technology; only a bot fills it. */}

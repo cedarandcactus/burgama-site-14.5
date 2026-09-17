@@ -7,6 +7,7 @@ import { SiteFooter } from '@/components/site-footer'
 import Link from '@/components/transition-link'
 import { DirectionLink } from '@/components/direction-link'
 import { getProject, getProjectNavigation, getPublishedProjects, getRelatedProjects } from '@/lib/projects'
+import { absoluteUrl, breadcrumbJsonLd, JsonLd, primaryImageUrl, siteUrl } from '@/lib/seo'
 
 export function generateStaticParams() {
   return getPublishedProjects().map(project => ({ slug: project.slug }))
@@ -16,7 +17,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const project = getProject(slug)
   if (!project) return { title: 'Work' }
-  return { title: project.title, description: project.summary }
+  const primaryWork = project.services[0] ?? project.disciplines[0]
+  const title = `${project.title} — ${primaryWork} — Burgama`
+  const canonicalPath = `/work/${project.slug}`
+  const image = primaryImageUrl(project.heroMedia.src)
+
+  return {
+    title: { absolute: title },
+    description: project.summary,
+    alternates: { canonical: canonicalPath },
+    openGraph: { title, description: project.summary, url: canonicalPath, type: 'website', images: [{ url: image, alt: project.heroMedia.label || `${project.title} project by Burgama` }] },
+    twitter: { card: 'summary_large_image', images: [image] },
+  }
 }
 
 export default async function WorkDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,9 +38,29 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
   const relatedProjects = getRelatedProjects(project)
   const { previous, next, backHref } = getProjectNavigation(project)
   const hasFacts = project.services.length > 0 || project.period || project.status
+  const canonicalPath = `/work/${project.slug}`
+  const canonicalUrl = absoluteUrl(canonicalPath)
+  const projectJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    '@id': `${canonicalUrl}#work`,
+    name: project.title,
+    url: canonicalUrl,
+    description: project.summary,
+    image: primaryImageUrl(project.heroMedia.src),
+    creator: { '@id': `${siteUrl}/#organization` },
+  }
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Work', path: '/work' },
+    { name: project.title, path: canonicalPath },
+  ])
 
   return (
-    <div className="studio-page">
+    <>
+      <JsonLd data={projectJsonLd} />
+      <JsonLd data={breadcrumbs} />
+      <div className="studio-page">
       <article className="portfolio portfolio-detail" aria-labelledby="project-title">
         <PageHero wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="white" breadcrumbLabel="Back to work" breadcrumb={
           <DirectionLink href={backHref} direction="left" label="work" />
@@ -74,6 +106,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
         </section>}
       </article>
       <SiteFooter enquiryHeading="What could we make together?" />
-    </div>
+      </div>
+    </>
   )
 }

@@ -11,8 +11,10 @@ import { Reveal } from '@/components/reveal'
 import { featuredProjects, getPublishedProjects } from '@/lib/projects'
 
 export const metadata: Metadata = {
-  title: 'Selected Work',
-  description: 'Packaging redesign, photography, branding, websites, and marketing work by Burgama.',
+  title: 'Selected Work — Branding, Web & Campaigns — Burgama',
+  description: "Explore Burgama's work across brand identity, packaging, photography, websites, campaigns, content, and search — from strategy through delivery.",
+  alternates: { canonical: '/work' },
+  openGraph: { title: 'Selected Work — Branding, Web & Campaigns — Burgama', description: "Explore Burgama's work across brand identity, packaging, photography, websites, campaigns, content, and search — from strategy through delivery.", url: '/work', type: 'website' },
 }
 
 export default function WorkPage() {

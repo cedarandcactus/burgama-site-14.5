@@ -2,15 +2,10 @@ import type { Metadata } from 'next'
 import { EditorialIndex } from '@/components/editorial-index'
 
 export const metadata: Metadata = {
-  title: 'Research',
-  description: 'Practical notes from Burgama on websites, ecommerce, search, and the systems around them.',
+  title: 'Research & Ideas — Web, Ecommerce & Search — Burgama',
+  description: 'Practical research and observations from Burgama\'s work across websites, ecommerce, search, content, and digital decision-making.',
   alternates: { canonical: '/research' },
-  openGraph: {
-    title: 'Research — Burgama',
-    description: 'Practical notes on websites, ecommerce, search, and the systems around them.',
-    url: '/research',
-    type: 'website',
-  },
+  openGraph: { title: 'Research & Ideas — Web, Ecommerce & Search — Burgama', description: 'Practical research and observations from Burgama\'s work across websites, ecommerce, search, content, and digital decision-making.', url: '/research', type: 'website' },
 }
 
 export default function ResearchPage() {
