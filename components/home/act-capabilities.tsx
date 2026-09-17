@@ -17,12 +17,16 @@ export function ActCapabilities() {
     if (!section || !video) return
     const media = gsap.matchMedia()
     media.add({ motion: '(prefers-reduced-motion: no-preference)', wide: '(min-width: 700px)' }, (context) => {
-      if (!context.conditions?.motion) {
+      if (!context.conditions?.motion || !context.conditions?.wide) {
         video.pause()
+        video.removeAttribute('src')
+        video.load()
         return
       }
-      // Explicit playback lets Safari start the video before its first frame is revealed.
+      // Keep the heavy process film off touch devices entirely.
+      video.src = '/videos/bg-2.mp4'
       video.muted = true
+      video.load()
       void video.play().catch(() => setShowVideo(false))
       const travel = () => Math.max(0, -parseFloat(getComputedStyle(video).top) - 36) * (context.conditions?.wide ? 1 : 0.55)
       gsap.fromTo(video, { y: () => -travel() }, {
@@ -59,9 +63,7 @@ export function ActCapabilities() {
           disablePictureInPicture disableRemotePlayback
           controlsList="nodownload nofullscreen noremoteplayback"
           preload="metadata" tabIndex={-1}
-        >
-          <source src="/videos/bg-2.mp4" type="video/mp4" />
-        </video>
+        />
         <div className={styles.processVideoShade} />
       </div>
       <div className={styles.processInner}>

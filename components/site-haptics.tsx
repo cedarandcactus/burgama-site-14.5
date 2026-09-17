@@ -10,6 +10,8 @@ export function SiteHaptics() {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const coarsePointer = window.matchMedia('(pointer: coarse)')
+    if (coarsePointer.matches) return
 
     const onClick = (event: MouseEvent) => {
       if (!event.isTrusted || event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey || reducedMotion.matches) return

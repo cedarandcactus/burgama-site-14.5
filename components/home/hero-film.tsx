@@ -17,6 +17,9 @@ export function HeroFilm() {
     if (!media || !video) return
 
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const coarsePointer = window.matchMedia('(pointer: coarse)')
+    if (coarsePointer.matches) return
+
     let visible = false
     let disposed = false
     let sourceAttached = false
