@@ -37,6 +37,20 @@ export const metadata: Metadata = {
     title: 'Burgama — Creative & marketing studio',
     description: 'We turn what makes you different into brands the right people remember. Strategy, identity, websites, and campaigns from Austin, Texas.',
     type: 'website',
+    images: [
+      {
+        url: '/images/burgama-social-share.png',
+        width: 1080,
+        height: 1080,
+        alt: 'Burgama abstract light-blue line pattern on deep navy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Burgama — Creative & marketing studio',
+    description: 'We turn what makes you different into brands the right people remember.',
+    images: ['/images/burgama-social-share.png'],
   },
 }
 export const viewport: Viewport = {
