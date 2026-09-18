@@ -24,7 +24,7 @@ const TEAM = [
   },
   {
     name: 'Amanda',
-    role: 'Brand & Growth',
+    role: 'Marketing Coordinator',
     description: 'Amanda connects brand positioning with campaigns and digital growth. Her focus is on how a business presents itself, who it needs to reach, and how those choices carry through its marketing. She brings those pieces together into a clear path forward.',
     image: '/team/amanda.jpg',
     alt: 'Amanda, Brand and Growth at Burgama',
@@ -38,7 +38,7 @@ const TEAM = [
   },
   {
     name: 'Luisa',
-    role: 'PR, Advertising & Design',
+    role: 'Marketing Coordinator Intern',
     description: 'Luisa brings public relations, advertising, and design together to help brands communicate clearly. She connects the story a business wants to tell with the campaigns and creative that bring it to an audience, keeping messaging and visuals aligned across each touchpoint.',
     image: '/team/luisa.jpg',
     alt: 'Luisa, PR, Advertising and Design at Burgama',
