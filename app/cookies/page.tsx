@@ -37,7 +37,7 @@ const sections = [
     id: 'analytics-hosting',
     title: 'Analytics, hosting & security',
     paragraphs: [
-      'The production website uses Vercel Web Analytics for aggregated usage statistics. Vercel describes this service as cookie-free: it uses a request-derived identifier that is discarded after 24 hours rather than placing a tracking cookie in your browser. We do not use it to follow you across unrelated websites.',
+      'The production website uses Vercel Web Analytics for aggregated usage statistics, and Vercel Speed Insights for page performance measurements. Vercel describes both services as cookie-free: Web Analytics uses a request-derived identifier that is discarded after 24 hours rather than placing a tracking cookie in your browser, and Speed Insights reports timing measurements without setting one. We do not use either to follow you across unrelated websites.',
       'Vercel also hosts and delivers the website. Its infrastructure processes ordinary request information and may apply essential delivery, fraud-prevention, or security mechanisms to operate and protect the service. More detail about technical data and service providers appears in our Privacy Policy.',
     ],
   },
