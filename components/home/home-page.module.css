@@ -1064,14 +1064,16 @@
 }
 
 .workIntro {
-  max-width: 880px;
+  width: min(100%, 1120px);
   margin-inline: auto;
-  padding: 0 var(--home-inset) clamp(36px, 5vw, 64px);
-  text-align: center;
+  padding: 0 var(--home-inset) clamp(32px, 4vw, 48px);
+  text-align: left;
 }
 
 .workIntro h2 {
-  font-size: var(--type-section-compact-size);
+  max-width: 12ch;
+  font-size: clamp(42px, 5.5vw, 72px);
+  line-height: 0.98;
 }
 
 .workReel {
@@ -1210,9 +1212,21 @@
 .reelControls {
   display: flex;
   width: min(calc(100% - 2 * var(--home-inset)), 1120px);
-  margin: 32px auto 0;
-  justify-content: center;
+  margin: 20px auto 0;
+  justify-content: space-between;
   align-items: center;
+}
+
+.reelProgress {
+  color: color-mix(in srgb, var(--palette-powder) 78%, transparent);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.reelProgress span {
+  padding-inline: 4px;
+  color: color-mix(in srgb, var(--palette-powder) 48%, transparent);
 }
 
 .reelArrows {
@@ -1281,13 +1295,25 @@
     gap: 32px;
   }
 
+  .selectedWork {
+    padding-top: 48px;
+  }
+
+  .workIntro {
+    padding-bottom: 28px;
+  }
+
+  .workIntro h2 {
+    font-size: clamp(40px, 8.5vw, 52px);
+  }
+
   .workReel {
-    --reel-card-width: 84vw;
+    --reel-card-width: min(88vw, 1040px);
   }
 
   .page .workTrack :global(.project-tile-image) {
-    aspect-ratio: 4 / 3;
-    max-height: none;
+    aspect-ratio: 16 / 10;
+    max-height: min(420px, 52svh);
     border-radius: 18px;
   }
 
@@ -1323,7 +1349,7 @@
   }
 
   .reelControls {
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   .reelArrows {
