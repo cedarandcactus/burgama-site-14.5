@@ -25,12 +25,14 @@ export function ProjectCard({
   concise = false,
   actionLabel,
   showcase = false,
+  showTagline = false,
 }: {
   project: Project
   showArrow?: boolean
   concise?: boolean
   actionLabel?: string
   showcase?: boolean
+  showTagline?: boolean
 }) {
   const media = project.thumbnailMedia ?? project.heroMedia
   const style = {
@@ -71,7 +73,7 @@ export function ProjectCard({
               ))}
             </ul>
             <h3 className="project-tile-title">{project.title}</h3>
-            {actionLabel && <p className="project-mobile-summary">{project.tagline}</p>}
+            {(actionLabel || showTagline) && <p className="project-mobile-summary">{project.tagline}</p>}
             {!concise && <p className="project-tile-summary">{project.summary}</p>}
           </div>
           {actionLabel ? (

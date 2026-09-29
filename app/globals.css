@@ -36,6 +36,9 @@ video[data-background-video]::-webkit-media-controls-enclosure {
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
+  --color-selected-work-background: var(--palette-navy);
+  --color-selected-work-foreground: var(--palette-powder);
+  --color-selected-work-raised: var(--palette-navy-raised);
 
   --color-card: var(--surface-1);
   --color-card-foreground: var(--foreground);
