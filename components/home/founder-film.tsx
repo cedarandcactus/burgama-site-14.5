@@ -1,10 +1,26 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Maximize, Minimize, Pause, Play, RotateCcw, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { OPEN_FOUNDER_NOTE_EVENT } from './founder-announcement'
 import styles from './founder-film.module.css'
+
+const mobileQuery = '(max-width: 700px)'
+
+function subscribeToViewport(onChange: () => void) {
+  const query = window.matchMedia(mobileQuery)
+  query.addEventListener('change', onChange)
+  return () => query.removeEventListener('change', onChange)
+}
+
+function getMobileSnapshot() {
+  return window.matchMedia(mobileQuery).matches
+}
+
+function getServerSnapshot() {
+  return false
+}
 
 function timestamp(seconds: number) {
   const value = Number.isFinite(seconds) ? Math.max(0, Math.floor(seconds)) : 0
@@ -12,6 +28,7 @@ function timestamp(seconds: number) {
 }
 
 export function FounderFilm({ active = true }: { active?: boolean }) {
+  const mobile = useSyncExternalStore(subscribeToViewport, getMobileSnapshot, getServerSnapshot)
   const playerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [playing, setPlaying] = useState(false)
@@ -77,8 +94,9 @@ export function FounderFilm({ active = true }: { active?: boolean }) {
         <video
           ref={videoRef}
           className={styles.video}
-          src="/founder-introduction.mp4"
-          poster="/founder-introduction.jpg"
+          src={mobile ? '/founder-introduction-mobile.mp4' : '/founder-introduction.mp4'}
+          poster={mobile ? '/founder-introduction-mobile.jpg' : '/founder-introduction.jpg'}
+          onEmptied={() => { setPlaying(false); setStarted(false); setEnded(false); setMessage('') }}
           preload="none"
           playsInline
           aria-label="Deniz Sipahi introduces Burgama"
@@ -117,7 +135,7 @@ export function FounderFilm({ active = true }: { active?: boolean }) {
           )}
         </div>
       </div>
-      {message && <p className={styles.message} role="status">{message} <a href="https://drive.google.com/file/d/1LCHqB0WwJSlvca0kipvVYwpMHUgeiFxK/view" target="_blank" rel="noopener noreferrer">Open film in a new tab</a></p>}
+      {message && <p className={styles.message} role="status">{message} <a href={mobile ? 'https://drive.google.com/file/d/1fwwAG_PinMm4qy6EfG5xuZgMdDXcLABQ/view' : 'https://drive.google.com/file/d/1LCHqB0WwJSlvca0kipvVYwpMHUgeiFxK/view'} target="_blank" rel="noopener noreferrer">Open film in a new tab</a></p>}
     </div>
   )
 }

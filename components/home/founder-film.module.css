@@ -220,9 +220,16 @@
     gap: 24px;
   }
 
+  .story,
+  .picture {
+    aspect-ratio: 3 / 4;
+  }
+
   .watch {
     min-height: 48px;
-    padding: 12px 18px;
+    max-width: 100%;
+    padding: 12px 10px;
+    gap: 8px;
     font-size: 14px;
   }
 
