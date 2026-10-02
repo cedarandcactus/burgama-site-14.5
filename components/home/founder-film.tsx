@@ -11,7 +11,7 @@ function timestamp(seconds: number) {
   return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, '0')}`
 }
 
-export function FounderFilm() {
+export function FounderFilm({ active = true }: { active?: boolean }) {
   const playerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [playing, setPlaying] = useState(false)
@@ -37,6 +37,10 @@ export function FounderFilm() {
       window.removeEventListener(OPEN_FOUNDER_NOTE_EVENT, pauseForNote)
     }
   }, [])
+
+  useEffect(() => {
+    if (!active) videoRef.current?.pause()
+  }, [active])
 
   async function togglePlayback() {
     const video = videoRef.current

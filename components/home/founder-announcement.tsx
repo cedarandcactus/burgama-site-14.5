@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { FounderNoteCopy } from './founder-note-copy'
 import styles from './founder-announcement.module.css'
 
 const SESSION_KEY = 'burgama-founder-announcement-v1'
@@ -108,13 +109,7 @@ export function FounderAnnouncement() {
         </DialogHeader>
 
         <div className={styles.copy}>
-          <p>
-            I started this company as Cedar &amp; Cactus. Today, we&apos;re known as Burgama. We outgrew our old brand, growing from a local agency into a studio working with brands and founders around the world.
-          </p>
-          <p>
-            The name comes from Pergamon, an ancient city where things were built to last. That remains our standard: we build the brand, then carry it into the world. Same team, same care, bigger canvas.
-          </p>
-          <p className={styles.signature}>Deniz Sipahi, founder</p>
+          <FounderNoteCopy signatureClassName={styles.signature} />
         </div>
 
         <div className={styles.actions}>
