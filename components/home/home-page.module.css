@@ -1227,8 +1227,11 @@
 
 .page .workGrid :global(.project-category-pills li) {
   padding: 5px 11px;
-  background: var(--color-selected-work-raised);
-  font-size: 13px;
+  border-radius: 999px;
+  color: var(--color-selected-work-background);
+  background: var(--color-selected-work-foreground);
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1.4;
 }
 
