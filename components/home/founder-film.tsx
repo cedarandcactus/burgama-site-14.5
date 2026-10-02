@@ -101,7 +101,7 @@ export function FounderFilm() {
           </div>
         )}
       </div>
-      <div className={styles.controls} role="group" aria-label="Founder film playback controls">
+      {started && <div className={styles.controls} role="group" aria-label="Founder film playback controls">
         <Button variant="ghost" size="icon" className={styles.control} onClick={() => void togglePlayback()} aria-label={playing ? 'Pause introduction' : 'Play introduction'}>
           {playing ? <Pause fill="currentColor" aria-hidden="true" /> : <Play fill="currentColor" aria-hidden="true" />}
         </Button>
@@ -131,7 +131,7 @@ export function FounderFilm() {
         <Button variant="ghost" size="icon" className={styles.control} aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} onClick={() => void toggleFullscreen()}>
           {fullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}
         </Button>
-      </div>
+      </div>}
       {message && <p className={styles.message} role="status">{message} <a href="https://drive.google.com/file/d/1LCHqB0WwJSlvca0kipvVYwpMHUgeiFxK/view" target="_blank" rel="noopener noreferrer">Open film in a new tab</a></p>}
     </div>
   )

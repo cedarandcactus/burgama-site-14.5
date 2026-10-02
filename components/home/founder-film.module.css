@@ -1,33 +1,20 @@
 .section {
-  padding: var(--home-space) var(--home-inset) 24px;
-  color: var(--palette-navy);
-  background: var(--palette-powder);
+  padding: var(--home-space) var(--home-inset);
+  color: var(--palette-powder);
+  background: var(--palette-navy);
   scroll-margin-top: 100px;
 }
 
 .inner {
-  max-width: 1320px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 960px;
   margin-inline: auto;
 }
 
-.header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 40px;
-  margin-bottom: 36px;
-}
-
 .heading {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.eyebrow {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
+  text-align: center;
 }
 
 .heading h2 {
@@ -36,15 +23,6 @@
   font-weight: var(--type-heading-weight);
   line-height: var(--type-section-leading);
   text-wrap: balance;
-}
-
-.description {
-  max-width: 32ch;
-  margin: 0;
-  font-size: var(--type-body-size);
-  font-weight: var(--type-body-weight);
-  line-height: var(--type-body-leading);
-  text-wrap: pretty;
 }
 
 .player {
@@ -148,23 +126,8 @@
 
 .caption {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 20px;
-}
-
-.caption p {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.caption p span:first-child {
-  font-weight: 600;
+  justify-content: center;
+  text-align: center;
 }
 
 .note {
@@ -172,14 +135,14 @@
   height: auto;
   padding: 8px 16px;
   border-radius: 999px;
-  color: var(--palette-navy);
+  color: var(--palette-powder);
   background: transparent;
   font-size: 16px;
 }
 
 .note:hover {
-  color: var(--palette-powder);
-  background: var(--palette-navy);
+  color: var(--palette-navy);
+  background: var(--palette-powder);
 }
 
 .message {
@@ -208,15 +171,8 @@
 }
 
 @media (max-width: 700px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+  .inner {
     gap: 24px;
-    margin-bottom: 28px;
-  }
-
-  .description {
-    max-width: 40ch;
   }
 
   .controls {
@@ -234,19 +190,4 @@
     font-size: 14px;
   }
 
-  .caption {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .note {
-    padding-inline: 0;
-  }
-
-  .note:hover {
-    color: var(--palette-navy);
-    background: transparent;
-    text-decoration: underline;
-  }
 }
