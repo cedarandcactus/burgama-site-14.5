@@ -166,7 +166,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
         </div>
       </div>
       <div className={styles.heroClients}>{children}</div>
-      <SectionRise surface="powder" />
+      <SectionRise surface="navy" />
     </section>
   )
 }

@@ -1,0 +1,54 @@
+diff --git a/dist/client/components/use-action-queue.js b/dist/client/components/use-action-queue.js
+index 6950553c42839a41e87f1d4cb32e7e028f114d13..71750f85732f746de5c91a83a3dbe436881f3ea5 100644
+--- a/dist/client/components/use-action-queue.js
++++ b/dist/client/components/use-action-queue.js
+@@ -48,8 +48,18 @@ function refreshOnInstantNavigationUnlock() {
+         }
+     }
+ }
++let reloadingForEarlyHmr = false;
+ function dispatchAppRouterAction(action) {
+     if (dispatch === null) {
++        // Env-file updates can arrive before hydration. Reload fresh assets instead
++        // of dispatching into an uninitialized router; keep other errors intact.
++        if (process.env.NODE_ENV === 'development' && action.type === _routerreducertypes.ACTION_HMR_REFRESH && typeof window !== 'undefined') {
++            if (!reloadingForEarlyHmr) {
++                reloadingForEarlyHmr = true;
++                window.location.reload();
++            }
++            return;
++        }
+         throw Object.defineProperty(new Error('Internal Next.js error: Router action dispatched before initialization.'), "__NEXT_ERROR_CODE", {
+             value: "E668",
+             enumerable: false,
+diff --git a/dist/esm/client/components/use-action-queue.js b/dist/esm/client/components/use-action-queue.js
+index 05ce1854311437bafb4b25b6dbe0b9ea967757a5..154bfaadf15d1a66683956f87eb423bc7ebe894e 100644
+--- a/dist/esm/client/components/use-action-queue.js
++++ b/dist/esm/client/components/use-action-queue.js
+@@ -1,6 +1,6 @@
+ import React, { use, useMemo, useOptimistic } from 'react';
+ import { isThenable } from '../../shared/lib/is-thenable';
+-import { ACTION_REFRESH } from './router-reducer/router-reducer-types';
++import { ACTION_REFRESH, ACTION_HMR_REFRESH } from './router-reducer/router-reducer-types';
+ // The app router state lives outside of React, so we can import the dispatch
+ // method directly wherever we need it, rather than passing it around via props
+ // or context.
+@@ -22,8 +22,18 @@ let dispatch = null;
+         }
+     }
+ }
++let reloadingForEarlyHmr = false;
+ export function dispatchAppRouterAction(action) {
+     if (dispatch === null) {
++        // Env-file updates can arrive before hydration. Reload fresh assets instead
++        // of dispatching into an uninitialized router; keep other errors intact.
++        if (process.env.NODE_ENV === 'development' && action.type === ACTION_HMR_REFRESH && typeof window !== 'undefined') {
++            if (!reloadingForEarlyHmr) {
++                reloadingForEarlyHmr = true;
++                window.location.reload();
++            }
++            return;
++        }
+         throw Object.defineProperty(new Error('Internal Next.js error: Router action dispatched before initialization.'), "__NEXT_ERROR_CODE", {
+             value: "E668",
+             enumerable: false,

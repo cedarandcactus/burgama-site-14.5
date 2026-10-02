@@ -11,10 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { FounderNoteCopy } from './founder-note-copy'
 import styles from './founder-announcement.module.css'
 
 const SESSION_KEY = 'burgama-founder-announcement-v1'
 const OPEN_PROJECT_EVENT = 'burgama:open-project'
+export const OPEN_FOUNDER_NOTE_EVENT = 'burgama:open-founder-note'
 
 export function FounderAnnouncement() {
   const [open, setOpen] = useState(false)
@@ -46,6 +48,12 @@ export function FounderAnnouncement() {
   }, [])
 
   useEffect(() => {
+    const openNote = () => setOpen(true)
+    window.addEventListener(OPEN_FOUNDER_NOTE_EVENT, openNote)
+    return () => window.removeEventListener(OPEN_FOUNDER_NOTE_EVENT, openNote)
+  }, [])
+
+  useEffect(() => {
     scrollControls?.setScrollLock('founder-announcement', open)
     return () => scrollControls?.setScrollLock('founder-announcement', false)
   }, [open, scrollControls])
@@ -53,6 +61,15 @@ export function FounderAnnouncement() {
   useEffect(() => () => {
     if (handoffTimeout.current) window.clearTimeout(handoffTimeout.current)
   }, [])
+
+  function watchIntroduction() {
+    setOpen(false)
+    handoffTimeout.current = window.setTimeout(() => {
+      if (!scrollControls?.scrollToHash('#founder-introduction')) {
+        document.getElementById('founder-introduction')?.scrollIntoView({ behavior: 'instant' })
+      }
+    }, 400)
+  }
 
   function openProjectForm() {
     setOpen(false)
@@ -92,16 +109,13 @@ export function FounderAnnouncement() {
         </DialogHeader>
 
         <div className={styles.copy}>
-          <p>
-            I started this company as Cedar &amp; Cactus. Today, we&apos;re known as Burgama. We outgrew our old brand, growing from a local agency into a studio working with brands and founders around the world.
-          </p>
-          <p>
-            The name comes from Pergamon, an ancient city where things were built to last. That remains our standard: we build the brand, then carry it into the world. Same team, same care, bigger canvas.
-          </p>
-          <p className={styles.signature}>Deniz Sipahi, founder</p>
+          <FounderNoteCopy signatureClassName={styles.signature} />
         </div>
 
         <div className={styles.actions}>
+          <Button variant="ghost" className={styles.action} onClick={watchIntroduction}>
+            watch the introduction
+          </Button>
           <Button variant="ghost" className={styles.action} onClick={openProjectForm}>
             start a project
           </Button>
