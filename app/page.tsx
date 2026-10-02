@@ -8,7 +8,6 @@ import { ActFounder } from '@/components/home/act-founder'
 import { ActWork } from '@/components/home/act-work'
 import { ActResults } from '@/components/home/act-results'
 import { ClientTicker } from '@/components/home/client-ticker'
-import { FounderAnnouncement } from '@/components/home/founder-announcement'
 import styles from '@/components/home/home-page.module.css'
 
 export const metadata: Metadata = {
@@ -21,7 +20,6 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={websiteJsonLd} />
-      <FounderAnnouncement />
       <div className={styles.page} data-homepage>
         <ActOpening><ClientTicker /></ActOpening>
         <ActFounder />

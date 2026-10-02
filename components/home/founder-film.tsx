@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Maximize, Minimize, Pause, Play, RotateCcw, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { OPEN_FOUNDER_NOTE_EVENT } from './founder-announcement'
 import styles from './founder-film.module.css'
 
 const mobileQuery = '(max-width: 700px)'
@@ -41,17 +40,14 @@ export function FounderFilm({ active = true }: { active?: boolean }) {
 
   useEffect(() => {
     const syncFullscreen = () => setFullscreen(document.fullscreenElement === playerRef.current)
-    const pauseForNote = () => videoRef.current?.pause()
     const pauseWhenHidden = () => {
       if (document.hidden) videoRef.current?.pause()
     }
     document.addEventListener('fullscreenchange', syncFullscreen)
     document.addEventListener('visibilitychange', pauseWhenHidden)
-    window.addEventListener(OPEN_FOUNDER_NOTE_EVENT, pauseForNote)
     return () => {
       document.removeEventListener('fullscreenchange', syncFullscreen)
       document.removeEventListener('visibilitychange', pauseWhenHidden)
-      window.removeEventListener(OPEN_FOUNDER_NOTE_EVENT, pauseForNote)
     }
   }, [])
 
