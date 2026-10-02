@@ -3,6 +3,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FounderFilm } from './founder-film'
+import { SectionRise } from './section-rise'
 import { OPEN_FOUNDER_NOTE_EVENT } from './founder-announcement'
 import styles from './founder-film.module.css'
 
@@ -20,6 +21,7 @@ export function ActFounder() {
           </Button>
         </div>
       </div>
+      <SectionRise surface="powder" direction="left" />
     </section>
   )
 }

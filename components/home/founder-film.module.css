@@ -1,5 +1,6 @@
 .section {
-  padding: var(--home-space) var(--home-inset);
+  position: relative;
+  padding: var(--home-space) var(--home-inset) calc(var(--home-space) + var(--home-rise));
   color: var(--palette-powder);
   background: var(--palette-navy);
   scroll-margin-top: 100px;
@@ -44,15 +45,6 @@
   object-fit: contain;
 }
 
-.cover {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
 .watch {
   min-height: 56px;
   height: auto;
@@ -76,10 +68,18 @@
 }
 
 .controls {
+  position: absolute;
+  inset-inline: 12px;
+  bottom: clamp(12px, 3vw, 32px);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.controls > button {
+  pointer-events: auto;
 }
 
 .control {
@@ -96,28 +96,8 @@
   background: var(--palette-powder);
 }
 
-.time {
-  flex: none;
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
-}
-
-.seek {
-  flex: 1;
-  min-width: 0;
-  height: 44px;
-  margin: 0;
-  cursor: pointer;
-  accent-color: var(--palette-powder);
-}
-
-.seek:disabled {
-  cursor: default;
-}
-
 .control:focus-visible,
 .watch:focus-visible,
-.seek:focus-visible,
 .note:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -4px;
@@ -173,15 +153,6 @@
 @media (max-width: 700px) {
   .inner {
     gap: 24px;
-  }
-
-  .controls {
-    gap: 4px;
-    padding: 4px 8px;
-  }
-
-  .time span {
-    display: none;
   }
 
   .watch {

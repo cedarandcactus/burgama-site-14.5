@@ -18,9 +18,7 @@ export function FounderFilm() {
   const [started, setStarted] = useState(false)
   const [ended, setEnded] = useState(false)
   const [muted, setMuted] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(66.67)
-  const [ready, setReady] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -83,55 +81,38 @@ export function FounderFilm() {
           onPlay={() => { setPlaying(true); setStarted(true); setEnded(false) }}
           onPause={() => setPlaying(false)}
           onEnded={() => { setPlaying(false); setEnded(true) }}
-          onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
           onLoadedMetadata={(event) => {
             const length = event.currentTarget.duration
-            if (Number.isFinite(length) && length > 0) { setDuration(length); setReady(true) }
+            if (Number.isFinite(length) && length > 0) setDuration(length)
           }}
           onVolumeChange={(event) => setMuted(event.currentTarget.muted || event.currentTarget.volume === 0)}
           onError={() => setMessage('The film could not load. Please try watching it on Google Drive.')}
         />
-        {(!started || ended) && (
-          <div className={styles.cover}>
-            <Button className={styles.watch} onClick={() => void togglePlayback()} aria-label={ended ? 'Replay founder introduction' : 'Watch founder introduction'}>
+        <div className={styles.controls} role="group" aria-label="Founder film playback controls">
+          {!started || ended ? (
+            <Button className={styles.watch} onClick={() => void togglePlayback()} aria-label={`${ended ? 'Replay' : 'Watch'} founder introduction, ${timestamp(duration)}`}>
               {ended ? <RotateCcw data-icon="inline-start" aria-hidden="true" /> : <Play data-icon="inline-start" fill="currentColor" aria-hidden="true" />}
               {ended ? 'watch again' : 'watch the introduction'}
               <span className={styles.watchDuration}>{timestamp(duration)}</span>
             </Button>
-          </div>
-        )}
+          ) : (
+            <>
+              <Button variant="ghost" size="icon" className={styles.control} onClick={() => void togglePlayback()} aria-label={playing ? 'Pause introduction' : 'Play introduction'}>
+                {playing ? <Pause fill="currentColor" aria-hidden="true" /> : <Play fill="currentColor" aria-hidden="true" />}
+              </Button>
+              <Button variant="ghost" size="icon" className={styles.control} aria-label={muted ? 'Unmute introduction' : 'Mute introduction'} onClick={() => {
+                const video = videoRef.current
+                if (video) video.muted = !video.muted
+              }}>
+                {muted ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
+              </Button>
+              <Button variant="ghost" size="icon" className={styles.control} aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} onClick={() => void toggleFullscreen()}>
+                {fullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}
+              </Button>
+            </>
+          )}
+        </div>
       </div>
-      {started && <div className={styles.controls} role="group" aria-label="Founder film playback controls">
-        <Button variant="ghost" size="icon" className={styles.control} onClick={() => void togglePlayback()} aria-label={playing ? 'Pause introduction' : 'Play introduction'}>
-          {playing ? <Pause fill="currentColor" aria-hidden="true" /> : <Play fill="currentColor" aria-hidden="true" />}
-        </Button>
-        <span className={styles.time} aria-hidden="true">{timestamp(currentTime)} <span>/ {timestamp(duration)}</span></span>
-        <input
-          className={styles.seek}
-          type="range"
-          min={0}
-          max={duration}
-          step={0.1}
-          value={currentTime}
-          disabled={!ready}
-          aria-label="Video position"
-          aria-valuetext={`${timestamp(currentTime)} of ${timestamp(duration)}`}
-          onChange={(event) => {
-            const time = Number(event.target.value)
-            if (videoRef.current) videoRef.current.currentTime = time
-            setCurrentTime(time)
-          }}
-        />
-        <Button variant="ghost" size="icon" className={styles.control} aria-label={muted ? 'Unmute introduction' : 'Mute introduction'} onClick={() => {
-          const video = videoRef.current
-          if (video) video.muted = !video.muted
-        }}>
-          {muted ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
-        </Button>
-        <Button variant="ghost" size="icon" className={styles.control} aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} onClick={() => void toggleFullscreen()}>
-          {fullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}
-        </Button>
-      </div>}
       {message && <p className={styles.message} role="status">{message} <a href="https://drive.google.com/file/d/1LCHqB0WwJSlvca0kipvVYwpMHUgeiFxK/view" target="_blank" rel="noopener noreferrer">Open film in a new tab</a></p>}
     </div>
   )
