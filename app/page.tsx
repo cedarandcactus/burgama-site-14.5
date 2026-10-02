@@ -4,6 +4,7 @@ import { ActCapabilities } from '@/components/home/act-capabilities'
 import { ActClose } from '@/components/home/act-close'
 import { ActOpening } from '@/components/home/act-opening'
 import { ActIntroduction } from '@/components/home/act-introduction'
+import { ActFounder } from '@/components/home/act-founder'
 import { ActWork } from '@/components/home/act-work'
 import { ActResults } from '@/components/home/act-results'
 import { ClientTicker } from '@/components/home/client-ticker'
@@ -23,6 +24,7 @@ export default function HomePage() {
       <FounderAnnouncement />
       <div className={styles.page} data-homepage>
         <ActOpening><ClientTicker /></ActOpening>
+        <ActFounder />
         <ActIntroduction />
         <ActCapabilities />
         <ActWork />

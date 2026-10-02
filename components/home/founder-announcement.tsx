@@ -15,6 +15,7 @@ import styles from './founder-announcement.module.css'
 
 const SESSION_KEY = 'burgama-founder-announcement-v1'
 const OPEN_PROJECT_EVENT = 'burgama:open-project'
+export const OPEN_FOUNDER_NOTE_EVENT = 'burgama:open-founder-note'
 
 export function FounderAnnouncement() {
   const [open, setOpen] = useState(false)
@@ -46,6 +47,12 @@ export function FounderAnnouncement() {
   }, [])
 
   useEffect(() => {
+    const openNote = () => setOpen(true)
+    window.addEventListener(OPEN_FOUNDER_NOTE_EVENT, openNote)
+    return () => window.removeEventListener(OPEN_FOUNDER_NOTE_EVENT, openNote)
+  }, [])
+
+  useEffect(() => {
     scrollControls?.setScrollLock('founder-announcement', open)
     return () => scrollControls?.setScrollLock('founder-announcement', false)
   }, [open, scrollControls])
@@ -53,6 +60,15 @@ export function FounderAnnouncement() {
   useEffect(() => () => {
     if (handoffTimeout.current) window.clearTimeout(handoffTimeout.current)
   }, [])
+
+  function watchIntroduction() {
+    setOpen(false)
+    handoffTimeout.current = window.setTimeout(() => {
+      if (!scrollControls?.scrollToHash('#founder-introduction')) {
+        document.getElementById('founder-introduction')?.scrollIntoView({ behavior: 'instant' })
+      }
+    }, 400)
+  }
 
   function openProjectForm() {
     setOpen(false)
@@ -102,6 +118,9 @@ export function FounderAnnouncement() {
         </div>
 
         <div className={styles.actions}>
+          <Button variant="ghost" className={styles.action} onClick={watchIntroduction}>
+            watch the introduction
+          </Button>
           <Button variant="ghost" className={styles.action} onClick={openProjectForm}>
             start a project
           </Button>
