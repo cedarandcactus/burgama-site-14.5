@@ -13,8 +13,10 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
   return <PublicationShell mode={direction.style}>
     <article className={styles.article} data-editorial-style={direction.style} data-opening={direction.opening ?? 'split'} aria-labelledby="article-title">
       <header className={styles.articleHeader}>
-        <h1 id="article-title" className={`${styles.headline} ${direction.style === 'journal' ? 'font-serif' : 'font-sans'}`}>{direction.headlineLines ? direction.headlineLines.map((line, index) => <Fragment key={line}>{index > 0 && ' '}<span>{line}</span></Fragment>) : idea.title}</h1>
-        <div className={styles.introduction}><p className={styles.deck}>{idea.deck}</p><ArticleMetadata idea={idea} /></div>
+        <Link href="/research" className={styles.section}>{idea.categories[0]}</Link>
+        <h1 id="article-title" className={`${styles.headline} ${direction.style === 'journal' ? 'font-serif' : 'font-sans'}`}>{idea.title}</h1>
+        <p className={styles.deck}>{idea.deck}</p>
+        <ArticleMetadata idea={idea} />
       </header>
       {direction.media && <EditorialMedia media={direction.media} />}
       {direction.figure && <EditorialFigure figure={direction.figure} />}
@@ -32,7 +34,7 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
       </div>
     </article>
     <section className={styles.related} aria-labelledby="related-title">
-      <div className={styles.sectionBar}><h2 id="related-title" className="font-serif">Further inquiry</h2><Link href="/research">Back to Research <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link></div>
+      <div className={styles.sectionBar}><h2 id="related-title">Further reading</h2><Link href="/research">All research <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link></div>
       <div className={styles.relatedGrid}>{related.map(entry => <ArticleCard key={entry.slug} idea={entry} />)}</div>
     </section>
   </PublicationShell>

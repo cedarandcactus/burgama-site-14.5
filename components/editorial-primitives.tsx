@@ -13,7 +13,6 @@ export function PublicationShell({ children, mode }: { children: ReactNode; mode
         <span className={`${styles.wordmark} ${mode === 'journal' ? 'font-serif' : 'font-sans'}`}>BURGAMA</span>
         <span className={styles.publicationName}>Research</span>
       </Link>
-      <Link href="/research" className={styles.archiveLink}>All research <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link>
     </header>
     {children}
     <footer className={styles.footer}>
@@ -25,7 +24,7 @@ export function PublicationShell({ children, mode }: { children: ReactNode; mode
 
 export function ArticleMetadata({ idea }: { idea: IdeaPost }) {
   return <div className={styles.metadata}>
-    <span>By <Link href="/studio">Burgama</Link></span><span>{getIdeaReadingTime(idea)} minute read</span>
+    <span>By <Link href="/studio">Burgama</Link></span><span>{getIdeaReadingTime(idea)} min read</span>
   </div>
 }
 
@@ -67,7 +66,7 @@ export function ArticleReferences({ idea }: { idea: IdeaPost }) {
 
 export function ArticleCard({ idea }: { idea: IdeaPost }) {
   return <article className={styles.articleCard}>
-    <h3 className="font-serif"><Link href={`/research/${idea.slug}`}>{idea.title}{' '}<ArrowUpRight className={styles.cardArrow} aria-hidden="true" /></Link></h3>
+    <h3 className="font-serif"><Link href={`/research/${idea.slug}`}>{idea.title}</Link></h3>
     <p className={styles.cardDeck}>{idea.deck}</p>
   </article>
 }
