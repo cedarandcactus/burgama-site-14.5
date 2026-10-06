@@ -16,6 +16,7 @@ export const useSmoothScroll = () => useContext(ScrollContext)
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const excluded = pathname.startsWith('/lot-2046')
+  const nativeWheel = pathname.startsWith('/work/') || pathname.startsWith('/editions/')
   const lenis = useRef<Lenis | null>(null)
   const locks = useRef(new Set<string>())
 
@@ -69,7 +70,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const configure = () => {
       teardown()
       teardown = () => {}
-      if (preference.matches) return
+      if (preference.matches || nativeWheel) return
       const instance = new Lenis({
         smoothWheel: true, syncTouch: false, wheelMultiplier: 1, lerp: .12,
         autoRaf: false, anchors: false,
@@ -121,7 +122,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       window.removeEventListener('hashchange', reconcile)
       window.removeEventListener('pageshow', reconcile)
     }
-  }, [excluded, cancelScroll, setScrollLock])
+  }, [excluded, nativeWheel, cancelScroll, setScrollLock])
 
   useEffect(() => {
     if (excluded) return

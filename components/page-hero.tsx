@@ -19,6 +19,7 @@ type PageHeroProps = {
   headingLevel?: 'h1' | 'h2'
   titleId?: string
   compact?: boolean
+  motion?: 'default' | 'editorial'
   surface?: Surface
   nextSurface?: Surface
   breadcrumb?: ReactNode
@@ -28,7 +29,7 @@ type PageHeroProps = {
   children?: ReactNode
 }
 
-export function PageHero({ wordmark, variant = 'default', intro = [], introAsTagline = false, artifactId, panel, mediaFullWidth = false, backgroundMedia = false, headingLevel: Heading = 'h1', titleId, compact = false, surface = 'powder', nextSurface = 'blue-slate', breadcrumb, breadcrumbLabel = 'Breadcrumb', metadata, actions, children }: PageHeroProps) {
+export function PageHero({ wordmark, variant = 'default', intro = [], introAsTagline = false, artifactId, panel, mediaFullWidth = false, backgroundMedia = false, headingLevel: Heading = 'h1', titleId, compact = false, motion: motionVariant = 'default', surface = 'powder', nextSurface = 'blue-slate', breadcrumb, breadcrumbLabel = 'Breadcrumb', metadata, actions, children }: PageHeroProps) {
   const heroRef = useRef<HTMLElement>(null)
   const media = panel ?? (artifactId ? <ArtifactSlot id={artifactId} /> : null)
   const words = wordmark.trim().split(/\s+/)
@@ -37,11 +38,29 @@ export function PageHero({ wordmark, variant = 'default', intro = [], introAsTag
     const hero = heroRef.current
     if (!hero) return
 
-    const motion = gsap.matchMedia(hero)
-    motion.add('(prefers-reduced-motion: no-preference)', () => {
+    const mediaContext = gsap.matchMedia(hero)
+    mediaContext.add('(prefers-reduced-motion: no-preference)', () => {
       const titleWords = hero.querySelectorAll<HTMLElement>('[data-page-hero-word]')
       const supportingCopy = hero.querySelectorAll<HTMLElement>('[data-page-hero-support]')
       const timeline = gsap.timeline()
+
+      if (motionVariant === 'editorial') {
+        timeline.from(titleWords, {
+          yPercent: 16,
+          clipPath: 'inset(0% 0% 100% 0%)',
+          duration: 0.65,
+          stagger: 0.035,
+          ease: 'power3.out',
+          clearProps: 'transform,clipPath',
+        }).from(supportingCopy, {
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.045,
+          ease: 'power2.out',
+          clearProps: 'opacity',
+        }, 0.12)
+        return
+      }
 
       timeline.from(titleWords, {
         yPercent: 28,
@@ -66,8 +85,8 @@ export function PageHero({ wordmark, variant = 'default', intro = [], introAsTag
       }
     })
 
-    return () => motion.revert()
-  }, [wordmark])
+    return () => mediaContext.revert()
+  }, [wordmark, motionVariant])
 
   return (
     <header ref={heroRef} className="studio-hero" data-variant={variant} data-surface={surface} data-compact={compact} data-background-media={backgroundMedia || undefined} data-nav-surface={surface === 'navy' || surface === 'blue-mid' ? 'ink' : 'frost'}>

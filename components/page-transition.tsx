@@ -196,7 +196,9 @@ export function PageTransition({ children }: { children: ReactNode }) {
     const id = ++sequenceRef.current
     navigation.current = { id, target, source: location.pathname + location.search, sent: false, completed: false }
     reduced.current = matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced.current || document.hidden) {
+    const destinationPath = new URL(target.href, location.href).pathname
+    const editorialNavigation = [location.pathname, destinationPath].some(path => path.startsWith('/editions/'))
+    if (reduced.current || document.hidden || editorialNavigation) {
       navigate(id)
       return
     }

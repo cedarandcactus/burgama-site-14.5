@@ -4,7 +4,7 @@ import { EditorialArtwork } from '@/components/editorial-artwork'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
 import { getIdeaReadingTime, ideas } from '@/lib/editorial'
-import styles from './editorial.module.css'
+import styles from './research-index.module.css'
 
 export function EditorialIndex() {
   return (

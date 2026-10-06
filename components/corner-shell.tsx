@@ -14,6 +14,12 @@ const destinations = [
 
 export function CornerShell() {
   const pathname = usePathname()
+  if (pathname.startsWith('/editions/')) return null
+  return <AgencyCornerShell />
+}
+
+function AgencyCornerShell() {
+  const pathname = usePathname()
   const enquiryId = `nav-project-${useId()}`
   const [open, setOpen] = useState(false)
   const [projectOpen, setProjectOpen] = useState(false)
