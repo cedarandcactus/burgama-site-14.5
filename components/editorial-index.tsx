@@ -1,41 +1,24 @@
 import Link from '@/components/transition-link'
-import { PageHero } from '@/components/page-hero'
-import { EditorialArtwork } from '@/components/editorial-artwork'
-import { SectionRise } from '@/components/home/section-rise'
-import { SiteFooter } from '@/components/site-footer'
+import { ArrowUpRight } from 'lucide-react'
+import { PublicationShell, ArticleCard } from '@/components/editorial-primitives'
 import { getIdeaReadingTime, ideas } from '@/lib/editorial'
 import styles from './editorial.module.css'
 
 export function EditorialIndex() {
-  return (
-    <div className="studio-page">
-      <PageHero
-        variant="centered"
-        wordmark="Research into the decisions behind better digital work."
-        titleId="research-title"
-        surface="navy"
-        nextSurface="powder"
-        intro={['Practical observations and analysis from our work on websites, ecommerce, and search. What we test, what we question, and how it informs the next decision.']}
-      />
-      <section className="studio-band" data-surface="powder" aria-label="All research articles">
-        <ul className={`studio-width ${styles.ideaList}`}>
-          {ideas.map(idea => (
-            <li key={idea.slug}>
-              <Link href={`/research/${idea.slug}`} className={styles.ideaLink} aria-label={idea.title}>
-                <EditorialArtwork visual={idea.visual} />
-                <article className={styles.ideaEntry}>
-                  <p className={styles.categoryPill}>{idea.categories[0]}</p>
-                  <h2 className="font-serif">{idea.title}</h2>
-                  <p className={styles.ideaDeck}>{idea.deck}</p>
-                  <p className={styles.readingTime}>{getIdeaReadingTime(idea)} min read</p>
-                </article>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <SectionRise surface="powder-deep" direction="left" />
-      </section>
-      <SiteFooter enquiryHeading="Tell us what you’re thinking" />
-    </div>
-  )
+  const featured = ideas.find(idea => idea.slug === 'ai-website-audits') ?? ideas[0]
+  return <PublicationShell>
+    <header className={styles.archiveHeader}>
+      <p className={styles.eyebrow}>Research &amp; observations</p>
+      <h1 className="font-serif">The decisions<br />behind digital work.</h1>
+      <p>Practical observations and analysis from our work on websites, ecommerce, and search. What we test, what we question, and how it informs the next decision.</p>
+    </header>
+    <section className={styles.featured} aria-labelledby="featured-title">
+      <div><p className={styles.eyebrow}>Field notes / SEO</p><h2 id="featured-title" className="font-serif"><Link href={`/research/${featured.slug}`}>{featured.title} <ArrowUpRight className={styles.cardArrow} aria-hidden="true" /></Link></h2></div>
+      <div><p>{featured.deck}</p><span className={styles.readingTime}>By Burgama / {getIdeaReadingTime(featured)} min read</span></div>
+    </section>
+    <section className={styles.archive} aria-labelledby="archive-title">
+      <div className={styles.sectionBar}><h2 id="archive-title" className="font-serif">All articles</h2><span>{ideas.length} articles</span></div>
+      <div className={styles.archiveGrid}>{ideas.map(idea => <ArticleCard key={idea.slug} idea={idea} />)}</div>
+    </section>
+  </PublicationShell>
 }

@@ -2,6 +2,13 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+html:has([data-publication]), body:has([data-publication]) {
+  background: var(--publication-paper);
+  color: var(--publication-ink);
+}
+body #main:has([data-publication]) { padding-top: 0; }
+html:has([data-publication]) { scroll-padding-top: 32px; }
+
 /* Safari may expose native play overlays even when controls are disabled. */
 video[data-background-video] {
   pointer-events: none;
@@ -81,6 +88,11 @@ video[data-background-video]::-webkit-media-controls-enclosure {
 }
 
 :root {
+  --publication-paper: #dce3f3;
+  --publication-ink: var(--palette-navy);
+  --publication-field: var(--palette-powder);
+  --publication-muted: #45516a;
+  --publication-rule: color-mix(in srgb, var(--publication-ink) 23%, transparent);
   --type-heading-weight: 400;
   --type-hero-size: clamp(2.8125rem, calc(6.7vw - 0.5rem), 5.25rem);
   --type-hero-leading: 1.08;

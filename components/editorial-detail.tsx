@@ -1,44 +1,49 @@
-import { CircularArrowIcon } from '@/components/circular-arrow-icon'
-import { DirectionLink } from '@/components/direction-link'
+import { Fragment } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
-import { PageHero } from '@/components/page-hero'
-import { EditorialArtwork } from '@/components/editorial-artwork'
-import { SectionRise } from '@/components/home/section-rise'
-import { SiteFooter } from '@/components/site-footer'
-import { getIdeaReadingTime, ideas, type IdeaPost } from '@/lib/editorial'
+import { PublicationShell, ArticleMetadata, ArticleReferences, ArticleCard, EditorialFigure } from '@/components/editorial-primitives'
+import { ideas, type IdeaPost } from '@/lib/editorial'
+import { getEditorialDirection, getRelatedIdeas } from '@/lib/editorial-layouts'
 import styles from './editorial.module.css'
 
 export function EditorialDetail({ idea }: { idea: IdeaPost }) {
-  const currentIndex = ideas.findIndex(entry => entry.slug === idea.slug)
-  const previous = currentIndex > 0 ? ideas[currentIndex - 1] : undefined
-  const next = currentIndex < ideas.length - 1 ? ideas[currentIndex + 1] : undefined
+  const direction = getEditorialDirection(idea)
+  const related = getRelatedIdeas(idea, ideas)
 
-  return (
-    <div className="studio-page">
-      <article aria-labelledby="article-title">
-        <PageHero variant="centered" wordmark={idea.title} titleId="article-title" compact backgroundMedia surface="navy" nextSurface="powder" panel={<EditorialArtwork visual={idea.visual} variant="background" />} intro={[idea.deck]} breadcrumbLabel="Back to Research" breadcrumb={<DirectionLink href="/research" direction="left" label="Research" />} metadata={<><p className={styles.categoryPill}>{idea.categories[0]}</p><p>{getIdeaReadingTime(idea)} min read</p></>} />
-        <div className="studio-band" data-surface="powder">
-          <div className={`studio-reading ${styles.articleBody}`}>
-            {idea.body.map((paragraph, index) => <p key={`${idea.slug}-${index}`}>{paragraph}</p>)}
-            <div className="studio-actions">
-              <Link href={idea.internalLink.href} className={`pill ${styles.internalLink}`}><span>{idea.internalLink.label}</span><CircularArrowIcon className={styles.inlineArrow} /></Link>
-            </div>
-            <details className={styles.sources}>
-              <summary>Sources and further reading</summary>
-              <ul>{idea.sources.map(source => <li key={source.href}><a href={source.href} target="_blank" rel="noreferrer">{source.label}</a></li>)}</ul>
-            </details>
-          </div>
-          <SectionRise surface="blue-slate" direction="left" />
+  return <PublicationShell>
+    <article className={styles.article} data-editorial-style={direction.style} aria-labelledby="article-title">
+      <header className={styles.articleHeader}>
+        <p className={styles.eyebrow}>{idea.categories[0]} <span> / {direction.format}</span></p>
+        <h1 id="article-title" className={`${styles.headline} font-serif`}>{idea.title}</h1>
+        <p className={styles.deck}>{idea.deck}</p>
+        <ArticleMetadata idea={idea} />
+      </header>
+      {direction.figure && <EditorialFigure figure={direction.figure} />}
+      <div className={styles.readingGrid}>
+        <aside className={styles.contents} aria-label="Article contents">
+          <nav aria-label="In this article">
+            <p className={styles.smallHeading}>In this article</p>
+            <ol>{direction.sections.map((section, index) => <li key={section.start}><a href={`#section-${index + 1}`}><span>{String(index + 1).padStart(2, '0')}</span>{section.title}</a></li>)}</ol>
+          </nav>
+          <p className={styles.topics}>{idea.categories.join(' / ')}</p>
+        </aside>
+        <div className={styles.story}>
+          {direction.sections.map((section, index) => <Fragment key={section.start}>
+            <section id={`section-${index + 1}`} className={styles.storySection} aria-labelledby={`section-heading-${index + 1}`} tabIndex={-1}>
+              <h2 id={`section-heading-${index + 1}`} className="font-serif"><span className={styles.sectionNumber} aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{section.title}</h2>
+              {idea.body.slice(section.start, direction.sections[index + 1]?.start ?? idea.body.length).map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
+              {section.note && <aside className={styles.sideNote}><span className={styles.smallHeading}>Reading note</span><p>{section.note}</p></aside>}
+            </section>
+            {index === 0 && direction.pullQuote && <blockquote className={`${styles.pullQuote} font-serif`}><p>“{direction.pullQuote}”</p></blockquote>}
+          </Fragment>)}
+          <ArticleReferences idea={idea} />
+          <p className={styles.contextLink}>From the practice: <Link href={idea.internalLink.href}>{idea.internalLink.label.replace(/^Explore /, '')} <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link></p>
         </div>
-      </article>
-      <section className="studio-band" data-surface="blue-slate" aria-label="More research">
-        <nav className="studio-width studio-sequence" aria-label="Browse research">
-          {previous && <DirectionLink href={`/research/${previous.slug}`} direction="left" rel="prev" eyebrow="previous" label={previous.title} />}
-          <DirectionLink href={next ? `/research/${next.slug}` : '/research'} rel={next ? 'next' : undefined} eyebrow={next ? 'next' : undefined} label={next?.title ?? 'All research'} />
-        </nav>
-        <SectionRise surface="powder-deep" />
-      </section>
-      <SiteFooter enquiryHeading="Tell us what you’re thinking" />
-    </div>
-  )
+      </div>
+    </article>
+    <section className={styles.related} aria-labelledby="related-title">
+      <div className={styles.sectionBar}><h2 id="related-title" className="font-serif">Continue reading</h2><Link href="/research">All articles <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link></div>
+      <div className={styles.relatedGrid}>{related.map(entry => <ArticleCard key={entry.slug} idea={entry} />)}</div>
+    </section>
+  </PublicationShell>
 }
