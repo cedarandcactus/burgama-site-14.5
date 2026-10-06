@@ -9,11 +9,12 @@ import { useEffect, useId, useRef, useState } from 'react'
 const destinations = [
   { label: 'work', href: '/work' },
   { label: 'about', href: '/studio' },
+  { label: 'research', href: '/research' },
 ]
 
 export function CornerShell() {
   const pathname = usePathname()
-  if (pathname === '/research' || pathname.startsWith('/research/')) return null
+  if (pathname.startsWith('/research/')) return null
   return <AgencyCornerShell />
 }
 

@@ -8,6 +8,10 @@ html:has([data-publication]), body:has([data-publication]) {
 }
 body #main:has([data-publication]) { padding-top: 0; }
 html:has([data-publication]) { scroll-padding-top: 32px; }
+html:has([data-publication='technical']), body:has([data-publication='technical']) {
+  background: var(--publication-ink);
+  color: var(--publication-paper);
+}
 
 /* Safari may expose native play overlays even when controls are disabled. */
 video[data-background-video] {
@@ -88,7 +92,7 @@ video[data-background-video]::-webkit-media-controls-enclosure {
 }
 
 :root {
-  --publication-paper: #dce3f3;
+  --publication-paper: #f0f0eb;
   --publication-ink: var(--palette-navy);
   --publication-field: var(--palette-powder);
   --publication-muted: #45516a;

@@ -53,6 +53,7 @@ const navigationGroups = [
   {
     label: 'The studio',
     links: [
+      { label: 'Research', href: '/research' },
       { label: 'Contact', href: '#start-a-project' },
     ],
   },

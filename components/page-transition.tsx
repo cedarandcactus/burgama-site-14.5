@@ -197,7 +197,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     navigation.current = { id, target, source: location.pathname + location.search, sent: false, completed: false }
     reduced.current = matchMedia('(prefers-reduced-motion: reduce)').matches
     const destinationPath = new URL(target.href, location.href).pathname
-    const editorialNavigation = [location.pathname, destinationPath].some(path => path === '/research' || path.startsWith('/research/'))
+    const editorialNavigation = [location.pathname, destinationPath].some(path => path.startsWith('/research/'))
     if (reduced.current || document.hidden || editorialNavigation) {
       navigate(id)
       return

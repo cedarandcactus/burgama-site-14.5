@@ -7,6 +7,10 @@ export type EditorialFigure =
 export type EditorialDirection = {
   style: 'journal' | 'technical'
   format: string
+  opening?: 'split' | 'cover' | 'comparison'
+  headlineLines?: string[]
+  media?: { src: string; alt: string; width: number; height: number; caption: string; credit: string }
+  evidence?: { heading: string; columns: [string, string]; rows: [string, string][]; caption: string }
   sections: { title: string; start: number; note?: string }[]
   pullQuote?: string
   figure?: EditorialFigure
@@ -14,7 +18,9 @@ export type EditorialDirection = {
 
 const directions: Record<string, EditorialDirection> = {
   'wix-vs-vercel': {
-    style: 'journal', format: 'Analysis',
+    style: 'journal', format: 'Analysis', opening: 'split',
+    headlineLines: ['Wix vs Vercel:', 'Which one actually works for your website'],
+    media: { src: '/images/research-built-or-build.png', alt: 'A finished apartment beside an open concrete building frame, illustrating convenience versus the freedom to build.', width: 1536, height: 1024, caption: 'A furnished apartment, or the foundations for something of your own. Two different starting points—not a fair fight.', credit: 'Conceptual illustration · AI-generated for Burgama' },
     sections: [
       { title: 'Two different starting points', start: 0 },
       { title: 'Control, ceiling and ownership', start: 3 },
@@ -23,7 +29,9 @@ const directions: Record<string, EditorialDirection> = {
     pullQuote: 'Both can be the right answer. They are answers to different questions.',
   },
   'ai-website-audits': {
-    style: 'journal', format: 'Field notes',
+    style: 'journal', format: 'Field notes', opening: 'cover',
+    headlineLines: ['Why AI website audits', 'get it wrong'],
+    evidence: { heading: 'The report versus the site', columns: ['What the audit claimed', 'What we observed'], rows: [['A pricing inconsistency', 'The same price everywhere.'], ['A broken product page', 'The page loaded normally.'], ['A page was still live', 'The page had been unpublished.']], caption: 'Examples from the single client audit described in this article. These observations are not a benchmark of AI tools.' },
     sections: [
       { title: 'Checking the claims', start: 0, note: 'An observation from a single client audit, not a benchmark of every AI tool.' },
       { title: 'Patterns are not observations', start: 2 },
@@ -32,7 +40,7 @@ const directions: Record<string, EditorialDirection> = {
     pullQuote: 'An AI audit is a hypothesis generator, not an inspector.',
   },
   'squarespace-vs-custom-website': {
-    style: 'journal', format: 'Perspective',
+    style: 'journal', format: 'Perspective', opening: 'split',
     sections: [
       { title: 'When the template is enough', start: 0 },
       { title: 'Where the limits appear', start: 2 },
@@ -41,7 +49,8 @@ const directions: Record<string, EditorialDirection> = {
     pullQuote: 'Sometimes the answer is to leave the site alone.',
   },
   'klaviyo-popup-best-practices': {
-    style: 'technical', format: 'Practical guide',
+    style: 'technical', format: 'Practical guide', opening: 'cover',
+    headlineLines: ['How to build an', 'email popup', 'people actually use'],
     sections: [
       { title: 'The structural problem', start: 0 },
       { title: 'Three parts of a usable offer', start: 2, note: 'The email is a backup, not the delivery mechanism.' },
@@ -54,7 +63,8 @@ const directions: Record<string, EditorialDirection> = {
     ] },
   },
   'judgeme-vs-yotpo': {
-    style: 'technical', format: 'Comparison',
+    style: 'technical', format: 'Comparison', opening: 'comparison',
+    headlineLines: ['Judge.me vs Yotpo:', 'Which review app', 'actually works for Shopify'],
     sections: [
       { title: 'Cost, distribution and performance', start: 0 },
       { title: 'Migration and overlap', start: 4, note: 'Imported reviews do not automatically retain verified-buyer badges. Video reviews do not transfer.' },
@@ -66,7 +76,7 @@ const directions: Record<string, EditorialDirection> = {
     ] },
   },
   'squarespace-sitemap-not-updating': {
-    style: 'technical', format: 'Technical note',
+    style: 'technical', format: 'Technical note', opening: 'split',
     sections: [
       { title: 'A stale map', start: 0 },
       { title: 'Verify the page first', start: 2, note: 'A successful response, indexable settings and a self-referencing canonical are separate checks.' },
