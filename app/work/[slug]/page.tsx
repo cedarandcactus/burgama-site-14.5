@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { MediaFrame, ProjectModules } from '@/components/media-module'
+import { CaseStudyMotion } from '@/components/case-study-motion'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { PageHero } from '@/components/page-hero'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
@@ -61,8 +63,8 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
       <JsonLd data={projectJsonLd} />
       <JsonLd data={breadcrumbs} />
       <div className="studio-page">
-      <article className="portfolio portfolio-detail" aria-labelledby="project-title">
-        <PageHero wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="white" breadcrumbLabel="Back to work" breadcrumb={
+      <CaseStudyMotion key={project.slug} slug={project.slug}>
+        <PageHero motion="editorial" wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="white" breadcrumbLabel="Back to work" breadcrumb={
           <DirectionLink href={backHref} direction="left" label="work" />
         }>
           {hasFacts && <dl className="portfolio-facts">
@@ -87,7 +89,15 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
             </footer>}
             {(previous || next) && <nav className="studio-sequence portfolio-sequence" aria-label="Browse projects">
               {previous && <DirectionLink href={`/work/${previous.slug}`} rel="prev" direction="left" eyebrow="previous" label={previous.title} />}
-              {next && <DirectionLink href={`/work/${next.slug}`} rel="next" eyebrow="next" label={next.title} />}
+              {next && (next.heroMedia.src ? <Link href={`/work/${next.slug}`} rel="next" className="portfolio-next" aria-label={`Next project: ${next.title}`}>
+                <div className="portfolio-next-artwork" aria-hidden="true">
+                  <MediaFrame item={{ ...next.heroMedia, label: '' }} />
+                </div>
+                <span className="portfolio-next-caption">
+                  <span className="studio-direction-copy"><small>next</small><span>{next.title}</span></span>
+                  <span className="arrow-capsule" aria-hidden="true"><CircularArrowIcon /></span>
+                </span>
+              </Link> : <DirectionLink href={`/work/${next.slug}`} rel="next" eyebrow="next" label={next.title} />)}
             </nav>}
           </div>
           <SectionRise surface={relatedProjects.length > 0 ? 'navy' : 'powder-deep'} direction="left" />
@@ -104,7 +114,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
           </div>
           <SectionRise surface="powder-deep" />
         </section>}
-      </article>
+      </CaseStudyMotion>
       <SiteFooter enquiryHeading="What could we make together?" />
       </div>
     </>

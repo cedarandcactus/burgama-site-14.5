@@ -59,6 +59,26 @@ body .portfolio .project-tile-image { position: relative; width: 100%; aspect-ra
 .portfolio-facts dd { margin: 0; font-size: 16px; font-weight: 300; line-height: 1.55; }
 .portfolio-story { display: flex; flex-direction: column; gap: clamp(48px, 7vw, 100px); }
 .portfolio-detail .portfolio-project-ending { display: flex; flex-direction: column; gap: 32px; }
+.portfolio-detail .portfolio-next { display: flex; flex-direction: column; flex: 1 0 100%; order: -1; min-width: 0; gap: 24px; color: var(--studio-ink); text-decoration: none; }
+.portfolio-detail .portfolio-next-artwork { aspect-ratio: 16 / 9; max-height: 68svh; transform-origin: center bottom; }
+.portfolio-detail .portfolio-next-caption { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.portfolio-detail .portfolio-next-caption .studio-direction-copy > span { font-family: var(--font-cenura), sans-serif; font-size: var(--type-card-size); line-height: var(--type-card-leading); text-wrap: balance; }
+.portfolio-detail .portfolio-next .arrow-capsule { --arrow-surface: var(--palette-navy); --arrow-ink: var(--palette-powder); flex-shrink: 0; }
+.portfolio-detail .portfolio-next:focus-visible { outline-offset: 8px; }
+.portfolio-detail .portfolio-next:is(:hover, :focus-visible) .studio-direction-copy > span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+.portfolio-detail .portfolio-next .case-media,
+.portfolio-detail .portfolio-next .case-media-frame { height: 100%; max-width: 100%; aspect-ratio: auto !important; }
+.portfolio-detail .portfolio-next .case-media-frame img { height: 100%; object-fit: contain; }
+@media (min-width: 1000px) and (prefers-reduced-motion: no-preference) {
+  .portfolio-detail .case-module > .case-module-title { position: sticky; top: calc(var(--header-clearance) + 24px); align-self: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-detail .portfolio-next-artwork,
+  .portfolio-detail .portfolio-next-caption,
+  .portfolio-detail .case-media,
+  .portfolio-detail .case-media-frame,
+  .portfolio-detail .case-module-title { transform: none !important; clip-path: none !important; }
+}
 /* Project actions retain their original powder/navy treatment on the white story surface. */
 .portfolio-detail .portfolio-project-links { --studio-surface: var(--palette-powder); --studio-ink: var(--palette-navy); }
 .portfolio-detail .portfolio-footnotes { display: flex; flex-direction: column; gap: 12px; max-width: 70ch; border-top: 1px solid var(--rule); padding-top: 20px; color: var(--palette-navy-raised); font-family: var(--font-pangram), sans-serif; font-size: 14px; font-weight: 400; line-height: 1.6; }
