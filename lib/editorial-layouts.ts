@@ -9,7 +9,7 @@ export type EditorialDirection = {
   format: string
   opening?: 'split' | 'cover' | 'comparison'
   headlineLines?: string[]
-  media?: { src: string; alt: string; width: number; height: number; caption: string; credit: string }
+  media?: { src: string; alt: string; width: number; height: number; caption: string; credit?: string }
   evidence?: { heading: string; columns: [string, string]; rows: [string, string][]; caption: string }
   sections: { title: string; start: number; note?: string }[]
   pullQuote?: string
@@ -20,7 +20,7 @@ const directions: Record<string, EditorialDirection> = {
   'wix-vs-vercel': {
     style: 'journal', format: 'Analysis', opening: 'split',
     headlineLines: ['Wix vs Vercel:', 'Which one actually works for your website'],
-    media: { src: '/images/research-built-or-build.png', alt: 'A finished apartment beside an open concrete building frame, illustrating convenience versus the freedom to build.', width: 1536, height: 1024, caption: 'A furnished apartment, or the foundations for something of your own. Two different starting points—not a fair fight.', credit: 'Conceptual illustration · AI-generated for Burgama' },
+    media: { src: '/images/research-built-or-build.png', alt: 'A finished apartment beside an open concrete building frame, illustrating convenience versus the freedom to build.', width: 1536, height: 1024, caption: 'A furnished apartment, or the foundations for something of your own. Two different starting points—not a fair fight.' },
     sections: [
       { title: 'Two different starting points', start: 0 },
       { title: 'Control, ceiling and ownership', start: 3 },

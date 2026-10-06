@@ -10,13 +10,13 @@ export function PublicationShell({ children, mode }: { children: ReactNode; mode
   return <div className={`${styles.publication} font-sans`} data-publication={mode}>
     <header className={styles.masthead}>
       <Link href="/research" className={styles.identity} aria-label="Burgama Research home">
-        <span className={`${styles.wordmark} ${mode === 'journal' ? 'font-serif' : 'font-sans'}`}>BURGAMA</span>
+        <span className={`${styles.wordmark} ${mode === 'journal' ? 'font-serif' : 'font-sans'}`}>Burgama</span>
         <span className={styles.publicationName}>Research</span>
       </Link>
     </header>
     {children}
     <footer className={styles.footer}>
-      <Link href="/research" className={`${styles.footerBrand} font-serif`}>BURGAMA<span>Research</span></Link>
+      <Link href="/research" className={`${styles.footerBrand} font-serif`}>Burgama<span>Research</span></Link>
       <nav aria-label="Publication footer"><Link href="/studio">About Burgama</Link><Link href="/research">All research</Link><Link href="/privacy">Privacy</Link></nav>
     </footer>
   </div>
@@ -31,7 +31,7 @@ export function ArticleMetadata({ idea }: { idea: IdeaPost }) {
 export function EditorialMedia({ media }: { media: NonNullable<EditorialDirection['media']> }) {
   return <figure className={styles.featureMedia}>
     <Image src={media.src} alt={media.alt} width={media.width} height={media.height} sizes="(max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1360px" className={styles.featureImage} />
-    <figcaption><span>{media.caption}</span><span>{media.credit}</span></figcaption>
+    <figcaption><span>{media.caption}</span>{media.credit && <span>{media.credit}</span>}</figcaption>
   </figure>
 }
 
