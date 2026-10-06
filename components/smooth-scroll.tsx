@@ -16,7 +16,7 @@ export const useSmoothScroll = () => useContext(ScrollContext)
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const excluded = pathname.startsWith('/lot-2046')
-  const nativeWheel = pathname.startsWith('/work/') || pathname.startsWith('/research/')
+  const nativeWheel = pathname.startsWith('/work/') || pathname.startsWith('/editions/')
   const lenis = useRef<Lenis | null>(null)
   const locks = useRef(new Set<string>())
 

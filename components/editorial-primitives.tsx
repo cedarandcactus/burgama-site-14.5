@@ -66,7 +66,7 @@ export function ArticleReferences({ idea }: { idea: IdeaPost }) {
 
 export function ArticleCard({ idea }: { idea: IdeaPost }) {
   return <article className={styles.articleCard}>
-    <h3 className="font-serif"><Link href={`/research/${idea.slug}`}>{idea.title}</Link></h3>
+    <h3 className="font-serif"><Link href={`/editions/${idea.slug}`}>{idea.title}</Link></h3>
     <p className={styles.cardDeck}>{idea.deck}</p>
   </article>
 }

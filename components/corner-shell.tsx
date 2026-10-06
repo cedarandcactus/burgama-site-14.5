@@ -14,7 +14,7 @@ const destinations = [
 
 export function CornerShell() {
   const pathname = usePathname()
-  if (pathname.startsWith('/research/')) return null
+  if (pathname.startsWith('/editions/')) return null
   return <AgencyCornerShell />
 }
 

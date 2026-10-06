@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { EditorialDetail } from '@/components/editorial-detail'
+import { ResearchArticle } from '@/components/research-article'
 import { getIdea, ideas } from '@/lib/editorial'
 import { absoluteUrl, breadcrumbJsonLd, JsonLd, siteUrl } from '@/lib/seo'
 
@@ -75,7 +75,7 @@ export default async function ResearchDetailPage({
     <>
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbs} />
-      <EditorialDetail idea={idea} />
+      <ResearchArticle idea={idea} />
     </>
   )
 }
