@@ -104,19 +104,25 @@ export function InfiniteFaq() {
 
   return (
     <section id="faq" ref={sectionRef} className={`${styles.section} font-sans`} data-nav-surface="ink" aria-labelledby="faq-heading">
-      <div className={styles.layout}>
-        <header className={styles.intro}>
-          <h2 id="faq-heading">Questions,<br />answered.</h2>
-          <p>A few things people usually ask us. If yours isn’t here, ask it.</p>
+      <div className={styles.centeredLayout}>
+        <header className={styles.centeredIntro}>
+          <span className={styles.eyebrow}>Working with Burgama</span>
+          <h2 id="faq-heading">Good questions.<br />A clearer next step.</h2>
+          <p>Choosing a creative partner is a big decision. From what we can make together to budgets, timing, and life after launch, here’s a little more about working with us.</p>
+          <p className={styles.invitation}>Start with the questions below, or ask your own. You don’t need a finished brief to start a conversation.</p>
         </header>
         <div className={styles.stack}>
           {entries.map(entry => <FaqItem key={entry.id} entry={entry} expanded={expanded === entry.id} onToggle={() => setExpanded(current => current === entry.id ? null : entry.id)} onRetry={() => { if (!pending) void answerQuestion(entry) }} />)}
           <form onSubmit={submit} className={styles.form}>
+            <div className={styles.formIntro}>
+              <h3>Something else on your mind?</h3>
+              <p>Ask about the studio, our services, or how we work. For a quote, a deadline, or details specific to your project, <Link href="mailto:hello@burgama.com">talk to us directly</Link>.</p>
+            </div>
             <FieldGroup>
               <Field>
                 <label htmlFor="faq-question" className={styles.label}>Your question</label>
                 <div className={styles.inputRow}>
-                  <textarea ref={fieldRef} id="faq-question" name="question" rows={2} required minLength={3} maxLength={questionLimit} value={question} onChange={event => setQuestion(event.target.value)} placeholder="Ask Burgama anything about working with us…" aria-describedby="faq-guidance" onKeyDown={event => {
+                  <textarea ref={fieldRef} id="faq-question" name="question" rows={2} required minLength={3} maxLength={questionLimit} value={question} onChange={event => setQuestion(event.target.value)} placeholder="What would you like to know about working together?" aria-describedby="faq-guidance" onKeyDown={event => {
                     if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return
                     event.preventDefault()
                     event.currentTarget.form?.requestSubmit()

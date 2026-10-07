@@ -28,8 +28,7 @@ export default function HomePage() {
         <ActCapabilities />
         <ActWork />
         <ActResults />
-        <InfiniteFaq />
-        <ActClose />
+        <ActClose afterEnquiry={<InfiniteFaq />} />
       </div>
     </>
   )

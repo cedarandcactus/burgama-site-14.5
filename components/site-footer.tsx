@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
 import { FooterFilm } from '@/components/footer-film'
@@ -79,7 +79,7 @@ function RollingLabel({ text }: { text: string }) {
   )
 }
 
-export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
+export function SiteFooter({ enquiryHeading, afterEnquiry }: { enquiryHeading?: string; afterEnquiry?: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const leadRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLSpanElement>(null)
@@ -278,6 +278,7 @@ export function SiteFooter({ enquiryHeading }: { enquiryHeading?: string }) {
         </Reveal>
         <SectionRise surface="navy" direction="left" />
       </section>
+      {afterEnquiry}
       <div className={styles.footerFrame}>
         <footer className={styles.footer} data-site-footer="" data-nav-surface="ink">
           <FooterFilm />
