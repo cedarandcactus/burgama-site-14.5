@@ -40,9 +40,12 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
 
 export function InfiniteFaq() {
   const [entries, setEntries] = useState<Entry[]>([
-    { id: 'first', question: '', answer: '', placeholder: 'What would you like to know?' },
-    { id: 'second', question: '', answer: '', placeholder: 'Ask about a project, our process, or anything else…' },
-    { id: 'third', question: '', answer: '', placeholder: 'Your question goes here…' },
+    { id: 'first', question: 'What can we work on together?', answer: '' },
+    { id: 'second', question: 'What does your process look like?', answer: '' },
+    { id: 'third', question: 'How much does a project cost?', answer: '' },
+    { id: 'fourth', question: 'How long will my project take?', answer: '' },
+    { id: 'fifth', question: 'What do you need to get started?', answer: '' },
+    { id: 'sixth', question: '', answer: '', placeholder: 'Ask anything…' },
   ])
   const [pending, setPending] = useState(false)
   const [notice, setNotice] = useState('')
