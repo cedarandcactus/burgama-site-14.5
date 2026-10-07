@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { questionLimit, type FaqAnswer } from '@/lib/faq'
+import { curatedFaqs, questionLimit, type FaqAnswer } from '@/lib/faq'
 import { ScrollTrigger } from '@/lib/motion'
 import styles from './infinite-faq.module.css'
 
@@ -21,7 +21,7 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
   return (
     <div className={styles.item}>
       <form onSubmit={submit} className={styles.questionRow}>
-        <label htmlFor={`faq-question-${entry.id}`} className="sr-only">Your question</label>
+        <label htmlFor={`faq-question-${entry.id}`} className="sr-only">Ask anything</label>
         <textarea id={`faq-question-${entry.id}`} name="question" rows={2} required minLength={3} maxLength={questionLimit} value={draft} onChange={event => setDraft(event.target.value)} placeholder={entry.placeholder || 'Ask another question…'} aria-describedby="faq-guidance" aria-controls={hasAnswer ? `faq-answer-${entry.id}` : undefined} onKeyDown={event => {
           if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return
           event.preventDefault()
@@ -38,15 +38,26 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
   )
 }
 
+const standardQuestions = [
+  { id: 'services', question: 'What can we work on together?' },
+  { id: 'process', question: 'What does your process look like?' },
+  { id: 'pricing', question: 'How much does a project cost?' },
+  { id: 'timelines', question: 'How long will my project take?' },
+  { id: 'start', question: 'What do you need to get started?' },
+]
+
+function StandardFaq({ id, question }: { id: string; question: string }) {
+  const answer = curatedFaqs.find(entry => entry.id === id)?.answer
+  return (
+    <details className={styles.item}>
+      <summary className={styles.standardQuestion}>{question}<span className={styles.toggle} aria-hidden="true" /></summary>
+      <div className={styles.answer}><p>{answer}</p></div>
+    </details>
+  )
+}
+
 export function InfiniteFaq() {
-  const [entries, setEntries] = useState<Entry[]>([
-    { id: 'first', question: 'What can we work on together?', answer: '' },
-    { id: 'second', question: 'What does your process look like?', answer: '' },
-    { id: 'third', question: 'How much does a project cost?', answer: '' },
-    { id: 'fourth', question: 'How long will my project take?', answer: '' },
-    { id: 'fifth', question: 'What do you need to get started?', answer: '' },
-    { id: 'sixth', question: '', answer: '', placeholder: 'Ask anything…' },
-  ])
+  const [entry, setEntry] = useState<Entry>({ id: 'sixth', question: '', answer: '', placeholder: 'Ask anything…' })
   const [pending, setPending] = useState(false)
   const [notice, setNotice] = useState('')
   const requestRef = useRef<AbortController | null>(null)
@@ -74,11 +85,7 @@ export function InfiniteFaq() {
     requestRef.current = controller
     setPending(true)
     setNotice('Answering your question.')
-    const nextId = crypto.randomUUID()
-    setEntries(current => {
-      const updated = current.map(item => item.id === entry.id ? { ...entry, answer: '', contact: false, pending: true, error: false } : item)
-      return updated.some(item => !item.question) ? updated : [...updated, { id: nextId, question: '', answer: '' }]
-    })
+    setEntry({ ...entry, answer: '', contact: false, pending: true, error: false })
     try {
       const response = await fetch('/api/faq', {
         method: 'POST',
@@ -89,12 +96,12 @@ export function InfiniteFaq() {
       const result: FaqAnswer & { error?: string } = await response.json()
       if (!response.ok) throw new Error(result.error || 'We couldn’t answer that just now. Please try again.')
       if (typeof result.answer !== 'string' || typeof result.contact !== 'boolean') throw new Error('We couldn’t answer that just now. Please try again.')
-      setEntries(current => current.map(item => item.id === entry.id ? { ...item, ...result, pending: false, error: false } : item))
+      setEntry(current => ({ ...current, ...result, pending: false, error: false }))
       setNotice('Your answer is ready below your question.')
     } catch (cause) {
       if (controller.signal.aborted) return
       const message = cause instanceof Error && cause.name !== 'TimeoutError' ? cause.message : 'That took longer than expected. Please try again.'
-      setEntries(current => current.map(item => item.id === entry.id ? { ...item, pending: false, error: true, answer: message } : item))
+      setEntry(current => ({ ...current, pending: false, error: true, answer: message }))
       setNotice('Your question could not be answered. Try again above, or contact the studio.')
     } finally {
       requestRef.current = null
@@ -110,7 +117,8 @@ export function InfiniteFaq() {
           <p>Type a question. Get an answer.</p>
         </header>
         <div className={styles.stack}>
-          {entries.map(entry => <FaqItem key={entry.id} entry={entry} busy={pending} onAsk={question => { void answerQuestion({ ...entry, question }) }} />)}
+          {standardQuestions.map(question => <StandardFaq key={question.id} {...question} />)}
+          <FaqItem entry={entry} busy={pending} onAsk={question => { void answerQuestion({ ...entry, question }) }} />
           <p id="faq-guidance" className={styles.guidance}>AI answers. No confidential details, please. <Link href="/privacy">Privacy</Link></p>
           <p className="sr-only" role="status" aria-live="polite">{notice}</p>
         </div>

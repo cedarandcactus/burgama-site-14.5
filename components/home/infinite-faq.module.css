@@ -13,6 +13,14 @@
 .stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; width: 100%; }
 .item { border: 1px solid color-mix(in srgb, var(--palette-powder) 35%, transparent); border-radius: 28px; }
 .item:focus-within { border-color: var(--palette-powder); }
+.standardQuestion { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px; cursor: pointer; list-style: none; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; border-radius: inherit; }
+.standardQuestion::-webkit-details-marker { display: none; }
+.toggle { position: relative; flex-shrink: 0; width: 20px; height: 20px; }
+.toggle::before, .toggle::after { content: ''; position: absolute; background: currentColor; border-radius: 2px; }
+.toggle::before { width: 20px; height: 2px; top: 9px; left: 0; }
+.toggle::after { width: 2px; height: 20px; top: 0; left: 9px; }
+.item[open] .toggle::after { display: none; }
+.standardQuestion:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .questionRow { display: flex; align-items: center; gap: 16px; padding: 20px 24px; }
 .questionRow textarea { flex: 1; min-width: 0; resize: vertical; border: 0; outline: 0; border-radius: 12px; color: inherit; background: transparent; font: inherit; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; }
 .questionRow textarea::placeholder { color: var(--palette-powder); opacity: .65; }
