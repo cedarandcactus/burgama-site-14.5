@@ -7,6 +7,7 @@ import { ActIntroduction } from '@/components/home/act-introduction'
 import { ActFounder } from '@/components/home/act-founder'
 import { ActWork } from '@/components/home/act-work'
 import { ActResults } from '@/components/home/act-results'
+import { InfiniteFaq } from '@/components/home/infinite-faq'
 import { ClientTicker } from '@/components/home/client-ticker'
 import styles from '@/components/home/home-page.module.css'
 
@@ -27,6 +28,7 @@ export default function HomePage() {
         <ActCapabilities />
         <ActWork />
         <ActResults />
+        <InfiniteFaq />
         <ActClose />
       </div>
     </>
