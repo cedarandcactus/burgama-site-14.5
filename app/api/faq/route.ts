@@ -32,9 +32,11 @@ function reply(body: unknown, status = 200) {
 }
 
 export async function POST(request: Request) {
-  if (request.headers.get('sec-fetch-site') === 'cross-site') return reply({ error: 'Please ask from the Burgama website.' }, 403)
+  const fetchSite = request.headers.get('sec-fetch-site')
+  if (fetchSite && fetchSite !== 'same-origin') return reply({ error: 'Please ask from the Burgama website.' }, 403)
   const origin = request.headers.get('origin')
-  if (origin && origin !== new URL(request.url).origin) return reply({ error: 'Please ask from the Burgama website.' }, 403)
+  // Browser fetch metadata survives proxies that rewrite the internal request URL.
+  if (!fetchSite && origin && origin !== new URL(request.url).origin) return reply({ error: 'Please ask from the Burgama website.' }, 403)
   if (!request.headers.get('content-type')?.includes('application/json')) return reply({ error: 'Please send a question.' }, 415)
 
   let payload: unknown
