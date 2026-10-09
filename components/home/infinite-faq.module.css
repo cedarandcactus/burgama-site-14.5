@@ -9,12 +9,18 @@
 .centeredLayout { display: flex; flex-direction: column; align-items: center; gap: 48px; max-width: 880px; margin-inline: auto; }
 .centeredIntro { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
 .centeredIntro h2 { font-size: clamp(44px, 6.5vw, 88px); font-weight: 400; line-height: 1.08; letter-spacing: -.035em; text-wrap: balance; }
+.centeredIntro h2 span { display: block; will-change: transform, clip-path; }
 .centeredIntro p { font-size: 18px; line-height: 1.5; letter-spacing: 0; text-wrap: pretty; }
+.centeredIntro p, .item { will-change: transform, opacity, clip-path; }
 .stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; width: 100%; }
 .item { border: 1px solid color-mix(in srgb, var(--palette-powder) 35%, transparent); border-radius: 28px; }
 .item:focus-within { border-color: var(--palette-powder); }
 .standardQuestion { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px; cursor: pointer; list-style: none; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; border-radius: inherit; }
+.standardQuestion > span:first-child { flex: 1; min-width: 0; will-change: transform, clip-path; }
 .standardQuestion::-webkit-details-marker { display: none; }
+.item::details-content { block-size: 0; overflow: hidden; opacity: 0; transition: block-size .7s cubic-bezier(.22, 1, .36, 1), opacity .45s ease; }
+.item[open]::details-content { block-size: auto; opacity: 1; }
+.stack { interpolate-size: allow-keywords; }
 .toggle { position: relative; flex-shrink: 0; width: 20px; height: 20px; }
 .toggle::before, .toggle::after { content: ''; position: absolute; background: currentColor; border-radius: 2px; }
 .toggle::before { width: 20px; height: 2px; top: 9px; left: 0; }
@@ -34,6 +40,10 @@
 .guidance { font-size: 14px; line-height: 1.5; letter-spacing: 0; opacity: .75; text-align: center; }
 .guidance a { text-decoration: underline; text-underline-offset: 3px; }
 .section :is(button, a):focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+@media (prefers-reduced-motion: reduce) {
+  .item::details-content { transition: none; }
+  .centeredIntro h2 span, .centeredIntro p, .item { will-change: auto; }
+}
 @media (max-width: 500px) {
   .centeredLayout { gap: 32px; }
   .item { border-radius: 24px; }
