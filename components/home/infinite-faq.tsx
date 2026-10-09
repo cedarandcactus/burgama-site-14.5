@@ -108,13 +108,12 @@ export function InfiniteFaq() {
             scrub: 0.75,
           },
         }).fromTo(item, {
-          y: 36 + Math.min(index, 3) * 3,
-          opacity: 0,
-          clipPath: 'inset(18% 0% 18% 0% round 28px)',
+          y: 28 + Math.min(index, 3) * 2,
+          scale: 0.985,
+          transformOrigin: '50% 50%',
         }, {
           y: 0,
-          opacity: 1,
-          clipPath: 'inset(0% 0% 0% 0% round 28px)',
+          scale: 1,
           ease: 'power3.out',
         }).fromTo(copy, {
           yPercent: 85,
