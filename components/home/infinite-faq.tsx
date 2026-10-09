@@ -21,8 +21,7 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
   return (
     <div className={styles.item}>
       <form onSubmit={submit} className={styles.questionRow}>
-        <label htmlFor={`faq-question-${entry.id}`} className="sr-only">Ask anything</label>
-        <textarea id={`faq-question-${entry.id}`} name="question" rows={2} required minLength={3} maxLength={questionLimit} value={draft} onChange={event => setDraft(event.target.value)} placeholder={entry.placeholder || 'Ask another question…'} aria-describedby="faq-guidance" aria-controls={hasAnswer ? `faq-answer-${entry.id}` : undefined} onKeyDown={event => {
+        <textarea id={`faq-question-${entry.id}`} name="question" rows={2} required minLength={3} maxLength={questionLimit} value={draft} onChange={event => setDraft(event.target.value)} placeholder={entry.placeholder || 'Ask another question…'} aria-label="Ask anything" aria-describedby="faq-guidance" aria-controls={hasAnswer ? `faq-answer-${entry.id}` : undefined} onKeyDown={event => {
           if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return
           event.preventDefault()
           event.currentTarget.form?.requestSubmit()
