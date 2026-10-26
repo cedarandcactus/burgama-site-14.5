@@ -63,7 +63,8 @@ export function FilmFrame({ item, href, title }: { item: MediaItem; href: string
             </svg>
           </span>
           <span className="case-film-caption" aria-hidden="true">
-            <span>Production</span>
+            <span>Founder film</span>
+            <span>Opens in Google Drive</span>
           </span>
         </a>
       </div>
@@ -88,13 +89,11 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
                 {module.title ? (
                   <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
                 ) : null}
-                {module.body.length > 0 && (
-                  <div className="case-module-body">
-                    {module.body.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
-                )}
+                <div className="case-module-body">
+                  {module.body.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
               </div>
             )
 
