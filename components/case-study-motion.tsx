@@ -25,6 +25,7 @@ const directions: Record<string, Direction> = {
   'patent-earth': 'reading',
   ollivate: 'reading',
   cloon: 'reading',
+  'wagner-wealth-founder-film': 'photographic',
   'matchday-social': 'comparison',
   'matchday-local-seo': 'reading',
   'hush-hush-tan-social': 'comparison',

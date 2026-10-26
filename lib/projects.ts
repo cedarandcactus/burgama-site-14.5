@@ -12,6 +12,7 @@ export type MediaItem = {
 export type ContentModule =
   | { type: 'text'; title?: string; body: string[] }
   | { type: 'media'; item: MediaItem }
+  | { type: 'film'; item: MediaItem; href: string; title: string }
   | { type: 'mediaPair'; items: [MediaItem, MediaItem] }
   | { type: 'mediaSplit'; split: '60/40' | '40/60'; title: string; body: string[]; item: MediaItem }
   | { type: 'mediaGrid'; items: MediaItem[] }
@@ -48,6 +49,7 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'wagner-wealth/a094.jpg': [1448, 1086],
   'wagner-wealth/a095.jpg': [1448, 1086],
   'wagner-wealth/web-wagner.jpg': [1280, 720],
+  'wagner-wealth/film-wagner-wealth.jpg': [2194, 1230],
   'sidecar-spirits/sidecar-gold.jpg': [981, 1469],
   'sidecar-spirits/sidecar-mono.jpg': [981, 1469],
   'sidecar-spirits/sidecar-orange.jpg': [981, 1469],
@@ -106,6 +108,7 @@ const image = (company: string, file: string, label: string, ratio: MediaRatio =
 }
 const text = (title: string, ...body: string[]): ContentModule => ({ type: 'text', title, body })
 const media = (company: string, file: string, label: string, ratio: MediaRatio = 'wide'): ContentModule => ({ type: 'media', item: image(company, file, label, ratio) })
+const film = (company: string, file: string, label: string, href: string, title: string): ContentModule => ({ type: 'film', item: image(company, file, label), href, title })
 const pair = (company: string, a: [string, string], b: [string, string]): ContentModule => ({ type: 'mediaPair', items: [image(company, ...a), image(company, ...b)] })
 
 export const projects: Project[] = [
@@ -128,11 +131,14 @@ export const projects: Project[] = [
       media('wagner-wealth', 'a090.jpg', 'The geometric monogram in the supplied plum colorway.'),
       text('carry the idea beyond the mark.', 'We extended the monogram, color, and typography across card, letterhead, and apparel concepts so the identity could hold together at very different scales. These applications are design mockups, not photographs of manufactured items.'),
       pair('wagner-wealth', ['a094.jpg', 'Letterhead and correspondence design mockup.'], ['a095.jpg', 'Polo application shown as a design mockup.']),
-      text('build a quieter digital presence.', 'We carried the same visual language into a website that organizes service information and leads toward a consultation. We also developed a founder film as a companion to the practice’s story; its final approved export remains pending.'),
+      text('build a quieter digital presence.', 'We carried the same visual language into a website that organizes service information and leads toward a consultation. We also produced a founder film as a companion to the practice’s story, from location scouting through final review.'),
       media('wagner-wealth', 'web-wagner.jpg', 'Website presentation for the advisory practice.'),
     ],
-    links: [{ label: 'visit the website', href: 'https://www.wagnerwealthtx.com/' }],
-    note: 'Founder film: supplied draft, final approved export pending. Website and identity work are presented here without investment-performance claims.',
+    links: [
+      { label: 'visit the website', href: 'https://www.wagnerwealthtx.com/' },
+      { label: 'watch the founder film', href: 'https://drive.google.com/file/d/1nZrkLPwR09TKEjQ07b20RwFeM-ltP-EO/view' },
+    ],
+    note: 'Website, identity, and film work are presented here without investment-performance claims.',
   }),
   project({
     slug: 'sidecar-spirits', title: 'Sidecar Spirits', collection: 'archive',
@@ -338,6 +344,28 @@ export const projects: Project[] = [
     disciplines: ['Marketing', 'Growth'], services: ['Google Ads'],
     contentModules: [text('start with intent.', 'The campaign approach brought together focused keywords, ad-copy decisions, and bid management. Its aim was to connect searchers with the website while keeping spending controlled.')],
     note: 'Results are not published while a client-name error in the source reporting is resolved. Site clicks should not be described as conversions.',
+  }),
+  project({
+    slug: 'wagner-wealth-founder-film', title: 'Wagner Wealth founder film', client: 'Wagner Wealth Management', parentSlug: 'wagner-wealth', collection: 'case-study',
+    tagline: 'A founder introduction, made to be trusted before the first meeting.',
+    summary: 'A founder film for Wagner Wealth Management, shaped through location scouting, script writing, and multiple rounds of revision and review.',
+    categories: ['Founder film'],
+    disciplines: ['Production', 'Content'],
+    services: ['Founder film', 'Location scouting', 'Script writing', 'Filming and editing', 'Revision and review'],
+    contentModules: [
+      text('the problem we solved.', 'Wealth management is a business of trust, and trust usually begins with a person. Wagner Wealth Management is a personal practice, but a prospective client reading a website had no way to meet the advisor behind it. The identity and the site could say “composed” and “considered”; only the founder could show it.', 'The challenge was to introduce him on camera without making it feel like an advertisement: warm enough to be human, measured enough to suit a conversation about someone’s financial life, and consistent with the rest of the brand.'),
+      film('wagner-wealth', 'film-wagner-wealth.jpg', 'Wagner Wealth Management’s founder speaking to camera at a wooden table in front of dark teal bookshelves, with the Wagner monogram in the corner of the frame.', 'https://drive.google.com/file/d/1nZrkLPwR09TKEjQ07b20RwFeM-ltP-EO/view', 'Wagner Wealth Management founder film'),
+      { type: 'process', title: 'how we made it, step by step.', steps: [
+        { title: 'start with the practice, not the camera.', body: 'Before any scouting or writing, we talked through how the practice works, who it serves, and what a new client should feel in the first minute. That conversation set the tone for every decision after it: where to film, what to say, and how much to leave unsaid.' },
+        { title: 'scout the location in person.', body: 'We visited candidate spaces ourselves, looking at light at different times of day, sound, sightlines, and how each room would sit with the Wagner identity. We chose a setting of warm wood, dark teal shelving, and aged books: established and quiet, with enough depth behind the founder to feel considered rather than staged.' },
+        { title: 'write the script together.', body: 'We drafted the script with the founder, in his own vocabulary, then tightened it until it sounded like him rather than like a brochure. The structure moves from who he is, to why he built the practice this way, to what working together looks like, with no claims about returns.' },
+        { title: 'film with a light touch.', body: 'On the day we kept the crew small and the pace unhurried, so the interview could settle into a conversation. Lighting shaped the room without announcing itself, and the framing leaves the monogram visible in the corner of the picture.' },
+        { title: 'revise through multiple rounds of review.', body: 'The first cut was a starting point. We reviewed the edit with the founder across multiple rounds, adjusting pacing, trimming lines, and refining the structure and finish of the film. Each round returned to the same question: does this sound like him, and would it earn a prospective client’s trust?' },
+        { title: 'deliver the final film.', body: 'The approved film is hosted on Google Drive because of its file size, and linked from this page so it can be shared directly with prospective clients and used alongside the Wagner website.' },
+      ] },
+      text('what the film gives the practice.', 'The finished film gives Wagner Wealth Management a founder introduction that carries the same composure as the identity and website: a person, a place, and a point of view, in a format that can be shared before a first conversation.'),
+    ],
+    note: 'The film is hosted on Google Drive because of its file size. This page documents the production process and does not state investment-performance or client-acquisition results.',
   }),
   project({
     slug: 'matchday-social', title: 'MatchDay social', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',

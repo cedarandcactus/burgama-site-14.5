@@ -95,6 +95,21 @@ body .portfolio .case-media-frame { display: block; width: 100%; max-width: 100%
 body .portfolio .case-media-frame img { position: static; display: block; width: 100%; height: auto; max-width: 100%; max-height: none; object-fit: contain; border-radius: 0; }
 body .portfolio .case-media-frame[data-media-ratio='tall'] { max-width: 640px; }
 body .portfolio .case-media-frame[data-media-ratio='square'] { max-width: 900px; }
+.portfolio .case-film-link { position: relative; display: block; width: 100%; height: 100%; color: var(--palette-navy); text-decoration: none; }
+.portfolio .case-film-link::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, color-mix(in srgb, var(--palette-navy) 62%, transparent), transparent 42%); pointer-events: none; }
+.portfolio .case-film-play { position: absolute; top: 50%; left: 50%; z-index: 1; display: inline-flex; align-items: center; justify-content: center; width: clamp(76px, 9vw, 112px); height: clamp(54px, 6.4vw, 78px); border-radius: 999px; background: var(--palette-powder); color: var(--palette-navy); box-shadow: 0 0 0 8px color-mix(in srgb, var(--palette-powder) 28%, transparent); transform: translate(-50%, -50%); transition: transform 240ms ease, box-shadow 240ms ease, background-color 180ms ease; }
+.portfolio .case-film-play svg { display: block; width: 36%; height: auto; margin-left: 4%; }
+.portfolio .case-film-caption { position: absolute; left: clamp(14px, 2.4vw, 28px); bottom: clamp(14px, 2.4vw, 28px); z-index: 1; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 8px 14px; border-radius: 999px; background: var(--palette-navy); color: var(--palette-soft-white); font-family: var(--font-pangram), sans-serif; font-size: 13px; font-weight: 500; line-height: 1.3; }
+.portfolio .case-film-caption span + span { color: var(--palette-powder); font-weight: 400; }
+.portfolio .case-film-link:focus-visible { outline: 3px solid var(--palette-powder); outline-offset: -6px; }
+.portfolio .case-film-link:focus-visible .case-film-play { box-shadow: 0 0 0 12px color-mix(in srgb, var(--palette-powder) 40%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .portfolio .case-film-link:hover .case-film-play { background: var(--palette-soft-white); box-shadow: 0 0 0 14px color-mix(in srgb, var(--palette-powder) 34%, transparent); transform: translate(-50%, -50%) scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio .case-film-play { transition: none; }
+  .portfolio .case-film-link:hover .case-film-play { transform: translate(-50%, -50%); }
+}
 .portfolio .case-media-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; padding: 0; margin: 0; }
 .portfolio .case-split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: center; }
 .portfolio .case-split-copy { display: flex; flex-direction: column; min-width: 0; gap: 24px; }

@@ -35,6 +35,43 @@ export function MediaFrame({
   )
 }
 
+export function FilmFrame({ item, href, title }: { item: MediaItem; href: string; title: string }) {
+  if (!item.src) return null
+  const intrinsicAspectRatio = item.width && item.height ? `${item.width} / ${item.height}` : '16 / 9'
+
+  return (
+    <figure className="case-media case-film" data-media-kind="still">
+      <div className="case-media-frame" data-media-ratio={item.ratio} style={{ aspectRatio: intrinsicAspectRatio }}>
+        <a
+          href={href}
+          className="case-film-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Watch the ${title} on Google Drive (opens in a new tab)`}
+        >
+          <img
+            src={item.src}
+            alt={item.label}
+            width={item.width}
+            height={item.height}
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="case-film-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M8.5 5.6v12.8a.6.6 0 0 0 .92.5l10.1-6.4a.6.6 0 0 0 0-1L9.42 5.1a.6.6 0 0 0-.92.5Z" fill="currentColor" />
+            </svg>
+          </span>
+          <span className="case-film-caption" aria-hidden="true">
+            <span>Founder film</span>
+            <span>Opens in Google Drive</span>
+          </span>
+        </a>
+      </div>
+    </figure>
+  )
+}
+
 export function ProjectModules({ modules }: { modules: ContentModule[] }) {
   return (
     <>
@@ -65,6 +102,14 @@ export function ProjectModules({ modules }: { modules: ContentModule[] }) {
             return (
               <div key={index} data-case-module={module.type}>
                 <MediaFrame item={module.item} />
+              </div>
+            )
+
+          case 'film':
+            if (!module.item.src) return null
+            return (
+              <div key={index} data-case-module={module.type}>
+                <FilmFrame item={module.item} href={module.href} title={module.title} />
               </div>
             )
 
