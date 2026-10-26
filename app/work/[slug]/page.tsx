@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     title: { absolute: title },
-    description: project.summary,
+    description: project.summary || `${project.title} by Burgama.`,
     alternates: { canonical: canonicalPath },
     openGraph: { title, description: project.summary, url: canonicalPath, type: 'website', images: [{ url: image, alt: project.heroMedia.label || `${project.title} project by Burgama` }] },
     twitter: { card: 'summary_large_image', images: [image] },
@@ -48,7 +48,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
     '@id': `${canonicalUrl}#work`,
     name: project.title,
     url: canonicalUrl,
-    description: project.summary,
+    description: project.summary || `${project.title} by Burgama.`,
     image: primaryImageUrl(project.heroMedia.src),
     creator: { '@id': `${siteUrl}/#organization` },
   }
@@ -64,7 +64,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
       <JsonLd data={breadcrumbs} />
       <div className="studio-page">
       <CaseStudyMotion key={project.slug} slug={project.slug}>
-        <PageHero motion="editorial" wordmark={project.title} titleId="project-title" compact intro={[project.summary]} nextSurface="white" breadcrumbLabel="Back to work" breadcrumb={
+        <PageHero motion="editorial" wordmark={project.title} titleId="project-title" compact intro={project.summary ? [project.summary] : []} nextSurface="white" breadcrumbLabel="Back to work" breadcrumb={
           <DirectionLink href={backHref} direction="left" label="work" />
         }>
           {hasFacts && <dl className="portfolio-facts">
