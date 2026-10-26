@@ -63,8 +63,7 @@ export function FilmFrame({ item, href, title }: { item: MediaItem; href: string
             </svg>
           </span>
           <span className="case-film-caption" aria-hidden="true">
-            <span>Founder film</span>
-            <span>Opens in Google Drive</span>
+            <span>Founder Film</span>
           </span>
         </a>
       </div>
