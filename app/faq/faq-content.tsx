@@ -28,7 +28,7 @@ export function FaqContent() {
           return (
             <section key={section.id} className={styles.chapter} data-tone={isLight ? 'powder' : 'navy'} aria-labelledby={section.id}>
               <div className={styles.chapterCurve}>
-                <SectionRise surface={isLight ? 'powder' : 'navy'} direction={isLight ? 'left' : 'right'} />
+                <SectionRise surface="navy" direction={isLight ? 'left' : 'right'} cutout={isLight} />
               </div>
               <div className={styles.faqSection} data-nav-surface={isLight ? 'frost' : 'ink'}>
                 <div className={styles.sectionHeading}>

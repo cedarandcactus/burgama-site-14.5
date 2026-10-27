@@ -78,7 +78,7 @@
   isolation: isolate;
   height: var(--home-rise);
   overflow: hidden;
-  background: var(--palette-navy);
+  background: var(--palette-powder);
   line-height: 0;
 }
 
