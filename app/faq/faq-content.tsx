@@ -1,3 +1,4 @@
+import { SectionRise } from '@/components/home/section-rise'
 import { ModularButton } from '@/components/modular-button'
 import { PageHero } from '@/components/page-hero'
 import { SiteFooter } from '@/components/site-footer'
@@ -63,6 +64,9 @@ export function FaqContent() {
             <ModularButton href="#start-a-project">start a conversation</ModularButton>
           </div>
         </section>
+      </div>
+      <div className={styles.footerTransition}>
+        <SectionRise surface="powder-deep" />
       </div>
       <SiteFooter />
     </div>

@@ -49,6 +49,13 @@
   padding: 16px var(--page-gutter) clamp(96px, 14vw, 180px);
 }
 
+.footerTransition {
+  --home-rise: clamp(80px, 10vw, 144px);
+  position: relative;
+  height: var(--home-rise);
+  margin-top: calc(-1 * var(--home-rise));
+}
+
 .sectionNav {
   display: flex;
   flex-wrap: wrap;
