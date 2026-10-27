@@ -40,6 +40,10 @@
 .textLink:disabled { opacity: .5; cursor: not-allowed; }
 .guidance { font-size: 14px; line-height: 1.5; letter-spacing: 0; opacity: .75; text-align: center; }
 .guidance a { text-decoration: underline; text-underline-offset: 3px; }
+.section :global(.pill) { color: var(--palette-navy); background: var(--palette-powder); }
+@media (hover: hover) and (pointer: fine) {
+  .section :global(.pill:hover) { color: var(--palette-powder); background: transparent; border-color: currentColor; }
+}
 .section :is(button, a):focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 @media (prefers-reduced-motion: reduce) {
   .item::details-content { transition: none; }
