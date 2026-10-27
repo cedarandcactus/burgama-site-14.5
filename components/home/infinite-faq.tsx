@@ -6,6 +6,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { questionLimit, type FaqAnswer } from '@/lib/faq'
 import { homeFaqs } from '@/lib/faq-content'
 import { ModularButton } from '@/components/modular-button'
+import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './infinite-faq.module.css'
 
@@ -14,6 +15,35 @@ type Entry = { id: string; question: string; answer: string; placeholder?: strin
 function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (question: string) => void }) {
   const [draft, setDraft] = useState(entry.question)
   const hasAnswer = Boolean(entry.pending || entry.answer)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const answerRef = useRef<HTMLDivElement>(null)
+  const answerContentRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const input = inputRef.current
+    if (!input) return
+    const resize = () => {
+      const previousHeight = input.getBoundingClientRect().height
+      input.style.height = 'auto'
+      const height = input.scrollHeight
+      input.style.height = `${previousHeight}px`
+      gsap.to(input, { height, duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.45, ease: 'power3.out', overwrite: true })
+    }
+    resize()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); gsap.killTweensOf(input) }
+  }, [draft])
+
+  useLayoutEffect(() => {
+    const viewport = answerRef.current
+    const content = answerContentRef.current
+    if (!viewport || !content) return
+    const observer = new ResizeObserver(() => {
+      gsap.to(viewport, { height: content.getBoundingClientRect().height, duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.7, ease: 'power3.inOut', overwrite: true })
+    })
+    observer.observe(content)
+    return () => { observer.disconnect(); gsap.killTweensOf(viewport) }
+  }, [])
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -23,18 +53,25 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
   return (
     <div className={styles.item} data-faq-item="">
       <form onSubmit={submit} className={styles.questionRow}>
-        <textarea data-faq-copy="" id={`faq-question-${entry.id}`} name="question" rows={2} required minLength={3} maxLength={questionLimit} value={draft} onChange={event => setDraft(event.target.value)} placeholder={entry.placeholder || 'Ask another question…'} aria-label="Ask anything" aria-describedby="faq-guidance" aria-controls={hasAnswer ? `faq-answer-${entry.id}` : undefined} onKeyDown={event => {
+        <textarea ref={inputRef} data-faq-copy="" id={`faq-question-${entry.id}`} name="question" rows={1} required minLength={3} maxLength={questionLimit} value={draft} onChange={event => setDraft(event.target.value)} placeholder={entry.placeholder || 'Ask another question…'} aria-label="Ask anything" aria-describedby="faq-guidance" aria-controls={hasAnswer ? `faq-answer-${entry.id}` : undefined} onKeyDown={event => {
           if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return
           event.preventDefault()
           event.currentTarget.form?.requestSubmit()
         }} />
-        <button type="submit" disabled={busy || draft.trim().length < 3} className={styles.submit} aria-label="Ask question"><ArrowUpRight size={20} aria-hidden="true" /></button>
+        <button type="submit" disabled={busy || draft.trim().length < 3} className={styles.submit} aria-label="Ask question"><span className={styles.upArrow}><CircularArrowIcon /></span></button>
       </form>
+      <div ref={answerRef} className={styles.answerViewport}>
+      <div ref={answerContentRef}>
       {hasAnswer && <div id={`faq-answer-${entry.id}`} className={styles.answer} aria-busy={entry.pending}>
-        <p role={entry.pending ? 'status' : entry.error ? 'alert' : undefined}>{entry.pending ? 'Thinking…' : entry.answer}</p>
+        <p key={entry.pending ? 'thinking' : entry.answer} role={entry.pending ? 'status' : entry.error ? 'alert' : undefined}>
+          <span className="sr-only">{entry.pending ? 'Thinking…' : entry.answer}</span>
+          {entry.pending ? <span className={styles.thinking} aria-hidden="true">{Array.from('Thinking…').map((letter, index) => <span className={styles.rollWindow} key={index}><span className={styles.thinkingGlyph} style={{ animationDelay: `${index * 45}ms` }}>{letter}<span className={styles.rollCopy}>{letter}</span></span></span>)}</span> : <span aria-hidden="true">{entry.answer.split(/(\s+)/).map((word, index) => /\s/.test(word) ? word : <span className={styles.rollWindow} key={index}><span className={styles.answerWord} style={{ animationDelay: `${Math.min(index * 14, 800)}ms` }}>{word}</span></span>)}</span>}
+        </p>
         {entry.error && <button type="button" disabled={busy} className={styles.textLink} onClick={() => onAsk(entry.question)}>Try again</button>}
         {(entry.contact || entry.error) && <Link className={styles.textLink} href="mailto:hello@burgama.com">Contact the studio <ArrowUpRight size={16} aria-hidden="true" /></Link>}
       </div>}
+      </div>
+      </div>
     </div>
   )
 }

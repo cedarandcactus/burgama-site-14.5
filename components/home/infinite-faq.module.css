@@ -29,10 +29,19 @@
 .item[open] .toggle::after { display: none; }
 .standardQuestion:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .questionRow { display: flex; align-items: center; gap: 16px; padding: 20px 24px; }
-.questionRow textarea { flex: 1; min-width: 0; resize: vertical; border: 0; outline: 0; border-radius: 12px; color: inherit; background: transparent; font: inherit; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; }
+.questionRow textarea { flex: 1; min-width: 0; resize: none; overflow: hidden; min-height: 27px; border: 0; outline: 0; border-radius: 12px; color: inherit; background: transparent; font: inherit; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; }
 .questionRow textarea::placeholder { color: var(--palette-powder); opacity: .65; }
 .questionRow textarea:focus-visible { outline: 2px solid var(--palette-powder); outline-offset: 4px; }
-.submit { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 48px; height: 48px; border: 0; border-radius: 50%; color: var(--palette-navy); background: var(--palette-powder); cursor: pointer; }
+.submit { display: flex; align-items: center; justify-content: center; align-self: flex-end; flex-shrink: 0; width: 48px; height: 48px; border: 0; border-radius: 0; color: var(--palette-powder); background: transparent; cursor: pointer; transition: opacity .3s ease; }
+.upArrow { display: inline-flex; transform: rotate(-90deg); transition: translate .5s cubic-bezier(.22, 1, .36, 1); }
+.submit:not(:disabled):hover .upArrow { translate: 0 -4px; }
+.answerViewport { height: 0; overflow: hidden; }
+.rollWindow { display: inline-block; overflow: hidden; vertical-align: bottom; max-width: 100%; }
+.thinkingGlyph { display: inline-block; position: relative; animation: thinkingRoll 1.8s cubic-bezier(.22, 1, .36, 1) infinite; }
+.rollCopy { position: absolute; inset: 100% 0 auto; }
+.answerWord { display: inline-block; animation: answerRoll .85s cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes thinkingRoll { 0%, 15% { transform: translateY(0); } 65%, 100% { transform: translateY(-100%); } }
+@keyframes answerRoll { from { transform: translateY(110%); } to { transform: translateY(0); } }
 .submit:disabled { opacity: .4; cursor: not-allowed; }
 .answer { padding: 0 24px 28px; text-align: left; }
 .answer p { font-size: 17px; line-height: 1.6; letter-spacing: 0; overflow-wrap: anywhere; white-space: pre-line; }
@@ -46,7 +55,8 @@
 }
 .section :is(button, a):focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 @media (prefers-reduced-motion: reduce) {
-  .item::details-content { transition: none; }
+  .item::details-content, .upArrow { transition: none; }
+  .thinkingGlyph, .answerWord { animation: none; }
   .centeredIntro h2 span, .centeredIntro p, .item { will-change: auto; }
 }
 @media (max-width: 500px) {
