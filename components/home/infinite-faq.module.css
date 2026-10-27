@@ -14,7 +14,7 @@
 .centeredIntro p { will-change: transform, opacity; }
 .item { will-change: transform; }
 .stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; width: 100%; }
-.item { border: 1px solid color-mix(in srgb, var(--palette-powder) 48%, transparent); border-radius: 28px; }
+.item { border: 1.5px solid color-mix(in srgb, var(--palette-powder) 48%, transparent); border-radius: 28px; }
 .item:focus-within { border-color: var(--palette-powder); }
 .standardQuestion { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px; cursor: pointer; list-style: none; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; border-radius: inherit; }
 .standardQuestion > span:first-child { flex: 1; min-width: 0; will-change: transform, clip-path; }

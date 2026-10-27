@@ -133,7 +133,7 @@
 
 .faqItem {
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--faq-ink) 40%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--faq-ink) 40%, transparent);
   border-radius: 28px;
   transition: border-color 180ms ease;
 }
