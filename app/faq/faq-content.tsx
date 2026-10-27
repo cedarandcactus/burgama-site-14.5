@@ -20,8 +20,8 @@ export function FaqContent() {
       />
       <div className={styles.content}>
         <nav id="questions" className={styles.sectionNav} aria-label="FAQ topics">
-          {faqSections.map(section => <a key={section.id} href={`#${section.id}`}>{section.title}</a>)}
-          <a href="#packages">Packages &amp; pricing</a>
+          {faqSections.map(section => <ModularButton key={section.id} href={`#${section.id}`}>{section.title}</ModularButton>)}
+          <ModularButton href="#packages">Packages &amp; pricing</ModularButton>
         </nav>
         {faqSections.map(section => (
           <section key={section.id} className={styles.faqSection} aria-labelledby={section.id}>
