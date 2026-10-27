@@ -321,6 +321,21 @@
     line-height: 1.2;
   }
 
+  .nextStep {
+    gap: 16px;
+    padding-top: 40px;
+  }
+
+  .nextStep p {
+    max-width: 30ch;
+    font-size: 17px;
+    text-wrap: balance;
+  }
+
+  .footerTransition {
+    --home-rise: clamp(48px, 14vw, 80px);
+  }
+
   .faqItem { border-radius: 24px; }
   .faqButton { gap: 16px; padding: 22px; }
   .answer { padding: 0 22px 28px; font-size: 16px; }
