@@ -4,7 +4,7 @@ import { faqJsonLd } from '@/lib/faq-content'
 import { JsonLd, breadcrumbJsonLd, defaultSocialImage, websiteJsonLd } from '@/lib/seo'
 
 const title = 'Burgama FAQ and Pricing | Austin Marketing Agency'
-const description = 'Answers about working with Burgama: services, pricing, SEO and AI search, approvals, billing and next steps. Based in Austin, working across the US.'
+const description = 'Answers about working with Burgama: services, pricing, SEO and AI search, approvals, billing and next steps. Based in Austin, working with clients worldwide.'
 
 export const metadata: Metadata = {
   title: { absolute: title },

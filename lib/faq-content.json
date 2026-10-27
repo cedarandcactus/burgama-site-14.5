@@ -15,8 +15,8 @@
       "addressCountry": "US"
     },
     "areaServed": {
-      "@type": "Country",
-      "name": "United States"
+"@type": "Place",
+"name": "Worldwide"
     },
     "founder": {
       "@type": "Person",
@@ -45,8 +45,8 @@
         "@id": "https://www.burgama.com/#organization"
       },
       "areaServed": {
-        "@type": "Country",
-        "name": "United States"
+        "@type": "Place",
+        "name": "Worldwide"
       },
       "offers": {
         "@type": "Offer",
@@ -72,8 +72,8 @@
         "@id": "https://www.burgama.com/#organization"
       },
       "areaServed": {
-        "@type": "Country",
-        "name": "United States"
+        "@type": "Place",
+        "name": "Worldwide"
       },
       "offers": {
         "@type": "Offer",
@@ -99,8 +99,8 @@
         "@id": "https://www.burgama.com/#organization"
       },
       "areaServed": {
-        "@type": "Country",
-        "name": "United States"
+        "@type": "Place",
+        "name": "Worldwide"
       },
       "offers": {
         "@type": "Offer",
@@ -119,8 +119,8 @@
         "@id": "https://www.burgama.com/#organization"
       },
       "areaServed": {
-        "@type": "Country",
-        "name": "United States"
+        "@type": "Place",
+        "name": "Worldwide"
       },
       "offers": {
         "@type": "Offer",
@@ -139,8 +139,8 @@
         "@id": "https://www.burgama.com/#organization"
       },
       "areaServed": {
-        "@type": "Country",
-        "name": "United States"
+        "@type": "Place",
+        "name": "Worldwide"
       },
       "offers": {
         "@type": "Offer",
@@ -166,13 +166,13 @@
       "id": "where-is-burgama-based",
       "section": "about-burgama",
       "question": "Where is Burgama based?",
-      "answer": "Burgama is based in Austin, Texas, and works with clients across the US."
+      "answer": "Burgama is based in Austin, Texas, and works with clients across the US and internationally."
     },
     {
       "id": "do-you-work-with-businesses-outside-texas",
       "section": "about-burgama",
       "question": "Do you work with businesses outside Texas?",
-      "answer": "Yes, Burgama works with businesses outside Texas. We are based in Austin and work with clients across the US."
+      "answer": "Yes, Burgama works with businesses outside Texas. We are based in Austin and work with clients worldwide, across the US and internationally."
     },
     {
       "id": "who-works-on-my-account-at-burgama",
