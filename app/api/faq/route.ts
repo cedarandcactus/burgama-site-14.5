@@ -1,5 +1,5 @@
 import { generateText, jsonSchema, Output } from 'ai'
-import { faqInstructions, groundedAnswer, parseQuestion, type GeneratedFaq } from '@/lib/faq'
+import { faqInstructions, groundedAnswer, parseQuestion, studioFacts, type GeneratedFaq } from '@/lib/faq'
 
 export const maxDuration = 30
 export const runtime = 'nodejs'
@@ -11,7 +11,7 @@ const schema = jsonSchema<GeneratedFaq>({
   properties: {
     scope: { type: 'string', enum: ['supported', 'uncertain', 'unrelated'] },
     answer: { type: 'string', maxLength: 1200 },
-    sources: { type: 'array', items: { type: 'string', enum: ['studio', 'team', 'approach', 'enquiry', 'unconfirmed'] }, maxItems: 5 },
+    sources: { type: 'array', items: { type: 'string', enum: studioFacts.map(fact => fact.id) }, maxItems: 5 },
     contact: { type: 'boolean' },
   },
 }, {
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
   activeRequests += 1
   try {
     const { output } = await generateText({
-      model: 'anthropic/claude-haiku-4.5',
+      model: 'google/gemini-2.5-flash-lite',
       instructions: faqInstructions,
       prompt: JSON.stringify({ visitorQuestion: question }),
       output: Output.object({ schema }),

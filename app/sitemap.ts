@@ -4,7 +4,7 @@ import { getPublishedProjects } from '@/lib/projects'
 import { absoluteUrl } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages = ['/', '/work', '/studio', '/research'].map((path) => ({
+  const staticPages = ['/', '/work', '/studio', '/research', '/faq'].map((path) => ({
     url: absoluteUrl(path),
     changeFrequency: 'monthly' as const,
     priority: path === '/' ? 1 : 0.8,

@@ -3,7 +3,9 @@
 import Link from 'next/link'
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { curatedFaqs, questionLimit, type FaqAnswer } from '@/lib/faq'
+import { questionLimit, type FaqAnswer } from '@/lib/faq'
+import { homeFaqs } from '@/lib/faq-content'
+import { ModularButton } from '@/components/modular-button'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './infinite-faq.module.css'
 
@@ -37,16 +39,7 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
   )
 }
 
-const standardQuestions = [
-  { id: 'services', question: 'What can we work on together?' },
-  { id: 'process', question: 'What does your process look like?' },
-  { id: 'pricing', question: 'How much does a project cost?' },
-  { id: 'timelines', question: 'How long will my project take?' },
-  { id: 'start', question: 'What do you need to get started?' },
-]
-
-function StandardFaq({ id, question }: { id: string; question: string }) {
-  const answer = curatedFaqs.find(entry => entry.id === id)?.answer
+function StandardFaq({ question, answer }: { question: string; answer: string }) {
   return (
     <details className={styles.item} data-faq-item="">
       <summary className={styles.standardQuestion}><span data-faq-copy="">{question}</span><span className={styles.toggle} aria-hidden="true" /></summary>
@@ -201,11 +194,12 @@ export function InfiniteFaq() {
           <p data-faq-intro-copy="">Type a question. Get an answer.</p>
         </header>
         <div className={styles.stack}>
-          {standardQuestions.map(question => <StandardFaq key={question.id} {...question} />)}
+          {homeFaqs.map(question => <StandardFaq key={question.id} {...question} />)}
           <FaqItem entry={entry} busy={pending} onAsk={question => { void answerQuestion({ ...entry, question }) }} />
           <p id="faq-guidance" className={styles.guidance}>AI answers. No confidential details, please. <Link href="/privacy">Privacy</Link></p>
           <p className="sr-only" role="status" aria-live="polite">{notice}</p>
         </div>
+        <ModularButton href="/faq">explore the full FAQ</ModularButton>
       </div>
     </section>
   )
