@@ -23,21 +23,32 @@ export function FaqContent() {
           {faqSections.map(section => <ModularButton key={section.id} href={`#${section.id}`}>{section.title}</ModularButton>)}
           <ModularButton href="#packages">Packages &amp; pricing</ModularButton>
         </nav>
-        {faqSections.map(section => (
-          <section key={section.id} className={styles.faqSection} aria-labelledby={section.id}>
-            <div className={styles.sectionHeading}>
-              <h2 id={section.id} className="font-serif">{section.title}</h2>
-            </div>
-            <div className={styles.accordion}>
-              {faqEntries.filter(entry => entry.section === section.id).map(entry => (
-                <FaqAccordion key={entry.id} question={entry.question}>
-                  <p>{entry.answer}</p>
-                </FaqAccordion>
-              ))}
-            </div>
-          </section>
-        ))}
-        <section className={styles.packagesSection} aria-labelledby="packages">
+        {faqSections.map((section, index) => {
+          const isLight = index % 2 === 0
+          return (
+            <section key={section.id} className={styles.chapter} data-tone={isLight ? 'powder' : 'navy'} aria-labelledby={section.id}>
+              <div className={styles.chapterCurve}>
+                <SectionRise surface={isLight ? 'powder' : 'navy'} direction={isLight ? 'left' : 'right'} />
+              </div>
+              <div className={styles.faqSection} data-nav-surface={isLight ? 'frost' : 'ink'}>
+                <div className={styles.sectionHeading}>
+                  <h2 id={section.id} className="font-serif">{section.title}</h2>
+                </div>
+                <div className={styles.accordion}>
+                  {faqEntries.filter(entry => entry.section === section.id).map(entry => (
+                    <FaqAccordion key={entry.id} question={entry.question}>
+                      <p>{entry.answer}</p>
+                    </FaqAccordion>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )
+        })}
+        <div className={styles.packagesCurve}>
+          <SectionRise surface="navy" direction="right" />
+        </div>
+        <section className={styles.packagesSection} aria-labelledby="packages" data-nav-surface="ink">
           <div className={styles.packagesHeading}>
             <h2 id="packages" className="font-serif">A starting point.</h2>
             <p>Reference packages, not one-size-fits-all.<br />Every proposal is custom. All prices in USD.</p>
