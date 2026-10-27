@@ -31,7 +31,8 @@
 .questionRow { display: flex; align-items: center; gap: 16px; padding: 20px 24px; }
 .questionRow textarea { flex: 1; min-width: 0; resize: none; overflow: hidden; min-height: 27px; border: 0; outline: 0; border-radius: 12px; color: inherit; background: transparent; font: inherit; font-size: 18px; line-height: 1.5; letter-spacing: -.01em; }
 .questionRow textarea::placeholder { color: var(--palette-powder); opacity: .65; }
-.questionRow textarea:focus-visible { outline: 2px solid var(--palette-powder); outline-offset: 4px; }
+.questionRow textarea:focus-visible { outline: none; box-shadow: none; }
+.item:focus-within { border-color: var(--palette-powder); }
 .submit { --arrow-width: 64px; --arrow-height: 36px; display: flex; align-items: center; justify-content: center; align-self: flex-end; flex-shrink: 0; width: 64px; height: 48px; border: 0; border-radius: 999px; color: inherit; background: transparent; cursor: pointer; transition: opacity .3s ease; }
 .submit:not(:disabled):is(:hover, :focus-visible) > span { background: var(--palette-powder-deep); }
 .upArrow { display: inline-flex; transform: rotate(-90deg); transition: translate .5s cubic-bezier(.22, 1, .36, 1); }
