@@ -58,7 +58,7 @@ function FaqItem({ entry, busy, onAsk }: { entry: Entry; busy: boolean; onAsk: (
           event.preventDefault()
           event.currentTarget.form?.requestSubmit()
         }} />
-        <button type="submit" disabled={busy || draft.trim().length < 3} className={styles.submit} aria-label="Ask question"><span className={styles.upArrow}><CircularArrowIcon /></span></button>
+        <button type="submit" disabled={busy || draft.trim().length < 3} className={styles.submit} aria-label="Ask question"><span className="arrow-capsule"><span className={styles.upArrow}><CircularArrowIcon /></span></span></button>
       </form>
       <div ref={answerRef} className={styles.answerViewport}>
       <div ref={answerContentRef}>
