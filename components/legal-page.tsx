@@ -61,6 +61,7 @@ export function LegalPage({ title, current, introduction, sections }: LegalPageP
                 <nav className={styles.relatedPolicies} aria-label="Related policies">
                   <span>Related:</span>
                   {relatedPolicies.map((policy) => <Link key={policy.id} href={policy.href}>{policy.label}</Link>)}
+                  <Link href="/faq">FAQ</Link>
                 </nav>
               </section>
             </div>
