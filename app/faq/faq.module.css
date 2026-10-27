@@ -75,8 +75,31 @@
 .chapterCurve,
 .packagesCurve {
   position: relative;
+  isolation: isolate;
   height: var(--home-rise);
+  overflow: hidden;
   background: var(--palette-navy);
+  line-height: 0;
+}
+
+.chapterCurve > svg,
+.packagesCurve > svg {
+  position: absolute;
+  inset: 0 0 -1px;
+  display: block;
+  width: 100%;
+  height: calc(100% + 1px);
+  transform-origin: center;
+}
+
+.chapterCurve > svg[data-direction='left'],
+.packagesCurve > svg[data-direction='left'] {
+  transform: scaleX(-1);
+}
+
+.chapterCurve > svg[data-direction='right'],
+.packagesCurve > svg[data-direction='right'] {
+  transform: none;
 }
 
 .chapter[data-tone='navy'] .chapterCurve,
