@@ -1,7 +1,9 @@
-.page {
+.page:global(.studio-page) {
+  --studio-surface: var(--palette-navy);
+  --studio-ink: var(--palette-powder);
   min-width: 0;
-  color: var(--palette-powder);
-  background: var(--palette-navy);
+  color: var(--studio-ink);
+  background: var(--studio-surface);
 }
 
 .page :global(.studio-hero) {
