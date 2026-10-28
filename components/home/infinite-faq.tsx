@@ -236,7 +236,7 @@ export function InfiniteFaq() {
           <p id="faq-guidance" className={styles.guidance}>AI answers. No confidential details, please. <Link href="/privacy">Privacy</Link></p>
           <p className="sr-only" role="status" aria-live="polite">{notice}</p>
         </div>
-        <ModularButton href="/faq">explore the full FAQ</ModularButton>
+        <ModularButton href="/faq">more answers</ModularButton>
       </div>
     </section>
   )
