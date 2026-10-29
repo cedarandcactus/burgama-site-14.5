@@ -10,6 +10,7 @@ import { ProjectEnquiryForm } from '@/components/nav-project-form'
 import { SectionRise } from '@/components/home/section-rise'
 import { gsap, ScrollTrigger } from '@/lib/motion'
 import { homeCurveExtensionLength, homeCurvePath } from '@/lib/home-curve'
+import { businessContact } from '@/lib/seo'
 import styles from '@/components/site-footer.module.css'
 
 const headline = 'Ready for what comes next'
@@ -31,7 +32,7 @@ const socialLinks = [
   },
   {
     label: 'LinkedIn',
-    href: 'https://linkedin.com/company/cedarandcactus',
+    href: 'https://www.linkedin.com/company/burgama/',
     paths: [
       'M8 11v5',
       'M8 8v.01',
@@ -322,7 +323,12 @@ export function SiteFooter({ enquiryHeading, afterEnquiry }: { enquiryHeading?: 
             </div>
             <div className={styles.bottomRow}>
               <address className={styles.address}>
-                Based in Texas. Borderless in practice.
+                <span className={styles.addressLine}>Based in Texas. Borderless in practice.</span>
+                <span className={styles.addressLine}>
+                  {businessContact.streetAddress}, {businessContact.addressLocality}, {businessContact.addressRegion} {businessContact.postalCode}
+                  {' · '}
+                  <a href={`tel:${businessContact.telephone}`}>{businessContact.telephoneDisplay}</a>
+                </span>
               </address>
               <div className={styles.bottomLegal}>
                 <p>© 2026 burgama</p>
