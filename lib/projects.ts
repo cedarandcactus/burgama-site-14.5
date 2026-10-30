@@ -384,16 +384,17 @@ export const projects: Project[] = [
   }),
   project({
     slug: 'clement-local-search', title: 'Clement Senior Solutions Local SEO setup', client: 'Clement Senior Solutions', parentSlug: 'clement-senior-solutions', collection: 'case-study',
-    tagline: 'An early foothold in local search.',
-    summary: 'Clearer service content and foundational local SEO for families looking for guidance around Austin.',
-    disciplines: ['Growth', 'Web'], services: ['Local SEO', 'Website optimization'], period: 'November 19, 2025 snapshot',
+    tagline: 'From name searches to first-page placement searches.',
+    summary: 'Clearer service content and local SEO that moved Clement’s average Google position from 42 to 21 in a year, for families looking for guidance around Austin.',
+    disciplines: ['Growth', 'Web'], services: ['Local SEO', 'Website optimization'], period: 'July–September 2025 vs. July–September 2026',
     heroMedia: image('clement-senior-solutions', 'web-clement.jpg', 'Clement website presentation.'),
     contentModules: [
       text('build the foundation.', 'The work refined metadata, page titles, headings, accessibility tags, and keyword placement across core service content. Website updates addressed navigation and company presentation.'),
-      text('the observed stage of growth.', 'The supplied November 19, 2025 search-tool snapshot reports seven ranking organic keywords, three improved keywords, and two newly ranked keywords.', '“Senior advisor austin tx” was reported at position 9 after a 13-position improvement. The tool estimated two monthly organic clicks, indicating an early stage rather than a lead-volume breakthrough.'),
-      text('keep the result in proportion.', 'Ranking movement and modeled traffic describe an initial search footprint. They are not measured enquiries, consultations, or revenue.'),
+      text('a year of search visibility.', 'Comparing July–September 2025 with the same quarter in 2026, Google Search Console records impressions rising from 3,020 to 5,160 (up 71%) and average position improving from 42.4 to 21.1. The site appeared for 194 search terms, up from 133.'),
+      text('the searches families use.', 'A year earlier, most visibility came from people searching Donna by name, and broader terms such as “austin senior care” sat around position 76. In July–September 2026, “placement agencies for seniors” averaged position 4.1, “senior living placement services” 4.6, and “assisted living placement” 8.0.'),
+      text('keep the result in proportion.', 'Clicks held steady (87 vs. 83), so the gain so far is visibility rather than traffic. The next step is sharper titles and descriptions so more of those searches turn into visits. Rankings are not measured enquiries, consultations, or revenue.'),
     ],
-    source: 'Clement Senior Solutions SEO & Website Optimization Case Study.docx and supplied screenshots dated November 19, 2025. Figures are SEO-tool estimates.',
+    source: 'Google Search Console, clementseniorsolutions.com, July 1–September 30, 2025 and July 1–September 30, 2026. Positions are Search Console averages across all searchers, not Austin-only.',
   }),
 ]
 
