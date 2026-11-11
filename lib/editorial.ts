@@ -284,6 +284,45 @@ export const ideas: IdeaPost[] = [
       },
     ],
   },
+  {
+    slug: 'claim-your-business-in-chatgpt',
+    issue: '07',
+    title: 'How to claim your business in ChatGPT',
+    metaTitle: 'How to claim your business in ChatGPT (Business Hub guide)',
+    metaDescription:
+      'OpenAI now lets owners claim a free business profile in ChatGPT. Here is how to claim it, what it changes, what it does not, and what to do next.',
+    targetKeyword: 'claim business on chatgpt',
+    categories: ['SEO', 'Business Strategy'],
+    deck: 'OpenAI now lets owners claim a free business profile in ChatGPT. Here is how to claim it, what it changes, what it does not, and what to do next.',
+    theme: 'navy',
+    visual: 'audit',
+    artwork: {
+      code: 'CLAIM',
+      notation: 'VERIFY / MEASURE',
+    },
+    body: [
+      'On November 10, 2026, OpenAI opened a beta called Businesses in ChatGPT. For the first time, an owner can claim the profile ChatGPT shows for their business, keep its details accurate, and see how often ChatGPT mentions them. Claiming is free for now. Here is how it works, what it changes, and what it does not.',
+      'Start at Business Hub, at chatgpt.com/business-hub, or from the ChatGPT sidebar. Sign in with the account that will manage the profile, search for your business, and select your listing. If there is no listing, an eligible online business can add one. If the listing says to contact support, it is locked and you will need OpenAI to grant access.',
+      'Next, prove the business is yours. Depending on your listing, OpenAI offers a code by text or call to the business phone, a code to the business email, a TXT record added to your domain, or a Shopify connection. After that comes an identity check through Persona, which can ask for a government ID and business registration details. Until it is done, you cannot publish changes or see your data. OpenAI emails its decision after each review.',
+      'Once you are verified, you can update the details ChatGPT shows, such as your website, description and category, and online stores can connect a product feed. OpenAI reviews every change before it goes live. Get the details right before you publish, because a published profile cannot simply be taken down by support.',
+      'The new dashboard, Insights, reports mentions, profile views, website clicks and the common topics in conversations where your site is cited. It only shows numbers once there is enough activity to protect privacy, so a blank chart does not mean zero. It does not show the questions people asked or how you compare with competitors. ChatGPT also tags its links with utm_source=chatgpt.com, so you can see those visits in your own analytics.',
+      'Eligibility is still narrow. Local shops and restaurants can only claim an existing United States listing, and in the first days some markets showed service businesses as coming soon. The Business Agent, a branded chat that answers questions about your products and policies, is limited to eligible US ecommerce and online service businesses.',
+      'The most important line is OpenAI\'s own: claiming does not guarantee better placement or more sales. Whether ChatGPT recommends you still depends on your website, your Google profile, your reviews and what other sites say about you. Claiming makes sure the details are yours and gives you data. It does not do the work of earning the recommendation.',
+      'So here is what we would do this week. Claim the profile if you are eligible, and set a calendar reminder to check Insights monthly. Then ask ChatGPT the questions your customers ask and see who it recommends. If it is not you, the fixes are usually a complete Google Business Profile, a page for each service, plain answers to common questions, consistent listings and more reviews.',
+      'If you want to know where you stand first, our free AI visibility check shows who ChatGPT and Google recommend for your searches, whether your ChatGPT profile is claimed, and three fixes in order.',
+    ],
+    internalLink: {
+      href: '/ai-visibility-check',
+      label: 'Get a free AI visibility check',
+    },
+    sources: [
+      { label: 'OpenAI: Introducing Businesses in ChatGPT', href: 'https://openai.com/index/introducing-businesses-chatgpt/' },
+      {
+        label: 'VentureBeat: OpenAI lets you claim your business in ChatGPT',
+        href: 'https://venturebeat.com/technology/openai-lets-you-claim-your-business-in-chatgpt-and-set-up-a-custom-agentic-ai-customer-sales-rep',
+      },
+    ],
+  },
 ]
 
 export function getIdea(slug: string) {

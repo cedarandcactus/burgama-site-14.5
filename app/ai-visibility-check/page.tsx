@@ -67,6 +67,36 @@ export default function AiVisibilityCheckPage() {
             <li key={heading}><h3>{heading}</h3><p>{body}</p></li>
           ))}
         </ol>
+        <figure className={styles.sample} aria-labelledby="sample-caption">
+          <div className={styles.sampleSheet} aria-hidden="true">
+            <div className={styles.sampleHead}>
+              <span>AI visibility check</span>
+              <span>Sample: Austin dental practice</span>
+            </div>
+            <p className={styles.sampleVerdict}>ChatGPT recommends three other dentists in Austin before you, and describes you as “general dentistry only.”</p>
+            <table className={styles.sampleTable}>
+              <thead><tr><th>Question we asked</th><th>ChatGPT</th><th>Google</th></tr></thead>
+              <tbody>
+                <tr><td>Best dentist in Austin</td><td>Not mentioned</td><td>Map pack #6</td></tr>
+                <tr><td>Emergency dentist near me</td><td>Not mentioned</td><td>Map pack #3</td></tr>
+                <tr><td>Best reviewed dentist in Austin</td><td>#4 of 5</td><td>n/a</td></tr>
+                <tr><td>Profile claimed in ChatGPT</td><td>No</td><td>n/a</td></tr>
+              </tbody>
+            </table>
+            <p className={styles.sampleLabel}>Recommended instead</p>
+            <ul className={styles.sampleBlur}>
+              <li>Lakeline Family Dental: 4 of 5 answers, 412 reviews</li>
+              <li>South Congress Smiles: 3 of 5 answers, 268 reviews</li>
+            </ul>
+            <p className={styles.sampleLabel}>Three fixes, in order</p>
+            <ol className={styles.sampleFixes}>
+              <li><b>Add a page for each service</b> <span className={styles.sampleBlurInline}>Implants, Invisalign and emergency visits each need a page that names Austin.</span></li>
+              <li><b>Complete your Google profile</b> <span className={styles.sampleBlurInline}>Add services, 10 recent photos and a weekly post.</span></li>
+              <li><b>Close the review gap</b> <span className={styles.sampleBlurInline}>Ask every patient with a direct review link.</span></li>
+            </ol>
+          </div>
+          <figcaption id="sample-caption" className={styles.sampleCaption}>A sample report for a made-up business, with some details blurred. Yours covers your business and your city.</figcaption>
+        </figure>
       </section>
 
       <section className={styles.band} aria-labelledby="steps-title">
@@ -83,7 +113,7 @@ export default function AiVisibilityCheckPage() {
         <ul className={styles.results}>
           {results.map(result => (
             <li key={result.label}>
-              <p className={styles.client}>{result.href ? <a href={result.href}>{result.client}</a> : result.client}</p>
+              <p className={styles.client}><a href={result.href}>{result.client}</a></p>
               <p className={`${styles.figure} font-serif`}>{result.figure}</p>
               <p className={styles.figureLabel}>{result.label}</p>
               <p className={styles.figureDetail}>{result.detail}</p>

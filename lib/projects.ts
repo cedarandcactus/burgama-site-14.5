@@ -80,6 +80,7 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   '10-pillar-productions/web-10-pillar.jpg': [1280, 720],
   'alh-senior-solutions/web-alh.jpg': [1280, 720],
   'clement-senior-solutions/web-clement.jpg': [1280, 720],
+  'reclaim-physical-therapy/web-reclaim.jpg': [1280, 595],
   'dr-saba-syed/web-dr-saba-syed.jpg': [1280, 720],
   'hiking-pony/packaging-range.jpg': [1920, 1280],
   'hiking-pony/sweet-cream-packaging.jpg': [1920, 1280],
@@ -394,6 +395,22 @@ export const projects: Project[] = [
       text('keep the result in proportion.', 'Ranking movement and modeled traffic describe an initial search footprint. They are not measured enquiries, consultations, or revenue.'),
     ],
     source: 'Clement Senior Solutions SEO & Website Optimization Case Study.docx and supplied screenshots dated November 19, 2025. Figures are SEO-tool estimates.',
+    links: [{ label: 'get a free AI visibility check', href: '/ai-visibility-check' }],
+  }),
+  project({
+    slug: 'reclaim-local-search', title: 'Reclaim Physical Therapy local search', client: 'Reclaim Physical Therapy', collection: 'case-study',
+    tagline: 'From a few searches a week to a steady stream.',
+    summary: 'New service and question pages for an Austin physical therapy clinic, followed by 6.9 times the Google impressions and nearly three times the contact form submissions.',
+    disciplines: ['Growth', 'Web'], services: ['Local SEO', 'Service page strategy', 'Website content'], period: 'April to October 2026',
+    heroMedia: image('reclaim-physical-therapy', 'web-reclaim.jpg', 'Reclaim Physical Therapy homepage.'),
+    contentModules: [
+      text('the starting point.', 'Reclaim is a one-on-one physical therapy clinic in Austin. Before the work began, its Squarespace site earned a few hundred Google impressions a month and a handful of clicks. From April to June 2026 the site recorded 21 Google clicks and seven contact form submissions.'),
+      text('give every search a page.', 'We started on June 22, 2026. Over July 29 to 31 we published about twelve new pages: a services hub for physical therapy in Austin, a page for each core service, and pages that answer the questions patients ask before they book. Each page names the clinic, the service and Austin in plain language, so both Google and AI tools can tell what Reclaim does and where.'),
+      text('what the numbers show.', 'August to October 2026 compared with April to June 2026: Google impressions rose from 1,121 to 7,727 (6.9 times), Google clicks from 21 to 99 (4.7 times), website visits from 143 to 512 (3.6 times), and contact form submissions from 7 to 20 (2.9 times).', 'From January 1 to November 6, Google clicks reached 190 in 2026, compared with 17 over the same dates in 2025.'),
+      text('keep the result in proportion.', 'Website visits and form submissions count all sources, not only search, and average Google position moved modestly. Impressions and clicks describe visibility. They are not booked patients or revenue.'),
+    ],
+    source: 'Google Search Console data via Squarespace Analytics (Search Keywords) and Squarespace Analytics (Traffic; Form and Button Conversions) for reclaimphysicaltherapy.com, pulled November 6, 2026.',
+    links: [{ label: 'get a free AI visibility check', href: '/ai-visibility-check' }],
   }),
 ]
 

@@ -157,6 +157,34 @@
 
 .note { margin-top: 20px !important; font-size: 14px !important; opacity: .7; }
 
+/* ---------- sample report ---------- */
+
+.sample { margin: clamp(28px, 4vw, 48px) 0 0; display: flex; flex-direction: column; gap: 12px; }
+
+.sampleSheet {
+  max-width: 760px;
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: 18px;
+  color: var(--palette-navy);
+  background: var(--palette-powder);
+  box-shadow: 0 24px 60px -32px rgb(0 0 0 / .6);
+  transform: rotate(-.6deg);
+}
+
+.sampleHead { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; font-weight: 600; letter-spacing: .02em; opacity: .75; }
+.sampleSheet .sampleVerdict { margin: 14px 0 18px; font-size: 19px; font-weight: 600; line-height: 1.35; }
+
+.sampleTable { width: 100%; border-collapse: collapse; font-size: 14px; }
+.sampleTable th, .sampleTable td { padding: 8px 10px; border-bottom: 1px solid color-mix(in srgb, var(--palette-navy) 18%, transparent); text-align: left; }
+.sampleTable th { font-weight: 600; background: color-mix(in srgb, var(--palette-navy) 8%, transparent); }
+
+.sampleSheet .sampleLabel { margin: 18px 0 6px; font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; opacity: .7; }
+.sampleBlur, .sampleFixes { margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.6; }
+.sampleBlur li { filter: blur(5px); user-select: none; }
+.sampleBlurInline { filter: blur(4px); user-select: none; }
+
+.band .sampleCaption { font-size: 14px; opacity: .75; }
+
 /* ---------- FAQ ---------- */
 
 .faq { display: flex; flex-direction: column; max-width: 860px; }
@@ -211,6 +239,9 @@
   .field input { min-height: 44px; padding: 8px 12px; }
   .submit:global(.pill) { min-height: 50px; font-size: 20px; }
   .cards, .steps, .results { grid-template-columns: 1fr; }
+  .sampleSheet { transform: none; }
+  .sampleTable { font-size: 13px; }
+  .sampleTable th, .sampleTable td { padding: 6px; }
 }
 
 @media (max-width: 340px) {
