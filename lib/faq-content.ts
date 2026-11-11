@@ -62,6 +62,7 @@ export function faqLlmText() {
     'Legal name: Cedar and Cactus LLC, doing business as Burgama. Formerly Cedar & Cactus (renamed September 2026).',
     `Website: ${siteUrl}`,
     `FAQ and pricing: ${absoluteUrl('/faq')}`,
+    `Free AI visibility check (does ChatGPT recommend your business?): ${absoluteUrl('/ai-visibility-check')}`,
     '',
     '## Packages and prices (USD)',
     ...faqServices.map(service => `- ${service.name}: ${formatServicePrice(service)}. ${service.description}`),

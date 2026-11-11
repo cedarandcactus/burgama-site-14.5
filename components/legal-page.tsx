@@ -11,6 +11,7 @@ type LegalPageProps = {
   current: Policy
   introduction: string
   sections: { id: string; title: string; paragraphs: string[] }[]
+  updated?: { iso: string; label: string }
 }
 
 const policies: { id: Policy; label: string; href: string }[] = [
@@ -25,7 +26,7 @@ const policyNames: Record<Policy, string> = {
   terms: 'these Terms of Service',
 }
 
-export function LegalPage({ title, current, introduction, sections }: LegalPageProps) {
+export function LegalPage({ title, current, introduction, sections, updated = { iso: '2026-09-15', label: 'September 15, 2026' } }: LegalPageProps) {
   const relatedPolicies = policies.filter((policy) => policy.id !== current)
 
   return (
@@ -42,7 +43,7 @@ export function LegalPage({ title, current, introduction, sections }: LegalPageP
         />
         <div className="studio-band" data-surface="powder">
           <div className={`studio-reading ${styles.document}`}>
-            <p className={styles.updated}>Last updated <time dateTime="2026-09-15">September 15, 2026</time></p>
+            <p className={styles.updated}>Last updated <time dateTime={updated.iso}>{updated.label}</time></p>
             <div className={styles.sections}>
               {sections.map((section) => (
                 <section key={section.id} aria-labelledby={section.id}>
