@@ -80,7 +80,7 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   '10-pillar-productions/web-10-pillar.jpg': [1280, 720],
   'alh-senior-solutions/web-alh.jpg': [1280, 720],
   'clement-senior-solutions/web-clement.jpg': [1280, 720],
-  'reclaim-physical-therapy/web-reclaim.jpg': [1280, 589],
+  'reclaim-physical-therapy/web-reclaim.jpg': [1280, 595],
   'dr-saba-syed/web-dr-saba-syed.jpg': [1280, 720],
   'hiking-pony/packaging-range.jpg': [1920, 1280],
   'hiking-pony/sweet-cream-packaging.jpg': [1920, 1280],
