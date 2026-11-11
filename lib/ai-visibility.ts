@@ -27,7 +27,7 @@ export const checkFaq = [
   {
     id: 'is-it-really-free',
     question: 'Is the check really free?',
-    answer: 'Yes. There is no cost and no obligation. If the report shows fixes you would rather hand off, we will tell you what our Local SEO and AI Visibility Foundation includes and what it costs. You can also take the three fixes and do them yourself.',
+    answer: 'Yes. There is no cost and no obligation. If the report shows fixes you would rather hand off, we will tell you what our Local Search Starter or ongoing SEO plan would include and what it costs. You can also take the three fixes and do them yourself.',
   },
   {
     id: 'how-do-businesses-show-up-in-chatgpt',
@@ -42,7 +42,7 @@ export const checkFaq = [
   {
     id: 'what-happens-after-the-check',
     question: 'What happens after I get my report?',
-    answer: 'You can book a free 30-minute call to walk through it, or simply use the fixes on your own. If you want us to do the work, our Local SEO and AI Visibility Foundation is $1,500 a month, with a three-month first term and then month to month.',
+    answer: 'You can book a free 30-minute call to walk through it, or simply use the fixes on your own. If you want us to do the work, our Local Search Starter is a one-time $750 setup delivered in 30 days. For ongoing work, our Local SEO and AI Visibility Foundation is $1,500 a month, with a three-month first term and then month to month.',
   },
 ] as const
 
@@ -59,18 +59,18 @@ export const steps = [
 ] as const
 
 /*
-  Proof points. Client names are withheld on purpose until each client
-  agrees to be named on an ad landing page. Every figure here is traceable:
-  - Physical therapy: Squarespace / Search Console data in the Burgama SEO
-    case study metrics sheet (Apr–Jun vs Aug–Oct 2026).
-  - Senior placement: Google Search Console, Jul–Sep 2025 vs Jul–Sep 2026
-    (same figures as the Clement local search case study).
-  - Sports app: Meta Ads Manager, October 2026 (855 signups, 1,759 installs).
+  Proof points. Clients approved use of their names in Burgama's portfolio.
+  Every figure here is traceable:
+  - Reclaim: Squarespace / Search Console data in the Burgama SEO case
+    study metrics sheet (Apr–Jun vs Aug–Oct 2026).
+  - Clement: Google Search Console, Jul–Sep 2025 vs Jul–Sep 2026 (same
+    figures as the Clement local search case study).
+  - MatchDay: Meta Ads Manager, October 2026 (855 signups, 1,759 installs).
 */
 export const results = [
-  { figure: '6.9×', label: 'more Google impressions', detail: 'An Austin physical therapy clinic, April to June vs August to October 2026. Contact form submissions rose from 7 to 20 over the same periods.' },
-  { figure: '42 → 21', label: 'average Google position', detail: 'A senior placement advisor in Austin, July to September 2025 vs 2026. “Placement agencies for seniors” now averages position 4.1.' },
-  { figure: '$6.76', label: 'per app signup', detail: 'A sports app’s Meta ads in October 2026: 855 signups, with 49% of installs completing signup.' },
+  { client: 'Reclaim Physical Therapy', href: null, figure: '6.9×', label: 'more Google impressions', detail: 'Austin physical therapy clinic, April to June vs August to October 2026. Contact form submissions rose from 7 to 20 over the same periods.' },
+  { client: 'Clement Senior Solutions', href: '/work/clement-local-search', figure: '42 → 21', label: 'average Google position', detail: 'Austin senior placement advisor, July to September 2025 vs 2026. “Placement agencies for seniors” now averages position 4.1.' },
+  { client: 'MatchDay', href: '/work/matchday', figure: '$6.76', label: 'per app signup', detail: 'Pickup soccer app, Meta ads in October 2026: 855 signups, with 49% of installs completing signup.' },
 ] as const
 
 export type LeadDraft = {

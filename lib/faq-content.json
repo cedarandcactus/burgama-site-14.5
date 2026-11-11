@@ -15,8 +15,8 @@
       "addressCountry": "US"
     },
     "areaServed": {
-"@type": "Place",
-"name": "Worldwide"
+      "@type": "Place",
+      "name": "Worldwide"
     },
     "founder": {
       "@type": "Person",
@@ -59,6 +59,26 @@
           "billingDuration": "P1M",
           "unitCode": "MON"
         }
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.burgama.com/faq#service-local-search-starter",
+      "name": "Local Search Starter",
+      "serviceType": "Local SEO setup",
+      "description": "A one-time, 30-day local search setup: your Google Business Profile completed with services, photos and a first post; a review request system with a short link, QR code and follow-up text; three new pages for the searches that bring you customers; sitemap, LocalBusiness schema and contact form tracking; listings on 10 relevant directories; and a before and after report at 30 days. Half at kickoff, half on delivery.",
+      "url": "https://www.burgama.com/faq",
+      "provider": {
+        "@id": "https://www.burgama.com/#organization"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Worldwide"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "750",
+        "priceCurrency": "USD"
       }
     },
     {
@@ -196,7 +216,7 @@
       "id": "what-are-burgama-s-packages-and-prices",
       "section": "about-burgama",
       "question": "What are Burgama's packages and prices?",
-      "answer": "Burgama's reference packages are Local SEO and AI Visibility Foundation at $1,500 a month, Social Media Management at $2,500 a month, Founder Video Production at $5,000, Email Marketing Foundation at $1,900 and Website Creation at $1,500, all in USD. Every proposal is custom, so these are reference points."
+      "answer": "Burgama's reference packages are Local SEO and AI Visibility Foundation at $1,500 a month, Local Search Starter at $750 one time, Social Media Management at $2,500 a month, Founder Video Production at $5,000, Email Marketing Foundation at $1,900 and Website Creation at $1,500, all in USD. Every proposal is custom, so these are reference points."
     },
     {
       "id": "how-much-does-burgama-charge-for-marketing-services",
@@ -256,7 +276,7 @@
       "id": "how-much-does-an-seo-agency-in-austin-cost",
       "section": "seo-ai-search",
       "question": "How much does an SEO agency in Austin cost?",
-      "answer": "Burgama's Local SEO and AI Visibility Foundation costs $1,500 a month (USD). The first term is three months, then it runs month to month. Our standard rate is $100 an hour. Other agencies price differently, so compare what each package includes."
+      "answer": "Burgama's Local SEO and AI Visibility Foundation costs $1,500 a month (USD). The first term is three months, then it runs month to month. For a one-time setup, the Local Search Starter is $750 and is delivered in 30 days. Our standard rate is $100 an hour. Other agencies price differently, so compare what each package includes."
     },
     {
       "id": "how-long-does-seo-take",

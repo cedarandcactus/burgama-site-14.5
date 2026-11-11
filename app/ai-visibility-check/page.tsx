@@ -83,6 +83,7 @@ export default function AiVisibilityCheckPage() {
         <ul className={styles.results}>
           {results.map(result => (
             <li key={result.label}>
+              <p className={styles.client}>{result.href ? <a href={result.href}>{result.client}</a> : result.client}</p>
               <p className={`${styles.figure} font-serif`}>{result.figure}</p>
               <p className={styles.figureLabel}>{result.label}</p>
               <p className={styles.figureDetail}>{result.detail}</p>
@@ -106,7 +107,7 @@ export default function AiVisibilityCheckPage() {
 
       <section className={`${styles.band} ${styles.closing}`} aria-labelledby="closing-title">
         <h2 id="closing-title" className="font-serif">Find out where you stand.</h2>
-        <p>It takes about a minute. If you want help with the fixes afterward, see our <a href="/faq#service-seo">Local SEO and AI Visibility Foundation</a>.</p>
+        <p>It takes about a minute. If you want help with the fixes afterward, our <a href="/faq#service-local-search-starter">Local Search Starter</a> is a one-time $750 setup, delivered in 30 days.</p>
         <a href="#check" className={`pill ${styles.closingCta}`}>get my free check</a>
       </section>
 
