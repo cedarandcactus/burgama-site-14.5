@@ -44,7 +44,7 @@ const sections = [
     paragraphs: [
       'The website uses a necessary first-party cookie for 30 days to remember whether you accepted optional cookies or chose only necessary storage. If you accept, a second first-party preference cookie remembers the homepage introduction shown to you for 30 days. It contains only a number from 0 to 2 and is removed when you choose only necessary. Neither cookie stores enquiry details, newsletter entries, or an advertising identifier.',
       'Vercel Web Analytics does not rely on tracking cookies. You can manage or delete cookies through your browser settings; deleting the consent cookie causes the choice notice to return. Our Cookie Policy describes each cookie, its purpose, duration, and attributes in more detail.',
-      'We do not use information from this website for targeted advertising or cross-context behavioral advertising, and we do not sell personal information collected through this website. If we introduce nonessential technology that requires consent, we will update our notice and provide the required choice before activating it. The website does not perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
+      'We do not sell personal information collected through this website. If you choose “Accept,” our free AI visibility check pages use OpenAI’s measurement pixel to tell us whether a visit from one of our ChatGPT ads led to a request; when you submit that form, OpenAI may receive a hashed copy of your email address, your IP address, browser details and city to attribute and report the result. If you choose “Only necessary,” this does not happen. Our Cookie Policy explains the cookies involved. The website does not perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
     ],
   },
   {
@@ -60,7 +60,7 @@ const sections = [
     id: 'disclosures',
     title: 'When information is shared',
     paragraphs: [
-      'Information may be handled by service providers supporting website hosting and analytics, email and communications, and business administration, where needed for those purposes. Vercel provides hosting and web analytics. Resend delivers project enquiries submitted through the website to us by email. Klaviyo stores our newsletter subscriber list and sends our updates. Information you choose to send by email also passes through the email services used by you and Burgama.',
+      'Information may be handled by service providers supporting website hosting and analytics, email and communications, and business administration, where needed for those purposes. Vercel provides hosting and web analytics. Resend delivers project enquiries and AI visibility check requests submitted through the website to us by email. OpenAI measures the results of our ChatGPT ads for visitors who accept advertising measurement. Klaviyo stores our newsletter subscriber list and sends our updates. Information you choose to send by email also passes through the email services used by you and Burgama.',
       'We may disclose information to professional advisers when necessary, to comply with a legal obligation or lawful request, to establish or defend legal claims, or to protect rights, safety, and security. If a business reorganization or transfer involves personal information, that information may be reviewed or transferred subject to appropriate confidentiality protections and applicable law.',
       'We may also share information when you specifically ask us to do so or give permission. We do not authorize service providers to use enquiry information for their own unrelated marketing.',
     ],
@@ -115,5 +115,5 @@ const sections = [
 ]
 
 export default function PrivacyPage() {
-  return <LegalPage title="Privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} />
+  return <LegalPage title="Privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} updated={{ iso: '2026-11-11', label: 'November 11, 2026' }} />
 }
