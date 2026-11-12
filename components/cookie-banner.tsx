@@ -42,7 +42,7 @@ export function CookieBanner() {
     >
       <aside className={styles.dialog} aria-labelledby={titleId}>
         <div className={styles.copy}>
-          <h2 id={titleId}>This site uses cookies.</h2>
+          <h2 id={titleId}>We use cookies, including to measure our ads.</h2>
           <a className={styles.policy} href="/cookies">Cookie policy</a>
         </div>
         <div className={styles.actions}>

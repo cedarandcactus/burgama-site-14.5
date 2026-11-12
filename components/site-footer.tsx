@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
+import { DoNotSellLink } from '@/components/do-not-sell-link'
 import { FooterFilm } from '@/components/footer-film'
 import { FooterUpdates } from '@/components/footer-updates'
 import { Reveal } from '@/components/reveal'
@@ -338,6 +339,7 @@ export function SiteFooter({ enquiryHeading, afterEnquiry }: { enquiryHeading?: 
                   <Link href="/privacy">Privacy</Link>
                   <Link href="/terms">Terms</Link>
                   <Link href="/faq">FAQ</Link>
+                  <DoNotSellLink />
                 </nav>
               </div>
             </div>

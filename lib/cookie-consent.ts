@@ -45,4 +45,31 @@ export function clearHeadlinePreference() {
   writeCookie(HEADLINE_COOKIE_NAME, '', 0)
 }
 
+/*
+  ADVERTISING MEASUREMENT (US opt-out, Nov 2026).
+  For US visitors, ad measurement is on by default, and is turned off by
+  "Necessary only", the "Do not sell or share" link, or a Global Privacy
+  Control signal from the browser. Outside the US it stays opt-in: only
+  "Accept all" turns it on. The visitor's country comes from the server.
+*/
+export function globalPrivacyControl() {
+  return typeof navigator !== 'undefined' && (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
+}
+
+export function adMeasurementOptedOut() {
+  return getCookieConsent() === 'necessary' || globalPrivacyControl()
+}
+
+export function adMeasurementAllowed(optOutRegion: boolean) {
+  if (adMeasurementOptedOut()) return false
+  return getCookieConsent() === 'accepted' || optOutRegion
+}
+
+/* "Do not sell or share": the same outcome as choosing "Necessary only". */
+export function optOutOfAdMeasurement() {
+  setCookieConsent('necessary')
+  clearHeadlinePreference()
+  window.dispatchEvent(new CustomEvent<CookieConsent>(COOKIE_CONSENT_EVENT, { detail: 'necessary' }))
+}
+
 export type { CookieConsent }

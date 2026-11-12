@@ -9,7 +9,8 @@ import { recipient } from '@/lib/enquiry'
   1. Validates the three fields again (anything can POST here).
   2. Emails the lead to the studio inbox and to Deniz straight away, with
      the ad source, so follow-up can happen within 24 hours.
-  3. If the visitor accepted cookies, sends the `lead_created` conversion
+  3. If measurement is allowed (US visitor who has not opted out or sent
+     Global Privacy Control, or anyone who chose "Accept all"), sends the `lead_created` conversion
      to OpenAI's Conversions API with the same event ID the browser pixel
      used, so OpenAI counts it once.
 
@@ -129,11 +130,13 @@ export async function POST(request: Request) {
   const oppref = clean(body.oppref, 500)
   const landingUrl = clean(body.landingUrl, 1000)
   const eventId = clean(body.eventId, 100) || crypto.randomUUID()
-  const consented = body.consent === true
+  const optedOut = body.optedOut === true || request.headers.get('sec-gpc') === '1'
+  const usVisitor = request.headers.get('x-vercel-ip-country') === 'US'
+  const measurementAllowed = !optedOut && (body.consent === true || usVisitor)
 
-  const conversion = consented
+  const conversion = measurementAllowed
     ? await sendConversion(request, { eventId, email: draft.email, landingUrl, oppref })
-    : 'skipped (no cookie consent)'
+    : optedOut ? 'skipped (visitor opted out)' : 'skipped (outside the US, no consent)'
 
   const source = tracking.utm_source
     ? [tracking.utm_source, tracking.utm_medium, tracking.utm_campaign, tracking.utm_content].filter(Boolean).join(' / ')

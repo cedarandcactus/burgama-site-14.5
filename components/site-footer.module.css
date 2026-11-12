@@ -553,13 +553,19 @@
   gap: 12px;
 }
 
-.legalLinks a {
+.legalLinks :is(a, button) {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: none;
+  font: inherit;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
 }
 
-.legalLinks a:is(:hover, :focus-visible) {
+.legalLinks :is(a, button):is(:hover, :focus-visible) {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: .2em;
