@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { SiteFooter } from '@/components/site-footer'
-import { checkFaq, checkPath, reportContents, results, steps, turnaround } from '@/lib/ai-visibility'
+import { checkFaq, checkPath, googleRating, reportContents, results, steps, turnaround } from '@/lib/ai-visibility'
 import { JsonLd, absoluteUrl, breadcrumbJsonLd, defaultSocialImage, siteUrl } from '@/lib/seo'
 import { CheckForm } from './check-form'
+import { LandingFooter, LandingMark } from './landing-footer'
 import styles from './page.module.css'
 
 const title = 'Free AI Visibility Check: Does ChatGPT Recommend Your Business? | Burgama'
@@ -43,11 +43,12 @@ const serviceJsonLd = {
 
 export default function AiVisibilityCheckPage() {
   return (
-    <div className={`studio-page ${styles.page} font-sans`} data-nav-surface="ink">
+    <div className={`studio-page ${styles.page} font-sans`} data-nav-surface="frost" data-landing-page="">
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={faqJsonLd} />
       <JsonLd data={breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Free AI visibility check', path: checkPath }])} />
 
+      <LandingMark />
       <section className={styles.hero} aria-labelledby="check-title">
         <div className={styles.heroCopy}>
           <p className={styles.kicker}>Free AI visibility check</p>
@@ -56,21 +57,25 @@ export default function AiVisibilityCheckPage() {
             <span className={styles.ledeLong}>We ask ChatGPT and Google what your customers ask, then send you who they recommend, what they say about you, and three fixes. Free, in {turnaround}.</span>
             <span className={styles.ledeShort}>See who AI recommends instead of you, plus three fixes. Free, in {turnaround}.</span>
           </p>
+          <div className={styles.proof}>
+            <p className={styles.rating}>
+              <span className={styles.stars} aria-hidden="true">★★★★★</span>
+              <span><b>{googleRating.score}</b> from {googleRating.count} Google reviews</span>
+            </p>
+            <ul className={styles.proofResults} aria-label="Recent client results">
+              {results.map(result => (
+                <li key={result.client}><b>{result.figure}</b> {result.label}<span>{result.client}</span></li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <CheckForm />
-      </section>
 
-      <section className={styles.band} aria-labelledby="report-title">
-        <h2 id="report-title" className="font-serif">What’s in your report</h2>
-        <ol className={styles.cards}>
-          {reportContents.map(([heading, body]) => (
-            <li key={heading}><h3>{heading}</h3><p>{body}</p></li>
-          ))}
-        </ol>
+        <CheckForm />
+
         <figure className={styles.sample} aria-labelledby="sample-caption">
           <div className={styles.sampleSheet} aria-hidden="true">
             <div className={styles.sampleHead}>
-              <span>AI visibility check</span>
+              <span>Your report looks like this</span>
               <span>Sample: Austin dental practice</span>
             </div>
             <p className={styles.sampleVerdict}>ChatGPT recommends three other dentists in Austin before you, and describes you as “general dentistry only.”</p>
@@ -99,6 +104,15 @@ export default function AiVisibilityCheckPage() {
         </figure>
       </section>
 
+      <section className={styles.band} aria-labelledby="report-title">
+        <h2 id="report-title" className="font-serif">What’s in your report</h2>
+        <ol className={styles.cards}>
+          {reportContents.map(([heading, body]) => (
+            <li key={heading}><h3>{heading}</h3><p>{body}</p></li>
+          ))}
+        </ol>
+      </section>
+
       <section className={styles.band} aria-labelledby="steps-title">
         <h2 id="steps-title" className="font-serif">How it works</h2>
         <ol className={styles.steps}>
@@ -114,7 +128,7 @@ export default function AiVisibilityCheckPage() {
           {results.map(result => (
             <li key={result.label}>
               <p className={styles.client}><a href={result.href}>{result.client}</a></p>
-              <p className={`${styles.figure} font-serif`}>{result.figure}</p>
+              <p className={styles.figure}>{result.figure}</p>
               <p className={styles.figureLabel}>{result.label}</p>
               <p className={styles.figureDetail}>{result.detail}</p>
             </li>
@@ -137,11 +151,11 @@ export default function AiVisibilityCheckPage() {
 
       <section className={`${styles.band} ${styles.closing}`} aria-labelledby="closing-title">
         <h2 id="closing-title" className="font-serif">Find out where you stand.</h2>
-        <p>It takes about a minute. If you want help with the fixes afterward, our <a href="/faq#service-local-search-starter">Local Search Starter</a> is a one-time $750 setup, delivered in 30 days.</p>
-        <a href="#check" className={`pill ${styles.closingCta}`}>get my free check</a>
+        <p>It takes about 20 seconds. If you want help with the fixes afterward, our <a href="/faq#service-local-search-starter">Local Search Starter</a> is a one-time $750 setup, delivered in 30 days.</p>
+        <a href="#check" className={`pill ${styles.closingCta}`}>Get my free check</a>
       </section>
 
-      <SiteFooter />
+      <LandingFooter />
     </div>
   )
 }

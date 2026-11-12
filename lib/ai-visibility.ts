@@ -22,7 +22,7 @@ export const checkFaq = [
   {
     id: 'what-do-you-need-from-me',
     question: 'What do you need from me?',
-    answer: 'Your name, your business name, your website, your email and the city you serve. That is enough to run the check. We do not need logins or access to any of your accounts.',
+    answer: 'Your website, your email and your name. We find your business name, category and city from your site, so that is enough to run the check. We do not need logins or access to any of your accounts.',
   },
   {
     id: 'is-it-really-free',
@@ -58,7 +58,7 @@ export const reportContents = [
 ] as const
 
 export const steps = [
-  ['Tell us about your business', 'Five fields. It takes about a minute.'],
+  ['Tell us where to look', 'Your website, email and name. It takes about 20 seconds.'],
   ['We run the check', 'We ask ChatGPT and Google the questions your customers ask, in your city.'],
   [`Your report in ${turnaround}`, 'Sent to your inbox, with an optional call to walk through it.'],
 ] as const
@@ -68,7 +68,7 @@ export const steps = [
   Every figure here is traceable:
   - Reclaim: Search Console data via Squarespace Analytics, in the
     "Reclaim PT SEO Metrics (Monthly)" sheet (Apr to Jun vs Aug to Oct 2026).
-  - Clement: Google Search Console, Jul–Sep 2025 vs Jul–Sep 2026 (same
+  - Clement: Google Search Console, Jul to Sep 2025 vs Jul to Sep 2026 (same
     figures as the Clement local search case study).
   - MatchDay: Meta Ads Manager, October 2026 (855 signups, 1,759 installs).
 */
@@ -78,27 +78,25 @@ export const results = [
   { client: 'MatchDay', href: '/work/matchday', figure: '$6.76', label: 'per app signup', detail: 'Pickup soccer app, Meta ads in October 2026: 855 signups, with 49% of installs completing signup.' },
 ] as const
 
+/* Three fields only: every extra field costs submissions. We read the business
+   name, category and city from the website when we run the check. */
 export type LeadDraft = {
-  name: string
-  business: string
   website: string
   email: string
-  city: string
+  name: string
 }
 
 export type LeadErrors = Partial<Record<keyof LeadDraft, string>>
 
 export const leadLimits: Record<keyof LeadDraft, number> = {
-  name: 120, business: 200, website: 300, email: 254, city: 120,
+  website: 300, email: 254, name: 120,
 }
 
 export function validateLead(draft: LeadDraft): LeadErrors {
   const errors: LeadErrors = {}
-  if (!draft.name.trim()) errors.name = 'Enter your name.'
-  if (!draft.business.trim()) errors.business = 'Enter your business name.'
   if (!normalizeSite(draft.website)) errors.website = 'Enter your website, such as example.com.'
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errors.email = 'Enter a valid email address.'
-  if (!draft.city.trim()) errors.city = 'Enter the city you serve.'
+  if (!draft.name.trim()) errors.name = 'Enter your name.'
   return errors
 }
 
@@ -113,6 +111,15 @@ export function normalizeSite(value: string) {
     return null
   }
 }
+
+/* The business's domain, used as its label in the lead email. */
+export function siteLabel(value: string) {
+  const site = normalizeSite(value)
+  return site ? new URL(site).hostname.replace(/^www\./, '') : value.trim()
+}
+
+/* Shown above the fold. Checked on the Burgama Google Business Profile, Nov 12, 2026. */
+export const googleRating = { score: '5.0', count: 15 } as const
 
 /* Attribution fields read from the landing URL. Only these are kept. */
 export const trackingKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const
