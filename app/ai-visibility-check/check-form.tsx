@@ -11,11 +11,9 @@ import {
 import styles from './page.module.css'
 
 const fields: { key: keyof LeadDraft; label: string; type: string; autoComplete: string; placeholder?: string; inputMode?: 'url' | 'email' }[] = [
-  { key: 'name', label: 'Your name', type: 'text', autoComplete: 'name' },
-  { key: 'business', label: 'Business name', type: 'text', autoComplete: 'organization' },
-  { key: 'website', label: 'Website', type: 'text', autoComplete: 'url', placeholder: 'example.com', inputMode: 'url' },
-  { key: 'city', label: 'City you serve', type: 'text', autoComplete: 'address-level2', placeholder: 'e.g. Austin, TX' },
-  { key: 'email', label: 'Email', type: 'email', autoComplete: 'email', inputMode: 'email' },
+  { key: 'website', label: 'Your business website', type: 'text', autoComplete: 'url', placeholder: 'yourbusiness.com', inputMode: 'url' },
+  { key: 'email', label: 'Email for the report', type: 'email', autoComplete: 'email', placeholder: 'you@yourbusiness.com', inputMode: 'email' },
+  { key: 'name', label: 'First name', type: 'text', autoComplete: 'given-name' },
 ]
 
 /* Read once at submit: the landing URL carries the UTMs and the ad click ID. */
@@ -37,7 +35,7 @@ function newEventId() {
 
 export function CheckForm() {
   const router = useRouter()
-  const [draft, setDraft] = useState<LeadDraft>({ name: '', business: '', website: '', email: '', city: '' })
+  const [draft, setDraft] = useState<LeadDraft>({ website: '', email: '', name: '' })
   const [errors, setErrors] = useState<LeadErrors>({})
   const [state, setState] = useState<'idle' | 'sending' | 'failed'>('idle')
   const honeypot = useRef<HTMLInputElement>(null)
@@ -89,13 +87,14 @@ export function CheckForm() {
   }
 
   return (
-    <form ref={formRef} id="check" className={styles.form} onSubmit={submit} noValidate aria-describedby="check-promise">
+    <form ref={formRef} id="check" className={styles.form} onSubmit={submit} noValidate aria-labelledby="check-form-title" aria-describedby="check-promise">
+      <p id="check-form-title" className={styles.formTitle}>Get your free report</p>
       <div className={styles.formGrid}>
         {fields.map(field => {
           const id = `check-${field.key}`
           const error = errors[field.key]
           return (
-            <div key={field.key} className={styles.field} data-wide={field.key === 'email' ? '' : undefined}>
+            <div key={field.key} className={styles.field}>
               <label htmlFor={id}>{field.label}</label>
               <input
                 id={id}
@@ -125,10 +124,10 @@ export function CheckForm() {
         <input ref={honeypot} id="check-company" name="company" type="text" tabIndex={-1} autoComplete="off" />
       </div>
       <button type="submit" className={`pill ${styles.submit}`} disabled={state === 'sending'}>
-        {state === 'sending' ? 'sending…' : 'get my free check'}
+        {state === 'sending' ? 'Sending…' : 'Get my free check'}
       </button>
       <p id="check-promise" className={styles.formNote}>
-        Free, no obligation. Your report arrives by email within {turnaround}.
+        Free, no obligation, no logins needed. Your report arrives by email within {turnaround}.
       </p>
       {state === 'failed' && (
         <p className={styles.error} role="alert">

@@ -1,12 +1,12 @@
 import { createHash } from 'node:crypto'
 import { NextResponse } from 'next/server'
-import { leadLimits, normalizeSite, trackingKeys, validateLead, type LeadDraft, type Tracking } from '@/lib/ai-visibility'
+import { leadLimits, normalizeSite, siteLabel, trackingKeys, validateLead, type LeadDraft, type Tracking } from '@/lib/ai-visibility'
 import { recipient } from '@/lib/enquiry'
 
 /*
   AI VISIBILITY CHECK — lead endpoint for the ChatGPT ads landing page.
 
-  1. Validates the five fields again (anything can POST here).
+  1. Validates the three fields again (anything can POST here).
   2. Emails the lead to the studio inbox and to Deniz straight away, with
      the ad source, so follow-up can happen within 24 hours.
   3. If the visitor accepted cookies, sends the `lead_created` conversion
@@ -45,7 +45,7 @@ function cookie(request: Request, name: string) {
   return match ? decodeURIComponent(match.slice(name.length + 1)) : ''
 }
 
-async function sendConversion(request: Request, input: { eventId: string; email: string; city: string; landingUrl: string; oppref: string }) {
+async function sendConversion(request: Request, input: { eventId: string; email: string; landingUrl: string; oppref: string }) {
   const key = process.env.OPENAI_ADS_API_KEY
   const pixelId = process.env.NEXT_PUBLIC_OPENAI_PIXEL_ID
   if (!key || !pixelId) return 'not configured'
@@ -68,7 +68,6 @@ async function sendConversion(request: Request, input: { eventId: string; email:
       ...(obref ? { obref } : {}),
       ...(forwarded ? { ip_address: forwarded } : {}),
       ...(request.headers.get('user-agent') ? { user_agent: request.headers.get('user-agent') } : {}),
-      ...(input.city ? { cities: [input.city.split(',')[0].trim().toLowerCase()] } : {}),
       countries: ['us'],
     },
   }
@@ -111,12 +110,11 @@ export async function POST(request: Request) {
   }
 
   const draft: LeadDraft = {
-    name: text(body, 'name'),
-    business: text(body, 'business'),
     website: text(body, 'website'),
     email: text(body, 'email'),
-    city: text(body, 'city'),
+    name: text(body, 'name'),
   }
+  const business = siteLabel(draft.website)
   const errors = validateLead(draft)
   if (Object.keys(errors).length) {
     return NextResponse.json({ error: 'Some details need another look.', errors }, { status: 400 })
@@ -134,7 +132,7 @@ export async function POST(request: Request) {
   const consented = body.consent === true
 
   const conversion = consented
-    ? await sendConversion(request, { eventId, email: draft.email, city: draft.city, landingUrl, oppref })
+    ? await sendConversion(request, { eventId, email: draft.email, landingUrl, oppref })
     : 'skipped (no cookie consent)'
 
   const source = tracking.utm_source
@@ -144,10 +142,9 @@ export async function POST(request: Request) {
   const emailBody = [
     'New free AI visibility check request. Reply within 24 hours.', '',
     `Name: ${draft.name.trim()}`,
-    `Business: ${draft.business.trim()}`,
     `Website: ${normalizeSite(draft.website)}`,
     `Email: ${draft.email.trim()}`,
-    `City: ${draft.city.trim()}`, '',
+    'Business name and city: not asked on the form. Read them from the website.', '',
     `Source: ${source}`,
     ...(tracking.utm_term ? [`Term: ${tracking.utm_term}`] : []),
     `ChatGPT click ID: ${oppref ? 'yes' : 'no'}`,
@@ -170,7 +167,7 @@ export async function POST(request: Request) {
         from,
         to: [inbox, ...alertTo.filter(address => address !== inbox)],
         reply_to: draft.email.trim(),
-        subject: `AI visibility check request: ${draft.business.trim()} (${source})`,
+        subject: `AI visibility check request: ${business} (${source})`,
         text: emailBody,
       }),
     })

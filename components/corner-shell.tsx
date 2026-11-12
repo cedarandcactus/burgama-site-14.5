@@ -160,6 +160,9 @@ function AgencyCornerShell() {
   }, [open, projectOpen, pathname])
 
   if (pathname.startsWith('/lot-2046')) return null
+  /* Ad landing pages render their own bare mark: no menu, no project form,
+     nothing that pulls a visitor away from the one action on the page. */
+  if (pathname.startsWith('/ai-visibility-check')) return null
   const navigationVisible = !projectOpen && (!condensed || open)
   const menuTriggerVisible = condensed || projectOpen
 
