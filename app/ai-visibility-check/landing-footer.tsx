@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { DoNotSellLink } from '@/components/do-not-sell-link'
 import styles from './page.module.css'
 
 /* The site header is hidden on ad landing pages. Brand guide: the wordmark
@@ -21,6 +22,7 @@ export function LandingFooter() {
         <Link href="/privacy">Privacy</Link>
         <Link href="/cookies">Cookies</Link>
         <Link href="/terms">Terms</Link>
+        <DoNotSellLink className={styles.footerButton} />
       </nav>
     </footer>
   )

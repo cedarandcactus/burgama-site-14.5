@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useRef, useState, type FormEvent } from 'react'
 import { measureLead } from '@/components/openai-pixel'
-import { getCookieConsent } from '@/lib/cookie-consent'
+import { adMeasurementOptedOut, getCookieConsent } from '@/lib/cookie-consent'
 import {
   leadLimits, thanksPath, trackingKeys, turnaround, validateLead,
   type LeadDraft, type LeadErrors, type Tracking,
@@ -68,6 +68,7 @@ export function CheckForm() {
           landingUrl,
           eventId,
           consent: getCookieConsent() === 'accepted',
+          optedOut: adMeasurementOptedOut(),
           company: honeypot.current?.value ?? '',
         }),
       })
