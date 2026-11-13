@@ -279,11 +279,20 @@
 
 /* ---------- thank-you page ---------- */
 
-.thanks { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'copy'; min-height: 70vh; }
+.thanks { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'copy' 'booking'; min-height: 70vh; }
 .thanks .heroCopy { max-width: 720px; }
 .thanksActions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 8px; }
 .thanksActions .submit:global(.pill) { width: auto; }
 .textLink { font-size: 18px; }
+.bookingTitle { font-family: var(--font-sans); margin: 16px 0 0; font-size: 24px; font-weight: 600; line-height: 1.25; }
+.booking { grid-area: booking; width: 100%; max-width: 1040px; }
+.bookingFrame { display: block; width: 100%; height: 720px; border: 0; border-radius: 16px; background: var(--soft-white, #f0f0fa); }
+@media (max-width: 860px) { .bookingFrame { height: 1040px; } }
+
+/* "Rather talk now?" secondary booking link */
+.talkNow { margin: 4px 0 0; font-size: 16px; }
+.talkNow a { font-weight: 600; }
+.closing .talkNow { margin-top: 16px; }
 
 /* ---------- tablet and mobile: copy, form, then sample ---------- */
 

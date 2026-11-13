@@ -80,6 +80,7 @@ export function CheckForm() {
       measureLead(eventId)
       /* Give the pixel a moment to send before the route changes. */
       await new Promise(resolve => setTimeout(resolve, 250))
+      try { sessionStorage.setItem('ai-check-lead', JSON.stringify({ name: draft.name.trim(), email: draft.email.trim() })) } catch { /* storage blocked */ }
       router.push(thanksPath)
     } catch {
       setState('failed')

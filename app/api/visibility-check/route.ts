@@ -1,7 +1,11 @@
 import { createHash } from 'node:crypto'
-import { NextResponse } from 'next/server'
+import { after, NextResponse } from 'next/server'
 import { leadLimits, normalizeSite, siteLabel, trackingKeys, validateLead, type LeadDraft, type Tracking } from '@/lib/ai-visibility'
 import { recipient } from '@/lib/enquiry'
+import { draftReport, sendConfirmation, sendDraftFailed, sendReportForApproval } from '@/lib/lead-flow'
+
+/* The report agent runs after the response (see lib/lead-flow.ts). */
+export const maxDuration = 300
 
 /*
   AI VISIBILITY CHECK — lead endpoint for the ChatGPT ads landing page.
@@ -9,6 +13,9 @@ import { recipient } from '@/lib/enquiry'
   1. Validates the three fields again (anything can POST here).
   2. Emails the lead to the studio inbox and to Deniz straight away, with
      the ad source, so follow-up can happen within 24 hours.
+  2b. Sends the lead an instant confirmation with the booking link, then
+     (after the response) drafts the report and emails it to the studio for
+     one-tap approval. See lib/lead-flow.ts.
   3. If the visitor accepted cookies, sends the `lead_created` conversion
      to OpenAI's Conversions API with the same event ID the browser pixel
      used, so OpenAI counts it once.
@@ -179,6 +186,24 @@ export async function POST(request: Request) {
     console.error('[visibility-check] send failed:', cause)
     return NextResponse.json({ error: 'The request could not be sent.' }, { status: 502 })
   }
+
+  /* Instant confirmation to the lead. A failure here must not lose the lead,
+     which is already in the inbox, so it is logged, not surfaced. */
+  const lead = { name: draft.name.trim(), email: draft.email.trim(), website: draft.website, source }
+  const confirmation = await sendConfirmation(lead).catch(cause => ({ error: String(cause) }))
+  if (confirmation.error) console.error('[visibility-check] confirmation failed:', confirmation.error)
+
+  const studio = [inbox, ...alertTo.filter(address => address !== inbox)]
+  after(async () => {
+    try {
+      const report = await draftReport(lead)
+      const sent = await sendReportForApproval(report, studio)
+      if (sent.error) throw new Error(sent.error)
+    } catch (cause) {
+      console.error('[visibility-check] report draft failed:', cause)
+      await sendDraftFailed(lead, studio, String(cause).slice(0, 500))
+    }
+  })
 
   return NextResponse.json({ ok: true })
 }
