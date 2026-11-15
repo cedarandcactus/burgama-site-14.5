@@ -172,7 +172,9 @@ export async function POST(request: Request) {
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from,
-        to: [inbox, ...alertTo.filter(address => address !== inbox)],
+        /* Record copy for the shared inbox only. Deniz gets the approval email
+           a minute later instead, so each lead is one notification for him. */
+        to: [inbox],
         reply_to: draft.email.trim(),
         subject: `AI visibility check request: ${business} (${source})`,
         text: emailBody,
@@ -193,7 +195,7 @@ export async function POST(request: Request) {
   const confirmation = await sendConfirmation(lead).catch(cause => ({ error: String(cause) }))
   if (confirmation.error) console.error('[visibility-check] confirmation failed:', confirmation.error)
 
-  const studio = [inbox, ...alertTo.filter(address => address !== inbox)]
+  const studio = alertTo
   after(async () => {
     try {
       const report = await draftReport(lead)

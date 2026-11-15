@@ -306,7 +306,7 @@ export async function sendReportForApproval(r: Report, studio: string[]) {
   const mail = reportEmail(r)
   const approve = `${siteOrigin}/api/visibility-check/approve?t=${sign(r)}`
   const html = shell(`
-<p style="background:#fff7d6;border:1px solid #e6d27a;padding:12px 14px;border-radius:8px"><b>Draft report for ${esc(r.lead.name)} (${esc(r.lead.email)}), source ${esc(r.lead.source)}.</b><br>
+<p style="background:#fff7d6;border:1px solid #e6d27a;padding:12px 14px;border-radius:8px"><b>Draft report for ${esc(r.lead.name)} (${esc(r.lead.email)}), ${esc(normalizeSite(r.lead.website) ?? r.lead.website)}, source ${esc(r.lead.source)}.</b><br>
 Read it below. If it is right, approve it and it goes to them straight away from Burgama, with follow-ups on day 2 and day 5. If something is off, reply to them by hand instead and do not approve.</p>
 ${button(approve, 'Approve and send to ' + esc(firstName(r.lead.name)))}
 <hr style="border:0;border-top:1px solid #ddd;margin:24px 0">
