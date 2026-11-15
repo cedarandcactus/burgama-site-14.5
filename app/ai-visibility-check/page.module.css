@@ -275,7 +275,8 @@
   font-size: 14px;
 }
 .landingFooter p { margin: 0; }
-.landingFooter nav { display: flex; gap: 20px; }
+.landingFooter nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.footerButton { padding: 0; border: 0; color: inherit; background: none; font: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; cursor: pointer; }
 
 /* ---------- thank-you page ---------- */
 

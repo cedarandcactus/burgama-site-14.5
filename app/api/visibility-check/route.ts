@@ -16,7 +16,8 @@ export const maxDuration = 300
   2b. Sends the lead an instant confirmation with the booking link, then
      (after the response) drafts the report and emails it to the studio for
      one-tap approval. See lib/lead-flow.ts.
-  3. If the visitor accepted cookies, sends the `lead_created` conversion
+  3. If measurement is allowed (US visitor who has not opted out or sent
+     Global Privacy Control, or anyone who chose "Accept all"), sends the `lead_created` conversion
      to OpenAI's Conversions API with the same event ID the browser pixel
      used, so OpenAI counts it once.
 
@@ -136,11 +137,13 @@ export async function POST(request: Request) {
   const oppref = clean(body.oppref, 500)
   const landingUrl = clean(body.landingUrl, 1000)
   const eventId = clean(body.eventId, 100) || crypto.randomUUID()
-  const consented = body.consent === true
+  const optedOut = body.optedOut === true || request.headers.get('sec-gpc') === '1'
+  const usVisitor = request.headers.get('x-vercel-ip-country') === 'US'
+  const measurementAllowed = !optedOut && (body.consent === true || usVisitor)
 
-  const conversion = consented
+  const conversion = measurementAllowed
     ? await sendConversion(request, { eventId, email: draft.email, landingUrl, oppref })
-    : 'skipped (no cookie consent)'
+    : optedOut ? 'skipped (visitor opted out)' : 'skipped (outside the US, no consent)'
 
   const source = tracking.utm_source
     ? [tracking.utm_source, tracking.utm_medium, tracking.utm_campaign, tracking.utm_content].filter(Boolean).join(' / ')

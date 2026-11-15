@@ -2,17 +2,16 @@
 
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
-import { COOKIE_CONSENT_EVENT, getCookieConsent, type CookieConsent } from '@/lib/cookie-consent'
+import { COOKIE_CONSENT_EVENT, adMeasurementAllowed, adMeasurementOptedOut } from '@/lib/cookie-consent'
 
 /*
-  OPENAI ADS MEASUREMENT PIXEL — consent-gated.
+  OPENAI ADS MEASUREMENT PIXEL: US opt-out, opt-in elsewhere.
 
-  The cookie policy promises that no advertising technology runs before a
-  visitor opts in, so the SDK is not even requested until the banner has
-  been answered with "Accept all". Choosing "Necessary only" (or ignoring
-  the banner) means no OpenAI cookies and no browser events. Leads are
-  still counted through the UTM fields on the form, so the test can be
-  judged either way.
+  US visitors (optOutRegion, from the server's geo header) get the pixel
+  unless they chose "Necessary only", used "Do not sell or share", or their
+  browser sends Global Privacy Control. Everyone else gets it only after
+  "Accept all". Leads are still counted through the UTM fields on the form
+  either way.
 
   The SDK reads the `oppref` click ID from the landing URL at init, which
   is why this component sits in the landing page's layout: the ad lands
@@ -29,22 +28,22 @@ declare global {
 
 const pixelId = process.env.NEXT_PUBLIC_OPENAI_PIXEL_ID
 
-export function OpenAIPixel() {
-  const [consent, setConsent] = useState<CookieConsent | null>(null)
+export function OpenAIPixel({ optOutRegion }: { optOutRegion: boolean }) {
+  const [allowed, setAllowed] = useState(false)
 
   useEffect(() => {
-    setConsent(getCookieConsent())
-    const onChange = (event: Event) => setConsent((event as CustomEvent<CookieConsent>).detail)
+    setAllowed(adMeasurementAllowed(optOutRegion))
+    const onChange = () => setAllowed(adMeasurementAllowed(optOutRegion))
     window.addEventListener(COOKIE_CONSENT_EVENT, onChange)
     return () => window.removeEventListener(COOKIE_CONSENT_EVENT, onChange)
-  }, [])
+  }, [optOutRegion])
 
-  /* Consent withdrawn after load: tell the SDK, which deletes its cookies. */
+  /* Opted out after load: tell the SDK, which deletes its cookies. */
   useEffect(() => {
-    if (consent === 'necessary' && window.oaiq) window.oaiq('consent', false)
-  }, [consent])
+    if (!allowed && window.oaiq) window.oaiq('consent', false)
+  }, [allowed])
 
-  if (!pixelId || consent !== 'accepted') return null
+  if (!pixelId || !allowed) return null
 
   return (
     <Script
@@ -61,9 +60,9 @@ export function OpenAIPixel() {
 /*
   Browser half of the lead conversion. The server sends the same event_id
   through the Conversions API, and OpenAI keeps whichever arrives first.
-  Returns quietly when the pixel is not loaded (no consent, no pixel ID).
+  Returns quietly when the pixel is not loaded or the visitor opted out.
 */
 export function measureLead(eventId: string) {
-  if (typeof window === 'undefined' || !window.oaiq || getCookieConsent() !== 'accepted') return
+  if (typeof window === 'undefined' || !window.oaiq || adMeasurementOptedOut()) return
   window.oaiq('measure', 'lead_created', { type: 'customer_action' }, { event_id: eventId })
 }

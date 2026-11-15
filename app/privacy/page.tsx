@@ -44,7 +44,7 @@ const sections = [
     paragraphs: [
       'The website uses a necessary first-party cookie for 30 days to remember whether you accepted optional cookies or chose only necessary storage. If you accept, a second first-party preference cookie remembers the homepage introduction shown to you for 30 days. It contains only a number from 0 to 2 and is removed when you choose only necessary. Neither cookie stores enquiry details, newsletter entries, or an advertising identifier.',
       'Vercel Web Analytics does not rely on tracking cookies. You can manage or delete cookies through your browser settings; deleting the consent cookie causes the choice notice to return. Our Cookie Policy describes each cookie, its purpose, duration, and attributes in more detail.',
-      'We do not sell personal information collected through this website. If you choose “Accept,” our free AI visibility check pages use OpenAI’s measurement pixel to tell us whether a visit from one of our ChatGPT ads led to a request; when you submit that form, OpenAI may receive a hashed copy of your email address, your IP address, browser details and city to attribute and report the result. If you choose “Only necessary,” this does not happen. Our Cookie Policy explains the cookies involved. The website does not perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
+      'Our free AI visibility check pages use OpenAI’s measurement pixel to tell us whether a visit from one of our ChatGPT ads led to a request. When you submit that form, OpenAI may receive a hashed copy of your email address, your IP address and browser details to attribute and report the result. For visitors in the United States this measurement is on unless you opt out; elsewhere it runs only if you choose “Accept all.” Our Cookie Policy explains the cookies involved. The website does not perform automated decisions or profiling that produce legal or similarly significant effects on visitors.',
     ],
   },
   {
@@ -82,10 +82,18 @@ const sections = [
     ],
   },
   {
+    id: 'your-privacy-choices',
+    title: 'Do not sell or share my personal information',
+    paragraphs: [
+      'We do not sell personal information for money. Sending ad measurement data to OpenAI, as described above, may count as “sharing” personal information or “targeted advertising” under some US state privacy laws, including California’s. You can opt out at any time.',
+      'To opt out, select “Do not sell or share my personal information” at the bottom of any page, or choose “Necessary only” in our cookie notice. Either one stops the OpenAI pixel in that browser and stops our server from sending conversion events about you. We also treat a Global Privacy Control signal from your browser as a valid opt-out request. Because the choice is stored in a cookie, repeat it in each browser you use, or email legal@burgama.com with the subject “Do not sell or share” and we will apply it to any form you have already submitted.',
+    ],
+  },
+  {
     id: 'choices',
     title: 'Your privacy rights & requests',
     paragraphs: [
-      'Depending on where you live, the law that applies, and any relevant exemptions, you may have rights to know whether we process your personal information; access, correct, or delete it; receive a portable copy; object to or restrict processing; withdraw consent; or opt out of sale, targeted advertising, or certain profiling. Not every right applies in every situation. We do not sell website personal information or use it for targeted advertising or significant-effect profiling.',
+      'Depending on where you live, the law that applies, and any relevant exemptions, you may have rights to know whether we process your personal information; access, correct, or delete it; receive a portable copy; object to or restrict processing; withdraw consent; or opt out of sale, targeted advertising, or certain profiling. Not every right applies in every situation. We do not sell website personal information for money or use it for significant-effect profiling. Ad measurement that may count as sharing or targeted advertising is described above, with how to opt out.',
       'To ask a question or exercise a right, email legal@burgama.com with the subject “Privacy request” and describe your request. We may ask for information reasonably necessary to verify your identity and authority, and we will use verification information for that purpose. An authorized agent may submit a request where applicable law permits, subject to verification of their authority.',
       'We respond within the time required by applicable law and explain any extension or denial where required. If you are entitled to appeal a decision, reply to our response or email legal@burgama.com with the subject “Privacy appeal.” We will review the appeal and provide the outcome and any further options required by law.',
       'You may also have the right to complain to your state attorney general or relevant data-protection authority. Exercising applicable privacy rights will not result in unlawful discrimination. We may retain or withhold information where a legal obligation, protected interest, or applicable exception requires or permits it.',
@@ -115,5 +123,5 @@ const sections = [
 ]
 
 export default function PrivacyPage() {
-  return <LegalPage title="Privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} updated={{ iso: '2026-11-11', label: 'November 11, 2026' }} />
+  return <LegalPage title="Privacy policy" current="privacy" introduction="How Burgama handles your information when you visit the website or get in touch, and the choices available to you." sections={sections} updated={{ iso: '2026-11-12', label: 'November 12, 2026' }} />
 }
