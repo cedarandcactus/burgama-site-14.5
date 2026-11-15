@@ -43,10 +43,19 @@ export type Report = {
   competitors: { name: string; times: string; why: string }[]
   fixes: { title: string; body: string }[]
   offer: 'starter' | 'scope'
+  /* v2: the one fix the lead sees, written for a non-marketer. */
+  first_fix?: { headline: string; plain: string }
 }
 
 /* ------------------------------------------------------------------ utils */
 
+/* Model output can carry markdown (**bold**) and doubled punctuation. Strip it. */
+const plain = (s: string) => s
+  .replace(/\*\*|__|`/g, '')
+  .replace(/^\s*#+\s*/gm, '')
+  .replace(/\s+([.,!?])/g, '$1')
+  .replace(/([.!?])[.]+/g, '$1')
+  .trim()
 const noDashes = (s: string) => s.replace(/\s*[—–]\s*/g, ', ').replace(/,\s*,/g, ',')
 const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!))
 const firstName = (name: string) => name.trim().split(/\s+/)[0] || 'there'
@@ -210,53 +219,86 @@ export async function draftReport(lead: Lead): Promise<Report> {
     `You write a free "AI visibility check" for ${plan.business_name} (${website}), a ${plan.category}${plan.city ? ` in ${plan.city}` : ''}, from a marketing agency called Burgama.\n` +
     `Website facts we observed: title tag "${snap.title}", meta description "${snap.description}", structured data blocks found: ${snap.schema}.\n\n` +
     `These are ChatGPT's answers to customer questions:\n${answers.map((a, i) => `Q${i + 1}: ${a.question}\nA${i + 1}: ${a.answer.slice(0, 5000)}`).join('\n\n')}\n\n` +
-    'Return JSON with: "verdict" (one bold, plain sentence: whether ChatGPT recommends them and who it recommends instead), ' +
-    '"summary" (2 to 4 sentences on how often they appeared, where, and whether the description of them was accurate), ' +
-    '"rows" (one per question: {"question", "result" (short: "Not mentioned", "Mentioned, #2 of 5", "Accurate", "Unknown to ChatGPT", etc.), "mentioned": boolean}), ' +
-    '"competitors" (up to 3 businesses recommended instead: {"name", "times" ("3 of 4 answers"), "why" (what ChatGPT cited them for, from the answers only)}), ' +
-    '"fixes" (exactly 3, ranked by impact for effort, specific to this business and to what you observed: {"title", "body" (2 to 3 sentences)}), ' +
+    'Return JSON with: "verdict" (one plain sentence for our team: whether ChatGPT recommends them and who it recommends instead), ' +
+    '"summary" (2 to 4 sentences for our team on how often they appeared, where, and whether the description of them was accurate), ' +
+    '"rows" (one per question, same order: {"question", "result" (short: "Not mentioned", "Recommended, #2 of 5", "Knew you, accurate", "Did not know you"), "mentioned": true only if the answer named or recommended this business}), ' +
+    '"competitors" (up to 3 businesses recommended instead, most frequent first: {"name", "times" ("3 of 4 answers"), "why" (what ChatGPT cited them for, from the answers only)}), ' +
+    '"fixes" (exactly 3 for our team, ranked by impact for effort, specific to this business and to what you observed: {"title", "body" (2 to 3 sentences)}), ' +
+    '"first_fix" (the top fix rewritten for a busy owner with no marketing background: {"headline" (at most 10 words, starts with a verb), "plain" (one or two sentences, at most 35 words, saying what to do and why it helps ChatGPT recommend them)}). ' +
+    'In first_fix never use these words: SEO, schema, structured data, meta, title tag, citation, entity, intent, keyword, signals, Q1, Q2. ' +
     `"offer": "starter" if this is a local business a $750 local search setup fits, otherwise "scope".\n` +
-    'Rules: write as "we" for Burgama and "you" for the reader. Plain, direct sentences. Never use em dashes or en dashes. ' +
+    'Rules: plain text only, no markdown, no asterisks. Write as "we" for Burgama and "you" for the reader. Plain, direct sentences. Never use em dashes or en dashes. ' +
     'Never promise rankings or customers. Only state what the answers above show; do not invent review counts or facts.',
     { json: true },
   )) as Omit<Report, 'lead' | 'date' | 'business'>
 
-  const tidy = <T,>(v: T): T => JSON.parse(noDashes(JSON.stringify(v)))
+  const tidy = <T,>(v: T): T => JSON.parse(JSON.stringify(v), (_k, x) => typeof x === 'string' ? plain(noDashes(x)) : x)
   return tidy({ ...report, lead, date: today, business: plan.business_name || business })
+}
+
+/* Lead-facing report, v2: short, plain, one reason to book.
+   The count is computed from the rows (not written by the model), so the
+   headline can't contradict the scorecard. The last row is always the
+   "what do you know about us" question and is shown separately. */
+function reportFacts(r: Report) {
+  const rows = r.rows.map(x => ({ ...x, question: plain(x.question), result: plain(x.result) }))
+  const named = rows.length > 1 ? rows[rows.length - 1] : undefined
+  const asked = named ? rows.slice(0, -1) : rows
+  const hits = asked.filter(x => x.mentioned).length
+  const rivals = r.competitors.map(c => plain(c.name)).filter(Boolean).slice(0, 3)
+  const list = (a: string[]) => a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`
+  const biz = plain(r.business)
+  const headline = hits === 0
+    ? `ChatGPT did not recommend ${biz} for any of the ${asked.length} questions your customers ask.`
+    : `ChatGPT recommended ${biz} for ${hits} of the ${asked.length} questions your customers ask.`
+  const instead = rivals.length ? `It sent people to ${list(rivals)} instead.` : ''
+  const knows = named ? (named.mentioned ? 'When we asked about you by name, it knew who you are.' : 'When we asked about you by name, it did not know who you are.') : ''
+  /* Reports drafted before v2 have no plain-language fix: show the title only. */
+  const fix = r.first_fix ?? { headline: plain(r.fixes[0]?.title ?? ''), plain: '' }
+  const subject = rivals.length && hits < asked.length
+    ? `${firstName(r.lead.name)}, ChatGPT is recommending ${rivals[0]} instead of you`
+    : `${firstName(r.lead.name)}, here is what ChatGPT says about ${biz}`
+  return { asked, hits, named, headline, instead, knows, fix, subject, biz }
 }
 
 export function reportEmail(r: Report) {
   const book = bookingLink(r.lead, 'report')
-  const rows = r.rows.map(row => `<tr><td style="${td}">${esc(row.question)}</td><td style="${td}">${row.mentioned ? '' : '<b>'}${esc(row.result)}${row.mentioned ? '' : '</b>'}</td></tr>`).join('')
-  const comps = r.competitors.map(c => `<tr><td style="${td}">${esc(c.name)}</td><td style="${td}">${esc(c.times)}</td><td style="${td}">${esc(c.why)}</td></tr>`).join('')
-  const fixes = r.fixes.map((f, i) => `<b>${i + 1}. ${esc(f.title)}:</b> ${esc(f.body)}`).join(' ')
-  const offer = r.offer === 'starter'
-    ? `If you would rather hand this off, our <b>Local Search Starter</b> is a one-time <b>$750</b> setup delivered in 30 days and covers the fixes above. The fastest next step is a free 30-minute call where we walk through this report together.`
-    : `This is a bigger job than our local packages cover, so we would scope it with you. The fastest next step is a free 30-minute call where we walk through this report together.`
+  const f = reportFacts(r)
+  const mark = (ok: boolean) => ok
+    ? '<span style="color:#1f7a3a;font-weight:700">&#10003;</span>'
+    : '<span style="color:#a3261b;font-weight:700">&#10007;</span>'
+  const card = f.asked.map(x =>
+    `<tr><td style="padding:6px 10px 6px 0;vertical-align:top;width:18px">${mark(x.mentioned)}</td><td style="padding:6px 0;vertical-align:top">&ldquo;${esc(x.question)}&rdquo;</td></tr>`).join('')
+  const ps = r.offer === 'starter'
+    ? `<p style="color:#555;font-size:13px">P.S. Rather we just handle it? Our Local Search Starter is a one-time $750 setup, done in 30 days.</p>`
+    : ''
   const html = shell(`
 <p>Hi ${esc(firstName(r.lead.name))},</p>
-<p>Here is your free AI visibility check. <b>The short version: ${esc(r.verdict.replace(/\.$/, ''))}.</b> Below is what we found and the three changes we would make first.</p>
-${h3(`What AI says about ${esc(r.business)}`)}
-<p>We asked ChatGPT the questions your customers ask, on <b>${esc(r.date)}</b>. Answers vary between runs, so treat this as a snapshot. ${esc(r.summary)}</p>
-<table style="border-collapse:collapse;font-size:13px;width:100%;margin:8px 0 4px"><tr style="background:#f2f2f2"><th style="${td}">Question we asked</th><th style="${td}">ChatGPT</th></tr>${rows}</table>
-${comps ? `${h3('Who it recommends instead')}<table style="border-collapse:collapse;font-size:13px;width:100%;margin:8px 0 4px"><tr style="background:#f2f2f2"><th style="${td}">Business</th><th style="${td}">Times recommended</th><th style="${td}">What ChatGPT cited them for</th></tr>${comps}</table>` : ''}
-${h3('Three fixes, in order')}
-<p>${fixes} You can do these yourself.</p>
-${h3('Want to walk through it?')}
-<p>${offer}</p>
-${button(book, 'Book a free 30-minute call')}
-${signoff}`)
+<p>We ran your free AI visibility check. <b>${esc(f.headline)}</b> ${esc(f.instead)}</p>
+<table style="border-collapse:collapse;font-size:14px;margin:4px 0 8px">${card}</table>
+<p>${esc(f.knows)}</p>
+${h3('The first thing we would fix')}
+<p><b>${esc(f.fix.headline)}.</b> ${esc(f.fix.plain)}</p>
+<p>There are two more fixes behind this one. On a free 30-minute call we will walk you through all three and what it takes to get recommended.</p>
+${button(book, 'Pick a time for your free call')}
+<p>Or just reply to this email with any questions.</p>
+<p>Deniz<br><span style="color:#666">Burgama &middot; burgama.com &middot; (713) 724-3637</span></p>
+${ps}
+<p style="color:#888;font-size:12px">We asked ChatGPT on ${esc(r.date)}. Answers change from day to day, so treat this as a snapshot.</p>`)
   const text = [
     `Hi ${firstName(r.lead.name)},`, '',
-    `Here is your free AI visibility check. The short version: ${r.verdict}`, '',
-    `WHAT AI SAYS ABOUT ${r.business.toUpperCase()} (snapshot, ${r.date})`, r.summary,
-    ...r.rows.map(row => `- ${row.question}: ${row.result}`), '',
-    ...(r.competitors.length ? ['WHO IT RECOMMENDS INSTEAD', ...r.competitors.map(c => `- ${c.name} (${c.times}): ${c.why}`), ''] : []),
-    'THREE FIXES, IN ORDER', ...r.fixes.map((f, i) => `${i + 1}. ${f.title}: ${f.body}`), '',
-    r.offer === 'starter' ? 'Our Local Search Starter is a one-time $750 setup delivered in 30 days.' : 'This is bigger than our local packages, so we would scope it with you.',
-    `Book a free 30-minute call: ${book}`, '', 'The Burgama team', 'burgama.com · (713) 724-3637',
+    `We ran your free AI visibility check. ${f.headline} ${f.instead}`.trim(), '',
+    ...f.asked.map(x => `${x.mentioned ? '[yes]' : '[no]'} "${x.question}"`), '',
+    f.knows, '',
+    `The first thing we would fix: ${f.fix.headline}. ${f.fix.plain}`, '',
+    'There are two more fixes behind this one. On a free 30-minute call we will walk you through all three and what it takes to get recommended.',
+    `Pick a time: ${book}`, '',
+    'Or just reply to this email with any questions.', '',
+    'Deniz', 'Burgama · burgama.com · (713) 724-3637',
+    ...(r.offer === 'starter' ? ['', 'P.S. Rather we just handle it? Our Local Search Starter is a one-time $750 setup, done in 30 days.'] : []),
+    '', `We asked ChatGPT on ${r.date}. Answers change from day to day, so treat this as a snapshot.`,
   ].join('\n')
-  return { subject: `Your AI visibility check: ${r.business}`, html: noDashes(html), text: noDashes(text) }
+  return { subject: f.subject, html: noDashes(html), text: noDashes(text) }
 }
 
 /* Studio email: the report as the lead will see it, plus the approve link. */
@@ -268,8 +310,12 @@ export async function sendReportForApproval(r: Report, studio: string[]) {
 Read it below. If it is right, approve it and it goes to them straight away from Burgama, with follow-ups on day 2 and day 5. If something is off, reply to them by hand instead and do not approve.</p>
 ${button(approve, 'Approve and send to ' + esc(firstName(r.lead.name)))}
 <hr style="border:0;border-top:1px solid #ddd;margin:24px 0">
+<details style="margin:0 0 16px"><summary style="cursor:pointer;color:#326a9f"><b>Internal notes for the call (not sent)</b></summary>
+<p>${esc(plain(r.verdict))} ${esc(plain(r.summary))}</p>
+<p>${r.competitors.map(c => `<b>${esc(plain(c.name))}</b> (${esc(c.times)}): ${esc(plain(c.why))}`).join('<br>')}</p>
+<p>${r.fixes.map((x, i) => `<b>${i + 1}. ${esc(plain(x.title))}:</b> ${esc(plain(x.body))}`).join('<br>')}</p></details>
 <p style="color:#666;font-size:12px">Subject: ${esc(mail.subject)}</p>`) + mail.html
-  return resend({ from: leadFrom, to: studio, reply_to: r.lead.email, subject: `Approve report: ${r.business} (${r.lead.source})`, html })
+  return resend({ from: leadFrom, to: studio, reply_to: r.lead.email, subject: `Approve report: ${plain(r.business)} (${r.lead.source.split(' / ').slice(0, 3).join(' / ')})`, html })
 }
 
 export async function sendDraftFailed(lead: Lead, studio: string[], reason: string) {
@@ -286,17 +332,17 @@ function followUps(r: Report) {
   const book = bookingLink(r.lead, 'followup')
   const first = firstName(r.lead.name)
   const day = (n: number) => new Date(Date.now() + n * 24 * 3600 * 1000).toISOString()
-  const fix = r.fixes[0]?.title ?? 'the first fix'
+  const fix = r.first_fix?.headline ?? plain(r.fixes[0]?.title ?? 'the first fix')
   return [
     {
       scheduled_at: day(2),
-      subject: `Re: Your AI visibility check: ${r.business}`,
-      text: noDashes(`Hi ${first},\n\nChecking in on your AI visibility report. If you want, we can walk through it on a free 30-minute call, starting with "${fix}", which is the change we would make first.\n\nPick a time here: ${book}\n\nThe Burgama team`),
+      subject: `Re: ${reportFacts(r).subject}`,
+      text: noDashes(`Hi ${first},\n\nChecking in on your AI visibility report. If you want, we can walk through it on a free 30-minute call, starting with "${fix}", which is the change we would make first.\n\nPick a time here: ${book}\n\nDeniz\nBurgama`),
     },
     {
       scheduled_at: day(5),
-      subject: `Re: Your AI visibility check: ${r.business}`,
-      text: noDashes(`Hi ${first},\n\nLast note from us on this. AI answers change as competitors update their sites, so the gaps in your report are worth closing while they are small. If a quick call would help, here is the link: ${book}\n\nEither way, thanks for checking with us.\n\nThe Burgama team`),
+      subject: `Re: ${reportFacts(r).subject}`,
+      text: noDashes(`Hi ${first},\n\nLast note from us on this. AI answers change as competitors update their sites, so the gaps in your report are worth closing while they are small. If a quick call would help, here is the link: ${book}\n\nEither way, thanks for checking with us.\n\nDeniz\nBurgama`),
     },
   ]
 }
