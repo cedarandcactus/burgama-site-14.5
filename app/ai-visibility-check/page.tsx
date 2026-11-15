@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { checkFaq, checkPath, googleRating, reportContents, results, steps, turnaround } from '@/lib/ai-visibility'
+import { checkFaq, checkPath, bookingUrl, googleRating, reportContents, results, steps, turnaround } from '@/lib/ai-visibility'
 import { JsonLd, absoluteUrl, breadcrumbJsonLd, defaultSocialImage, siteUrl } from '@/lib/seo'
 import { CheckForm } from './check-form'
 import { LandingFooter, LandingMark } from './landing-footer'
@@ -68,6 +68,9 @@ export default function AiVisibilityCheckPage() {
               ))}
             </ul>
           </div>
+          <p className={styles.talkNow}>
+            Rather talk now? <a href={bookingUrl} target="_blank" rel="noopener noreferrer">Book a free 30-minute call</a>
+          </p>
         </div>
 
         <CheckForm />
@@ -153,6 +156,7 @@ export default function AiVisibilityCheckPage() {
         <h2 id="closing-title" className="font-serif">Find out where you stand.</h2>
         <p>It takes about 20 seconds. If you want help with the fixes afterward, our <a href="/faq#service-local-search-starter">Local Search Starter</a> is a one-time $750 setup, delivered in 30 days.</p>
         <a href="#check" className={`pill ${styles.closingCta}`}>Get my free check</a>
+        <p className={styles.talkNow}>Or <a href={bookingUrl} target="_blank" rel="noopener noreferrer">book a free 30-minute call</a> and we’ll run it with you.</p>
       </section>
 
       <LandingFooter />

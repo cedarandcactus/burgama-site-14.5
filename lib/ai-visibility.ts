@@ -119,7 +119,7 @@ export function siteLabel(value: string) {
 }
 
 /* Shown above the fold. Checked on the Burgama Google Business Profile, Nov 12, 2026. */
-export const googleRating = { score: '5.0', count: 15 } as const
+export const googleRating = { score: '5.0', count: 16 } as const
 
 /* Attribution fields read from the landing URL. Only these are kept. */
 export const trackingKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { LandingFooter, LandingMark } from '../landing-footer'
+import { BookingEmbed } from './booking-embed'
 import { bookingUrl, turnaround } from '@/lib/ai-visibility'
 import styles from '../page.module.css'
 
@@ -19,14 +20,16 @@ export default function ThanksPage() {
           <p className={styles.kicker}>Request received</p>
           <h1 id="thanks-title" className="font-serif">Thanks. We’re on it.</h1>
           <p className={styles.lede}>
-            Your AI visibility report will arrive at the email you gave us within {turnaround}. If it isn’t there, check your spam folder or write to <a href="mailto:hello@burgama.com">hello@burgama.com</a>.
+            We just emailed you a confirmation. Your report arrives within {turnaround}, usually sooner. If you don’t see our email, check your spam folder or write to <a href="mailto:hello@burgama.com">hello@burgama.com</a>.
           </p>
+          <h2 className={styles.bookingTitle}>Pick a time to walk through it</h2>
+          <p className={styles.formNote}>A free 30-minute call. We’ll go through your report, answer questions, and show you what to fix first. No pressure to sign up.</p>
           <div className={styles.thanksActions}>
-            <a href={bookingUrl} className={`pill ${styles.submit}`} target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+            <a href={bookingUrl} className={styles.textLink} target="_blank" rel="noopener noreferrer">Open the calendar in a new tab</a>
             <a href="/faq#packages" className={styles.textLink}>See our packages and pricing</a>
           </div>
-          <p className={styles.formNote}>The call is optional. We’ll walk through your report and answer questions, with no pressure to sign up.</p>
         </div>
+        <BookingEmbed />
       </section>
       <LandingFooter />
     </div>
