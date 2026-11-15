@@ -224,9 +224,17 @@ export async function draftReport(lead: Lead): Promise<Report> {
     'Return JSON: {"business_name": string, "category": string, "cities": [every city or metro the business serves or lists on the site, main one first, at most ' + MAX_CITIES + ', [] if not local], "customer_type": "local consumers" | "businesses" | "national consumers", ' +
     '"questions": [questions a real customer of this kind of business would type into ChatGPT when looking for a provider, in the customer\'s own words. ' +
     'One city or none: 3 questions, naming the city when local. Two to four cities: 2 questions per city. Five or more: 1 question per city, the most common thing a customer there would ask. Every question names its city. ' +
+    'These customer questions must NEVER name the business or its brand: a real customer does not know who to pick yet, and naming it makes the answer meaningless. ' +
     'Then one last question, always last: "What do you know about {business_name}?" with its main city if local]}',
     { json: true },
   )) as { business_name: string; category: string; cities?: string[]; customer_type: string; questions: string[] }
+  /* Belt and braces: drop any customer question that names the business. */
+  const brand = (plan.business_name || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+  if (brand.length > 2 && plan.questions.length > 1) {
+    const last = plan.questions[plan.questions.length - 1]
+    const neutral = plan.questions.slice(0, -1).filter(q => !q.toLowerCase().replace(/[^a-z0-9]/g, '').includes(brand))
+    plan.questions = [...neutral, last]
+  }
   const cities = (lead.cities?.length ? lead.cities : plan.cities ?? []).slice(0, MAX_CITIES)
   const where = cities.length ? ` in ${cities.join(', ')}` : ''
 
@@ -274,7 +282,9 @@ function reportFacts(r: Report) {
   const headline = hits === 0
     ? `ChatGPT did not recommend ${biz} for any of the ${asked.length} questions your customers ask.`
     : `ChatGPT recommended ${biz} for ${hits} of the ${asked.length} questions your customers ask.`
-  const instead = rivals.length ? `It sent people to ${list(rivals)} instead.` : ''
+  const instead = !rivals.length ? ''
+    : hits < asked.length ? `It sent people to ${list(rivals)} instead.`
+    : `It also mentioned ${list(rivals)}.`
   const knows = named ? (named.mentioned ? 'When we asked about you by name, it knew who you are.' : 'When we asked about you by name, it did not know who you are.') : ''
   /* Reports drafted before v2 have no plain-language fix: show the title only. */
   const fix = r.first_fix ?? { headline: plain(r.fixes[0]?.title ?? ''), plain: '' }
