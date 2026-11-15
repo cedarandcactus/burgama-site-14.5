@@ -210,7 +210,7 @@ async function siteSnapshot(website: string) {
   }
 }
 
-const MAX_CITIES = 4
+const MAX_CITIES = 8
 
 export async function draftReport(lead: Lead): Promise<Report> {
   const website = normalizeSite(lead.website) ?? `https://${lead.website.trim()}`
@@ -223,7 +223,7 @@ export async function draftReport(lead: Lead): Promise<Report> {
     (lead.cities?.length ? `The business serves these cities, check every one: ${lead.cities.slice(0, MAX_CITIES).join('; ')}.\n` : '') +
     'Return JSON: {"business_name": string, "category": string, "cities": [every city or metro the business serves or lists on the site, main one first, at most ' + MAX_CITIES + ', [] if not local], "customer_type": "local consumers" | "businesses" | "national consumers", ' +
     '"questions": [questions a real customer of this kind of business would type into ChatGPT when looking for a provider, in the customer\'s own words. ' +
-    'One city or none: 3 questions, naming the city when local. Two or more cities: 2 questions per city, each naming its city. ' +
+    'One city or none: 3 questions, naming the city when local. Two to four cities: 2 questions per city. Five or more: 1 question per city, the most common thing a customer there would ask. Every question names its city. ' +
     'Then one last question, always last: "What do you know about {business_name}?" with its main city if local]}',
     { json: true },
   )) as { business_name: string; category: string; cities?: string[]; customer_type: string; questions: string[] }

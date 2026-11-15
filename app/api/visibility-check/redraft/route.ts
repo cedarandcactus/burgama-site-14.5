@@ -37,7 +37,7 @@ export async function GET(request: Request) {
   return page('Redraft report', `<h1>Redraft the report for ${esc(lead.name)}?</h1>
 <p>${esc(lead.website)} &middot; ${esc(lead.email)}</p>
 <form method="post"><input type="hidden" name="t" value="${esc(token)}">
-<label for="cities"><b>Cities to check</b> (optional, comma separated, up to 4)</label>
+<label for="cities"><b>Cities to check</b> (optional, comma separated, up to 8)</label>
 <input type="text" id="cities" name="cities" placeholder="Austin, Dallas, Houston" value="${esc((lead.cities ?? []).join(', '))}">
 <button type="submit">Redraft</button></form>
 <p class="muted">Nothing goes to ${esc(lead.name)}. A new approval email reaches you in a few minutes.</p>`)
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   const form = await request.formData().catch(() => null)
   const lead = verify<{ lead: Lead }>(String(form?.get('t') ?? ''))?.lead
   if (!lead) return invalid()
-  const cities = String(form?.get('cities') ?? '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 4)
+  const cities = String(form?.get('cities') ?? '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 8)
   const next: Lead = { ...lead, cities: cities.length ? cities : undefined }
 
   after(async () => {
