@@ -31,7 +31,12 @@ export const leadFrom = process.env.CONTACT_FROM ?? 'Burgama <enquiries@send.bur
 export const studioReplyTo = 'hello@burgama.com'
 const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.burgama.com'
 
-export type Lead = { name: string; email: string; website: string; source: string }
+export type Lead = {
+  name: string; email: string; website: string; source: string
+  /* Optional: the cities to check, for businesses in more than one market.
+     Set from the redraft page. Without it the model reads the cities off the site. */
+  cities?: string[]
+}
 
 export type Report = {
   lead: Lead
@@ -111,6 +116,16 @@ export async function cancelScheduled(id: string) {
   if (!key) return false
   const response = await fetch(`${resendEndpoint}/${id}/cancel`, { method: 'POST', headers: { Authorization: `Bearer ${key}` } })
   return response.ok
+}
+
+/* Every link in a lead email must point straight at its destination. A
+   wrapped link (google.com/url, a tracking redirect) adds a hop and a
+   warning page, and loses bookings. Fail loudly instead of sending one. */
+export function assertDirectLinks(html: string) {
+  const bad = [...html.matchAll(/href="([^"]+)"/g)].map(m => m[1])
+    .filter(u => /google\.[a-z.]+\/url|safelinks|urldefense|\/redirect\?|click\./i.test(u))
+  if (bad.length) throw new Error(`Wrapped link in email: ${bad[0].slice(0, 120)}`)
+  return html
 }
 
 /* Email shell: document style, no em dashes. */
@@ -195,6 +210,8 @@ async function siteSnapshot(website: string) {
   }
 }
 
+const MAX_CITIES = 4
+
 export async function draftReport(lead: Lead): Promise<Report> {
   const website = normalizeSite(lead.website) ?? `https://${lead.website.trim()}`
   const business = siteLabel(lead.website)
@@ -203,20 +220,25 @@ export async function draftReport(lead: Lead): Promise<Report> {
   /* Step A: who they are and what their customers would ask. */
   const plan = JSON.parse(await ask(
     `You plan an AI visibility check for a business. Website: ${website}\nTitle: ${snap.title}\nMeta description: ${snap.description}\nPage text: ${snap.text}\n\n` +
-    'Return JSON: {"business_name": string, "category": string, "city": string or "", "customer_type": "local consumers" | "businesses" | "national consumers", ' +
-    '"questions": [4 questions a real customer of this kind of business would type into ChatGPT when looking for a provider, in the customer\'s own words, naming the city when the business is local; the last question must be "What do you know about {business_name}?" with its city if local]}',
+    (lead.cities?.length ? `The business serves these cities, check every one: ${lead.cities.slice(0, MAX_CITIES).join('; ')}.\n` : '') +
+    'Return JSON: {"business_name": string, "category": string, "cities": [every city or metro the business serves or lists on the site, main one first, at most ' + MAX_CITIES + ', [] if not local], "customer_type": "local consumers" | "businesses" | "national consumers", ' +
+    '"questions": [questions a real customer of this kind of business would type into ChatGPT when looking for a provider, in the customer\'s own words. ' +
+    'One city or none: 3 questions, naming the city when local. Two or more cities: 2 questions per city, each naming its city. ' +
+    'Then one last question, always last: "What do you know about {business_name}?" with its main city if local]}',
     { json: true },
-  )) as { business_name: string; category: string; city: string; customer_type: string; questions: string[] }
+  )) as { business_name: string; category: string; cities?: string[]; customer_type: string; questions: string[] }
+  const cities = (lead.cities?.length ? lead.cities : plan.cities ?? []).slice(0, MAX_CITIES)
+  const where = cities.length ? ` in ${cities.join(', ')}` : ''
 
   /* Step B: ask each question the way a customer would, with web search. */
-  const answers = await Promise.all(plan.questions.slice(0, 5).map(async q => {
+  const answers = await Promise.all(plan.questions.slice(0, MAX_CITIES * 2 + 1).map(async q => {
     try { return { question: q, answer: await ask(q, { search: true }) } } catch (e) { return { question: q, answer: `ERROR ${String(e)}` } }
   }))
 
   /* Step C: turn the answers into the report. */
   const today = new Date().toLocaleDateString('en-US', { timeZone: 'America/Chicago', month: 'long', day: 'numeric', year: 'numeric' })
   const report = JSON.parse(await ask(
-    `You write a free "AI visibility check" for ${plan.business_name} (${website}), a ${plan.category}${plan.city ? ` in ${plan.city}` : ''}, from a marketing agency called Burgama.\n` +
+    `You write a free "AI visibility check" for ${plan.business_name} (${website}), a ${plan.category}${where}, from a marketing agency called Burgama.\n` +
     `Website facts we observed: title tag "${snap.title}", meta description "${snap.description}", structured data blocks found: ${snap.schema}.\n\n` +
     `These are ChatGPT's answers to customer questions:\n${answers.map((a, i) => `Q${i + 1}: ${a.question}\nA${i + 1}: ${a.answer.slice(0, 5000)}`).join('\n\n')}\n\n` +
     'Return JSON with: "verdict" (one plain sentence for our team: whether ChatGPT recommends them and who it recommends instead), ' +
@@ -227,6 +249,7 @@ export async function draftReport(lead: Lead): Promise<Report> {
     '"first_fix" (the top fix rewritten for a busy owner with no marketing background: {"headline" (at most 10 words, starts with a verb), "plain" (one or two sentences, at most 35 words, saying what to do and why it helps ChatGPT recommend them)}). ' +
     'In first_fix never use these words: SEO, schema, structured data, meta, title tag, citation, entity, intent, keyword, signals, Q1, Q2. ' +
     `"offer": "starter" if this is a local business a $750 local search setup fits, otherwise "scope".\n` +
+    (cities.length > 1 ? `They serve several cities (${cities.join(', ')}). In "verdict", "summary" and "first_fix", say which cities they are recommended in and which they are missing from. ` : '') +
     'Rules: plain text only, no markdown, no asterisks. Write as "we" for Burgama and "you" for the reader. Plain, direct sentences. Never use em dashes or en dashes. ' +
     'Never promise rankings or customers. Only state what the answers above show; do not invent review counts or facts.',
     { json: true },
@@ -298,10 +321,12 @@ ${ps}
     ...(r.offer === 'starter' ? ['', 'P.S. Rather we just handle it? Our Local Search Starter is a one-time $750 setup, done in 30 days.'] : []),
     '', `We asked ChatGPT on ${r.date}. Answers change from day to day, so treat this as a snapshot.`,
   ].join('\n')
-  return { subject: f.subject, html: noDashes(html), text: noDashes(text) }
+  return { subject: f.subject, html: assertDirectLinks(noDashes(html)), text: noDashes(text) }
 }
 
 /* Studio email: the report as the lead will see it, plus the approve link. */
+export const redraftLink = (lead: Lead) => `${siteOrigin}/api/visibility-check/redraft?t=${sign({ lead })}`
+
 export async function sendReportForApproval(r: Report, studio: string[]) {
   const mail = reportEmail(r)
   const approve = `${siteOrigin}/api/visibility-check/approve?t=${sign(r)}`
@@ -309,6 +334,7 @@ export async function sendReportForApproval(r: Report, studio: string[]) {
 <p style="background:#fff7d6;border:1px solid #e6d27a;padding:12px 14px;border-radius:8px"><b>Draft report for ${esc(r.lead.name)} (${esc(r.lead.email)}), ${esc(normalizeSite(r.lead.website) ?? r.lead.website)}, source ${esc(r.lead.source)}.</b><br>
 Read it below. If it is right, approve it and it goes to them straight away from Burgama, with follow-ups on day 2 and day 5. If something is off, reply to them by hand instead and do not approve.</p>
 ${button(approve, 'Approve and send to ' + esc(firstName(r.lead.name)))}
+<p style="font-size:13px">Not right? <a href="${redraftLink(r.lead)}">Redraft it</a>, and add cities if they serve more than one market. Never rebuild it as a Gmail draft: Gmail rewrites the booking link into a redirect.</p>
 <hr style="border:0;border-top:1px solid #ddd;margin:24px 0">
 <details style="margin:0 0 16px"><summary style="cursor:pointer;color:#326a9f"><b>Internal notes for the call (not sent)</b></summary>
 <p>${esc(plain(r.verdict))} ${esc(plain(r.summary))}</p>
@@ -322,7 +348,7 @@ export async function sendDraftFailed(lead: Lead, studio: string[], reason: stri
   return resend({
     from: leadFrom, to: studio, reply_to: lead.email,
     subject: `Report needs a manual draft: ${siteLabel(lead.website)}`,
-    text: `The automatic report for ${lead.name} (${lead.email}, ${normalizeSite(lead.website) ?? lead.website}) could not be drafted.\nReason: ${reason}\n\nThe lead already got the instant confirmation with the booking link. Run the check by hand from the AI Visibility Check template.`,
+    text: `The automatic report for ${lead.name} (${lead.email}, ${normalizeSite(lead.website) ?? lead.website}) could not be drafted.\nReason: ${reason}\n\nThe lead already got the instant confirmation with the booking link. Try again (and add cities if they serve more than one market): ${redraftLink(lead)}`,
   })
 }
 
