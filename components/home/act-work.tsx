@@ -1,29 +1,6 @@
-import { ProjectCard } from '@/components/project-card'
-import { ModularButton } from '@/components/modular-button'
-import { Reveal } from '@/components/reveal'
-import { SectionRise } from '@/components/home/section-rise'
+import { CardSection } from '@/components/card-section'
 import { featuredProjects } from '@/lib/projects'
-import styles from './home-page.module.css'
 
 export function ActWork() {
-  return (
-    <section id="selected-work" className={styles.selectedWork} data-nav-surface="ink" aria-labelledby="featured-title">
-      <div className={styles.workIntro}>
-        <Reveal variant="scroll">
-          <h2 id="featured-title" className="font-serif">Selected work</h2>
-        </Reveal>
-        <Reveal className={styles.workAction}>
-          <ModularButton href="/work">all our work</ModularButton>
-        </Reveal>
-      </div>
-      <ul className={styles.workGrid} aria-label="Featured projects">
-        {featuredProjects.map(project => (
-          <li key={project.id} className={styles.workGridItem}>
-            <ProjectCard project={project} concise showTagline />
-          </li>
-        ))}
-      </ul>
-      <SectionRise surface="blue-slate" direction="left" />
-    </section>
-  )
+  return <CardSection id="selected-work" heading="Selected work." items={featuredProjects.map(project => ({ title: project.title, href: `/work/${project.slug}`, image: project.cardImage, alt: project.cardAlt }))} cta={{ label: 'all work', href: '/work' }} />
 }

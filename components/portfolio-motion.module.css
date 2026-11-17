@@ -1,0 +1,5 @@
+.viewport { position: absolute; inset: 0; display: block; overflow: hidden; border-radius: inherit; background: transparent; }
+.viewport picture { display: contents; }
+.viewport img { object-fit: contain; }
+.wordMask { display: inline-block; overflow: clip; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.wordMask > span { display: inline-block; }

@@ -1,132 +1,86 @@
-import { type ContentModule, type MediaItem } from '@/lib/projects'
+import type { CSSProperties } from 'react'
+import type { ContentModule, MediaItem, ProjectStat } from '@/lib/projects'
+import { ParallaxImage } from '@/components/parallax-image'
+import { RevealHeading } from '@/components/reveal-heading'
 
-function sentenceCase(value: string) {
-  return value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
-}
+const sentenceCase = (value: string) => value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
+export const isWebsiteMedia = (item: MediaItem) => /\/web-/.test(item.src ?? '') || /\b(website|homepage|online store|site)\b/i.test(item.label)
 
-export function MediaFrame({
-  item,
-  className = '',
-  priority = false,
-}: {
-  item: MediaItem
-  className?: string
-  priority?: boolean
-}) {
+export function ProjectImage({ item, priority = false, sizes, strength = 3 }: { item: MediaItem; priority?: boolean; sizes?: string; strength?: number }) {
   if (!item.src) return null
-  const intrinsicAspectRatio = item.width && item.height
-    ? `${item.width} / ${item.height}`
-    : 'auto'
-
-  return (
-    <figure className={`case-media ${className}`} data-media-kind={item.src.includes('/web-') ? 'screen' : item.src.includes('/film-') ? 'still' : item.width && item.height && item.height > item.width * 1.3 ? 'document' : 'image'}>
-      <div className="case-media-frame" data-media-ratio={item.ratio} style={{ aspectRatio: intrinsicAspectRatio }}>
-        <img
-          src={item.src}
-          alt={item.label}
-          width={item.width}
-          height={item.height}
-          loading={priority ? 'eager' : 'lazy'}
-          fetchPriority={priority ? 'high' : 'auto'}
-          decoding="async"
-        />
-      </div>
-    </figure>
-  )
+  return <ParallaxImage src={item.src} alt={item.label} priority={priority} sizes={sizes} strength={strength} />
 }
 
-export function ProjectModules({ modules }: { modules: ContentModule[] }) {
-  return (
-    <>
-      {modules.map((module, index) => {
-        switch (module.type) {
-          case 'text':
-            /*
-              An untitled text module renders as prose with NO heading. It
-              previously emitted an empty `<h2>`, which reserved the label
-              column and left an unexplained gap beside the paragraph — a
-              label existing only because other sections have one.
-            */
-            return (
-              <div key={index} className="case-module" data-case-module={module.type}>
-                {module.title ? (
-                  <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
-                ) : null}
-                <div className="case-module-body">
-                  {module.body.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-            )
+export function MediaFrame({ item, priority = false, index = 0, sizes, strength = 3 }: { item: MediaItem; priority?: boolean; index?: number; sizes?: string; strength?: number }) {
+  if (!item.src) return null
+  return <figure className="cs-figure" data-media-kind={isWebsiteMedia(item) ? 'screen' : 'image'}>
+    <div className="cs-frame" data-media-ratio={item.ratio} data-cs-reveal="media" data-cs-index={index} style={{ '--media-aspect': (item.width ?? 1200) / (item.height ?? 800), '--media-source-width': `${item.width ?? 1200}px` } as CSSProperties}>
+      <ProjectImage item={item} priority={priority} sizes={sizes} strength={strength} />
+    </div>
+    {item.caption && <figcaption>{item.caption}</figcaption>}
+  </figure>
+}
 
-          case 'media':
-            if (!module.item.src) return null
-            return (
-              <div key={index} data-case-module={module.type}>
-                <MediaFrame item={module.item} />
-              </div>
-            )
+export function mediaGroups(items: MediaItem[]) {
+  const pictures = items.filter(item => item.src && !isWebsiteMedia(item))
+  const screens = items.filter(item => item.src && isWebsiteMedia(item))
+  const groups: { layout: 'single' | 'pair' | 'trio' | 'site'; items: MediaItem[] }[] = []
+  let preferPair = true
+  while (pictures.length) {
+    const count = pictures.length <= 3 ? pictures.length : pictures.length === 4 && groups.length === 0 ? 2 : preferPair ? 2 : 3
+    groups.push({ layout: count === 1 ? 'single' : count === 2 ? 'pair' : 'trio', items: pictures.splice(0, count) })
+    preferPair = !preferPair
+  }
+  screens.forEach(item => groups.push({ layout: 'site', items: [item] }))
+  return groups
+}
 
-          case 'mediaPair': {
-            const items = module.items.filter(item => item.src)
-            if (items.length === 0) return null
-            return (
-              <div key={index} data-case-module={module.type} className={items.length > 1 ? 'case-media-row' : undefined}>
-                {items.map(item => <MediaFrame key={item.src} item={item} />)}
-              </div>
-            )
-          }
+export function MediaLayouts({ items, priority = false }: { items: MediaItem[]; priority?: boolean }) {
+  return <>{mediaGroups(items).map((group, index) => <div key={`${group.items[0].src}-${index}`} className="cs-media" data-layout={group.layout} data-media-kind={group.layout === 'site' ? 'screen' : 'image'} data-media-ratio={group.items[0].ratio}>
+    {group.layout === 'site' ? <div className="cs-panel"><MediaFrame item={group.items[0]} priority={priority} /></div> : group.items.map((item, itemIndex) => <MediaFrame key={item.src} item={item} priority={priority} index={itemIndex} strength={group.layout === 'single' ? 3 : 1.5} sizes={group.layout === 'single' ? undefined : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px'} />)}
+  </div>)}</>
+}
 
-          case 'mediaSplit':
-            return (
-              <div key={index} data-case-module={module.type} className={module.item.src ? `case-split case-split-${module.split.replace('/', '-')}` : 'case-module'}>
-                <div className="case-split-copy">
-                  <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
-                  <div className="case-module-body">
-                    {module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-                  </div>
-                </div>
-                <MediaFrame item={module.item} />
-              </div>
-            )
+export function StatRow({ stats, source }: { stats: ProjectStat[]; source?: string }) {
+  return <div className="cs-results">
+    <div className="cs-stats" role="list">
+      {stats.map(stat => <div className="cs-stat" role="listitem" key={stat.label}>
+        <span className="cs-stat__value font-serif" role="img" aria-label={stat.accessibleValue ?? stat.value} data-cs-reveal="stat" data-value={stat.value}><span aria-hidden="true">{stat.value}</span></span>
+        <span className="cs-stat__label">{stat.label}</span>
+      </div>)}
+    </div>
+    {source && <p className="cs-source">Source: {source}</p>}
+  </div>
+}
 
-          case 'mediaGrid': {
-            const items = module.items.filter(item => item.src)
-            if (items.length === 0) return null
-            return (
-              <div key={index} data-case-module={module.type} className={items.length > 2 ? 'case-media-row case-media-row-3' : items.length > 1 ? 'case-media-row' : undefined}>
-                {items.map(item => <MediaFrame key={item.src} item={item} />)}
-              </div>
-            )
-          }
+type Section = { module?: ContentModule; items: MediaItem[] }
+export function groupSections(modules: ContentModule[]): Section[] {
+  const sections: Section[] = []
+  for (const module of modules) {
+    if (module.type === 'media' || module.type === 'mediaPair' || module.type === 'mediaGrid') {
+      if (!sections.length) sections.push({ items: [] })
+      sections[sections.length - 1].items.push(...(module.type === 'media' ? [module.item] : module.items))
+    } else {
+      sections.push({ module, items: module.type === 'mediaSplit' ? [module.item] : [] })
+    }
+  }
+  return sections
+}
 
-          case 'quote':
-            return (
-              <div key={index} data-case-module={module.type}>
-                <blockquote className="case-quote">{module.body}</blockquote>
-              </div>
-            )
+function withCaption(item: MediaItem, slug: string): MediaItem {
+  if (slug === 'wagner-wealth' && /a09[45]\.jpg/.test(item.src ?? '')) return { ...item, caption: 'Concept mockups' }
+  if (slug === 'harvest-dating' && item.src?.includes('pdf-6-10')) return { ...item, caption: 'App icon concept' }
+  if (/^(Before|After):/.test(item.label)) return { ...item, caption: item.label.split(':')[0] }
+  return item
+}
 
-          case 'process':
-            return (
-              <div key={index} className="case-module" data-case-module={module.type}>
-                <h2 className="case-module-title">{sentenceCase(module.title)}</h2>
-                <ol className="case-process">
-                  {module.steps.map(step => (
-                    <li key={step.title}>
-                      <h3>{sentenceCase(step.title)}</h3>
-                      <p>{step.body}</p>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            )
-
-          default:
-            return null
-        }
-      })}
-    </>
-  )
+export function ProjectModules({ modules, slug }: { modules: ContentModule[]; slug: string }) {
+  return <>{groupSections(modules).map(({ module, items }, index) => <section className="cs-section" data-case-module={module?.type ?? 'media'} key={index}>
+    {module && 'title' in module && module.title && <RevealHeading className="cs-section__title font-serif" text={sentenceCase(module.title)} />}
+    {module && (module.type === 'text' || module.type === 'mediaSplit') && <div className="cs-section__body" data-cs-reveal="body">{module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
+    {module?.type === 'quote' && <figure className="cs-quote" data-cs-reveal="body"><blockquote>{module.body}</blockquote>{module.name && <figcaption>{module.name}{module.role ? `, ${module.role}` : ''}</figcaption>}</figure>}
+    {module?.type === 'process' && <ol className="cs-process">{module.steps.map(step => <li key={step.title}><h3>{sentenceCase(step.title)}</h3><p>{step.body}</p></li>)}</ol>}
+    <MediaLayouts items={items.map(item => withCaption(item, slug))} />
+    {module?.type === 'text' && module.stats && <StatRow stats={module.stats} source={module.source} />}
+  </section>)}</>
 }
