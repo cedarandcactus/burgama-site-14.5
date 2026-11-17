@@ -67,14 +67,18 @@ function RollingLabel({ text }: { text: string }) {
     <>
       <span className="sr-only">{text}</span>
       <span className={styles.rollWindow} aria-hidden="true">
-        {Array.from(text).map((character, index) => (
-          <span
-            key={index}
-            className={styles.rollGlyph}
-            style={{ transitionDelay: `${index * 14}ms` }}
-          >
-            <span>{character === ' ' ? '\u00a0' : character}</span>
-            <span className={styles.rollCopy}>{character === ' ' ? '\u00a0' : character}</span>
+        {text.split(' ').map((word, wordIndex, words) => (
+          <span className={styles.rollWord} key={wordIndex}>
+            {Array.from(word).map((character, index) => (
+              <span
+                key={index}
+                className={styles.rollGlyph}
+                style={{ transitionDelay: `${(words.slice(0, wordIndex).join(' ').length + (wordIndex ? 1 : 0) + index) * 14}ms` }}
+              >
+                <span>{character}</span>
+                <span className={styles.rollCopy}>{character}</span>
+              </span>
+            ))}
           </span>
         ))}
       </span>
