@@ -11,7 +11,7 @@ const ts = require('typescript')
 function load(path) {
   const { outputText } = ts.transpileModule(readFileSync(path, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } })
   const exports = {}
-  vm.runInNewContext(outputText, { exports, require }, { filename: path })
+  vm.runInNewContext(outputText, { exports, require: name => name.startsWith('@/components/') ? {} : require(name) }, { filename: path })
   return exports
 }
 const data = load(resolve('lib/projects.ts'))
@@ -30,11 +30,57 @@ test('all 24 projects form the exact index-order loop', () => {
   })
 })
 
-test('related cards follow the loop and skip current, next and imageless projects', () => {
+test('related cards follow index order without repeating the current client or another selected client', () => {
   projects.forEach((project, index) => {
-    const expected = Array.from({ length: 22 }, (_, offset) => projects[(index + offset + 2) % 24]).filter(item => item.heroMedia.src).slice(0, 3)
-    assert.deepEqual(plain(data.getRelatedProjects(project).map(item => item.slug)), expected.map(item => item.slug))
+    const picks = data.getRelatedProjects(project)
+    assert.equal(picks.length, 3)
+    assert.equal(new Set(picks.map(item => item.client)).size, 3)
+    assert.ok(picks.every(item => item.client !== project.client))
+    const offsets = picks.map(item => (projects.indexOf(item) - index + projects.length) % projects.length)
+    assert.deepEqual(plain(offsets), plain([...offsets].sort((a,b)=>a-b)))
   })
+})
+
+test('recommendations react to index reordering and handle small collections', () => {
+  const reordered = [...projects].reverse()
+  assert.deepEqual(plain(data.getMoreWork(reordered[0].slug, 3, reordered).map(item => item.slug)), reordered.slice(1, 4).map(item => item.slug))
+  assert.equal(data.getMoreWork(projects[0].slug, 3, projects.slice(0, 3)).length, 2)
+  assert.equal(data.getMoreWork('missing').length, 0)
+})
+
+test('missing card fields fail immediately and dedicated cards preserve their declared intrinsic dimensions', async () => {
+  const dimensions = JSON.parse(readFileSync('lib/card-image-metadata.json', 'utf8'))
+  for (const project of projects) {
+    assert.throws(() => data.validateProjectCard({ ...project, cardImage: undefined }), /requires cardImage and cardAlt/)
+    assert.throws(() => data.validateProjectCard({ ...project, cardAlt: '' }), /requires cardImage and cardAlt/)
+    const metadata = await sharp(resolve(`public${project.cardImage}`)).metadata()
+    assert.deepEqual({ width: metadata.width, height: metadata.height }, dimensions[project.cardImage])
+    assert.notEqual(project.cardImage, project.heroMedia.src)
+  }
+})
+
+test('portrait and landscape card exports retain source proportions without portrait mats', async () => {
+  const examples = [
+    ['matchday-social', 'public/work/matchday/a112.jpg'],
+    ['go2bites', 'public/work/go2bites/a153.jpg'],
+    ['wagner-wealth', 'public/work/wagner-wealth/a094.jpg'],
+  ]
+  for (const [slug, source] of examples) {
+    const original = await sharp(source).metadata()
+    const card = await sharp(resolve(`public${data.getProject(slug).cardImage}`)).metadata()
+    assert.ok(Math.abs(original.width / original.height - card.width / card.height) < .003, slug)
+  }
+})
+
+test('presentation does not reintroduce cursors, image zooms or moving slope masks', () => {
+  const image = readFileSync('components/parallax-image.tsx', 'utf8')
+  const section = readFileSync('components/card-section.tsx', 'utf8')
+  const layout = readFileSync('app/layout.tsx', 'utf8')
+  const css = readFileSync('app/work/[slug]/case-study.css', 'utf8')
+  assert.doesNotMatch(image + section + layout, /ViewCursor|data-cursor|data-motion-band/)
+  assert.doesNotMatch(image, /scale:/)
+  assert.match(css, /aspect-ratio: var\(--media-aspect\)/)
+  assert.match(css, /object-fit: contain/)
 })
 
 test('public copy is clean while unpublished status stays out of the template', () => {

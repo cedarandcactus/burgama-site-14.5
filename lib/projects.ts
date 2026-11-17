@@ -32,6 +32,8 @@ export type Project = {
   categories?: string[]
   services: string[]
   heroMedia: MediaItem
+  cardImage: string
+  cardAlt: string
   thumbnailMedia?: MediaItem
   contentModules: ContentModule[]
   credits: { role: string; name: string }[]
@@ -94,10 +96,16 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
 }
 
 type Input = Omit<Project, 'id' | 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'> & Partial<Pick<Project, 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'>>
-const project = (input: Input): Project => ({
-  id: input.slug, client: input.title, heroMedia: { label: '', ratio: 'full' },
-  credits: [], links: [], collection: 'archive', ...input,
-})
+export function validateProjectCard(input: { slug: string; cardImage?: string; cardAlt?: string }) {
+  if (!input.cardImage?.trim() || !input.cardAlt?.trim()) throw new Error(`Project ${input.slug} requires cardImage and cardAlt`)
+}
+const project = (input: Input): Project => {
+  validateProjectCard(input)
+  return {
+    id: input.slug, client: input.title, heroMedia: { label: '', ratio: 'full' },
+    credits: [], links: [], collection: 'archive', ...input,
+  }
+}
 const image = (company: string, file: string, label: string, ratio: MediaRatio = 'wide'): MediaItem => {
   const dimensions = imageDimensions[`${company}/${file}`]
   return {
@@ -114,6 +122,7 @@ const pair = (company: string, a: [string, string], b: [string, string]): Conten
 
 export const projects: Project[] = [
   project({
+    cardImage: '/work/cards/wagner-wealth.webp', cardAlt: 'Wagner Wealth Management, the letterhead and correspondence design.',
     slug: 'wagner-wealth', title: 'Wagner Wealth Management', collection: 'featured',
     tagline: 'We shaped a personal practice into a precise, composed system.',
     summary: 'We built an angular monogram, a restrained identity, and a measured website for Wagner Wealth Management.',
@@ -139,6 +148,7 @@ export const projects: Project[] = [
     note: 'Website and identity work are presented without investment performance claims.',
   }),
   project({
+    cardImage: '/work/cards/sidecar-spirits.webp', cardAlt: 'Sidecar Spirits, the complete gold and navy illustrated emblem.',
     slug: 'sidecar-spirits', title: 'Sidecar Spirits', collection: 'archive',
     tagline: 'A richly drawn identity with a practical system.',
     summary: 'An illustrated emblem, expressive wordmark, and a family of colorways for Sidecar Spirits.',
@@ -150,6 +160,7 @@ export const projects: Project[] = [
     ],
   }),
   project({
+    cardImage: '/work/cards/harvest-dating.webp', cardAlt: 'Harvest Dating, the primary identity and apple heart mark.',
     slug: 'harvest-dating', title: 'Harvest Dating', collection: 'archive',
     tagline: 'An identity rooted in intentional connection.',
     summary: 'An apple-and-heart symbol, expressive typography, and a plum-and-red palette connecting digital touchpoints.',
@@ -165,6 +176,7 @@ export const projects: Project[] = [
     ],
   }),
   project({
+    cardImage: '/work/cards/go2bites.webp', cardAlt: 'Go2Bites, Lemon Cashew Coconut packaging with its ingredients.',
     slug: 'go2bites', title: 'Go2Bites', collection: 'featured',
     tagline: 'We made the product story feel at home in everyday life.',
     summary: 'We connected product and lifestyle photography, an online store, and a founder film into one clear Go2Bites story.',
@@ -184,6 +196,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://go2bites.com/' }, { label: 'watch the founder film', href: 'https://drive.google.com/file/d/1_p5yYQ7Zkrr1NM2VmrIDJyIDZzpTgRvj/view' }],
   }),
   project({
+    cardImage: '/work/cards/cellinkey.webp', cardAlt: 'CellinKey, the blue bottle photographed with directional light and stone.',
     slug: 'cellinkey', title: 'CellinKey', collection: 'featured',
     tagline: 'We gave the product range a tactile world of its own.',
     summary: 'We directed a cohesive image system for CellinKey through sculpted light, textured sets, product photography, and web presentation.',
@@ -208,6 +221,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.cellinkeyskincare.com/' }],
   }),
   project({
+    cardImage: '/work/cards/matchday.webp', cardAlt: 'MatchDay, the refreshed social profile with city highlights.',
     slug: 'matchday', title: 'MatchDay', tagline: 'Bringing the pickup game into view.',
     summary: 'City-specific social content, local search pages, and campaigns for a pickup-soccer community.',
     disciplines: ['Marketing', 'Content', 'Growth', 'Photography'], services: ['Social media management', 'SEO', 'Photography', 'Content creation', 'Meta and Google Ads'],
@@ -216,6 +230,7 @@ export const projects: Project[] = [
     links: [{ label: 'view selected Instagram content', href: 'https://www.instagram.com/reel/DbObtvtR6Gt/' }, { label: 'view selected TikTok content', href: 'https://vt.tiktok.com/ZS4NTX3rn/' }],
   }),
   project({
+    cardImage: '/work/cards/hush-hush-tan.webp', cardAlt: 'Hush Hush Tan, the refreshed social profile.',
     slug: 'hush-hush-tan', title: 'Hush Hush Tan', tagline: 'A refreshed brand, carried into the feed.',
     summary: 'A coordinated social relaunch through education, seasonal promotions, and client-centered content.',
     disciplines: ['Marketing', 'Content'], services: ['Social media management'],
@@ -223,6 +238,7 @@ export const projects: Project[] = [
     contentModules: [text('a more coherent daily presence.', 'We aligned the content calendar and visual presentation with the refreshed brand direction. Educational tanning content, seasonal messages, and client moments gave the channels a regular publishing rhythm.')],
   }),
   project({
+    cardImage: '/work/cards/clement-senior-solutions.webp', cardAlt: 'Clement Senior Solutions, the senior-living guidance website.',
     slug: 'clement-senior-solutions', title: 'Clement Senior Solutions', tagline: 'A clearer path from local search to support.',
     summary: 'Website improvements and foundational local SEO for senior-living guidance in Austin.',
     disciplines: ['Web', 'Growth', 'Content'], services: ['Website optimization', 'Local SEO', 'Social content'],
@@ -231,6 +247,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.clementseniorsolutions.com/' }, { label: 'view selected social content', href: 'https://www.instagram.com/reel/DZ3SSzZp6ku/' }],
   }),
   project({
+    cardImage: '/work/cards/wurqly.webp', cardAlt: 'Wurqly, the complete blue and navy website presentation.',
     slug: 'wurqly', title: 'Wurqly', collection: 'featured',
     tagline: 'We built Wurqly from positioning and identity through the full public website.',
     summary: 'Positioning, brand identity, messaging, and a complete website built as one connected launch system.',
@@ -251,6 +268,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://wurqly.com/' }],
   }),
   project({
+    cardImage: '/work/cards/hiking-pony.webp', cardAlt: 'Hiking Pony, front and back of the Sweet Cream collagen coffee pouch.',
     slug: 'hiking-pony', title: 'Hiking Pony', collection: 'featured', period: '2025',
     tagline: 'A functional coffee range, built to travel from sachet to shelf.',
     summary: 'A scalable packaging system and digital extension for an Austin-born functional coffee brand.',
@@ -271,6 +289,7 @@ export const projects: Project[] = [
     note: 'The range presentation shown here features Latte, Mocha, and Sweet Cream. The broader packaging architecture also included Peppermint Mocha.',
   }),
   project({
+    cardImage: '/work/cards/smoothsailing.webp', cardAlt: 'Smoothsailing Sustainability, the consultancy homepage.',
     slug: 'smoothsailing', title: 'Smoothsailing Sustainability', tagline: 'A broad consultancy. A clear structure.',
     summary: 'A service-led website organizing a sustainability consultancy’s areas of expertise.',
     disciplines: ['Web'], services: ['Website'],
@@ -279,6 +298,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://smoothsailingsustainability.com/' }],
   }),
   project({
+    cardImage: '/work/cards/10-pillar-productions.webp', cardAlt: '10 Pillar Productions, the film portfolio website.',
     slug: '10-pillar-productions', title: '10 Pillar Productions', tagline: 'A home for work made to be watched.',
     summary: 'A portfolio website bringing films, commercial work, and booking information together.',
     disciplines: ['Web'], services: ['Website'],
@@ -288,6 +308,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.10pillarproductions.com/' }],
   }),
   project({
+    cardImage: '/work/cards/alh-senior-solutions.webp', cardAlt: 'ALH Senior Solutions, the senior-placement guidance website.',
     slug: 'alh-senior-solutions', title: 'ALH Senior Solutions', tagline: 'Making the next step easier to find.',
     summary: 'A Lending Hand’s senior-placement guidance, presented through services, resources, and a clear consultation path.',
     disciplines: ['Web'], services: ['Website'],
@@ -296,6 +317,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.alhseniorsolutions.com/' }],
   }),
   project({
+    cardImage: '/work/cards/dr-saba-syed.webp', cardAlt: 'Dr. Saba Syed, the coaching and speaking website.',
     slug: 'dr-saba-syed', title: 'Dr. Saba Syed', tagline: 'A personal practice with a clear invitation.',
     summary: 'A direct introduction to Dr. Syed’s coaching and speaking work.',
     disciplines: ['Web'], services: ['Website'],
@@ -304,6 +326,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.drsabasyed.com/' }],
   }),
   project({
+    cardImage: '/work/cards/turant.webp', cardAlt: 'TURANT, the community events and membership website.',
     slug: 'turant', title: 'TURANT', tagline: 'A digital gathering place for a community.',
     summary: 'Events, membership, and community programs for Turkish Americans in North Texas.',
     disciplines: ['Web'], services: ['Website'],
@@ -313,6 +336,7 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.turant.net/' }],
   }),
   project({
+    cardImage: '/work/cards/avro.webp', cardAlt: 'AVRO, the existing brand logo shown without a background panel.',
     slug: 'avro', title: 'AVRO', tagline: 'One product, several social contexts.',
     summary: 'A supporting content collection spanning a mocktail concept, creator-style content, and a retailer collaboration.',
     disciplines: ['Content', 'Production'], services: ['Social content', 'Video production'],
@@ -320,6 +344,7 @@ export const projects: Project[] = [
     status: 'Content selection',
   }),
   project({
+    cardImage: '/work/cards/patent-earth.webp', cardAlt: 'Patent Earth, a typographic client-name cover.',
     slug: 'patent-earth', title: 'Patent Earth', tagline: 'A compact short-form content feature.',
     summary: 'A selected social reel, presented as an individual content piece rather than a full campaign.',
     disciplines: ['Content'], services: ['Social media content creation'],
@@ -327,6 +352,7 @@ export const projects: Project[] = [
     links: [{ label: 'view the selected reel', href: 'https://www.instagram.com/reel/DbWC2CTgQ4L/' }],
   }),
   project({
+    cardImage: '/work/cards/ollivate.webp', cardAlt: 'Ollivate, a typographic client-name cover.',
     slug: 'ollivate', title: 'Ollivate', tagline: 'Introducing an education app through paid social.',
     summary: 'App-focused video and static creative paired with audience testing.',
     disciplines: ['Marketing', 'Content'], services: ['Meta Ads', 'Video and static campaign creative'],
@@ -334,12 +360,14 @@ export const projects: Project[] = [
     note: 'Download-link clicks are not completed installs.',
   }),
   project({
+    cardImage: '/work/cards/cloon.webp', cardAlt: 'Cloon, the existing brand logo shown without a background panel.',
     slug: 'cloon', title: 'Cloon', tagline: 'A focused approach to search advertising.',
     summary: 'Intent-based keyword selection, tailored ad copy, and bid management for a Google Search campaign.',
     disciplines: ['Marketing', 'Growth'], services: ['Google Ads'],
     contentModules: [text('start with intent.', 'The campaign approach brought together focused keywords, ad-copy decisions, and bid management. Its aim was to connect searchers with the website while keeping spending controlled.')],
   }),
   project({
+    cardImage: '/work/cards/matchday-social.webp', cardAlt: 'MatchDay social, refreshed Instagram profile and city highlights.',
     slug: 'matchday-social', title: 'MatchDay social', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
     tagline: 'A local soccer community. A consistent social presence.',
     summary: 'A shared visual system and city-specific short-form stories across Instagram and TikTok.',
@@ -358,6 +386,7 @@ export const projects: Project[] = [
     ],
   }),
   project({
+    cardImage: '/work/cards/matchday-local-seo.webp', cardAlt: 'MatchDay search, the existing MatchDay logo.',
     slug: 'matchday-local-seo', title: 'MatchDay search', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
     tagline: 'Search visibility around where people want to play.',
     summary: 'A city-page strategy connecting local pickup-soccer searches to relevant destinations.',
@@ -369,6 +398,7 @@ export const projects: Project[] = [
     ],
   }),
   project({
+    cardImage: '/work/cards/hush-hush-tan-social.webp', cardAlt: 'Hush Hush Tan social, the coordinated profile after the relaunch.',
     slug: 'hush-hush-tan-social', title: 'Hush Hush Tan social', client: 'Hush Hush Tan', parentSlug: 'hush-hush-tan', collection: 'case-study',
     tagline: 'A refreshed beauty brand, in daily use.',
     summary: 'A coordinated feed, educational content, and a regular calendar for a social relaunch.',
@@ -387,6 +417,7 @@ export const projects: Project[] = [
     note: 'Reported visibility and engagement do not establish booking or revenue uplift. Net follower additions are not total-audience growth.',
   }),
   project({
+    cardImage: '/work/cards/clement-local-search.webp', cardAlt: 'Clement Senior Solutions Local SEO setup, website presentation.',
     slug: 'clement-local-search', title: 'Clement Senior Solutions Local SEO setup', client: 'Clement Senior Solutions', parentSlug: 'clement-senior-solutions', collection: 'case-study',
     tagline: 'An early foothold in local search.',
     summary: 'Clearer service content and foundational local SEO for families looking for guidance around Austin.',
@@ -403,6 +434,7 @@ export const projects: Project[] = [
     ],
   }),
   project({
+    cardImage: '/work/cards/reclaim-local-search.webp', cardAlt: 'Reclaim Physical Therapy local search, the clinic homepage.',
     slug: 'reclaim-local-search', title: 'Reclaim Physical Therapy local search', client: 'Reclaim Physical Therapy', collection: 'case-study',
     tagline: 'From a few searches a week to a steady stream.',
     summary: 'New service and question pages for an Austin physical therapy clinic, followed by 6.9 times the Google impressions and nearly three times the contact form submissions.',
@@ -458,9 +490,20 @@ export function getProjectNavigation(current: Project) {
   }
 }
 
+export function getMoreWork(currentSlug: string, count = 3, ordered = getPortfolioOrder()) {
+  const index = ordered.findIndex(item => item.slug === currentSlug)
+  if (index < 0) return []
+  const picks: Project[] = []
+  const clients = new Set([ordered[index].client])
+  for (let offset = 1; offset < ordered.length && picks.length < Math.max(0, Math.floor(count)); offset++) {
+    const candidate = ordered[(index + offset) % ordered.length]
+    if (clients.has(candidate.client)) continue
+    clients.add(candidate.client)
+    picks.push(candidate)
+  }
+  return picks
+}
+
 export function getRelatedProjects(current: Project) {
-  const ordered = getPortfolioOrder()
-  const index = ordered.findIndex(item => item.slug === current.slug)
-  return Array.from({ length: Math.max(0, ordered.length - 2) }, (_, offset) => ordered[(index + offset + 2) % ordered.length])
-    .filter(item => item.heroMedia.src).slice(0, 3)
+  return getMoreWork(current.slug)
 }

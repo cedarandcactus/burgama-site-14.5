@@ -1,7 +1,7 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
-import { ProjectImage } from '@/components/media-module'
-import { SectionRise } from '@/components/home/section-rise'
+import { CardSection } from '@/components/card-section'
+import { RevealHeading } from '@/components/reveal-heading'
 import type { Project } from '@/lib/projects'
 
 export function CaseStudyEnding({ project, next, related }: { project: Project; next: Project; related: Project[] }) {
@@ -18,22 +18,10 @@ export function CaseStudyEnding({ project, next, related }: { project: Project; 
         })}
       </nav>}
       <Link className="cs-next" href={`/work/${next.slug}`} rel="next" aria-label={`Next project: ${next.title}`}>
-        <span className="pill pill--next" data-cs-reveal="title" aria-hidden="true"><span>next project</span><ArrowRight className="pill__icon" /></span>
-        <span className="cs-next__title font-serif" data-cs-reveal="title">{next.title}</span>
-        {next.heroMedia.src && <span className="cs-next__frame" data-cs-reveal="media" data-cs-index="1.5"><ProjectImage item={{ ...next.heroMedia, label: '' }} /></span>}
+        <span className="pill pill--next" data-cs-reveal="body" aria-hidden="true"><span>next project</span><ArrowRight className="pill__icon" /></span>
+        <RevealHeading as="span" text={next.title} className="cs-next__title font-serif" />
       </Link>
     </div>
-    <div className="cs-more-transition"><SectionRise surface="navy" direction="left" /></div>
-    <section className="cs-more" data-nav-surface="ink" aria-labelledby="related-title">
-      <h2 id="related-title" className="cs-section__title font-serif" data-cs-reveal="title">More work.</h2>
-      <nav className="cs-more__grid" aria-label="More work">
-        {related.map((item, index) => <Link className="cs-card" href={`/work/${item.slug}`} key={item.slug} data-cs-reveal="card" data-cs-index={index}>
-          <span className="cs-card__frame"><ProjectImage item={{ ...item.heroMedia, label: '' }} sizes="(max-width: 640px) 100vw, (max-width: 1200px) 33vw, 400px" /></span>
-          <span className="cs-card__title">{item.title}</span>
-        </Link>)}
-      </nav>
-      <SectionRise surface="powder-deep" />
-    </section>
-    <div className="cs-global-space" aria-hidden="true" />
+    <CardSection heading="More work." items={related.map(item => ({ title: item.title, href: `/work/${item.slug}`, image: item.cardImage, alt: item.cardAlt }))} cta={{ label: 'all work', href: '/work' }} />
   </div>
 }

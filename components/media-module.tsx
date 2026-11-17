@@ -1,19 +1,21 @@
+import type { CSSProperties } from 'react'
 import type { ContentModule, MediaItem, ProjectStat } from '@/lib/projects'
+import { ParallaxImage } from '@/components/parallax-image'
+import { RevealHeading } from '@/components/reveal-heading'
 
 const sentenceCase = (value: string) => value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
 export const isWebsiteMedia = (item: MediaItem) => /\/web-/.test(item.src ?? '') || /\b(website|homepage|online store|site)\b/i.test(item.label)
 
-export function ProjectImage({ item, priority = false, sizes = '(max-width: 1200px) 100vw, 1200px' }: { item: MediaItem; priority?: boolean; sizes?: string }) {
+export function ProjectImage({ item, priority = false, sizes, strength = 3 }: { item: MediaItem; priority?: boolean; sizes?: string; strength?: number }) {
   if (!item.src) return null
-  const stem = item.src.replace(/\.[^.]+$/, '')
-  return <img src={item.src} srcSet={[640, 960, 1440, 2400].map(width => `${stem}-${width}.webp ${width}w`).join(', ')} sizes={sizes} alt={item.label} width={item.width} height={item.height} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
+  return <ParallaxImage src={item.src} alt={item.label} priority={priority} sizes={sizes} strength={strength} />
 }
 
-export function MediaFrame({ item, priority = false, index = 0, sizes }: { item: MediaItem; priority?: boolean; index?: number; sizes?: string }) {
+export function MediaFrame({ item, priority = false, index = 0, sizes, strength = 3 }: { item: MediaItem; priority?: boolean; index?: number; sizes?: string; strength?: number }) {
   if (!item.src) return null
   return <figure className="cs-figure" data-media-kind={isWebsiteMedia(item) ? 'screen' : 'image'}>
-    <div className="cs-frame" data-media-ratio={item.ratio} data-cs-reveal={priority ? undefined : 'media'} data-cs-index={index}>
-      <ProjectImage item={item} priority={priority} sizes={sizes} />
+    <div className="cs-frame" data-media-ratio={item.ratio} data-cs-reveal="media" data-cs-index={index} style={{ '--media-aspect': (item.width ?? 1200) / (item.height ?? 800), '--media-source-width': `${item.width ?? 1200}px` } as CSSProperties}>
+      <ProjectImage item={item} priority={priority} sizes={sizes} strength={strength} />
     </div>
     {item.caption && <figcaption>{item.caption}</figcaption>}
   </figure>
@@ -35,7 +37,7 @@ export function mediaGroups(items: MediaItem[]) {
 
 export function MediaLayouts({ items, priority = false }: { items: MediaItem[]; priority?: boolean }) {
   return <>{mediaGroups(items).map((group, index) => <div key={`${group.items[0].src}-${index}`} className="cs-media" data-layout={group.layout} data-media-kind={group.layout === 'site' ? 'screen' : 'image'} data-media-ratio={group.items[0].ratio}>
-    {group.layout === 'site' ? <div className="cs-panel"><MediaFrame item={group.items[0]} priority={priority} /></div> : group.items.map((item, itemIndex) => <MediaFrame key={item.src} item={item} priority={priority} index={itemIndex} sizes={group.layout === 'single' ? undefined : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px'} />)}
+    {group.layout === 'site' ? <div className="cs-panel"><MediaFrame item={group.items[0]} priority={priority} /></div> : group.items.map((item, itemIndex) => <MediaFrame key={item.src} item={item} priority={priority} index={itemIndex} strength={group.layout === 'single' ? 3 : 1.5} sizes={group.layout === 'single' ? undefined : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px'} />)}
   </div>)}</>
 }
 
@@ -74,7 +76,7 @@ function withCaption(item: MediaItem, slug: string): MediaItem {
 
 export function ProjectModules({ modules, slug }: { modules: ContentModule[]; slug: string }) {
   return <>{groupSections(modules).map(({ module, items }, index) => <section className="cs-section" data-case-module={module?.type ?? 'media'} key={index}>
-    {module && 'title' in module && module.title && <h2 className="cs-section__title font-serif" data-cs-reveal="title">{sentenceCase(module.title)}</h2>}
+    {module && 'title' in module && module.title && <RevealHeading className="cs-section__title font-serif" text={sentenceCase(module.title)} />}
     {module && (module.type === 'text' || module.type === 'mediaSplit') && <div className="cs-section__body" data-cs-reveal="body">{module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
     {module?.type === 'quote' && <figure className="cs-quote" data-cs-reveal="body"><blockquote>{module.body}</blockquote>{module.name && <figcaption>{module.name}{module.role ? `, ${module.role}` : ''}</figcaption>}</figure>}
     {module?.type === 'process' && <ol className="cs-process">{module.steps.map(step => <li key={step.title}><h3>{sentenceCase(step.title)}</h3><p>{step.body}</p></li>)}</ol>}

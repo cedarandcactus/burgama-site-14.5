@@ -1,7 +1,8 @@
 import { Fragment } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/transition-link'
-import { PublicationShell, ArticleMetadata, ArticleReferences, ArticleCard, EditorialFigure, EditorialMedia, EditorialEvidence } from '@/components/editorial-primitives'
+import { CardSection } from '@/components/card-section'
+import { PublicationShell, ArticleMetadata, ArticleReferences, EditorialFigure, EditorialMedia, EditorialEvidence } from '@/components/editorial-primitives'
 import { ideas, type IdeaPost } from '@/lib/editorial'
 import { getEditorialDirection, getRelatedIdeas } from '@/lib/editorial-layouts'
 import styles from './editorial.module.css'
@@ -33,9 +34,6 @@ export function EditorialDetail({ idea }: { idea: IdeaPost }) {
         <p className={styles.contextLink}>From the practice: <Link href={idea.internalLink.href}>{idea.internalLink.label.replace(/^Explore /, '')} <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link></p>
       </div>
     </article>
-    <section className={styles.related} aria-labelledby="related-title">
-      <div className={styles.sectionBar}><h2 id="related-title">Further reading</h2><Link href="/research">All research <ArrowUpRight className={styles.inlineArrow} aria-hidden="true" /></Link></div>
-      <div className={styles.relatedGrid}>{related.map(entry => <ArticleCard key={entry.slug} idea={entry} />)}</div>
-    </section>
+    <CardSection heading="Further reading." columns={2} items={related.map(entry => ({ title: entry.title, href: `/editions/${entry.slug}`, image: `/research/cards/${entry.slug}.webp`, alt: `${entry.title}, a Burgama Research article cover.` }))} cta={{ label: 'all research', href: '/research' }} />
   </PublicationShell>
 }

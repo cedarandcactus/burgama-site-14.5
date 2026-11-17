@@ -225,7 +225,8 @@
 }
 
 .content {
-  --footer-gutter: clamp(24px, 4.3vw, 72px);
+  --footer-gutter: var(--section-gutter);
+  max-width: calc(var(--section-content-max) + 2 * var(--footer-gutter));
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
