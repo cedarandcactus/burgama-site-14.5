@@ -50,6 +50,12 @@ const FAQ = [
   ['Do you only work with consumer products?', 'TikTok Shop is built for physical products, so this service is for brands that sell them. For everything else, see our other work.'],
 ]
 
+const NUMBERS = [
+  ['$11.8B', 'in US TikTok Shop sales in the first half of 2026'],
+  ['2x', 'roughly double the same period a year earlier'],
+  ['164%', 'sales growth for candy brand Brain Blasterz after a creator-led push'],
+]
+
 const serviceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -107,6 +113,17 @@ export default function TikTokShopPage() {
               sizes="(max-width: 1100px) 100vw, 1000px"
             />
           </Reveal>
+          <ul className={styles.numbers} aria-label="TikTok Shop by the numbers">
+            {NUMBERS.map(([figure, label], index) => (
+              <Reveal as="li" delay={index * 70} key={figure}>
+                <p className={`font-serif ${styles.figureNumber}`}>{figure}</p>
+                <p>{label}</p>
+              </Reveal>
+            ))}
+          </ul>
+          <p className={styles.sources}>
+            Market figures are estimates from Momentum Works and Tabcut, <a href="https://www.tubefilter.com/2026/08/06/tiktok-shop-gross-merchandise-value-gmv-50-billion/" target="_blank" rel="noopener noreferrer">reported by Tubefilter</a>. The Brain Blasterz result is <a href="https://ads.tiktok.com/business/en/inspiration/brain-blasterz-tiktok-success-story" target="_blank" rel="noopener noreferrer">published by TikTok</a>. These are not Burgama results.
+          </p>
         </div>
         <SectionRise surface="blue-slate" direction="left" />
       </section>
