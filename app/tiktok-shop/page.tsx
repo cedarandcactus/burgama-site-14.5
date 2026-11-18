@@ -51,8 +51,8 @@ const FAQ = [
 ]
 
 const NUMBERS = [
-  ['$11.8B', 'in US TikTok Shop sales in the first half of 2026'],
-  ['2x', 'roughly double the same period a year earlier'],
+  ['$11.8B', 'US TikTok Shop sales, first half of 2026'],
+  ['2x', 'roughly double the year before'],
   ['164%', 'sales growth for candy brand Brain Blasterz after a creator-led push'],
 ]
 
@@ -99,10 +99,21 @@ export default function TikTokShopPage() {
       />
 
       <section className="studio-band" data-surface="navy" id="how-it-works" aria-labelledby="how-title">
-        <div className="studio-width">
-          <Reveal variant="section" className={styles.heading}>
+        <div className={`studio-width ${styles.explain}`}>
+          <Reveal variant="section" className={styles.explainCopy}>
             <h2 id="how-title" className="font-serif">People buy without leaving the video.</h2>
             <p>On TikTok Shop, creators show your product and viewers check out in the same app. Brands that do well treat creators as their sales team.</p>
+            <dl className={styles.numbers}>
+              {NUMBERS.map(([figure, label]) => (
+                <div key={figure}>
+                  <dt className="font-serif">{figure}</dt>
+                  <dd>{label}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className={styles.sources}>
+              Market estimates: Momentum Works and Tabcut, <a href="https://www.tubefilter.com/2026/08/06/tiktok-shop-gross-merchandise-value-gmv-50-billion/" target="_blank" rel="noopener noreferrer">via Tubefilter</a>. Brain Blasterz: <a href="https://ads.tiktok.com/business/en/inspiration/brain-blasterz-tiktok-success-story" target="_blank" rel="noopener noreferrer">published by TikTok</a>. Not Burgama results.
+            </p>
           </Reveal>
           <Reveal as="figure" className={styles.figure}>
             <Image
@@ -110,20 +121,9 @@ export default function TikTokShopPage() {
               alt="Illustration of a phone showing a creator video with a product and a buy button, with three steps: a creator posts, a viewer taps to buy, the order ships."
               width={1600}
               height={1200}
-              sizes="(max-width: 1100px) 100vw, 1000px"
+              sizes="(max-width: 899px) 100vw, 55vw"
             />
           </Reveal>
-          <ul className={styles.numbers} aria-label="TikTok Shop by the numbers">
-            {NUMBERS.map(([figure, label], index) => (
-              <Reveal as="li" delay={index * 70} key={figure}>
-                <p className={`font-serif ${styles.figureNumber}`}>{figure}</p>
-                <p>{label}</p>
-              </Reveal>
-            ))}
-          </ul>
-          <p className={styles.sources}>
-            Market figures are estimates from Momentum Works and Tabcut, <a href="https://www.tubefilter.com/2026/08/06/tiktok-shop-gross-merchandise-value-gmv-50-billion/" target="_blank" rel="noopener noreferrer">reported by Tubefilter</a>. The Brain Blasterz result is <a href="https://ads.tiktok.com/business/en/inspiration/brain-blasterz-tiktok-success-story" target="_blank" rel="noopener noreferrer">published by TikTok</a>. These are not Burgama results.
-          </p>
         </div>
         <SectionRise surface="blue-slate" direction="left" />
       </section>
