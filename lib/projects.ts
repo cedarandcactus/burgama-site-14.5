@@ -19,6 +19,7 @@ export type ContentModule =
   | { type: 'mediaGrid'; items: MediaItem[] }
   | { type: 'quote'; body: string; name?: string; role?: string }
   | { type: 'process'; title: string; steps: { title: string; body: string }[] }
+  | { type: 'video'; title?: string; body?: string[]; vimeoId: string; label: string; aspect?: number }
 
 export type PortfolioCollection = 'featured' | 'case-study' | 'archive'
 export type Project = {
@@ -72,6 +73,13 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'go2bites/a172.jpg': [1800, 1350],
   'go2bites/film-go2bites.jpg': [619, 348],
   'go2bites/web-go2bites.jpg': [1280, 720],
+  'go2bites/ingredient-pumpkin-spice.jpg': [2000, 1600],
+  'go2bites/ingredient-spicy-cinnamon.jpg': [2000, 1600],
+  'go2bites/ingredient-oh-ghee-dates.jpg': [2000, 1600],
+  'go2bites/ingredient-cinnamon.jpg': [2000, 1600],
+  'go2bites/web-before-home.jpg': [1556, 696],
+  'go2bites/web-after-home.jpg': [1556, 696],
+  'go2bites/web-after-story.jpg': [1556, 696],
   'cellinkey/a000.jpg': [1800, 1201],
   'cellinkey/a017.jpg': [1800, 1201],
   'cellinkey/a041.jpg': [1800, 1201],
@@ -212,22 +220,28 @@ export const projects: Project[] = [
   project({
     cardImage: '/work/cards/go2bites.webp', cardAlt: 'Go2Bites, Lemon Cashew Coconut packaging with its ingredients.',
     slug: 'go2bites', title: 'Go2Bites', collection: 'featured',
-    tagline: 'We made the product story feel at home in everyday life.',
-    summary: 'We connected product and lifestyle photography, an online store, and a founder film into one clear Go2Bites story.',
+    tagline: 'A product story told in photos, film and a new online store.',
+    summary: 'Ingredient-led product photography, a founder film and a rebuilt Shopify store for an Austin snack brand, carried into email and Meta Ads.',
     categories: ['Packaging photography'],
-    disciplines: ['Photography', 'Web', 'Production'], services: ['Packaging photography', 'Lifestyle photography', 'Website', 'Founder film'],
-    heroMedia: image('go2bites', 'a172.jpg', 'Five Go2Bites flavors photographed as a product range.'),
+    disciplines: ['Photography', 'Web', 'Production', 'Marketing'], services: ['Product photography', 'Founder film', 'Shopify website', 'Email marketing', 'Meta Ads'],
+    heroMedia: image('go2bites', 'ingredient-pumpkin-spice.jpg', 'Pumpkin Spice Donut Hole with a pumpkin, cashews and spice, a hand lifting one bite, on navy.'),
     contentModules: [
-      text('make the range easy to understand.', 'We started with direct product portraits that establish the full flavor range and keep the packaging legible. Ingredient-led compositions then give individual products their own focus, so every frame adds something instead of repeating the same package angle.'),
-      media('go2bites', 'a153.jpg', 'Lemon Cashew Coconut with ingredients and packaging.'),
-      text('show where the product belongs.', 'We carried the range into kitchen and outdoor settings that feel recognizable and lived in. The sequence moves deliberately from product recognition to moments of use, making the product part of the day rather than an isolated studio object.'),
-      pair('go2bites', ['a116.jpg', 'A kitchen scene places the product in a family setting.'], ['a165.jpg', 'An outdoor product moment.']),
-      pair('go2bites', ['a129.jpg', 'Go2Bites founder with the product range.'], ['a155.jpg', 'Package-in-hand detail from the photography sequence.']),
-      text('turn the same story into a journey.', 'We built the online store around the same product-first hierarchy, connecting discovery, brand context, and shopping. A kitchen-set founder interview brings the person behind Go2Bites into that story, giving the still photography, commerce experience, and film a shared point of view.'),
-      media('go2bites', 'web-go2bites.jpg', 'Go2Bites online store: product discovery, brand story, and shopping.'),
-      media('go2bites', 'film-go2bites.jpg', 'Still from the Go2Bites founder film.'),
+      text('one set, every flavor.', 'Go2Bites makes protein bites in Austin, and every flavor has its own color, ingredients and story. We built one photo system to carry all of them: a deep navy set, the pouch at the center, the real ingredients beside it and a hand reaching in for a bite. Each image explains a flavor at a glance, and together they read as one range.'),
+      media('go2bites', 'a153.jpg', 'Lemon Cashew Coconut with a lemon, cashews and coconut on navy.'),
+      media('go2bites', 'ingredient-cinnamon.jpg', 'Cinnamon Donut Hole with cinnamon sticks and cashews on navy.'),
+      media('go2bites', 'ingredient-spicy-cinnamon.jpg', 'Spicy Cinnamon Donut Hole with cinnamon, cashews and chili on navy.'),
+      media('go2bites', 'ingredient-oh-ghee-dates.jpg', 'Oh Ghee Dates with ghee, dates and banana chips on navy.'),
+      text('the full range, then real life.', 'Alongside the ingredient set we shot the whole range together for the store and retail, close product details, and the bites outside the studio, where people actually eat them.'),
+      media('go2bites', 'a172.jpg', 'All five Go2Bites flavors photographed together on white.'),
+      pair('go2bites', ['a155.jpg', 'A hand holding the Cinnamon Donut Hole pouch on navy.'], ['a165.jpg', 'A Go2Bites bite outdoors, mid-snack.']),
+      { type: 'video', title: 'the founder, in her own words.', body: ['We filmed the founder in a family kitchen, telling the story of the snack she wanted and could not find. The film leads the Our Story page on the new site.'], vimeoId: '1164559329', label: 'Go2Bites founder film' },
+      text('from template to storefront.', 'The old site was a Squarespace template with a basic menu. We rebuilt Go2Bites on Shopify around the product: our photography leads the homepage, seasonal flavors rotate in the hero, store locations and shopping sit in the top navigation, and the founder film anchors its own page.'),
+      media('go2bites', 'web-before-home.jpg', 'Before: the Go2Bites homepage in December 2024.'),
+      media('go2bites', 'web-after-home.jpg', 'After: the Go2Bites homepage today, led by our Pumpkin Spice product photo.'),
+      media('go2bites', 'web-after-story.jpg', 'After: the new Our Story page on the Go2Bites site, built around the founder film.'),
+      text('one story, every channel.', 'We also run Go2Bites email campaigns and Meta Ads, built from the same photography, so a customer sees one consistent brand from an ad to the inbox to checkout.'),
     ],
-    links: [{ label: 'visit the website', href: 'https://go2bites.com/' }, { label: 'watch the founder film', href: 'https://drive.google.com/file/d/1_p5yYQ7Zkrr1NM2VmrIDJyIDZzpTgRvj/view' }],
+    links: [{ label: 'visit the website', href: 'https://go2bites.com/' }, { label: 'watch the founder film', href: 'https://vimeo.com/1164559329' }],
   }),
   project({
     cardImage: '/work/cards/cellinkey.webp', cardAlt: 'CellinKey, the blue bottle photographed with directional light and stone.',
