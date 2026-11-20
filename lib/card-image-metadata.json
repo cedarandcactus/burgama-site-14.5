@@ -1,79 +1,79 @@
 {
   "/work/cards/wagner-wealth.webp": {
-    "width": 1200,
-    "height": 900
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/sidecar-spirits.webp": {
-    "width": 801,
-    "height": 1200
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/harvest-dating.webp": {
-    "width": 1200,
-    "height": 839
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/go2bites.webp": {
-    "width": 1200,
-    "height": 960
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/cellinkey.webp": {
-    "width": 1200,
-    "height": 801
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/matchday.webp": {
     "width": 1600,
     "height": 1100
   },
   "/work/cards/hush-hush-tan.webp": {
-    "width": 553,
-    "height": 1200
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/clement-senior-solutions.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/wurqly.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/hiking-pony.webp": {
-    "width": 1200,
-    "height": 800
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/smoothsailing.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/10-pillar-productions.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/alh-senior-solutions.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/dr-saba-syed.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/turant.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/avro.webp": {
-    "width": 1200,
-    "height": 502
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/patent-earth.webp": {
-    "width": 559,
-    "height": 352
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/ollivate.webp": {
-    "width": 559,
-    "height": 133
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/cloon.webp": {
-    "width": 1024,
-    "height": 1024
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/matchday-meta-ads.webp": {
     "width": 1600,
@@ -84,40 +84,64 @@
     "height": 1100
   },
   "/work/cards/hush-hush-tan-seasonal.webp": {
-    "width": 1200,
-    "height": 846
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/avro-website.webp": {
-    "width": 1200,
-    "height": 494
+    "width": 1600,
+    "height": 1100
+  },
+  "/work/cards/hiking-pony-packaging.webp": {
+    "width": 1600,
+    "height": 1100
+  },
+  "/work/cards/hiking-pony-photography.webp": {
+    "width": 1600,
+    "height": 1100
+  },
+  "/work/cards/hiking-pony-website.webp": {
+    "width": 1600,
+    "height": 1100
+  },
+  "/work/cards/wagner-founder-film.webp": {
+    "width": 1600,
+    "height": 1100
+  },
+  "/work/cards/hiking-pony-founder-film.webp": {
+    "width": 1600,
+    "height": 1100
+  },
+  "/work/cards/cold-cycle-founder-video.webp": {
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/go2bites-packaging.webp": {
-    "width": 960,
-    "height": 1200
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/go2bites-photography.webp": {
-    "width": 1200,
-    "height": 960
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/go2bites-film-website.webp": {
-    "width": 619,
-    "height": 348
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/matchday-local-seo.webp": {
     "width": 1600,
     "height": 1100
   },
   "/work/cards/hush-hush-tan-social.webp": {
-    "width": 553,
-    "height": 1200
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/clement-local-search.webp": {
-    "width": 1200,
-    "height": 675
+    "width": 1600,
+    "height": 1100
   },
   "/work/cards/reclaim-local-search.webp": {
-    "width": 1200,
-    "height": 558
+    "width": 1600,
+    "height": 1100
   },
   "/research/cards/wix-vs-vercel.webp": {
     "width": 1200,
@@ -146,17 +170,5 @@
   "/research/cards/claim-your-business-in-chatgpt.webp": {
     "width": 461,
     "height": 397
-  },
-  "/work/cards/wagner-founder-film.webp": {
-    "width": 1200,
-    "height": 675
-  },
-  "/work/cards/hiking-pony-founder-film.webp": {
-    "width": 1200,
-    "height": 675
-  },
-  "/work/cards/cold-cycle-founder-video.webp": {
-    "width": 376,
-    "height": 629
   }
 }
