@@ -238,13 +238,25 @@ export const projects: Project[] = [
     links: [{ label: 'visit the website', href: 'https://www.cellinkeyskincare.com/' }],
   }),
   project({
-    cardImage: '/work/cards/matchday.webp', cardAlt: 'MatchDay, the refreshed social profile with city highlights.',
-    slug: 'matchday', title: 'MatchDay', tagline: 'Bringing the pickup game into view.',
-    summary: 'City-specific social content, local search pages, and campaigns for a pickup-soccer community.',
-    disciplines: ['Marketing', 'Content', 'Growth', 'Photography'], services: ['Social media management', 'SEO', 'Photography', 'Content creation', 'Meta and Google Ads'],
-    heroMedia: image('matchday', 'a112.jpg', 'The refreshed MatchDay Instagram profile and city highlights.', 'tall'),
-    contentModules: [text('the game, beyond the pitch.', 'We brought a consistent visual identity to Instagram and TikTok, pairing gameplay with stories from individual cities. Local search pages supported discovery around pickup soccer, while paid campaigns added distribution across active markets.'), text('two sides of discovery.', 'The focused social study follows the visual refresh and platform reporting. The search study explains the city-page structure.')],
-    links: [{ label: 'view selected Instagram content', href: 'https://www.instagram.com/reel/DbObtvtR6Gt/' }, { label: 'view selected TikTok content', href: 'https://vt.tiktok.com/ZS4NTX3rn/' }],
+    cardImage: '/work/cards/matchday.webp', cardAlt: 'MatchDay’s Instagram profile in November 2026, with city highlights.',
+    slug: 'matchday', title: 'MatchDay', collection: 'featured', tagline: 'Filling pickup games across eight cities.',
+    summary: 'Paid social and organic content for a pickup soccer app: 3,458 app installs at $3.34 each, and 2,577 new followers across Instagram and TikTok.',
+    disciplines: ['Marketing', 'Content', 'Growth', 'Photography'], services: ['Meta Ads', 'Social media management', 'Content creation', 'SEO'],
+    heroMedia: image('matchday-social', 'profile-now.jpg', 'MatchDay’s Instagram profile in November 2026, with city highlights and match content.', 'square'),
+    contentModules: [
+      { type: 'text', title: 'the headline numbers.', body: ['Two programs, one goal: more players at more games.'], stats: [
+        { value: '3,458', label: 'App installs from Meta Ads in September and October 2026' },
+        { value: '$3.34', label: 'Cost per app install' },
+        { value: '+2,091', accessibleValue: '2,091 new', label: 'New Instagram followers, 1,519 to 3,610' },
+        { value: '13x', accessibleValue: '13 times', label: 'TikTok views in our first five months' },
+      ] },
+      text('paid and organic, city by city.', 'We plan, film and run MatchDay’s Meta campaigns market by market, and we run the Instagram and TikTok feeds that show what a MatchDay game actually feels like. Each side has its own case study with the full numbers.'),
+      pair('matchday-meta-ads', ['free-game-code.jpg', 'A MatchDay ad for Atlanta with a free game code.', 'tall'], ['static-testimonial.jpg', 'A MatchDay testimonial static ad.', 'tall']),
+    ],
+    links: [
+      { label: 'read the Meta Ads case study', href: '/work/matchday-meta-ads' },
+      { label: 'read the social case study', href: '/work/matchday-social' },
+    ],
   }),
   project({
     cardImage: '/work/cards/hush-hush-tan.webp', cardAlt: 'Hush Hush Tan, the refreshed social profile.',
@@ -569,7 +581,7 @@ export function getPublishedProjects(collection?: PortfolioCollection) {
       return found ? [found] : []
     })
 }
-const featuredProjectOrder = ['wurqly', 'hiking-pony', 'go2bites', 'cellinkey', 'wagner-wealth'] as const
+const featuredProjectOrder = ['matchday', 'wurqly', 'hiking-pony', 'go2bites', 'cellinkey', 'wagner-wealth'] as const
 export const featuredProjects = featuredProjectOrder.flatMap(slug => {
   const item = getProject(slug)
   return item?.collection === 'featured' ? [item] : []
