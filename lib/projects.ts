@@ -11,6 +11,16 @@ export type MediaItem = {
   caption?: string
 }
 export type ProjectStat = { value: string; label: string; accessibleValue?: string }
+export type JourneyEmail = { src: string; width: number; height: number; title: string; label: string }
+export type JourneyStage = {
+  moment: string
+  flow: string
+  status: 'live' | 'built' | 'mapped'
+  trigger: string
+  steps: { when: string; what: string }[]
+  stats?: ProjectStat[]
+  emails?: JourneyEmail[]
+}
 export type ContentModule =
   | { type: 'text'; title?: string; body: string[]; stats?: ProjectStat[]; source?: string }
   | { type: 'media'; item: MediaItem }
@@ -20,6 +30,7 @@ export type ContentModule =
   | { type: 'quote'; body: string; name?: string; role?: string }
   | { type: 'process'; title: string; steps: { title: string; body: string }[] }
   | { type: 'video'; title?: string; body?: string[]; vimeoId?: string; driveId?: string; instagramId?: string; label: string; aspect?: number }
+  | { type: 'journey'; title: string; body?: string[]; stages: JourneyStage[] }
 
 export type PortfolioCollection = 'featured' | 'case-study' | 'archive'
 export type Project = {
@@ -162,6 +173,8 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'avro/lifestyle-terrace.jpg': [2000, 1116],
   'avro/golf-display.jpg': [1254, 1254],
   'avro/topdown-drinks.jpg': [2000, 2482],
+  'patent-earth-email/hero-dad.jpg': [875, 1180],
+  'matchday-email/hero-find-your-game.jpg': [875, 1136],
   'founder-films/wagner-wealth.jpg': [1237, 696],
   'founder-films/hiking-pony.jpg': [1237, 696],
   'founder-films/cold-cycle.jpg': [376, 629],
@@ -365,6 +378,7 @@ export const projects: Project[] = [
     links: [{ label: 'see local search', href: '/work/matchday-local-seo' }, 
       { label: 'read the Meta Ads case study', href: '/work/matchday-meta-ads' },
       { label: 'read the social case study', href: '/work/matchday-social' },
+      { label: 'see the email flows', href: '/work/matchday-email' },
     ],
   }),
   project({
@@ -555,7 +569,7 @@ export const projects: Project[] = [
         image('patent-earth', 'ad-four-ways.jpg', 'Ad: Poster. Canvas. Framed. Fourteen sizes and four print types, shown on a tennis court, a home plate and beside a guitar.', 'tall'),
       ] },
     ],
-    links: [{ label: 'watch the reel on Instagram', href: 'https://www.instagram.com/reel/DbWC2CTgQ4L/' }, { label: 'visit Patent Earth', href: 'https://patentearth.com/' }],
+    links: [{ label: 'see the email marketing', href: '/work/patent-earth-email' }, { label: 'watch the reel on Instagram', href: 'https://www.instagram.com/reel/DbWC2CTgQ4L/' }, { label: 'visit Patent Earth', href: 'https://patentearth.com/' }],
   }),
   project({
     cardImage: '/work/cards/ollivate.webp', cardAlt: 'Ollivate ad: earn AANA-approved CE credits for free, with the app on a phone.',
@@ -586,6 +600,119 @@ export const projects: Project[] = [
     summary: 'Intent-based keyword selection, tailored ad copy, and bid management for a Google Search campaign.',
     disciplines: ['Marketing', 'Growth'], services: ['Google Ads'],
     contentModules: [text('start with intent.', 'The campaign approach brought together focused keywords, ad-copy decisions, and bid management. Its aim was to connect searchers with the website while keeping spending controlled.')],
+  }),
+  project({
+    cardImage: '/work/cards/matchday-email.webp', cardAlt: 'MatchDay email: Find your game this week, with a search bar, filter chips and a match photo.',
+    slug: 'matchday-email', title: 'MatchDay email flows', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
+    tagline: 'Emails that look and work like the app.',
+    summary: 'Automated Klaviyo flows that move pickup soccer players from sign-up to their first, second and third match: 28,463 emails delivered and 1,494 match bookings attributed.',
+    disciplines: ['Marketing'], services: ['Email marketing', 'Klaviyo flows', 'HTML email design'], period: 'August to November 2026',
+    heroMedia: image('matchday-email', 'hero-find-your-game.jpg', 'MatchDay email: Find your game this week, with a search bar, date, field, time range and team size chips, and a night match photo.', 'tall'),
+    contentModules: [
+      { type: 'text', title: 'the headline numbers.', body: ['Every live flow, August 7 to November 20, 2026.'], stats: [
+        { value: '28,463', label: 'Flow emails delivered' },
+        { value: '1,494', label: 'Match bookings attributed to the flows, from 1,050 players' },
+        { value: '36%', label: 'Open rate on the Welcome flow' },
+        { value: '4.7%', label: 'Of players emailed by the weekly flow booked again' },
+      ], source: 'Klaviyo flow report, pulled November 20, 2026, with Booked Match as the conversion.' },
+      text('a flow for every stage.', 'MatchDay makes money when people keep playing, so we mapped the email program to the player’s path rather than the calendar: a free first match, a nudge after each game, a reminder for anyone who skips a week, a membership offer for regulars and a win-back for players who go quiet.'),
+      { type: 'journey', title: 'follow a player through the flows.', body: ['Tap a stage to see what triggers it, every email in the sequence and the full email the player gets.'], stages: [
+        { moment: 'Signs up', flow: 'Welcome', status: 'live', trigger: 'Completes registration in the app.', steps: [
+          { when: 'Day 0', what: 'Your first match is on us' },
+          { when: 'Day 2', what: 'What to expect at your first MatchDay' },
+          { when: 'Day 7', what: 'Still thinking about it?' },
+        ], stats: [{ value: '36%', label: 'open rate' }, { value: '600', label: 'players booked after a Welcome email' }],
+          emails: [{ src: '/work/matchday-email/email-welcome.jpg', width: 706, height: 2002, title: 'Your first match is on us', label: 'Full Welcome email: Welcome, Deniz, your first match is free, styled like an app notification, with a free match card and the app navigation bar.' }] },
+        { moment: 'Plays match 1', flow: 'Second Match', status: 'live', trigger: 'Finishes a first match.', steps: [
+          { when: 'Next morning', what: 'Book match 2 while your legs are still sore' },
+          { when: 'Day 3', what: 'Did you forget something?' },
+          { when: 'Day 7', what: 'We’ll stop asking after this' },
+        ] },
+        { moment: 'Plays match 2', flow: 'Third Match', status: 'live', trigger: 'Finishes a second match.', steps: [
+          { when: 'Day 0', what: 'Book match 3. We run the rest.' },
+          { when: 'Day 2', what: 'One passion. One community.' },
+          { when: 'Day 6', what: 'Find your game this week' },
+        ], emails: [{ src: '/work/matchday-email/email-find-your-game.jpg', width: 706, height: 1867, title: 'Find your game this week', label: 'Full Third Match email: Find your game this week, with a search bar, filter chips, a night match photo, three feature tiles and the app navigation bar.' }] },
+        { moment: 'Skips a week', flow: 'Weekly reminder', status: 'live', trigger: 'Booked in the last two weeks, but not in the last week.', steps: [
+          { when: 'Mon to Wed, 2:30 PM', what: 'A nudge to book this week’s game, timed for when bookings peak' },
+          { when: 'Next send window', what: 'A second reminder to grab a spot' },
+        ], stats: [{ value: '4.7%', label: 'booked again' }, { value: '8,876', label: 'emails delivered' }] },
+        { moment: 'Plays often', flow: 'Membership', status: 'live', trigger: 'Plays five matches in a month.', steps: [
+          { when: 'Day 0', what: 'Play unlimited for one monthly rate' },
+          { when: 'Day 3', what: 'We did the math on your matches' },
+          { when: 'Day 7', what: 'Join MatchDay SC' },
+        ] },
+        { moment: 'Goes quiet', flow: 'Win-back', status: 'live', trigger: 'No match in 30 days.', steps: [
+          { when: 'Day 30', what: 'Your spot on the pitch is still here' },
+          { when: 'Day 45', what: '50% off your next MatchDay match, code COMEBACK' },
+        ], emails: [{ src: '/work/matchday-email/email-comeback.jpg', width: 706, height: 2234, title: 'Comeback', label: 'Full win-back email: Comeback, the pitch is calling, with the 50% off COMEBACK code, a match ball in the net and the app navigation bar.' }] },
+      ] },
+      text('send when people book.', 'The weekly flow only sends Monday to Wednesday at 2:30 PM Central, because that is when MatchDay sees the most bookings and app activity. The email lands right as players are planning their week.'),
+      text('emails that look like the app.', 'In November we rebuilt the flows in HTML styled after the MatchDay app itself: a notification card, stat tiles for matches played, a search bar with filter chips, and real match photos. Every button, card and image opens the app, and we tested the designs in dark mode on iPhone Gmail before they went live.'),
+      text('a cleaner list every month.', 'Before each monthly renewal we run MatchDay’s 60-day rule: profiles with no opens, clicks, site visits, registrations or bookings in 60 days are suppressed from email, while their SMS consent is kept. The list stays engaged, deliverability stays healthy and MatchDay only pays for profiles that are still playing.'),
+    ],
+    note: 'Klaviyo attributes a booking to an email when the player opened or clicked it within its attribution window, so some of these bookings would have happened anyway. Treat them as influence, not incremental lift.',
+    links: [{ label: 'see MatchDay on Instagram', href: 'https://www.instagram.com/playmatchday/' }],
+  }),
+  project({
+    cardImage: '/work/cards/patent-earth-email.webp', cardAlt: 'Patent Earth email: For the dad who has everything, with three patent prints.',
+    slug: 'patent-earth-email', title: 'Patent Earth email marketing', client: 'Patent Earth', parentSlug: 'patent-earth', collection: 'case-study',
+    tagline: 'A dormant list, back in the inbox and selling.',
+    summary: 'Klaviyo flows, deliverability repair and a holiday gift-guide series for a patent art brand: open rates up from 18% to 35%, and welcome and checkout flows earning about twice Klaviyo’s averages per person.',
+    disciplines: ['Marketing'], services: ['Email marketing', 'Klaviyo flows', 'Deliverability', 'Email design'], period: 'July to November 2026',
+    heroMedia: image('patent-earth-email', 'hero-dad.jpg', 'Patent Earth gift guide email: For the dad who has everything, with camera, screwdriver and golf club patent prints and a he doesn’t have this one sticker.', 'tall'),
+    contentModules: [
+      { type: 'text', title: 'the headline numbers.', body: ['From the first send to a dormant list in August to the holiday run in November.'], stats: [
+        { value: '$5.53', label: 'Revenue per welcome email recipient, against Klaviyo’s $2.65 average' },
+        { value: '$6.40', label: 'Revenue per abandoned checkout recipient, against a $3.65 average' },
+        { value: '35.4%', label: 'Open rate after we moved to engaged-only sending, up from 18.2%' },
+        { value: '2.4x', accessibleValue: '2.4 times', label: 'Gmail open rate, 4.5% to 10.6%' },
+      ], source: 'Klaviyo. Flow revenue June 27 to September 25, 2026, compared with Klaviyo’s 2024 benchmarks. Open rates for the week after October 15, 2026, against the prior 30 days.' },
+      text('wake the list without burning it.', 'Patent Earth had about 9,000 subscribers who had not heard from the brand in a long time. The first newsletter reached a 23.8% open rate with spam complaints at 0.2%, which told us the audience still recognized the brand. A subject line test showed a plain update more than doubled clicks over borrowed urgency, 1.39% against 0.62%, and two product photos linked straight to their listings pulled nearly as many clicks as all the Wall Art buttons combined. That shaped every send after it: photography first, with each print linked to its exact product.'),
+      text('fix what the reports could not see.', 'Klaviyo was reporting $0 for every flow because it was still counting orders from an old Magento metric. We switched it to BigCommerce, added the tracking snippet for product views, and checked the skipped sends by hand. 38 new subscribers ordered before the second welcome email, while Klaviyo credited only 12, so the popup code was doing more work than any report showed.'),
+      text('get back into Gmail.', 'Gmail was about half of all mail and only 4.5% of it was opened, against 26% at Yahoo and 40% at Outlook. We moved every campaign to engaged subscribers, built a sunset flow for roughly 5,270 profiles that had not engaged in 120 days, and mapped the SPF fix for order emails. Within a week, opens nearly doubled and bounces halved.'),
+      text('a gift guide for every person on the list.', 'For the holidays we planned a run of gift guides from Veterans Day to Cyber Monday, each one led by the person rather than the discount: the veteran, the musician, the dad who has everything, the trades, the professional. The sale sits in a thin bar under the hero, and every print shown links to its own product page.'),
+      { type: 'journey', title: 'follow a shopper through the program.', body: ['Tap a stage to see what triggers it, the emails in the sequence and, where we have it, the full email.'], stages: [
+        { moment: 'Joins the list', flow: 'Welcome', status: 'live', trigger: 'Signs up through the site popup for a 12% code.', steps: [
+          { when: 'Right away', what: 'Your 12% welcome code is inside' },
+          { when: 'Emails 2 to 4', what: 'Reminders for anyone who has not ordered yet' },
+        ], stats: [{ value: '$5.53', label: 'revenue per recipient' }, { value: '36.9%', label: 'open rate on email 1' }] },
+        { moment: 'Browses a print', flow: 'Browse abandonment', status: 'mapped', trigger: 'Views a product and leaves without adding it to the cart.', steps: [
+          { when: 'Waiting on', what: 'Product-view tracking in the store theme, which we wrote and handed over' },
+        ] },
+        { moment: 'Leaves checkout', flow: 'Abandoned checkout', status: 'live', trigger: 'Starts checkout and does not finish.', steps: [
+          { when: 'Email 1', what: 'You left something behind' },
+          { when: 'Email 2', what: 'A second reminder' },
+          { when: 'Email 3', what: '10% off to finish the order' },
+        ], stats: [{ value: '$6.40', label: 'revenue per recipient' }] },
+        { moment: 'Places an order', flow: 'Post-purchase', status: 'built', trigger: 'Completes an order.', steps: [
+          { when: 'First', what: 'Thank you and a review request. Five stars go to the product’s reviews, one to four stars to a private feedback form' },
+          { when: 'Then', what: 'Gift picks matched to what they bought' },
+          { when: 'Then', what: 'Shirts and mugs with the same designs' },
+        ] },
+        { moment: 'Stays engaged', flow: 'Holiday gift guides', status: 'live', trigger: 'Opened or clicked in 90 days, ordered in 180, or joined in 30.', steps: [
+          { when: 'Nov 10', what: 'Veterans Day: thank the ones who served' },
+          { when: 'Nov 12', what: 'Turn it up: gifts for musicians' },
+          { when: 'Nov 14', what: 'For the dad who has everything' },
+          { when: 'Nov 17', what: 'For the one who works with their hands' },
+          { when: 'Nov 19', what: 'For the professional who has it all' },
+          { when: 'Nov 23 to 30', what: 'Plan your buy, Black Friday and Cyber Monday' },
+        ], stats: [{ value: '35.4%', label: 'open rate on engaged-only sends' }],
+          emails: [
+            { src: '/work/patent-earth-email/email-veterans.jpg', width: 706, height: 4051, title: 'Veterans Day', label: 'Full Veterans Day email: Thank the ones who served, four military patent prints, shop links, a first responders section and the made to order section.' },
+            { src: '/work/patent-earth-email/email-musicians.jpg', width: 784, height: 5495, title: 'Musicians', label: 'Full music gift guide email: Turn it up, four music patent prints, a guitar wall photo, the same patent three ways and sets for the whole band.' },
+            { src: '/work/patent-earth-email/email-dad.jpg', width: 784, height: 4878, title: 'Dad', label: 'Full dad gift guide email: For the dad who has everything, four prints for his wall, a camera print beside a real camera and the made to order section.' },
+            { src: '/work/patent-earth-email/email-trades.jpg', width: 706, height: 4342, title: 'The trades', label: 'Full trades gift guide email: For the one who works with their hands, four tool patents, blueprint prints with real tools and shop by trade links.' },
+          ] },
+        { moment: 'Goes quiet', flow: 'Sunset', status: 'built', trigger: 'No opens or clicks in 120 days.', steps: [
+          { when: 'Day 0', what: 'One more email?' },
+          { when: 'Day 7', what: 'Last call.' },
+          { when: 'Day 14', what: 'Removed from the list, which keeps Gmail trusting the sends' },
+        ], stats: [{ value: '5,270', label: 'profiles qualified when we built it' }] },
+      ] },
+    ],
+    note: 'Revenue per recipient covers orders Klaviyo attributes to an email. Orders placed with the popup code without opening an email are not included, so the welcome figure understates the flow.',
+    links: [{ label: 'visit Patent Earth', href: 'https://patentearth.com/' }],
   }),
   project({
     cardImage: '/work/cards/matchday-meta-ads.webp', cardAlt: 'MatchDay Meta Ads: $3.34 per install, with three of the ads we made.',
@@ -932,6 +1059,8 @@ export type WorkFilter = 'multi-channel' | 'brand' | 'content' | 'marketing' | '
 const workFilterOverrides: Record<string, WorkFilter> = {
   'matchday-meta-ads': 'marketing',
   'matchday-social': 'content',
+  'matchday-email': 'marketing',
+  'patent-earth-email': 'marketing',
   'matchday-local-seo': 'search',
   'hush-hush-tan-social': 'content',
   'hush-hush-tan-seasonal': 'marketing',

@@ -7,11 +7,12 @@ const items = projects.flatMap(project => [project.heroMedia, ...project.content
   if (module.type === 'mediaPair' || module.type === 'mediaGrid') return module.items
   return []
 })])
-const sources = [...new Set(items.flatMap(item => item.src ? [item.src] : []))]
+const journeyEmails = new Set(projects.flatMap(project => project.contentModules.flatMap(module => module.type === 'journey' ? module.stages.flatMap(stage => (stage.emails ?? []).map(email => email.src)) : [])))
+const sources = [...new Set([...items.flatMap(item => item.src ? [item.src] : []), ...journeyEmails])]
 for (const src of sources) {
   if (!src.startsWith('/work/') || src.includes('..')) throw new Error(`Expected a local portfolio image: ${src}`)
   const original = fileURLToPath(new URL(`../public${src}`, import.meta.url))
-  for (const width of [640, 960, 1440, 2400]) {
+  for (const width of journeyEmails.has(src) ? [640, 960] : [640, 960, 1440, 2400]) {
     const destination = original.replace(/\.[^.]+$/, `-${width}.webp`)
     await sharp(original).resize({ width }).webp({ quality: 82 }).toFile(destination)
   }

@@ -124,3 +124,55 @@
   .cs-stats { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px 16px; }
   .cs-hero[data-title-length='long'] .cs-hero__title { max-width: 16ch; }
 }
+
+/* Customer journey map */
+.cs-journey { width: 100%; max-width: var(--cs-media); margin-top: var(--cs-media-gap); text-align: left; }
+.cs-journey__track { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); gap: 8px; overflow-x: auto; padding: 4px 4px 12px; scrollbar-width: thin; }
+.cs-journey__track::before { content: ''; position: absolute; left: 40px; right: 40px; top: 25px; height: 2px; background: color-mix(in srgb, var(--cs-midnight) 22%, transparent); }
+.cs-journey__stop { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 0 8px 10px; border: 0; background: none; color: var(--cs-ink); text-align: left; cursor: pointer; border-radius: var(--cs-radius); transition: opacity var(--dur-fast) var(--ease-out); }
+.cs-journey__stop:not([aria-selected='true']) { opacity: .62; }
+.cs-journey__stop:hover { opacity: 1; }
+.cs-journey__stop:focus-visible { outline: 2px solid var(--cs-midnight); outline-offset: 2px; }
+.cs-journey__dot { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 2px solid var(--cs-midnight); background: var(--cs-periwinkle); font-size: var(--cs-small); font-variant-numeric: tabular-nums; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.cs-journey__stop[data-status='mapped'] .cs-journey__dot { border-style: dashed; }
+.cs-journey__stop[aria-selected='true'] .cs-journey__dot { background: var(--cs-midnight); color: var(--cs-periwinkle); transform: scale(1.08); }
+.cs-journey__moment { font-size: var(--cs-small); line-height: 1.3; color: var(--cs-ink-soft); }
+.cs-journey__flow { font-size: var(--cs-ui); line-height: 1.25; }
+.cs-journey__panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 16px; padding: clamp(24px, 4vw, 48px); border-radius: var(--cs-radius); background: var(--cs-midnight); color: var(--cs-periwinkle); }
+.cs-journey__panel[data-has-email='true'] { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); align-items: start; }
+.cs-journey__head { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.cs-journey__head h3 { font-family: var(--font-cenura), sans-serif; font-weight: 400; font-size: var(--cs-h2); line-height: 1.1; }
+.cs-journey__status { padding: 4px 12px; border: 1.5px solid currentColor; border-radius: 999px; font-size: var(--cs-small); }
+.cs-journey__status[data-status='live'] { background: var(--cs-periwinkle); color: var(--cs-midnight); border-color: var(--cs-periwinkle); }
+.cs-journey__status[data-status='mapped'] { border-style: dashed; }
+.cs-journey__trigger { margin-top: 20px; font-size: var(--cs-body); line-height: 1.5; }
+.cs-journey__trigger span, .cs-journey__when { display: block; font-size: var(--cs-small); letter-spacing: .04em; text-transform: uppercase; opacity: .7; }
+.cs-journey__steps { position: relative; margin-top: 24px; padding-left: 20px; list-style: none; }
+.cs-journey__steps::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 1.5px; background: color-mix(in srgb, var(--cs-periwinkle) 40%, transparent); }
+.cs-journey__steps li { position: relative; padding: 6px 0; }
+.cs-journey__steps li + li { margin-top: 8px; }
+.cs-journey__steps li::before { content: ''; position: absolute; left: -20px; top: 12px; width: 10px; height: 10px; border-radius: 999px; background: var(--cs-periwinkle); }
+.cs-journey__what { display: block; margin-top: 2px; font-size: var(--cs-body); line-height: 1.4; }
+.cs-journey__stats { display: flex; flex-wrap: wrap; gap: 24px 40px; margin-top: 28px; padding-top: 24px; border-top: 1px solid color-mix(in srgb, var(--cs-periwinkle) 30%, transparent); }
+.cs-journey__value { display: block; font-family: var(--font-cenura), sans-serif; font-size: clamp(2rem, 1.6rem + 1.5vw, 3rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.cs-journey__label { display: block; max-width: 20ch; margin-top: 8px; font-size: var(--cs-small); line-height: 1.4; opacity: .8; }
+.cs-journey__nav { display: flex; align-items: center; gap: 12px; margin-top: 32px; font-size: var(--cs-small); }
+.cs-journey__nav button { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; border: 1.5px solid currentColor; background: none; color: inherit; cursor: pointer; font-size: 1.1rem; }
+.cs-journey__nav button:hover { background: var(--cs-periwinkle); color: var(--cs-midnight); }
+.cs-journey__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.cs-journey__chips button { min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid currentColor; background: none; color: inherit; font-size: var(--cs-small); cursor: pointer; }
+.cs-journey__chips button[aria-pressed='true'] { background: var(--cs-periwinkle); color: var(--cs-midnight); border-color: var(--cs-periwinkle); }
+.cs-journey__inbox { overflow: hidden; border-radius: 14px; background: #fff; box-shadow: 0 24px 60px rgba(0, 0, 0, .35); }
+.cs-journey__bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #eceff4; color: #39424e; font-size: .8125rem; }
+.cs-journey__bar span { width: 10px; height: 10px; border-radius: 999px; background: #c7ccd4; }
+.cs-journey__bar em { margin-left: 8px; font-style: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.cs-journey__viewer { height: min(70svh, 640px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.cs-journey__viewer:focus-visible { outline: 2px solid var(--cs-periwinkle); outline-offset: -2px; }
+.cs-journey__viewer img { display: block; width: 100%; height: auto; }
+.cs-journey__hint { margin-top: 10px; font-size: var(--cs-small); text-align: center; opacity: .75; }
+@media (max-width: 900px) {
+  .cs-journey__panel[data-has-email='true'] { grid-template-columns: minmax(0, 1fr); }
+  .cs-journey__track { grid-auto-columns: 132px; }
+  .cs-journey__viewer { height: min(68svh, 560px); }
+}
+@media (prefers-reduced-motion: reduce) { .cs-journey__dot, .cs-journey__stop { transition: none; } }

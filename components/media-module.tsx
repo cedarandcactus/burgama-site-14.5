@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import type { ContentModule, MediaItem, ProjectStat } from '@/lib/projects'
 import { ParallaxImage } from '@/components/parallax-image'
 import { RevealHeading } from '@/components/reveal-heading'
+import { JourneyMap } from '@/components/journey-map'
 
 const sentenceCase = (value: string) => value ? `${value[0].toUpperCase()}${value.slice(1)}` : value
 export const isWebsiteMedia = (item: MediaItem) => /\/web-/.test(item.src ?? '') || /\b(website|homepage|online store|site)\b/i.test(item.label)
@@ -77,7 +78,8 @@ function withCaption(item: MediaItem, slug: string): MediaItem {
 export function ProjectModules({ modules, slug }: { modules: ContentModule[]; slug: string }) {
   return <>{groupSections(modules).map(({ module, items }, index) => <section className="cs-section" data-case-module={module?.type ?? 'media'} key={index}>
     {module && 'title' in module && module.title && <RevealHeading className="cs-section__title font-serif" text={sentenceCase(module.title)} />}
-    {module && (module.type === 'text' || module.type === 'mediaSplit') && <div className="cs-section__body" data-cs-reveal="body">{module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
+    {module && (module.type === 'text' || module.type === 'mediaSplit' || (module.type === 'journey' && module.body)) && <div className="cs-section__body" data-cs-reveal="body">{(module.body ?? []).map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
+    {module?.type === 'journey' && <JourneyMap stages={module.stages} />}
     {module?.type === 'quote' && <figure className="cs-quote" data-cs-reveal="body"><blockquote>{module.body}</blockquote>{module.name && <figcaption>{module.name}{module.role ? `, ${module.role}` : ''}</figcaption>}</figure>}
     {module?.type === 'video' && <>
       {module.body && <div className="cs-section__body" data-cs-reveal="body">{module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
