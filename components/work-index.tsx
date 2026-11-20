@@ -9,7 +9,7 @@ type Entry = Pick<Project, 'id' | 'slug' | 'title' | 'disciplines' | 'categories
 
 function getCategories(project: Entry) {
   const categories = project.categories?.filter(category => category.trim())
-  return [...new Set((categories?.length ? categories : project.disciplines).map(category => {
+  return [...new Set((project.disciplines?.length ? project.disciplines : categories ?? []).map(category => {
     const key = category.trim().toLowerCase()
     return key === 'growth' ? 'search' : key
   }).filter(Boolean))]

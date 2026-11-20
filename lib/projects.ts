@@ -19,7 +19,7 @@ export type ContentModule =
   | { type: 'mediaGrid'; items: MediaItem[] }
   | { type: 'quote'; body: string; name?: string; role?: string }
   | { type: 'process'; title: string; steps: { title: string; body: string }[] }
-  | { type: 'video'; title?: string; body?: string[]; vimeoId: string; label: string; aspect?: number }
+  | { type: 'video'; title?: string; body?: string[]; vimeoId?: string; driveId?: string; instagramId?: string; label: string; aspect?: number }
 
 export type PortfolioCollection = 'featured' | 'case-study' | 'archive'
 export type Project = {
@@ -106,6 +106,9 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'smoothsailing/web-smoothsailing.jpg': [1272, 716],
   'turant/web-turant.jpg': [1280, 720],
   'wurqly/web-wurqly.jpg': [1280, 720],
+  'founder-films/wagner-wealth.jpg': [1237, 696],
+  'founder-films/hiking-pony.jpg': [1237, 696],
+  'founder-films/cold-cycle.jpg': [376, 629],
   'wurqly/guide-cover.jpg': [2084, 1303],
   'wurqly/guide-built-for-work.jpg': [2084, 1303],
   'wurqly/guide-benefits.jpg': [2084, 1303],
@@ -191,7 +194,7 @@ export const projects: Project[] = [
       text('build a quieter digital presence.', 'We carried the same visual language into a website that organizes service information and leads toward a consultation. We also developed a founder film as a companion to the practice’s story.'),
       media('wagner-wealth', 'web-wagner.jpg', 'Website presentation for the advisory practice.'),
     ],
-    links: [{ label: 'visit the website', href: 'https://www.wagnerwealthtx.com/' }],
+    links: [{ label: 'visit the website', href: 'https://www.wagnerwealthtx.com/' }, { label: 'watch the founder film', href: '/work/wagner-founder-film' }],
     note: 'Website and identity work are presented without investment performance claims.',
   }),
   project({
@@ -553,6 +556,43 @@ export const projects: Project[] = [
       text('built to be found.', 'We wrote new search titles and meta descriptions for every flavor page, each naming the line, the flavor and what sets it apart, such as caffeine or no caffeine. We shipped everything as numbered theme versions, each previewed before it went live, so the store never went down for a redesign.'),
     ],
     links: [{ label: 'visit avrolife.com', href: 'https://avrolife.com/' }],
+  }),
+  project({
+    cardImage: '/work/cards/wagner-founder-film.webp', cardAlt: 'Still from the Wagner Wealth Management founder film.',
+    slug: 'wagner-founder-film', title: 'Wagner Wealth founder film', client: 'Wagner Wealth Management', parentSlug: 'wagner-wealth', collection: 'case-study',
+    tagline: 'A personal practice, explained by the person behind it.',
+    summary: 'A founder film for Wagner Wealth Management, finished with the identity we built for the practice.',
+    disciplines: ['Production'], services: ['Founder film', 'Interview direction', 'Editing'],
+    heroMedia: image('founder-films', 'wagner-wealth.jpg', 'Still from the Wagner Wealth Management founder film.'),
+    contentModules: [
+      { type: 'video', title: 'in his own words.', body: ['Wealth management runs on trust, and trust starts with a person. We put the founder in front of the camera, let him explain the practice in his own words, and finished the film with the Wagner monogram and colors from the identity we designed.'], driveId: '1nZrkLPwR09TKEjQ07b20RwFeM-ltP-EO', label: 'Wagner Wealth Management founder film' },
+      text('one story, every touchpoint.', 'The film sits alongside the identity and website we made for the practice, so a prospective client gets the same voice whether they are reading the site or watching the founder.'),
+    ],
+    links: [{ label: 'see the Wagner identity and website', href: '/work/wagner-wealth' }],
+  }),
+  project({
+    cardImage: '/work/cards/hiking-pony-founder-film.webp', cardAlt: 'Still from the Hiking Pony founder film, founder Nicole Pinedo waving hello.',
+    slug: 'hiking-pony-founder-film', title: 'Hiking Pony founder film', client: 'Hiking Pony', parentSlug: 'hiking-pony', collection: 'case-study',
+    tagline: 'Meet the founder behind the coffee bombs.',
+    summary: 'A founder film for Hiking Pony’s coffee bombs launch, with founder Nicole Pinedo telling the story behind the product.',
+    disciplines: ['Production'], services: ['Founder film', 'Interview direction', 'Editing'], period: 'June 2026',
+    heroMedia: image('founder-films', 'hiking-pony.jpg', 'Hiking Pony founder Nicole Pinedo waving hello in front of a stone wall.'),
+    contentModules: [
+      { type: 'video', title: 'a founder, not a spokesperson.', body: ['For the coffee bombs launch we put founder Nicole Pinedo in front of the camera and let her introduce the product in her own voice: warm, quick and a little playful, the way she talks about it in person.'], driveId: '1uniEC6IBE0KvPS2Mz22UJGW7LKNKmuTR', label: 'Hiking Pony coffee bombs founder film' },
+    ],
+    links: [{ label: 'see the Hiking Pony packaging', href: '/work/hiking-pony' }],
+  }),
+  project({
+    cardImage: '/work/cards/cold-cycle-founder-video.webp', cardAlt: 'Still from the Cold Cycle Coffee founder video featuring co-founder Monika.',
+    slug: 'cold-cycle-founder-video', title: 'Cold Cycle Coffee founder video', client: 'Cold Cycle Coffee', collection: 'case-study',
+    tagline: 'Meet Monika, the co-founder behind the brand.',
+    summary: 'A vertical founder video for Cold Cycle Coffee introducing co-founder and CMO Monika.',
+    disciplines: ['Production', 'Content'], services: ['Founder video', 'Social video'],
+    heroMedia: image('founder-films', 'cold-cycle.jpg', 'Cold Cycle co-founder Monika in the founder video.', 'tall'),
+    contentModules: [
+      { type: 'video', title: 'built for the feed.', body: ['Cold Cycle’s co-founders met at UT. We put co-founder and CMO Monika in front of the camera, cut her story for vertical video and added bold on-screen captions, so the founder and the product land together in the first few seconds.'], instagramId: 'DdW5cqvohWh', label: 'Cold Cycle Coffee founder video on Instagram', aspect: 9 / 16 },
+    ],
+    links: [{ label: 'watch on Instagram', href: 'https://www.instagram.com/reel/DdW5cqvohWh/' }],
   }),
   project({
     cardImage: '/work/cards/go2bites-packaging.webp', cardAlt: 'The Cinnamon Donut Hole and Oh Ghee Dates! family packs.',

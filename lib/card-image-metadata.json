@@ -146,5 +146,17 @@
   "/research/cards/claim-your-business-in-chatgpt.webp": {
     "width": 461,
     "height": 397
+  },
+  "/work/cards/wagner-founder-film.webp": {
+    "width": 1200,
+    "height": 675
+  },
+  "/work/cards/hiking-pony-founder-film.webp": {
+    "width": 1200,
+    "height": 675
+  },
+  "/work/cards/cold-cycle-founder-video.webp": {
+    "width": 376,
+    "height": 629
   }
 }
