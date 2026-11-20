@@ -28,8 +28,7 @@ const logos: ClientLogo[] = [
   { file: '10-pillar', name: '10 Pillar Productions', shape: 'illustration', href: 'https://www.10pillarproductions.com/' },
   { file: 'bluebird', name: 'Bluebird Organizing', shape: 'wordmark', href: 'https://www.bluebirdorganizing.net/' },
   { file: 'cloon', name: 'Cloon', shape: 'symbol', href: 'https://cloon.consulting/' },
-  { file: 'livelihood', name: 'Livelihood', shape: 'wordmark' },
-  { file: 'logo-02', name: 'Zeytin', shape: 'script' },
+  { file: 'livelihood', name: 'Livelihood', shape: 'wordmark', href: 'https://livelihood.eco/' },
 ]
 
 function logoPath(width: number, height: number) {
