@@ -76,8 +76,8 @@
     "height": 1024
   },
   "/work/cards/matchday-social.webp": {
-    "width": 609,
-    "height": 1200
+    "width": 413,
+    "height": 533
   },
   "/work/cards/matchday-local-seo.webp": {
     "width": 500,
@@ -122,5 +122,17 @@
   "/research/cards/claim-your-business-in-chatgpt.webp": {
     "width": 461,
     "height": 397
+  },
+  "/work/cards/matchday-meta-ads.webp": {
+    "width": 675,
+    "height": 1200
+  },
+  "/work/cards/hush-hush-tan-seasonal.webp": {
+    "width": 1200,
+    "height": 846
+  },
+  "/work/cards/bluebird-site-speed.webp": {
+    "width": 1200,
+    "height": 509
   }
 }
