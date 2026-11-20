@@ -87,6 +87,8 @@
 .cs-media[data-layout='trio'] { grid-template-columns: repeat(3,minmax(0,1fr)); }
 .cs-media:is([data-layout='pair'],[data-layout='trio']) .cs-frame { --media-height-limit: min(54svh, 460px); }
 .cs-panel { width: 100%; background: transparent; }
+.cs-video { position: relative; max-width: 960px; aspect-ratio: var(--video-aspect); border-radius: var(--cs-radius); overflow: hidden; background: #000; }
+.cs-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .cs .cs-figure figcaption { margin-top: 12px; text-align: center; font-size: var(--cs-small); line-height: 1.4; color: var(--cs-ink-soft); }
 .cs-results { width: 100%; max-width: var(--cs-media); }
 .cs-stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 48px 32px; text-align: center; }

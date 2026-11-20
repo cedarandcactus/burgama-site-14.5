@@ -18,9 +18,12 @@ const sources = {
   'hush-hush-tan-seasonal': '/work/hush-hush-tan-seasonal/email-header.jpg',
   'matchday-social': '/work/matchday-social/okc-launch.jpg',
   'avro-website': '/work/avro-website/shop-all.jpg',
+  'go2bites-packaging': '/work/go2bites/family-cinnamon-front.jpg',
+  'go2bites-photography': '/work/go2bites/ingredient-pumpkin-spice.jpg',
+  'go2bites-film-website': '/work/go2bites/film-go2bites.jpg',
 }
 // Designed cards (made by hand outside this script). Kept as is.
-const designed = new Set(['matchday', 'matchday-meta-ads', 'matchday-social', 'matchday-local-seo'])
+const designed = new Set(['wurqly', 'matchday', 'matchday-meta-ads', 'matchday-social', 'matchday-local-seo'])
 const existing = JSON.parse(await readFile('lib/card-image-metadata.json', 'utf8'))
 const dimensions = {}
 const escape = text => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
