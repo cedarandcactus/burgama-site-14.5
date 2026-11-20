@@ -4,20 +4,30 @@ import { useEffect, useRef } from 'react'
 import { homeCurvePath } from '@/lib/home-curve'
 import styles from './client-ticker.module.css'
 
-const logos = [
-  { file: 'harvest', name: 'Harvest', shape: 'wordmark' },
-  { file: 'wagner', name: 'Wagner Wealth Management', shape: 'symbol' },
-  { file: 'sidecar', name: 'Sidecar Spirits', shape: 'script' },
-  { file: 'avro', name: 'AVRO', shape: 'wordmark' },
-  { file: 'go2bites', name: 'Go2Bites', shape: 'symbol' },
-  { file: 'cellinkey', name: 'Cellinkey', shape: 'wordmark' },
-  { file: 'wurqly-cobalt', format: 'svg', name: 'Wurqly', shape: 'wordmark' },
-  { file: 'clement', name: 'Clement Senior Solutions', shape: 'wordmark' },
-  { file: 'logo-21', name: 'Hush Hush Tan', shape: 'symbol' },
-  { file: 'matchday', name: 'MatchDay', shape: 'wordmark' },
-  { file: 'hiking-pony', name: 'Hiking Pony Coffee Co.', shape: 'illustration' },
-  { file: 'smoothsailing', name: 'Smoothsailing Sustainability', shape: 'wordmark' },
-  { file: 'cloon', name: 'Cloon', shape: 'symbol' },
+type ClientLogo = { file: string; name: string; shape: 'wordmark' | 'symbol' | 'script' | 'illustration'; format?: 'svg' | 'webp'; href?: string }
+
+const logos: ClientLogo[] = [
+  { file: 'harvest', name: 'Harvest', shape: 'wordmark', href: 'https://www.dateharvest.com/' },
+  { file: 'wagner', name: 'Wagner Wealth Management', shape: 'symbol', href: 'https://www.wagnerwealthtx.com/' },
+  { file: 'avro', name: 'AVRO', shape: 'wordmark', href: 'https://avrolife.com/' },
+  { file: 'cold-cycle', name: 'Cold Cycle Coffee', shape: 'wordmark', href: 'https://www.coldcyclecoffee.com/' },
+  { file: 'sidecar', name: 'Sidecar Spirits', shape: 'script', href: 'https://sidecarspiritsatx.com/' },
+  { file: 'hush-hush-tan', name: 'Hush Hush Tan', shape: 'wordmark', href: 'https://hushhushtan.com/' },
+  { file: 'go2bites', name: 'Go2Bites', shape: 'symbol', href: 'https://go2bites.com/' },
+  { file: 'reclaim', name: 'Reclaim Physical Therapy', shape: 'wordmark', href: 'https://www.reclaimphysicaltherapy.com/' },
+  { file: 'cellinkey', name: 'Cellinkey', shape: 'wordmark', href: 'https://www.cellinkeyskincare.com/' },
+  { file: 'wurqly-cobalt', format: 'svg', name: 'Wurqly', shape: 'wordmark', href: 'https://wurqly.com/' },
+  { file: 'trianon', name: 'Trianon Coffee', shape: 'symbol', href: 'https://www.trianoncoffee.com/' },
+  { file: 'clement', name: 'Clement Senior Solutions', shape: 'wordmark', href: 'https://www.clementseniorsolutions.com/' },
+  { file: 'matchday', name: 'MatchDay', shape: 'wordmark', href: 'https://www.playmatchday.com/' },
+  { file: 'americas-contracting', name: 'Americas Contracting Solutions', shape: 'wordmark', href: 'https://www.americascontractingsolutions.com/' },
+  { file: 'hiking-pony', name: 'Hiking Pony Coffee Co.', shape: 'illustration', href: 'https://hikingpony.com/' },
+  { file: 'colorffles', name: 'Colorffles', shape: 'wordmark', href: 'https://www.colorffles.com/' },
+  { file: 'patent-earth', name: 'Patent Earth', shape: 'wordmark', href: 'https://www.patentearth.com/' },
+  { file: 'smoothsailing', name: 'Smoothsailing Sustainability', shape: 'wordmark', href: 'https://smoothsailingsustainability.com/' },
+  { file: '10-pillar', name: '10 Pillar Productions', shape: 'illustration', href: 'https://www.10pillarproductions.com/' },
+  { file: 'bluebird', name: 'Bluebird Organizing', shape: 'wordmark', href: 'https://www.bluebirdorganizing.net/' },
+  { file: 'cloon', name: 'Cloon', shape: 'symbol', href: 'https://cloon.consulting/' },
   { file: 'livelihood', name: 'Livelihood', shape: 'wordmark' },
   { file: 'logo-02', name: 'Zeytin', shape: 'script' },
 ]
@@ -199,12 +209,18 @@ export function ClientTicker() {
         <ul ref={groupRef} className={styles.group}>
           {logos.map((logo) => (
             <li className={`${styles.logo} ${styles[logo.shape]}`} key={logo.file}>
-              <span
-                className={styles.artwork}
-                role="img"
-                aria-label={logo.name}
-                style={{ maskImage: `url('/client-logos/${logo.file}.${logo.format ?? 'webp'}')` }}
-              />
+              {logo.href ? (
+                <a className={styles.link} href={logo.href} target="_blank" rel="noopener noreferrer" aria-label={`${logo.name} website (opens in a new tab)`}>
+                  <span className={styles.artwork} aria-hidden="true" style={{ maskImage: `url('/client-logos/${logo.file}.${logo.format ?? 'webp'}')` }} />
+                </a>
+              ) : (
+                <span
+                  className={styles.artwork}
+                  role="img"
+                  aria-label={logo.name}
+                  style={{ maskImage: `url('/client-logos/${logo.file}.${logo.format ?? 'webp'}')` }}
+                />
+              )}
             </li>
           ))}
         </ul>
