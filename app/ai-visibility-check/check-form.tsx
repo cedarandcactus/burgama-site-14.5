@@ -5,12 +5,12 @@ import { useRef, useState, type FormEvent } from 'react'
 import { measureLead } from '@/components/openai-pixel'
 import { adMeasurementOptedOut, getCookieConsent } from '@/lib/cookie-consent'
 import {
-  leadLimits, thanksPath, trackingKeys, turnaround, validateLead,
+  intentOptions, leadLimits, thanksPath, trackingKeys, turnaround, validateLead,
   type LeadDraft, type LeadErrors, type Tracking,
 } from '@/lib/ai-visibility'
 import styles from './page.module.css'
 
-const fields: { key: keyof LeadDraft; label: string; type: string; autoComplete: string; placeholder?: string; inputMode?: 'url' | 'email' }[] = [
+const fields: { key: 'website' | 'email' | 'name'; label: string; type: string; autoComplete: string; placeholder?: string; inputMode?: 'url' | 'email' }[] = [
   { key: 'website', label: 'Your business website', type: 'text', autoComplete: 'url', placeholder: 'yourbusiness.com', inputMode: 'url' },
   { key: 'email', label: 'Email for the report', type: 'email', autoComplete: 'email', placeholder: 'you@yourbusiness.com', inputMode: 'email' },
   { key: 'name', label: 'First name', type: 'text', autoComplete: 'given-name' },
@@ -35,7 +35,7 @@ function newEventId() {
 
 export function CheckForm() {
   const router = useRouter()
-  const [draft, setDraft] = useState<LeadDraft>({ website: '', email: '', name: '' })
+  const [draft, setDraft] = useState<LeadDraft>({ website: '', email: '', name: '', intent: '' })
   const [errors, setErrors] = useState<LeadErrors>({})
   const [state, setState] = useState<'idle' | 'sending' | 'failed'>('idle')
   const honeypot = useRef<HTMLInputElement>(null)
@@ -119,6 +119,27 @@ export function CheckForm() {
             </div>
           )
         })}
+        <fieldset className={styles.choice} aria-invalid={errors.intent ? true : undefined} aria-describedby={errors.intent ? 'check-intent-error' : undefined}>
+          <legend>Do you want help fixing what the report finds?</legend>
+          <div className={styles.choiceOptions}>
+            {intentOptions.map(option => (
+              <label key={option.value} className={styles.choiceOption}>
+                <input
+                  type="radio"
+                  name="intent"
+                  value={option.value}
+                  checked={draft.intent === option.value}
+                  onChange={() => {
+                    setDraft(current => ({ ...current, intent: option.value }))
+                    if (errors.intent) setErrors(current => ({ ...current, intent: undefined }))
+                  }}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+          {errors.intent && <p id="check-intent-error" className={styles.error}>{errors.intent}</p>}
+        </fieldset>
       </div>
       {/* Honeypot: hidden from people and assistive technology. */}
       <div aria-hidden="true" className={styles.honeypot}>

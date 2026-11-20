@@ -140,6 +140,17 @@
 .field input:focus-visible { box-shadow: 0 0 0 2px var(--palette-navy); }
 .field input[aria-invalid='true'] { border-color: var(--error); box-shadow: 0 0 0 1px var(--error); }
 
+.choice { display: flex; flex-direction: column; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.choice legend { margin-bottom: 8px; padding: 0; font-size: 15px; font-weight: 600; }
+.choiceOptions { display: grid; gap: 8px; }
+.choiceOption { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 10px 14px; border: 1.5px solid var(--palette-navy); border-radius: 12px; background: var(--palette-soft-white); font-size: 16px; cursor: pointer; transition: background 160ms ease, color 160ms ease; }
+.choiceOption input { flex: none; appearance: none; -webkit-appearance: none; display: grid; place-items: center; width: 20px; height: 20px; margin: 0; border: 1.5px solid currentColor; border-radius: 999px; background: transparent; }
+.choiceOption input::after { content: ''; width: 10px; height: 10px; border-radius: 999px; background: currentColor; transform: scale(0); transition: transform 160ms ease; }
+.choiceOption input:checked::after { transform: scale(1); }
+.choiceOption:has(input:checked) { background: var(--palette-navy); color: var(--palette-soft-white); }
+.choiceOption:has(input:focus-visible) { box-shadow: 0 0 0 2px var(--palette-navy); }
+.choice[aria-invalid='true'] .choiceOption { border-color: var(--error); }
+
 .error { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--error); }
 
 .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }

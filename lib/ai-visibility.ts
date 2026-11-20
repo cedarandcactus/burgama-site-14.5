@@ -22,7 +22,7 @@ export const checkFaq = [
   {
     id: 'what-do-you-need-from-me',
     question: 'What do you need from me?',
-    answer: 'Your website, your email and your name. We find your business name, category and city from your site, so that is enough to run the check. We do not need logins or access to any of your accounts.',
+    answer: 'Your website, your email, your name and one quick question about whether you want help with what we find. We read your business name, category and city from your site, so that is enough to run the check. We do not need logins or access to any of your accounts.',
   },
   {
     id: 'is-it-really-free',
@@ -58,7 +58,7 @@ export const reportContents = [
 ] as const
 
 export const steps = [
-  ['Tell us where to look', 'Your website, email and name. It takes about 20 seconds.'],
+  ['Tell us where to look', 'Your website, email, name and one quick question. It takes about 30 seconds.'],
   ['We run the check', 'We ask ChatGPT and Google the questions your customers ask, in your city.'],
   [`Your report in ${turnaround}`, 'Sent to your inbox, with an optional call to walk through it.'],
 ] as const
@@ -78,18 +78,28 @@ export const results = [
   { client: 'MatchDay', href: '/work/matchday', figure: '$6.76', label: 'per app signup', detail: 'Pickup soccer app, Meta ads in October 2026: 855 signups, with 49% of installs completing signup.' },
 ] as const
 
-/* Three fields only: every extra field costs submissions. We read the business
-   name, category and city from the website when we run the check. */
+/* Three text fields plus one required qualifying question. We read the
+   business name, category and city from the website when we run the check.
+   The intent answer sorts follow-up: "yes" gets a call first. */
+export const intentOptions = [
+  { value: 'yes', label: 'Yes, I want help fixing it', tag: 'Wants help' },
+  { value: 'maybe', label: 'Maybe, depending on what you find', tag: 'Maybe' },
+  { value: 'curious', label: 'No, just curious', tag: 'Just curious' },
+] as const
+export type Intent = typeof intentOptions[number]['value']
+export const intentTag = (value: string) => intentOptions.find(option => option.value === value)?.tag ?? 'Not answered'
+
 export type LeadDraft = {
   website: string
   email: string
   name: string
+  intent: Intent | ''
 }
 
 export type LeadErrors = Partial<Record<keyof LeadDraft, string>>
 
 export const leadLimits: Record<keyof LeadDraft, number> = {
-  website: 300, email: 254, name: 120,
+  website: 300, email: 254, name: 120, intent: 10,
 }
 
 export function validateLead(draft: LeadDraft): LeadErrors {
@@ -97,6 +107,7 @@ export function validateLead(draft: LeadDraft): LeadErrors {
   if (!normalizeSite(draft.website)) errors.website = 'Enter your website, such as example.com.'
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errors.email = 'Enter a valid email address.'
   if (!draft.name.trim()) errors.name = 'Enter your name.'
+  if (!intentOptions.some(option => option.value === draft.intent)) errors.intent = 'Choose one answer.'
   return errors
 }
 
