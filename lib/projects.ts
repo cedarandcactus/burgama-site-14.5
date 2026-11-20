@@ -105,6 +105,11 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'matchday-social/profile-now.jpg': [800, 730],
   'matchday-social/wemby-katy.jpg': [413, 679],
   'matchday-social/okc-launch.jpg': [413, 533],
+  'avro-website/before-home.jpg': [1556, 598],
+  'avro-website/after-home.jpg': [1556, 598],
+  'avro-website/before-pdp.jpg': [1556, 598],
+  'avro-website/after-pdp.jpg': [1556, 598],
+  'avro-website/shop-all.jpg': [1556, 640],
 }
 
 type Input = Omit<Project, 'id' | 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'> & Partial<Pick<Project, 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'>>
@@ -458,6 +463,25 @@ export const projects: Project[] = [
       text('keep the result in proportion.', 'The code ran across email, ads, the website, social and texts, so the sales figures describe the promotion as a whole, not any single channel. Of the $10,470 in package sales, 31 packages used the code.'),
     ],
     links: [{ label: 'watch the Austin promo video', href: 'https://drive.google.com/file/d/1cptpnBYDXo7_735xHGV26m6a4iwimb2s/view' }],
+  }),
+  project({
+    cardImage: '/work/cards/avro-website.webp', cardAlt: 'The new AVRO shop page with Calm, Focus and Energy tubes.',
+    slug: 'avro-website', title: 'AVRO website', client: 'AVRO', parentSlug: 'avro', collection: 'case-study',
+    tagline: 'A store that explains the product before it asks for the sale.',
+    summary: 'A rebuilt Shopify store for a GABA drink mix brand: a new homepage, clearer product pages for three lines and six flavors, subscriptions up front, and search copy written for every product.',
+    disciplines: ['Web', 'Growth'], services: ['Shopify development', 'Conversion design', 'SEO'], period: 'July to November 2026',
+    heroMedia: image('avro-website', 'shop-all.jpg', 'The new AVRO shop page: choose your formula, with one button each for Calm, Focus and Energy.'),
+    contentModules: [
+      text('the starting point.', 'AVRO’s old store led with lifestyle photography and a menu of Shop, Our Story, PharmaGABA and Contact. Shoppers had to work out on their own what the product was, which line fit them and why the ingredient mattered. Product pages were a single block of label copy, a flavor dropdown and a price.'),
+      media('avro-website', 'before-home.jpg', 'Before: the previous AVRO homepage, a full-bleed surf photo with the logo and a four-item menu.'),
+      media('avro-website', 'after-home.jpg', 'After: the new homepage states the promise in the first line and points to Shop AVRO and The Science.'),
+      text('say it in the first screen.', 'We rebuilt the store on a new Shopify theme and built the homepage around one line, “Start Calm. Stay Ready.” The shop page asks one question, which formula fits your moment, with a button for each line. The navigation now follows the questions a new customer asks: Shop, Subscribe, Why AVRO, Science and FAQ. A clinician trust badge sits right under the headline, and dedicated pages speak to golf, work and esports, the moments where the product fits best.'),
+      media('avro-website', 'before-pdp.jpg', 'Before: the AVRO Calm product page on the old site, with label copy, a flavor dropdown and a single price.'),
+      media('avro-website', 'after-pdp.jpg', 'After: the AVRO Calm product page on the new site, with a one-line benefit, review rating, clinician panel, flavor buttons and subscribe-and-save shown first.'),
+      text('product pages that sell.', 'Each product page now opens with a one-line benefit, the star rating on the main image and a clinician panel. Flavors are buttons instead of a dropdown, and subscribe and save sits above the one-time price, so the recurring option is the default choice. The same layout runs across Calm, Focus and Energy and all six flavors, with copy kept to structure and function language that suits a dietary supplement.'),
+      text('built to be found.', 'We wrote new search titles and meta descriptions for every flavor page, each naming the line, the flavor and what sets it apart, such as caffeine or no caffeine. We shipped everything as numbered theme versions, each previewed before it went live, so the store never went down for a redesign.'),
+    ],
+    links: [{ label: 'visit avrolife.com', href: 'https://avrolife.com/' }],
   }),
   project({
     cardImage: '/work/cards/matchday-local-seo.webp', cardAlt: 'MatchDay search, the existing MatchDay logo.',

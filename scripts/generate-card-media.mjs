@@ -17,6 +17,7 @@ const sources = {
   'matchday-meta-ads': '/work/matchday-meta-ads/app-promo.jpg',
   'hush-hush-tan-seasonal': '/work/hush-hush-tan-seasonal/email-header.jpg',
   'matchday-social': '/work/matchday-social/okc-launch.jpg',
+  'avro-website': '/work/avro-website/shop-all.jpg',
 }
 const dimensions = {}
 const escape = text => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
