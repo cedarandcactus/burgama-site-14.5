@@ -3,16 +3,12 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import Link from '@/components/transition-link'
-import type { Project } from '@/lib/projects'
+import { getWorkFilter, type Project } from '@/lib/projects'
 
-type Entry = Pick<Project, 'id' | 'slug' | 'title' | 'disciplines' | 'categories'> & { year?: string; media?: Project['heroMedia'][] }
+type Entry = Pick<Project, 'id' | 'slug' | 'title' | 'disciplines' | 'categories' | 'parentSlug'> & { year?: string; media?: Project['heroMedia'][] }
 
 function getCategories(project: Entry) {
-  const categories = project.categories?.filter(category => category.trim())
-  return [...new Set((categories?.length ? categories : project.disciplines).map(category => {
-    const key = category.trim().toLowerCase()
-    return key === 'growth' ? 'search' : key
-  }).filter(Boolean))]
+  return [getWorkFilter(project) as string]
 }
 
 export function WorkIndex({ projects }: { projects: Entry[] }) {
@@ -22,7 +18,7 @@ export function WorkIndex({ projects }: { projects: Entry[] }) {
   const libraryRef = useRef<HTMLDivElement>(null)
   const previousHeight = useRef<number | null>(null)
   const entries = projects.map(project => ({ project, categories: getCategories(project) }))
-  const categories = [...new Set(entries.flatMap(entry => entry.categories))].sort((a, b) => a.localeCompare(b, 'en'))
+  const categories = [...new Set(entries.flatMap(entry => entry.categories))].sort((a, b) => a === 'multi-channel' ? -1 : b === 'multi-channel' ? 1 : a.localeCompare(b, 'en'))
   const activeCategory = category && categories.includes(category) ? category : null
   const visible = entries.filter(entry => activeCategory === null || entry.categories.includes(activeCategory))
 

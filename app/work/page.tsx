@@ -8,7 +8,7 @@ import { WorkIndex } from '@/components/work-index'
 import { WorkShowcase } from '@/components/work-showcase'
 import { CircularArrowIcon } from '@/components/circular-arrow-icon'
 import { Reveal } from '@/components/reveal'
-import { featuredProjects, getPublishedProjects } from '@/lib/projects'
+import { featuredProjects, getPortfolioOrder, getPublishedProjects } from '@/lib/projects'
 
 export const metadata: Metadata = {
   title: 'Selected Work — Branding, Web & Campaigns — Burgama',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function WorkPage() {
   const studies = getPublishedProjects('case-study')
-  const archive = getPublishedProjects('archive')
+  const everything = getPortfolioOrder()
 
   return (
     <div className="studio-page">
@@ -60,8 +60,8 @@ export default function WorkPage() {
         </section>
         <section id="archive" className="studio-band" data-surface="white" data-nav-surface="frost" aria-labelledby="archive-title">
           <div className="studio-width">
-            <h2 id="archive-title" className="studio-heading">The wider archive.</h2>
-            <WorkIndex projects={archive} />
+            <h2 id="archive-title" className="studio-heading">Everything, by discipline.</h2>
+            <WorkIndex projects={everything} />
           </div>
           <SectionRise surface="powder-deep" direction="left" />
         </section>

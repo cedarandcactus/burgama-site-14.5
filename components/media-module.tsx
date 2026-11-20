@@ -81,8 +81,8 @@ export function ProjectModules({ modules, slug }: { modules: ContentModule[]; sl
     {module?.type === 'quote' && <figure className="cs-quote" data-cs-reveal="body"><blockquote>{module.body}</blockquote>{module.name && <figcaption>{module.name}{module.role ? `, ${module.role}` : ''}</figcaption>}</figure>}
     {module?.type === 'video' && <>
       {module.body && <div className="cs-section__body" data-cs-reveal="body">{module.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}
-      <div className="cs-media cs-video" data-cs-reveal="media" style={{ '--video-aspect': module.aspect ?? 16 / 9 } as CSSProperties}>
-        <iframe src={`https://player.vimeo.com/video/${module.vimeoId}?dnt=1&title=0&byline=0&portrait=0`} title={module.label} loading="lazy" allow="fullscreen; picture-in-picture" allowFullScreen />
+      <div className="cs-media cs-video" data-orientation={(module.aspect ?? 16 / 9) < 1 ? 'portrait' : 'landscape'} data-cs-reveal="media" style={{ '--video-aspect': module.aspect ?? 16 / 9 } as CSSProperties}>
+        <iframe src={module.vimeoId ? `https://player.vimeo.com/video/${module.vimeoId}?dnt=1&title=0&byline=0&portrait=0` : module.driveId ? `https://drive.google.com/file/d/${module.driveId}/preview` : `https://www.instagram.com/reel/${module.instagramId}/embed/`} title={module.label} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
       </div>
     </>}
     {module?.type === 'process' && <ol className="cs-process">{module.steps.map(step => <li key={step.title}><h3>{sentenceCase(step.title)}</h3><p>{step.body}</p></li>)}</ol>}
