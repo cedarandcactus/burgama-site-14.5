@@ -105,7 +105,6 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'matchday-social/profile-now.jpg': [800, 730],
   'matchday-social/wemby-katy.jpg': [413, 679],
   'matchday-social/okc-launch.jpg': [413, 533],
-  'bluebird-organizing/web-bluebird.jpg': [1548, 656],
 }
 
 type Input = Omit<Project, 'id' | 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'> & Partial<Pick<Project, 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'>>
@@ -412,6 +411,33 @@ export const projects: Project[] = [
     links: [{ label: 'see MatchDay on Instagram', href: 'https://www.instagram.com/playmatchday/' }],
   }),
   project({
+    cardImage: '/work/cards/matchday-social.webp', cardAlt: 'MatchDay social, refreshed Instagram profile and city highlights.',
+    slug: 'matchday-social', title: 'MatchDay social', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
+    tagline: 'From a meme page to where local players find their next game.',
+    summary: 'City-by-city content on Instagram and TikTok for a pickup soccer app: 2,577 new followers across both platforms, and 13 times the TikTok views in our first five months.',
+    disciplines: ['Marketing', 'Content'], services: ['Social media management', 'Content creation'], period: 'May 2025 to November 2026',
+    heroMedia: image('matchday-social', 'profile-now.jpg', 'MatchDay’s Instagram profile in November 2026, with city highlights and match content.', 'square'),
+    contentModules: [
+      { type: 'text', title: 'the headline numbers.', body: ['May 2025, when we started, compared with November 2026.'], stats: [
+        { value: '+2,091', accessibleValue: '2,091 new', label: 'New Instagram followers, 1,519 to 3,610 (2.4x)' },
+        { value: '+486', accessibleValue: '486 new', label: 'New TikTok followers, 70 to 556 (8x)' },
+        { value: '13x', accessibleValue: '13 times', label: 'TikTok views in our first five months' },
+        { value: '406K', accessibleValue: '406 thousand', label: 'TikTok video views since June 2025' },
+      ], source: 'Sprout Social (May 2025 to April 2026), Later (May to November 2026) and the public profiles, pulled November 6, 2026.' },
+      text('the starting point.', 'In May 2025 MatchDay ran games in three Texas cities. Instagram was mostly memes, and TikTok had 107 posts in five months that earned 5,910 views combined. The players, the fields and the energy were there, but none of it was on the feed. Our job was to show the real MatchDay experience, city by city, and send people to the app.'),
+      pair('matchday', ['a114.jpg', 'Before: the earlier Instagram profile, May 2025.', 'tall'], ['a112.jpg', 'After: shared identity and city-specific highlights.', 'tall']),
+      text('four pillars, every city.', 'We wrote the content pillars and voice, then built a weekly engine around them: about 60 Instagram posts, 30 TikToks and 35 to 40 stories a month. The mix was community and match content (40%), soccer memes and culture (30%), app features and testimonials (20%), and events and launches (10%). Every market got its own highlight cover and its own posts, from Austin and Houston to Atlanta, St. Louis and Oklahoma City.'),
+      text('same volume, 13 times the views.', 'In the five months before us, 107 TikTok posts drew 5,910 views. In our first five months, 115 posts drew 79,576 views and 2,976 engagements, so views per post went from about 55 to about 690. On Instagram we published 258 posts against 40 the period before, and views rose 71% to 576,649.'),
+      pair('matchday-social', ['wemby-katy.jpg', 'Instagram reel: Wembanyama plays MatchDay in Katy.', 'tall'], ['okc-launch.jpg', 'TikTok: did you know OKC had pickup like this?', 'tall']),
+      text('growth is speeding up.', 'TikTok views peaked at 55,766 in April 2026, and the most-watched video on the account, a San Antonio highlight, has passed 21,800 views. On Instagram, October 2026 added 299 followers, the best month we have tracked. The audience is the one MatchDay wants: 73% men, 47% aged 25 to 34, with Austin, San Antonio and Houston as the top cities.'),
+      text('keep the result in proportion.', 'Followers, views and engagements describe reach and interest. They are not attributed app registrations or revenue.'),
+    ],
+    links: [
+      { label: 'see @playmatchday on Instagram', href: 'https://www.instagram.com/playmatchday/' },
+      { label: 'see @playmatchday on TikTok', href: 'https://www.tiktok.com/@playmatchday' },
+    ],
+  }),
+  project({
     cardImage: '/work/cards/hush-hush-tan-seasonal.webp', cardAlt: 'Hush Hush Tan Spooky Season Glow flyer: let us get tan, witches, 20% off all packages.',
     slug: 'hush-hush-tan-seasonal', title: 'Hush Hush Tan seasonal campaign', client: 'Hush Hush Tan', parentSlug: 'hush-hush-tan', collection: 'case-study',
     tagline: 'One idea, everywhere a client might see it.',
@@ -432,33 +458,6 @@ export const projects: Project[] = [
       text('keep the result in proportion.', 'The code ran across email, ads, the website, social and texts, so the sales figures describe the promotion as a whole, not any single channel. Of the $10,470 in package sales, 31 packages used the code.'),
     ],
     links: [{ label: 'watch the Austin promo video', href: 'https://drive.google.com/file/d/1cptpnBYDXo7_735xHGV26m6a4iwimb2s/view' }],
-  }),
-  project({
-    cardImage: '/work/cards/matchday-social.webp', cardAlt: 'MatchDay social, refreshed Instagram profile and city highlights.',
-    slug: 'matchday-social', title: 'MatchDay social', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
-    tagline: 'From a meme page to where local players find their next game.',
-    summary: 'City-by-city content on Instagram and TikTok for a pickup soccer app: Instagram followers up 2.4 times, TikTok followers up 8 times, and 13 times the TikTok views in our first five months.',
-    disciplines: ['Marketing', 'Content'], services: ['Social media management', 'Content creation'], period: 'May 2025 to November 2026',
-    heroMedia: image('matchday-social', 'profile-now.jpg', 'MatchDay’s Instagram profile in November 2026, with city highlights and match content.', 'square'),
-    contentModules: [
-      { type: 'text', title: 'the headline numbers.', body: ['May 2025, when we started, compared with November 2026.'], stats: [
-        { value: '2.4x', accessibleValue: '2.4 times', label: 'Instagram followers, 1,519 to 3,610' },
-        { value: '8x', accessibleValue: '8 times', label: 'TikTok followers, 70 to 556' },
-        { value: '13x', accessibleValue: '13 times', label: 'TikTok views in our first five months' },
-        { value: '406K', accessibleValue: '406 thousand', label: 'TikTok video views since June 2025' },
-      ], source: 'Sprout Social (May 2025 to April 2026), Later (May to November 2026) and the public profiles, pulled November 6, 2026.' },
-      text('the starting point.', 'In May 2025 MatchDay ran games in three Texas cities. Instagram was mostly memes, and TikTok had 107 posts in five months that earned 5,910 views combined. The players, the fields and the energy were there, but none of it was on the feed. Our job was to show the real MatchDay experience, city by city, and send people to the app.'),
-      pair('matchday', ['a114.jpg', 'Before: the earlier Instagram profile, May 2025.', 'tall'], ['a112.jpg', 'After: shared identity and city-specific highlights.', 'tall']),
-      text('four pillars, every city.', 'We wrote the content pillars and voice, then built a weekly engine around them: about 60 Instagram posts, 30 TikToks and 35 to 40 stories a month. The mix was community and match content (40%), soccer memes and culture (30%), app features and testimonials (20%), and events and launches (10%). Every market got its own highlight cover and its own posts, from Austin and Houston to Atlanta, St. Louis and Oklahoma City.'),
-      text('same volume, 13 times the views.', 'In the five months before us, 107 TikTok posts drew 5,910 views. In our first five months, 115 posts drew 79,576 views and 2,976 engagements, so views per post went from about 55 to about 690. On Instagram we published 258 posts against 40 the period before, and views rose 71% to 576,649.'),
-      pair('matchday-social', ['wemby-katy.jpg', 'Instagram reel: Wembanyama plays MatchDay in Katy.', 'tall'], ['okc-launch.jpg', 'TikTok: did you know OKC had pickup like this?', 'tall']),
-      text('growth is speeding up.', 'TikTok views peaked at 55,766 in April 2026, and the most-watched video on the account, a San Antonio highlight, has passed 21,800 views. On Instagram, October 2026 added 299 followers, the best month we have tracked. The audience is the one MatchDay wants: 73% men, 47% aged 25 to 34, with Austin, San Antonio and Houston as the top cities.'),
-      text('keep the result in proportion.', 'Followers, views and engagements describe reach and interest. They are not attributed app registrations or revenue.'),
-    ],
-    links: [
-      { label: 'see @playmatchday on Instagram', href: 'https://www.instagram.com/playmatchday/' },
-      { label: 'see @playmatchday on TikTok', href: 'https://www.tiktok.com/@playmatchday' },
-    ],
   }),
   project({
     cardImage: '/work/cards/matchday-local-seo.webp', cardAlt: 'MatchDay search, the existing MatchDay logo.',
@@ -527,25 +526,6 @@ export const projects: Project[] = [
       text('keep the result in proportion.', 'Website visits and form submissions count all sources, not only search, and average Google position moved modestly. Impressions and clicks describe visibility. They are not booked patients or revenue.'),
     ],
     links: [{ label: 'get a free AI visibility check', href: '/ai-visibility-check' }],
-  }),
-  project({
-    cardImage: '/work/cards/bluebird-site-speed.webp', cardAlt: 'Bluebird Organizing homepage: declutter your space, change your life.',
-    slug: 'bluebird-site-speed', title: 'Bluebird Organizing site speed', client: 'Bluebird Organizing', collection: 'case-study',
-    tagline: 'A site six times faster, with its best pages back in Google.',
-    summary: 'Speed and technical SEO fixes for an Austin professional organizer: first load on mobile from 20.5 seconds to 3.2, and key pages restored to Google.',
-    disciplines: ['Growth', 'Web'], services: ['Technical SEO', 'Site speed'], period: 'August 2026',
-    heroMedia: image('bluebird-organizing', 'web-bluebird.jpg', 'Bluebird Organizing homepage.'),
-    contentModules: [
-      { type: 'text', title: 'before and after.', body: ['Google PageSpeed Insights, mobile, on the homepage.'], stats: [
-        { value: '27 to 68', accessibleValue: '27 to 68', label: 'Google mobile speed score' },
-        { value: '6x', accessibleValue: '6 times', label: 'Faster first load: 20.5s to 3.2s until anything appears on a phone' },
-        { value: '0.3s', label: 'Page frozen to taps, down from 2.0s' },
-        { value: '50%', label: 'Lighter homepage, 6.3 MB to 3.1 MB' },
-      ], source: 'Google PageSpeed Insights, August 4 and 5, 2026.' },
-      text('fix what Google cannot read.', 'Three of the most important pages on the site, including the one built for “professional organizer austin,” were returning page not found to Google. We restored them, rewrote every search title and description, and added full business details in code so Google and AI tools can read who Bluebird is and where it works.'),
-      text('keep the result in proportion.', 'Speed scores and restored pages remove barriers to being found. They are not, on their own, measured enquiries or revenue.'),
-    ],
-    links: [{ label: 'visit bluebirdorganizing.net', href: 'https://www.bluebirdorganizing.net/' }],
   }),
 ]
 
