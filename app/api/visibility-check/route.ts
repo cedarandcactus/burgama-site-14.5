@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { after, NextResponse } from 'next/server'
-import { leadLimits, normalizeSite, siteLabel, trackingKeys, validateLead, type LeadDraft, type Tracking } from '@/lib/ai-visibility'
+import { intentTag, leadLimits, normalizeSite, siteLabel, trackingKeys, validateLead, type Intent, type LeadDraft, type Tracking } from '@/lib/ai-visibility'
 import { recipient } from '@/lib/enquiry'
 import { draftReport, sendConfirmation, sendDraftFailed, sendReportForApproval } from '@/lib/lead-flow'
 
@@ -121,6 +121,7 @@ export async function POST(request: Request) {
     website: text(body, 'website'),
     email: text(body, 'email'),
     name: text(body, 'name'),
+    intent: text(body, 'intent') as Intent | '',
   }
   const business = siteLabel(draft.website)
   const errors = validateLead(draft)
@@ -151,6 +152,7 @@ export async function POST(request: Request) {
 
   const emailBody = [
     'New free AI visibility check request. Reply within 24 hours.', '',
+    `Wants help: ${intentTag(draft.intent)}`,
     `Name: ${draft.name.trim()}`,
     `Website: ${normalizeSite(draft.website)}`,
     `Email: ${draft.email.trim()}`,
@@ -179,7 +181,7 @@ export async function POST(request: Request) {
            a minute later instead, so each lead is one notification for him. */
         to: [inbox],
         reply_to: draft.email.trim(),
-        subject: `AI visibility check request: ${business} (${source})`,
+        subject: `[${intentTag(draft.intent)}] AI visibility check request: ${business} (${source})`,
         text: emailBody,
       }),
     })
@@ -194,7 +196,7 @@ export async function POST(request: Request) {
 
   /* Instant confirmation to the lead. A failure here must not lose the lead,
      which is already in the inbox, so it is logged, not surfaced. */
-  const lead = { name: draft.name.trim(), email: draft.email.trim(), website: draft.website, source }
+  const lead = { name: draft.name.trim(), email: draft.email.trim(), website: draft.website, source, intent: draft.intent }
   const confirmation = await sendConfirmation(lead).catch(cause => ({ error: String(cause) }))
   if (confirmation.error) console.error('[visibility-check] confirmation failed:', confirmation.error)
 

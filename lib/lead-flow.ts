@@ -1,6 +1,6 @@
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto'
 import { deflateRawSync, inflateRawSync } from 'node:zlib'
-import { bookingUrl, normalizeSite, siteLabel } from '@/lib/ai-visibility'
+import { bookingUrl, intentTag, normalizeSite, siteLabel } from '@/lib/ai-visibility'
 
 /*
   LEAD FLOW for the free AI visibility check.
@@ -33,6 +33,8 @@ const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.burgama.com'
 
 export type Lead = {
   name: string; email: string; website: string; source: string
+  /* The form's qualifying answer: yes, maybe or curious. Older leads have none. */
+  intent?: string
   /* Optional: the cities to check, for businesses in more than one market.
      Set from the redraft page. Without it the model reads the cities off the site. */
   cities?: string[]
@@ -341,7 +343,7 @@ export async function sendReportForApproval(r: Report, studio: string[]) {
   const mail = reportEmail(r)
   const approve = `${siteOrigin}/api/visibility-check/approve?t=${sign(r)}`
   const html = shell(`
-<p style="background:#fff7d6;border:1px solid #e6d27a;padding:12px 14px;border-radius:8px"><b>Draft report for ${esc(r.lead.name)} (${esc(r.lead.email)}), ${esc(normalizeSite(r.lead.website) ?? r.lead.website)}, source ${esc(r.lead.source)}.</b><br>
+<p style="background:#fff7d6;border:1px solid #e6d27a;padding:12px 14px;border-radius:8px"><b>Draft report for ${esc(r.lead.name)} (${esc(r.lead.email)}), ${esc(normalizeSite(r.lead.website) ?? r.lead.website)}, source ${esc(r.lead.source)}. Wants help: ${esc(intentTag(r.lead.intent ?? ''))}.</b><br>
 Read it below. If it is right, approve it and it goes to them straight away from Burgama, with follow-ups on day 2 and day 5. If something is off, reply to them by hand instead and do not approve.</p>
 ${button(approve, 'Approve and send to ' + esc(firstName(r.lead.name)))}
 <p style="font-size:13px">Not right? <a href="${redraftLink(r.lead)}">Redraft it</a>, and add cities if they serve more than one market. Never rebuild it as a Gmail draft: Gmail rewrites the booking link into a redirect.</p>
@@ -351,7 +353,7 @@ ${button(approve, 'Approve and send to ' + esc(firstName(r.lead.name)))}
 <p>${r.competitors.map(c => `<b>${esc(plain(c.name))}</b> (${esc(c.times)}): ${esc(plain(c.why))}`).join('<br>')}</p>
 <p>${r.fixes.map((x, i) => `<b>${i + 1}. ${esc(plain(x.title))}:</b> ${esc(plain(x.body))}`).join('<br>')}</p></details>
 <p style="color:#666;font-size:12px">Subject: ${esc(mail.subject)}</p>`) + mail.html
-  return resend({ from: leadFrom, to: studio, reply_to: r.lead.email, subject: `Approve report: ${plain(r.business)} (${r.lead.source.split(' / ').slice(0, 3).join(' / ')})`, html })
+  return resend({ from: leadFrom, to: studio, reply_to: r.lead.email, subject: `${r.lead.intent ? `[${intentTag(r.lead.intent)}] ` : ''}Approve report: ${plain(r.business)} (${r.lead.source.split(' / ').slice(0, 3).join(' / ')})`, html })
 }
 
 export async function sendDraftFailed(lead: Lead, studio: string[], reason: string) {
