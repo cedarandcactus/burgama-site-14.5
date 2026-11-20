@@ -139,6 +139,17 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'cellinkey-website/add-system.jpg': [1260, 661],
   'cellinkey-website/cart.jpg': [1560, 620],
   'cellinkey-website/checkout.jpg': [1560, 706],
+  'hiking-pony/web-home-hero.jpg': [1560, 655],
+  'hiking-pony/web-triple-energy.jpg': [1230, 555],
+  'hiking-pony/web-recipes.jpg': [1230, 555],
+  'smoothsailing/web-cta.jpg': [1560, 474],
+  'smoothsailing/web-what-we-do.jpg': [1100, 350],
+  'alh-senior-solutions/web-benefits.jpg': [1560, 504],
+  'alh-senior-solutions/web-journey.jpg': [1090, 480],
+  'dr-saba-syed/web-about.jpg': [910, 530],
+  'dr-saba-syed/web-coaching.jpg': [890, 600],
+  'turant/web-fifty-years.jpg': [1560, 504],
+  'turant/web-what-we-do.jpg': [1560, 380],
   'founder-films/wagner-wealth.jpg': [1237, 696],
   'founder-films/hiking-pony.jpg': [1237, 696],
   'founder-films/cold-cycle.jpg': [376, 629],
@@ -339,7 +350,7 @@ export const projects: Project[] = [
       text('paid and organic, city by city.', 'We plan, film and run MatchDay’s Meta campaigns market by market, and we run the Instagram and TikTok feeds that show what a MatchDay game actually feels like. Each side has its own case study with the full numbers.'),
       pair('matchday-meta-ads', ['free-game-code.jpg', 'A MatchDay ad for Atlanta with a free game code.', 'tall'], ['static-testimonial.jpg', 'A MatchDay testimonial static ad.', 'tall']),
     ],
-    links: [
+    links: [{ label: 'see local search', href: '/work/matchday-local-seo' }, 
       { label: 'read the Meta Ads case study', href: '/work/matchday-meta-ads' },
       { label: 'read the social case study', href: '/work/matchday-social' },
     ],
@@ -359,7 +370,7 @@ export const projects: Project[] = [
     disciplines: ['Web', 'Growth', 'Content'], services: ['Website optimization', 'Local SEO', 'Social content'],
     heroMedia: image('clement-senior-solutions', 'web-clement.jpg', 'Clement website presentation.'),
     contentModules: [text('make the next step clearer.', 'Service-page structure, metadata, headings, accessibility tagging, and local keyword targeting formed the foundation of the work. Website updates addressed navigation and the company’s presentation.'), text('early visibility, in context.', 'The focused local-search study documents the initial keyword footprint. Search-tool estimates are kept separate from measured enquiries, consultations, and revenue.')],
-    links: [{ label: 'visit the website', href: 'https://www.clementseniorsolutions.com/' }, { label: 'view selected social content', href: 'https://www.instagram.com/reel/DZ3SSzZp6ku/' }],
+    links: [{ label: 'see the local SEO setup', href: '/work/clement-local-search' }, { label: 'visit the website', href: 'https://www.clementseniorsolutions.com/' }, { label: 'view selected social content', href: 'https://www.instagram.com/reel/DZ3SSzZp6ku/' }],
   }),
   project({
     cardImage: '/work/cards/wurqly.webp', cardAlt: 'Wurqly, the complete blue and navy website presentation.',
@@ -429,7 +440,11 @@ export const projects: Project[] = [
     summary: 'A service-led website organizing a sustainability consultancy’s areas of expertise.',
     disciplines: ['Web'], services: ['Website'],
     heroMedia: image('smoothsailing', 'web-smoothsailing.jpg', 'Smoothsailing’s homepage and consultancy service structure.'),
-    contentModules: [text('a clearer way through.', 'The homepage connects the consultancy’s positioning with defined service categories, an explanation of its approach, and a route to contact. A sailboat illustration gives the content a distinctive setting.')],
+    contentModules: [
+      text('a clearer way through.', 'The homepage connects the consultancy’s positioning with defined service categories, an explanation of its approach, and a route to contact. A sailboat illustration gives the content a distinctive setting.'),
+      media('smoothsailing', 'web-what-we-do.jpg', 'The What we do panel with moving tags for compliance, reporting, ESG, supply chain and more.'),
+      media('smoothsailing', 'web-cta.jpg', 'A full-width call to chart a resilient, profitable and sustainable future, with a Let’s talk button.'),
+    ],
     links: [{ label: 'visit the website', href: 'https://smoothsailingsustainability.com/' }],
   }),
   project({
@@ -456,7 +471,11 @@ export const projects: Project[] = [
     summary: 'A Lending Hand’s senior-placement guidance, presented through services, resources, and a clear consultation path.',
     disciplines: ['Web'], services: ['Website'],
     heroMedia: image('alh-senior-solutions', 'web-alh.jpg', 'A Lending Hand Senior Solutions website presentation.'),
-    contentModules: [text('information with a clear next step.', 'The homepage organizes the company’s story around the questions families bring to senior-living decisions. Services, FAQs, resources, and a consultation route help visitors move from introduction toward conversation.')],
+    contentModules: [
+      text('information with a clear next step.', 'The homepage organizes the company’s story around the questions families bring to senior-living decisions. Services, FAQs, resources, and a consultation route help visitors move from introduction toward conversation.'),
+      media('alh-senior-solutions', 'web-benefits.jpg', 'Four reasons to call: free service, local St. Louis and St. Charles experts, compassionate guidance and 24/7 consultations, plus 1,000+ families helped.'),
+      media('alh-senior-solutions', 'web-journey.jpg', 'Your Journey With Us: a five-step process next to a photo of the team.'),
+    ],
     links: [{ label: 'visit the website', href: 'https://www.alhseniorsolutions.com/' }],
   }),
   project({
@@ -465,7 +484,10 @@ export const projects: Project[] = [
     summary: 'A direct introduction to Dr. Syed’s coaching and speaking work.',
     disciplines: ['Web'], services: ['Website'],
     heroMedia: image('dr-saba-syed', 'web-dr-saba-syed.jpg', 'Dr. Saba Syed’s coaching and speaking website.'),
-    contentModules: [text('a direct introduction.', 'The page introduces Dr. Syed’s background and the people she serves, then offers routes to a discovery call, speaking enquiries, and resources. A warm palette and straightforward navigation keep the focus on her practice.')],
+    contentModules: [
+      text('a direct introduction.', 'The page introduces Dr. Syed’s background and the people she serves, then offers routes to a discovery call, speaking enquiries, and resources. A warm palette and straightforward navigation keep the focus on her practice.'),
+      pair('dr-saba-syed', ['web-about.jpg', 'Dr. Syed’s introduction beside her portrait.'], ['web-coaching.jpg', 'The coaching section with who it is for and a free discovery call button.']),
+    ],
     links: [{ label: 'visit the website', href: 'https://www.drsabasyed.com/' }],
   }),
   project({
@@ -474,7 +496,11 @@ export const projects: Project[] = [
     summary: 'Events, membership, and community programs for Turkish Americans in North Texas.',
     disciplines: ['Web'], services: ['Website'],
     heroMedia: image('turant', 'web-turant.jpg', 'TURANT website with community events and membership routes.'),
-    contentModules: [text('participation at the center.', 'The homepage connects the association’s history with upcoming events, community imagery, and opportunities to take part. Membership and support routes help visitors find their place in an active community.')],
+    contentModules: [
+      text('participation at the center.', 'The homepage connects the association’s history with upcoming events, community imagery, and opportunities to take part. Membership and support routes help visitors find their place in an active community.'),
+      media('turant', 'web-fifty-years.jpg', 'Celebrating 50 years of community, with the anniversary emblem.'),
+      media('turant', 'web-what-we-do.jpg', 'What we do: cultural events, scholarships and community support.'),
+    ],
     credits: [{ role: 'Legacy website attribution', name: 'Cedar & Cactus, as credited on the live site' }],
     links: [{ label: 'visit the website', href: 'https://www.turant.net/' }],
   }),
@@ -652,6 +678,9 @@ export const projects: Project[] = [
     heroMedia: image('hiking-pony', 'web-hiking-pony.jpg', 'Hiking Pony website with product-led navigation and the coffee range.'),
     contentModules: [
       text('from shelf to screen.', 'The website extends the packaging story through the full coffee range, ingredient information, recipes, retail links, and brand narrative. The QR code on every pouch gives the physical product a direct route into that digital experience.'),
+      media('hiking-pony', 'web-home-hero.jpg', 'The Hiking Pony homepage hero: an illustrated forest and sunburst behind the No-Brew Latte pouch, with protein and sugar callouts and shop buttons.'),
+      text('explain the function, then show how to use it.', 'Below the hero, a Triple Energy section breaks the formula into collagen protein, coconut MCTs and clean caffeine. A recipe section filters by flavor, so a shopper can go from Sweet Cream to an iced latte in a few taps.'),
+      pair('hiking-pony', ['web-triple-energy.jpg', 'The Triple Energy section explaining collagen protein, coconut MCTs and clean caffeine.'], ['web-recipes.jpg', 'Recipes filtered by blend, with step-by-step cards.']),
     ],
     links: [{ label: 'visit the website', href: 'https://hikingpony.com/' }],
   }),
@@ -844,6 +873,33 @@ export function getProject(slug: string) {
   if (!portfolioPublications.some(item => item.slug === slug && item.published)) return undefined
   return projects.find(item => item.slug === slug)
 }
+// One filter per project on /work. Client overviews that span several
+// disciplines sit under multi-channel; every other page sits under its main
+// discipline, so each filter only shows work of that kind.
+export type WorkFilter = 'multi-channel' | 'brand' | 'content' | 'marketing' | 'packaging' | 'photography' | 'production' | 'search' | 'web'
+const workFilterOverrides: Record<string, WorkFilter> = {
+  'matchday-meta-ads': 'marketing',
+  'matchday-social': 'content',
+  'matchday-local-seo': 'search',
+  'hush-hush-tan-social': 'content',
+  'hush-hush-tan-seasonal': 'marketing',
+  'avro-website': 'web',
+  'cold-cycle-founder-video': 'production',
+  'go2bites-packaging': 'packaging',
+  'go2bites-film-website': 'production',
+  'clement-local-search': 'search',
+  'reclaim-local-search': 'search',
+  ollivate: 'marketing',
+  cloon: 'marketing',
+}
+export function getWorkFilter(project: Pick<Project, 'slug' | 'disciplines' | 'parentSlug'>): WorkFilter {
+  const override = workFilterOverrides[project.slug]
+  if (override) return override
+  const disciplines = project.disciplines.map(discipline => (discipline.toLowerCase() === 'growth' ? 'search' : discipline.toLowerCase()) as WorkFilter)
+  if (!project.parentSlug && new Set(disciplines).size > 1) return 'multi-channel'
+  return disciplines[0]
+}
+
 export function getPublishedProjects(collection?: PortfolioCollection) {
   return portfolioPublications.filter(item => item.published && (!collection || item.collection === collection))
     .sort((a, b) => a.order - b.order).flatMap(item => {
