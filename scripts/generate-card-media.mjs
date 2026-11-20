@@ -19,6 +19,9 @@ const sources = {
   'matchday-social': '/work/matchday-social/okc-launch.jpg',
   'avro-website': '/work/avro-website/shop-all.jpg',
 }
+// Designed cards (made by hand outside this script). Kept as is.
+const designed = new Set(['matchday', 'matchday-meta-ads', 'matchday-social', 'matchday-local-seo'])
+const existing = JSON.parse(await readFile('lib/card-image-metadata.json', 'utf8'))
 const dimensions = {}
 const escape = text => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 
@@ -35,6 +38,7 @@ async function makeCard(destination, title, source) {
 await mkdir('public/work/cards', { recursive: true })
 await mkdir('public/research/cards', { recursive: true })
 for (const project of projects) {
+  if (designed.has(project.slug)) { dimensions[project.cardImage] = existing[project.cardImage]; continue }
   await makeCard(project.cardImage, project.client, sources[project.slug] ?? project.heroMedia.src)
   console.log(`Retained natural proportions: ${project.slug}`)
 }
