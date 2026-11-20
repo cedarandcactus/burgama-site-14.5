@@ -93,6 +93,23 @@ const imageDimensions: Record<string, readonly [width: number, height: number]> 
   'smoothsailing/web-smoothsailing.jpg': [1272, 716],
   'turant/web-turant.jpg': [1280, 720],
   'wurqly/web-wurqly.jpg': [1280, 720],
+  'matchday-meta-ads/free-game-code.jpg': [720, 1280],
+  'matchday-meta-ads/app-promo.jpg': [720, 1280],
+  'matchday-meta-ads/text-message-ugc.jpg': [720, 1280],
+  'matchday-meta-ads/static-group-chat.jpg': [400, 500],
+  'matchday-meta-ads/static-three-reasons.jpg': [400, 500],
+  'matchday-meta-ads/static-testimonial.jpg': [400, 500],
+  'hush-hush-tan-seasonal/studio-flyer.jpg': [1080, 1296],
+  'hush-hush-tan-seasonal/email-header.jpg': [1545, 1089],
+  'hush-hush-tan-seasonal/social-graphic.jpg': [650, 458],
+  'matchday-social/profile-now.jpg': [800, 730],
+  'matchday-social/wemby-katy.jpg': [413, 679],
+  'matchday-social/okc-launch.jpg': [413, 533],
+  'avro-website/before-home.jpg': [1556, 598],
+  'avro-website/after-home.jpg': [1556, 598],
+  'avro-website/before-pdp.jpg': [1556, 598],
+  'avro-website/after-pdp.jpg': [1556, 598],
+  'avro-website/shop-all.jpg': [1556, 640],
 }
 
 type Input = Omit<Project, 'id' | 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'> & Partial<Pick<Project, 'client' | 'heroMedia' | 'credits' | 'links' | 'collection'>>
@@ -118,7 +135,7 @@ const image = (company: string, file: string, label: string, ratio: MediaRatio =
 }
 const text = (title: string, ...body: string[]): ContentModule => ({ type: 'text', title, body })
 const media = (company: string, file: string, label: string, ratio: MediaRatio = 'wide'): ContentModule => ({ type: 'media', item: image(company, file, label, ratio) })
-const pair = (company: string, a: [string, string], b: [string, string]): ContentModule => ({ type: 'mediaPair', items: [image(company, ...a), image(company, ...b)] })
+const pair = (company: string, a: [string, string, MediaRatio?], b: [string, string, MediaRatio?]): ContentModule => ({ type: 'mediaPair', items: [image(company, ...a), image(company, ...b)] })
 
 export const projects: Project[] = [
   project({
@@ -367,23 +384,104 @@ export const projects: Project[] = [
     contentModules: [text('start with intent.', 'The campaign approach brought together focused keywords, ad-copy decisions, and bid management. Its aim was to connect searchers with the website while keeping spending controlled.')],
   }),
   project({
+    cardImage: '/work/cards/matchday-meta-ads.webp', cardAlt: 'MatchDay Meta Ads, a vertical ad showing an Atlanta free game code on a soccer field.',
+    slug: 'matchday-meta-ads', title: 'MatchDay Meta Ads', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
+    tagline: 'Filling pickup games, one city at a time.',
+    summary: 'City-by-city Meta campaigns we planned, filmed and ran for MatchDay: 3,458 app installs at $3.34 each, and a 79% lower cost per site visit.',
+    disciplines: ['Marketing', 'Content', 'Growth'], services: ['Meta Ads', 'Ad creative production', 'Tracking audit'], period: 'August 2025 to October 2026',
+    heroMedia: image('matchday-meta-ads', 'free-game-code.jpg', 'A MatchDay ad for Atlanta with the free game code ATLMD over a soccer field.', 'tall'),
+    contentModules: [
+      { type: 'text', title: 'the headline numbers.', body: ['Across fourteen months of paid social for a pickup soccer app operating in eight cities.'], stats: [
+        { value: '3,458', label: 'App installs in September and October 2026' },
+        { value: '$3.34', label: 'Cost per app install' },
+        { value: '79%', label: 'Lower cost per site visit, $2.67 to $0.56' },
+        { value: '15x', accessibleValue: '15 times', label: 'Monthly ad spend, $374 to $5,783' },
+      ], source: 'MatchDay Meta Ads account, August 1, 2025 to October 31, 2026, pulled November 4, 2026.' },
+      text('the starting point.', 'MatchDay books pickup soccer at premium fields, supplies the gear and records match highlights. Players book through the MatchDay app. In August 2025 the account spent about $375 a month with no campaign structure by city. The job was to get local players to try a first game and download the app in every market MatchDay operates.'),
+      text('one city at a time.', 'Each market got its own campaign and its own free first game code, such as ATLMD, DFWMD and HTXMD. A player in Houston saw a Houston field, a Houston code and a reason to show up this week. Every city ran the same tested formats: voiceover videos, text-message hooks, free-code field shots and scripted b-roll. Spend followed the results, and in February 2026 all eight city campaigns held between $0.48 and $0.68 per landing page view.'),
+      pair('matchday-meta-ads', ['app-promo.jpg', 'A vertical app promotion ad filmed at a MatchDay field.', 'tall'], ['text-message-ugc.jpg', 'A text-message hook ad: a player asking where to play pickup soccer.', 'tall']),
+      text('fixing what Meta could not see.', 'In July 2026 the campaigns switched from site visits to app sign-ups, and Meta reported almost nothing. Our audit of Events Manager found the sign-ups were happening, but reached Meta with no data to match them to the people who saw the ads. iOS attribution had never been set up, and the website pixel was not attached to any ad set. We wrote the fix plan, handed the developer work to MatchDay, and rebuilt the account around app promotion campaigns.'),
+      { type: 'text', title: 'app growth after the fix.', body: ['Installs and sign-ups are Meta-attributed with the default window. Earlier installs went unreported, so these are not before-and-after growth figures.'], stats: [
+        { value: '1,759', label: 'Attributed app installs in October 2026' },
+        { value: '1,230', label: 'Completed in-app sign-ups from October campaigns' },
+        { value: '$5.55', label: 'Per completed sign-up, top October campaign' },
+      ], source: 'MatchDay Meta Ads account, August to October 2026.' },
+      text('the creative library.', 'We planned, filmed and edited 53 ads: city launch videos for six markets, a text-message and creator-style set customized for eight cities, bilingual English and Spanish ads for El Paso, dedicated ads for new field openings, and six static concepts for the first-match-free offer.'),
+      { type: 'mediaGrid', items: [
+        image('matchday-meta-ads', 'static-group-chat.jpg', 'Static ad: every pickup group chat ever.', 'tall'),
+        image('matchday-meta-ads', 'static-three-reasons.jpg', 'Static ad: three reasons players book MatchDay.', 'tall'),
+        image('matchday-meta-ads', 'static-testimonial.jpg', 'Static ad: a player testimonial.', 'tall'),
+      ] },
+    ],
+    links: [{ label: 'see MatchDay on Instagram', href: 'https://www.instagram.com/playmatchday/' }],
+  }),
+  project({
     cardImage: '/work/cards/matchday-social.webp', cardAlt: 'MatchDay social, refreshed Instagram profile and city highlights.',
     slug: 'matchday-social', title: 'MatchDay social', client: 'MatchDay', parentSlug: 'matchday', collection: 'case-study',
-    tagline: 'A local soccer community. A consistent social presence.',
-    summary: 'A shared visual system and city-specific short-form stories across Instagram and TikTok.',
-    disciplines: ['Marketing', 'Content'], services: ['Social media management', 'Content creation'], period: 'May 15 to October 12, 2025',
-    heroMedia: image('matchday', 'a112.jpg', 'MatchDay’s refreshed profile, with a consistent identity and city highlights.', 'tall'),
+    tagline: 'From a meme page to where local players find their next game.',
+    summary: 'City-by-city content on Instagram and TikTok for a pickup soccer app: 2,577 new followers across both platforms, and 13 times the TikTok views in our first five months.',
+    disciplines: ['Marketing', 'Content'], services: ['Social media management', 'Content creation'], period: 'May 2025 to November 2026',
+    heroMedia: image('matchday-social', 'profile-now.jpg', 'MatchDay’s Instagram profile in November 2026, with city highlights and match content.', 'square'),
     contentModules: [
-      text('the starting point.', 'The social presence did not fully reflect the active pickup-soccer community. The task was to create a more consistent identity, give individual cities a voice, and make the match experience visible to prospective players.'),
-      pair('matchday', ['a114.jpg', 'Before: the earlier Instagram profile.'], ['a112.jpg', 'After: shared identity and city-specific highlights.']),
-      text('a system for local stories.', 'Shared colors, typography, reel framing, and city highlights supported a publishing approach around gameplay and local stories. Content pointed toward participation, app downloads, and city communities; these were intended actions, not measured registrations.'),
-      { type: 'text', title: 'what the reports show.', body: ['These totals describe platform visibility and interaction, not attributed registrations or revenue.'], stats: [
-        { value: '576,649', label: 'Instagram views, 403,246 organic and 173,403 paid' },
-        { value: '6,555', label: 'Instagram engagements' },
-        { value: '79,576', label: 'TikTok video views' },
-        { value: '2,976', label: 'TikTok engagements' },
-      ], source: 'Instagram and TikTok platform reports, May 15 to October 12, 2025.' },
+      { type: 'text', title: 'the headline numbers.', body: ['May 2025, when we started, compared with November 2026.'], stats: [
+        { value: '+2,091', accessibleValue: '2,091 new', label: 'New Instagram followers, 1,519 to 3,610 (2.4x)' },
+        { value: '+486', accessibleValue: '486 new', label: 'New TikTok followers, 70 to 556 (8x)' },
+        { value: '13x', accessibleValue: '13 times', label: 'TikTok views in our first five months' },
+        { value: '406K', accessibleValue: '406 thousand', label: 'TikTok video views since June 2025' },
+      ], source: 'Sprout Social (May 2025 to April 2026), Later (May to November 2026) and the public profiles, pulled November 6, 2026.' },
+      text('the starting point.', 'In May 2025 MatchDay ran games in three Texas cities. Instagram was mostly memes, and TikTok had 107 posts in five months that earned 5,910 views combined. The players, the fields and the energy were there, but none of it was on the feed. Our job was to show the real MatchDay experience, city by city, and send people to the app.'),
+      pair('matchday', ['a114.jpg', 'Before: the earlier Instagram profile, May 2025.', 'tall'], ['a112.jpg', 'After: shared identity and city-specific highlights.', 'tall']),
+      text('four pillars, every city.', 'We wrote the content pillars and voice, then built a weekly engine around them: about 60 Instagram posts, 30 TikToks and 35 to 40 stories a month. The mix was community and match content (40%), soccer memes and culture (30%), app features and testimonials (20%), and events and launches (10%). Every market got its own highlight cover and its own posts, from Austin and Houston to Atlanta, St. Louis and Oklahoma City.'),
+      text('same volume, 13 times the views.', 'In the five months before us, 107 TikTok posts drew 5,910 views. In our first five months, 115 posts drew 79,576 views and 2,976 engagements, so views per post went from about 55 to about 690. On Instagram we published 258 posts against 40 the period before, and views rose 71% to 576,649.'),
+      pair('matchday-social', ['wemby-katy.jpg', 'Instagram reel: Wembanyama plays MatchDay in Katy.', 'tall'], ['okc-launch.jpg', 'TikTok: did you know OKC had pickup like this?', 'tall']),
+      text('growth is speeding up.', 'TikTok views peaked at 55,766 in April 2026, and the most-watched video on the account, a San Antonio highlight, has passed 21,800 views. On Instagram, October 2026 added 299 followers, the best month we have tracked. The audience is the one MatchDay wants: 73% men, 47% aged 25 to 34, with Austin, San Antonio and Houston as the top cities.'),
+      text('keep the result in proportion.', 'Followers, views and engagements describe reach and interest. They are not attributed app registrations or revenue.'),
     ],
+    links: [
+      { label: 'see @playmatchday on Instagram', href: 'https://www.instagram.com/playmatchday/' },
+      { label: 'see @playmatchday on TikTok', href: 'https://www.tiktok.com/@playmatchday' },
+    ],
+  }),
+  project({
+    cardImage: '/work/cards/hush-hush-tan-seasonal.webp', cardAlt: 'Hush Hush Tan Spooky Season Glow flyer: let us get tan, witches, 20% off all packages.',
+    slug: 'hush-hush-tan-seasonal', title: 'Hush Hush Tan seasonal campaign', client: 'Hush Hush Tan', parentSlug: 'hush-hush-tan', collection: 'case-study',
+    tagline: 'One idea, everywhere a client might see it.',
+    summary: 'A Halloween promotion carried through video, email, ads, print and the website for an Austin tanning studio: package sales up 12.9 times in nine days.',
+    disciplines: ['Marketing', 'Content'], services: ['Campaign planning', 'Email marketing', 'Social and ad creative'], period: 'October 2026',
+    heroMedia: image('hush-hush-tan-seasonal', 'studio-flyer.jpg', 'The in-studio flyer: let us get tan, witches, 20% off all packages with code WITCHES20.', 'tall'),
+    contentModules: [
+      { type: 'text', title: 'the result.', body: ['Austin studio, October 13 to 21 compared with September 15 to 23, 2026.'], stats: [
+        { value: '12.9x', accessibleValue: '12.9 times', label: 'Package sales, $810 to $10,470 at full price' },
+        { value: '$7,944', label: 'Collected from 31 promo packages in nine days' },
+        { value: '2,022', label: 'Google profile interactions in October, the most since June' },
+        { value: '+74%', accessibleValue: 'up 74 percent', label: 'Profile interactions, October vs August' },
+      ], source: 'Hush Hush Tan Booker sales, and Google Business Profile, pulled November 11, 2026.' },
+      text('one line, one code.', 'Spooky Season Glow ran on one idea, “let’s get tan, witches,” and one code, WITCHES20, for 20% off every package. The same line appeared on the studio flyer, the website banner, an email, social posts, ads and texts, so a client heard the same offer however they found it.'),
+      media('hush-hush-tan-seasonal', 'email-header.jpg', 'The campaign email header: let us get tan, witches, 20% off.'),
+      text('data that connects.', 'Before the email went out on October 13 we fixed the sync between the studio’s Booker booking system and Klaviyo, so package sales now sit next to email results for every future promotion. The email ran with an A/B subject line test, and the social set mixed static posts, carousels, talking-head videos and a ghost video.'),
+      { type: 'quote', body: 'A clear improvement over the Fourth of July campaign and a big win worth celebrating!', name: 'Liz Thorson', role: 'CMO, Hush Hush Tan' },
+      text('keep the result in proportion.', 'The code ran across email, ads, the website, social and texts, so the sales figures describe the promotion as a whole, not any single channel. Of the $10,470 in package sales, 31 packages used the code.'),
+    ],
+    links: [{ label: 'watch the Austin promo video', href: 'https://drive.google.com/file/d/1cptpnBYDXo7_735xHGV26m6a4iwimb2s/view' }],
+  }),
+  project({
+    cardImage: '/work/cards/avro-website.webp', cardAlt: 'The new AVRO shop page with Calm, Focus and Energy tubes.',
+    slug: 'avro-website', title: 'AVRO website', client: 'AVRO', parentSlug: 'avro', collection: 'case-study',
+    tagline: 'A store that explains the product before it asks for the sale.',
+    summary: 'A rebuilt Shopify store for a GABA drink mix brand: a new homepage, clearer product pages for three lines and six flavors, subscriptions up front, and search copy written for every product.',
+    disciplines: ['Web', 'Growth'], services: ['Shopify development', 'Conversion design', 'SEO'], period: 'July to November 2026',
+    heroMedia: image('avro-website', 'shop-all.jpg', 'The new AVRO shop page: choose your formula, with one button each for Calm, Focus and Energy.'),
+    contentModules: [
+      text('the starting point.', 'AVRO’s old store led with lifestyle photography and a menu of Shop, Our Story, PharmaGABA and Contact. Shoppers had to work out on their own what the product was, which line fit them and why the ingredient mattered. Product pages were a single block of label copy, a flavor dropdown and a price.'),
+      media('avro-website', 'before-home.jpg', 'Before: the previous AVRO homepage, a full-bleed surf photo with the logo and a four-item menu.'),
+      media('avro-website', 'after-home.jpg', 'After: the new homepage states the promise in the first line and points to Shop AVRO and The Science.'),
+      text('say it in the first screen.', 'We rebuilt the store on a new Shopify theme and built the homepage around one line, “Start Calm. Stay Ready.” The shop page asks one question, which formula fits your moment, with a button for each line. The navigation now follows the questions a new customer asks: Shop, Subscribe, Why AVRO, Science and FAQ. A clinician trust badge sits right under the headline, and dedicated pages speak to golf, work and esports, the moments where the product fits best.'),
+      media('avro-website', 'before-pdp.jpg', 'Before: the AVRO Calm product page on the old site, with label copy, a flavor dropdown and a single price.'),
+      media('avro-website', 'after-pdp.jpg', 'After: the AVRO Calm product page on the new site, with a one-line benefit, review rating, clinician panel, flavor buttons and subscribe-and-save shown first.'),
+      text('product pages that sell.', 'Each product page now opens with a one-line benefit, the star rating on the main image and a clinician panel. Flavors are buttons instead of a dropdown, and subscribe and save sits above the one-time price, so the recurring option is the default choice. The same layout runs across Calm, Focus and Energy and all six flavors, with copy kept to structure and function language that suits a dietary supplement.'),
+      text('built to be found.', 'We wrote new search titles and meta descriptions for every flavor page, each naming the line, the flavor and what sets it apart, such as caffeine or no caffeine. We shipped everything as numbered theme versions, each previewed before it went live, so the store never went down for a redesign.'),
+    ],
+    links: [{ label: 'visit avrolife.com', href: 'https://avrolife.com/' }],
   }),
   project({
     cardImage: '/work/cards/matchday-local-seo.webp', cardAlt: 'MatchDay search, the existing MatchDay logo.',
