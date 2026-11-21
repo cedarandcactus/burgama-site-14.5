@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAACO | Turkish American Association of Central Ohio</title>
+<meta name="description" content="The Turkish American Association of Central Ohio has brought Turkish culture and community to Columbus since 1969. Join or renew your membership, see the year's celebrations and donate.">
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:Archivo;src:url(/demo/_fonts/archivo-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--red:#cf1f2c;--red2:#a91622;--ink:#17171b;--navy:#1c2f5e;--paper:#fff;--wash:#f4f5f8;--mute:#5a5d66;--rule:#d5d8df}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 Archivo,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Archivo,Arial,sans-serif;font-weight:750;margin:0;line-height:1.02;letter-spacing:-.028em}
+p{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.w{width:min(1180px,100% - 56px);margin-inline:auto}
+.note{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 20px}
+
+.top{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--rule)}
+.top .w{display:flex;align-items:center;justify-content:space-between;gap:20px;height:84px}
+.mark{display:flex;align-items:center;gap:14px;text-decoration:none}
+.mark img{width:60px;height:60px}
+.mark b{font-weight:750;font-size:22px;letter-spacing:-.02em;line-height:1.1}
+.mark span{display:block;font-size:13.5px;color:var(--mute);font-weight:400;letter-spacing:0}
+.top nav{display:flex;align-items:center;gap:28px;font-size:16.5px;font-weight:500}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;background:var(--red);color:#fff;font:650 17px/1 Archivo,sans-serif;padding:17px 24px;border-radius:2px;text-decoration:none}
+.btn:hover{background:var(--navy)}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.line:hover{background:var(--ink);color:#fff}
+.top nav .btn{padding:14px 18px;color:#fff}
+.top nav .btn:hover{text-decoration:none}
+
+.open{padding:78px 0 84px}
+.open .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:end}
+.open h1{grid-column:1/10;font-size:clamp(44px,7.4vw,106px)}
+.open .side{grid-column:1/8;margin-top:34px}
+.open .side p{font-size:21px;line-height:1.5}
+.open .acts{grid-column:8/13;display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;align-self:end}
+
+.year{background:var(--red);color:#fff;padding:80px 0 88px}
+.year .hd{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:end;margin-bottom:34px}
+.year h2,.join h2,.story h2{font-size:clamp(34px,4.4vw,58px)}
+.year .hd h2{grid-column:1/7}
+.year .hd p{grid-column:8/13;color:#ffe3e4;font-size:17.5px}
+.cal{list-style:none;margin:0;padding:0;border-top:2px solid #fff}
+.cal li{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.42)}
+.cal time{grid-column:1/5;white-space:nowrap;font-weight:750;font-size:clamp(34px,4.2vw,56px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.cal b{grid-column:5/10;font-weight:650;font-size:24px;line-height:1.2;letter-spacing:-.012em}
+.cal span{grid-column:10/13;color:#ffe3e4;font-size:17px}
+.year .also{margin-top:24px;color:#ffe3e4;max-width:44em}
+
+.join{padding:88px 0}
+.join .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:start}
+.join .a{grid-column:1/6}
+.join .a p{margin-top:22px;color:var(--mute)}
+.join .a .btn{margin-top:28px}
+.join .a .chk{font-size:16px;margin-top:20px}
+.join table{grid-column:7/13;width:100%;border-collapse:collapse;border-top:2px solid var(--ink)}
+.join th,.join td{padding:17px 0;border-bottom:1px solid var(--rule);text-align:left;font-weight:500;font-size:20px}
+.join th small{display:block;font-weight:400;font-size:15.5px;color:var(--mute)}
+.join td{text-align:right;font-weight:750;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.join td small{font-weight:400;font-size:15.5px;color:var(--mute);letter-spacing:0}
+
+.story{background:var(--wash);padding:88px 0}
+.story .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:start}
+.story h2{grid-column:1/6}
+.story .b{grid-column:7/13}
+.story .b p+p{margin-top:16px}
+.story details{margin-top:28px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.story summary{cursor:pointer;padding:16px 0;font-weight:650}
+.story ol{list-style:none;margin:0;padding:0 0 18px;columns:2;column-gap:28px;font-size:16px;line-height:1.7;color:#33363d}
+.story ol li{break-inside:avoid}
+.story ol i{font-style:normal;color:var(--mute);font-variant-numeric:tabular-nums}
+
+.give{background:var(--navy);color:#fff;padding:84px 0 36px}
+.give .w>h2{font-size:clamp(38px,5.6vw,80px);max-width:11em}
+.give .row{display:flex;flex-wrap:wrap;align-items:center;gap:16px 34px;margin-top:30px}
+.give .row p{max-width:30em;color:#d5dbec}
+.give .btn:hover{background:#fff;color:var(--navy)}
+.give dl{display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px;margin:64px 0 0;border-top:1px solid rgba(255,255,255,.35)}
+.give dl div{padding-top:16px}
+.give dt{font-size:15.5px;color:#b9c2dc}
+.give dd{margin:2px 0 0;font-size:19px;font-weight:500}
+.give .thanks{margin-top:44px;font-size:15.5px;color:#b9c2dc}
+.give .fine{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 30px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.2);font-size:14px;color:#b9c2dc}
+
+@media (max-width:940px){
+  .top .w{height:70px}
+  .mark img{width:48px;height:48px}
+  .mark span{display:none}
+  .top nav a:not(.btn){display:none}
+  .open{padding:44px 0 52px}
+  .open .w,.year .hd,.join .w,.story .w{display:block}
+  .open .acts{justify-content:flex-start;margin-top:28px}
+  .year,.join,.story{padding:56px 0}
+  .year .hd p{margin-top:12px}
+  .cal li{display:block;padding:18px 0}
+  .cal b{display:block;margin-top:6px;font-size:21px}
+  .cal span{display:block;margin-top:4px}
+  .join table{margin-top:34px}
+  .story .b{margin-top:24px}
+  .give{padding-top:56px}
+  .give dl{display:block}
+  .give dl div{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.25)}
+}
+@media (max-width:540px){
+  .w{width:calc(100% - 40px)}
+  .mark b{font-size:19px}
+  .top nav .btn{padding:12px 13px;font-size:15.5px}
+  .open .side p{font-size:18.5px}
+  .join th,.join td{font-size:18px}
+  .join td{font-size:25px}
+  .story ol{columns:1}
+  .btn{display:block;text-align:center}
+  .top nav .btn{display:inline-block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<p class="note">Preview homepage for TAACO, built by Burgama. Not live.</p>
+
+<header class="top">
+  <div class="w">
+    <a class="mark" href="#top"><img src="/demo/taaco/logo.png" alt="TAACO seal"><b>TAACO<span>Turkish American Association of Central Ohio</span></b></a>
+    <nav aria-label="Main">
+      <a href="#year">Events</a>
+      <a href="#join">Membership</a>
+      <a href="#story">Our story</a>
+      <a href="#give">Donate</a>
+      <a class="btn" href="#join">Join or renew</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="open">
+    <div class="w">
+      <h1>Turkish culture and community in central Ohio since 1969.</h1>
+      <div class="side">
+        <p>TAACO is one of the oldest Turkish American organizations in the United States. We share the best of Turkish culture and history with central Ohio, and we look after the social and cultural life of our community here.</p>
+      </div>
+      <div class="acts">
+        <a class="btn" href="#join">Join or renew</a>
+        <a class="btn line" href="#year">See the year's events</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="year" id="year">
+    <div class="w">
+      <div class="hd">
+        <h2>The year at TAACO</h2>
+        <p>The days our community gathers for every year.</p>
+      </div>
+      <ol class="cal">
+        <li><time datetime="03-08">March 8</time><b>International Women's Day</b></li>
+        <li><time datetime="04-23">April 23</time><b>National Sovereignty and Children's Day</b></li>
+        <li><time datetime="05-19">May 19</time><b>Commemoration of Atatürk, Youth and Sports Day</b></li>
+        <li><time datetime="10-29">October 29</time><b>Republic Day Ball</b><span>The highlight of our year.</span></li>
+      </ol>
+      <p class="also">Through the year we also hold holiday dinners, picnics, the Turkish School for our children and cultural heritage events for the wider Columbus community.</p>
+    </div>
+  </section>
+
+  <section class="join" id="join">
+    <div class="w">
+      <div class="a">
+        <h2>Become a member</h2>
+        <p>Annual dues are our only income. They pay for our gatherings, the Turkish School, cultural heritage events across Columbus, charity for local communities and worthy causes for children in need in Turkey.</p>
+        <a class="btn" href="https://www.taaco-columbus.org/membership/">Join or renew online</a>
+        <p class="chk">Paying by check? Make it payable to TAACO and mail it to P.O. Box 3566, Dublin, Ohio 43016.</p>
+      </div>
+      <table>
+        <tr><th scope="row">Individual</th><td>$50 <small>a year</small></td></tr>
+        <tr><th scope="row">Family</th><td>$70 <small>a year</small></td></tr>
+        <tr><th scope="row">Senior<small>65 and over</small></th><td>$30 <small>a year</small></td></tr>
+        <tr><th scope="row">Corporate<small>A link to your website and advertising at TAACO events</small></th><td>$90 <small>a year</small></td></tr>
+        <tr><th scope="row">Corporate, two years</th><td>$160</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="story" id="story">
+    <div class="w">
+      <h2>Two doctors traveled to Chicago in 1968.</h2>
+      <div class="b">
+        <p>The first Turkish professionals came to Columbus in the mid 1950s for specialized training, expecting to stay a couple of years. By the late 1960s it was clear they had a new home.</p>
+        <p>In April 1968 two Turkish doctors traveled to Chicago to ask the Consulate General of Turkey whether they could become American citizens without severing ties to their motherland. The Consulate encouraged them to form an association. TAACO was founded in January 1969, and the first October 29 ball welcomed 129 guests.</p>
+        <p>We are a non-profit 501(c)(3) organization.</p>
+        <details>
+          <summary>Our presidents since 1969</summary>
+          <ol>
+            <li>Hulusi Tuatay <i>1969</i></li><li>Ali Aslanbayrak <i>1970, 1977 to 78</i></li><li>Haldun Oktener <i>1971</i></li><li>Tayfur Durupinar <i>1972</i></li><li>Burhan Dogangun <i>1973 to 74</i></li><li>Naci Aklar <i>1975 to 76</i></li><li>Hasip Temizer <i>1979 to 80</i></li><li>Mehmet Sozmen <i>1981 to 82</i></li><li>Acar Caner <i>1983 to 84, 1993 to 94</i></li><li>Erdogan Gungor <i>1985</i></li><li>Hayrani Oz <i>1987 to 90</i></li><li>Ali Erkan Engin <i>1991 to 92</i></li><li>Sevim Tin <i>1995 to 2000</i></li><li>Tunc Aldemir <i>2001 to 2002</i></li><li>Cem Ozmeral <i>2003 to 2004, 2015 to 2016</i></li><li>Bulent Bekcioglu <i>2005 to 2006</i></li><li>Oner Kirk <i>2007 to 2008</i></li><li>Binnaz Leblebicioglu <i>2009 to 2012, 2019 to present</i></li><li>Ugur Ozer <i>2013 to 2014</i></li><li>Serap Ustel <i>2016 to 2017</i></li><li>Ceyhun Ekrem Uzak <i>2017 to 2018</i></li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="give" id="give">
+  <div class="w">
+    <h2>Help us keep the community together.</h2>
+    <div class="row">
+      <a class="btn" href="https://www.taaco-columbus.org/donate-2/">Donate to TAACO</a>
+      <p>Donations of any size are welcome. They go to our monthly activities, workshops and events.</p>
+    </div>
+    <dl>
+      <div><dt>Email</dt><dd><a href="mailto:info@taaco-columbus.org">info@taaco-columbus.org</a></dd></div>
+      <div><dt>Mail</dt><dd>P.O. Box 3566, Dublin, Ohio 43016</dd></div>
+      <div><dt>Facebook</dt><dd><a href="https://www.facebook.com/taaco.org">facebook.com/taaco.org</a></dd></div>
+    </dl>
+    <p class="thanks">Thank you to our sponsors: Karavan, Insuring All of Ohio, Quiquattro, Cafe Istanbul Dublin and Istanbul Market Ohio.</p>
+    <p class="fine"><span>Turkish American Association of Central Ohio</span><span>Preview built by Burgama with TAACO's own wording. burgama.com</span></p>
+  </div>
+</footer>
+</body>
+</html>
