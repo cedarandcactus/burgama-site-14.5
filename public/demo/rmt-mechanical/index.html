@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RMT Mechanical Services | HVAC, Refrigeration and Appliance Repair in Southern Maryland</title>
+<meta name="description" content="RMT Mechanical Services repairs heating and cooling, refrigeration and appliances for homes and businesses across Southern Maryland. Based in Waldorf, MD. Call 240-441-2783.">
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:BarlowC;src:url(/demo/_fonts/barlow-condensed-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:Barlow;src:url(/demo/_fonts/barlow-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Barlow;src:url(/demo/_fonts/barlow-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+:root{--metal:#e4e8ea;--plate:#f5f7f8;--navy:#0f2433;--low:#1565b5;--high:#cf3327;--mute:#51626e;--rule:#b9c2c8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--metal);color:var(--navy);font:400 18px/1.55 Barlow,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:BarlowC,"Arial Narrow",Arial,sans-serif;font-weight:600;margin:0;line-height:.98;letter-spacing:-.005em}
+p{margin:0}
+a{color:inherit;text-underline-offset:.18em}
+:focus-visible{outline:3px solid var(--low);outline-offset:3px}
+.w{width:min(1200px,100% - 56px);margin-inline:auto}
+.note{background:var(--navy);color:#fff;font-size:13px;text-align:center;padding:6px 20px}
+
+.top{position:sticky;top:0;z-index:10;background:var(--plate);border-bottom:2px solid var(--navy)}
+.top .w{display:flex;align-items:center;justify-content:space-between;gap:20px;height:66px}
+.name{font-family:BarlowC,sans-serif;font-weight:600;font-size:25px;text-decoration:none;line-height:1}
+.top nav{display:flex;align-items:center;gap:28px;font-size:16.5px}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.call{display:inline-block;background:var(--high);color:#fff;font:600 18px/1 Barlow,sans-serif;padding:14px 18px;text-decoration:none;font-variant-numeric:tabular-nums}
+.call:hover{background:var(--navy)}
+
+.hero{padding:70px 0 0}
+.hero h1{font-size:clamp(38px,5vw,68px);max-width:15em}
+.hero .num{display:block;font-family:BarlowC,sans-serif;font-weight:600;font-size:clamp(56px,17.4vw,236px);line-height:.86;letter-spacing:-.02em;color:var(--high);text-decoration:none;margin:26px 0 0 -.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hero .num:hover{color:var(--navy)}
+.hero .under{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;margin-top:38px;padding:24px 0 30px;border-top:2px solid var(--navy)}
+.hero .under p:first-child{grid-column:1/8;font-size:21px;line-height:1.45}
+.hero .under p:last-child{grid-column:9/13;color:var(--mute);font-size:17px}
+
+.fix{padding:74px 0 86px}
+.fix h2,.plans h2{font-size:clamp(34px,4vw,54px)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px;margin-top:34px}
+.three section{border-top:8px solid var(--navy);padding-top:18px}
+.three section.cool{border-color:var(--low)}
+.three section.heat{border-color:var(--high)}
+.three h3{font-size:31px;line-height:1.05}
+.three p{margin-top:10px;color:var(--mute)}
+.three ul{list-style:none;margin:18px 0 0;padding:0}
+.three li{padding:9px 0;border-top:1px solid var(--rule)}
+
+.plans{background:var(--navy);color:#fff;padding:84px 0 90px}
+.plans .hd{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:end}
+.plans .hd h2{grid-column:1/8}
+.plans .hd p{grid-column:9/13;color:#b8c6d0;font-size:17px}
+.sheet{margin-top:40px;border-top:2px solid #fff}
+.sheet details{border-bottom:1px solid rgba(255,255,255,.28)}
+.sheet summary{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,5fr) auto;column-gap:28px;align-items:baseline;padding:24px 0;cursor:pointer;list-style:none}
+.sheet summary::-webkit-details-marker{display:none}
+.sheet .what{font-family:BarlowC,sans-serif;font-weight:600;font-size:32px;line-height:1.05}
+.sheet .gets{color:#b8c6d0;font-size:17px}
+.sheet .gets u{color:#fff;text-decoration:underline;text-decoration-thickness:1px;white-space:nowrap}
+.sheet .cost{font-family:BarlowC,sans-serif;font-weight:600;font-size:58px;line-height:.9;font-variant-numeric:tabular-nums;text-align:right;min-width:3.2ch}
+.sheet .in{display:grid;grid-template-columns:repeat(4,1fr);column-gap:28px;padding:4px 0 30px}
+.sheet .in h4{font:600 17px/1.3 Barlow,sans-serif;margin:0 0 6px}
+.sheet .in ul{list-style:none;margin:0 0 14px;padding:0;color:#b8c6d0;font-size:16px;line-height:1.5}
+.sheet .in p{color:#b8c6d0;font-size:16px;grid-column:1/-1}
+.plans .valid{margin-top:22px;color:#b8c6d0;font-size:16px}
+
+.reach{background:var(--low);color:#fff;padding:76px 0 34px}
+.reach h2{font-size:clamp(40px,6vw,84px);max-width:12em}
+.reach .ways{display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px;margin-top:40px;border-top:2px solid #fff}
+.reach .ways div{padding-top:16px}
+.reach .ways span{display:block;font-size:16px;color:#d5e5f4}
+.reach .ways a,.reach .ways b{font:600 23px/1.3 Barlow,sans-serif;word-break:break-word}
+.reach .fine{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 30px;margin-top:64px;font-size:14px;color:#d5e5f4}
+
+.dock{display:none}
+@media (max-width:900px){
+  .top nav a:not(.call){display:none}
+  .hero{padding-top:40px}
+  .hero .under{display:block;margin-top:26px}
+  .hero .under p:last-child{margin-top:12px}
+  .fix{padding:52px 0 60px}
+  .three{display:block}
+  .three section{margin-top:34px}
+  .plans{padding:56px 0 60px}
+  .plans .hd{display:block}
+  .plans .hd p{margin-top:12px}
+  .sheet summary{grid-template-columns:minmax(0,1fr) auto}
+  .sheet .gets{grid-column:1/-1;grid-row:2;margin-top:8px}
+  .sheet .what{font-size:27px}
+  .sheet .cost{font-size:44px}
+  .sheet .in{grid-template-columns:1fr 1fr}
+  .reach{padding:56px 0 100px}
+  .reach .ways{display:block}
+  .reach .ways div{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.4)}
+  .dock{display:block;position:fixed;inset:auto 0 0 0;z-index:12;background:var(--plate);border-top:2px solid var(--navy);padding:10px 20px calc(10px + env(safe-area-inset-bottom))}
+  .dock .call{display:block;text-align:center;font-size:19px}
+}
+@media (max-width:520px){
+  .w{width:calc(100% - 40px)}
+  .name{font-size:21px}
+  .top .call{font-size:16px;padding:12px 12px}
+  .sheet .in{grid-template-columns:1fr}
+  .reach .ways a{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<p class="note">Preview homepage for RMT Mechanical Services, built by Burgama. Not live.</p>
+
+<header class="top">
+  <div class="w">
+    <a class="name" href="#top">RMT Mechanical Services</a>
+    <nav aria-label="Main">
+      <a href="#fix">What we fix</a>
+      <a href="#plans">Maintenance plans</a>
+      <a href="#reach">Contact</a>
+      <a class="call" href="tel:+12404412783">240-441-2783</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="w">
+      <h1>No heat, a warm fridge or a dryer that quit? Call us.</h1>
+      <a class="num" href="tel:+12404412783" aria-label="Call 240-441-2783">240-441-2783</a>
+      <div class="under">
+        <p>RMT Mechanical Services repairs heating and cooling, refrigeration and appliances for homes and businesses across Southern Maryland.</p>
+        <p>Based in Waldorf, MD. In business since 2019.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fix" id="fix">
+    <div class="w">
+      <h2>What we fix</h2>
+      <div class="three">
+        <section class="heat">
+          <h3>Heating and cooling</h3>
+          <p>Fast diagnosis and affordable repairs that get your system running efficiently again.</p>
+          <ul><li>Air conditioners</li><li>Heat pumps</li><li>Gas furnaces</li><li>Spring and fall tune-ups</li></ul>
+        </section>
+        <section class="cool">
+          <h3>Refrigeration</h3>
+          <p>Repair and installation, from minor fixes to major installs.</p>
+          <ul><li>Commercial refrigeration units</li><li>Residential refrigeration</li><li>New installations</li></ul>
+        </section>
+        <section>
+          <h3>Appliances</h3>
+          <p>Prompt repairs for household and commercial appliances.</p>
+          <ul><li>Refrigerators and ice makers</li><li>Washers and dryers</li><li>Dishwashers</li><li>Microwaves</li><li>Dryer vent cleaning</li></ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="plans" id="plans">
+    <div class="w">
+      <div class="hd">
+        <h2>Maintenance plans, with the price up front</h2>
+        <p>Regular check-ups catch problems early. Select a plan to see exactly what we check.</p>
+      </div>
+      <div class="sheet">
+        <details>
+          <summary><span class="what">A/C annual service agreement</span><span class="gets">Spring and fall visits for your A/C, heat pump or gas furnace. <u>See the checklist</u></span><span class="cost">$275</span></summary>
+          <div class="in">
+            <div><h4>A/C and heat pump</h4><ul><li>Operating pressure</li><li>Refrigerant charge</li><li>Filter condition</li><li>Compressor amp reading</li><li>Belts and crankcase heater</li><li>Coils cleaned</li><li>Moving parts lubricated</li><li>Electrical connections tightened</li></ul></div>
+            <div><h4>Heat pump, fall</h4><ul><li>Operating pressure readings</li><li>Refrigerant charge</li><li>Compressor reading</li><li>Fan motor reading</li><li>Capacitor reading</li><li>Coils cleaned</li><li>Defrost cycle checked</li></ul></div>
+            <div><h4>Gas furnace, fall</h4><ul><li>Burner and pilot assembly</li><li>Heat exchanger checked for cracks</li><li>Electronic ignition tested</li><li>Fan and inducer motors</li><li>All safety controls</li><li>Manifold gas pressure</li></ul></div>
+            <div><h4>Safety</h4><ul><li>Carbon monoxide test</li><li>Vent piping and air filter</li><li>Temperature rise measured</li><li>Flame adjusted if needed</li></ul></div>
+          </div>
+        </details>
+        <details>
+          <summary><span class="what">Appliance maintenance agreement</span><span class="gets">One each of refrigerator, washer, dryer, dishwasher and microwave, plus 10% off service and repairs. <u>See the checklist</u></span><span class="cost">$499</span></summary>
+          <div class="in">
+            <div><h4>Refrigerator</h4><ul><li>Condenser cleared for airflow</li><li>Temperature readings</li><li>Door gaskets</li><li>Ice maker</li><li>Defrost cycle</li></ul></div>
+            <div><h4>Washer and dryer</h4><ul><li>Washer balance and drain pump</li><li>All wash cycles run</li><li>Inner and outer tubs cleaned</li><li>Dryer cleaned inside</li><li>Safety controls and heating element</li></ul></div>
+            <div><h4>Dishwasher</h4><ul><li>Sump area cleaned</li><li>Drain and heater</li><li>Door gaskets and tub seal</li><li>Racks checked for missing parts</li></ul></div>
+            <div><h4>Microwave</h4><ul><li>Proper heating</li><li>Top grille cleaned</li><li>Turntable motor</li></ul></div>
+            <p>Additional appliances are $75 each. Selling your home? A check before listing helps the home inspection go smoothly.</p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="what">Dryer and dryer vent cleaning</span><span class="gets">We clean inside the dryer and the vent, and send before and after pictures. <u>Why it matters</u></span><span class="cost">$175</span></summary>
+          <div class="in"><p>A clean dryer and dryer vent prevents fires caused by lint buildup.</p></div>
+        </details>
+      </div>
+      <p class="valid">Prices valid through May 2026. Single-appliance maintenance is also available. Call for the current price.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="reach" id="reach">
+  <div class="w">
+    <h2>Tell us what's going on and we'll get it fixed.</h2>
+    <div class="ways">
+      <div><span>Call</span><a href="tel:+12404412783">240-441-2783</a></div>
+      <div><span>Email</span><a href="mailto:contact@rmtmechanicalservicesllc.com">contact@rmtmechanicalservicesllc.com</a></div>
+      <div><span>Based in</span><b>Waldorf, MD 20603</b></div>
+    </div>
+    <p class="fine"><span>RMT Mechanical Services, LLC</span><span>Preview built by Burgama with RMT's own services and prices. burgama.com</span></p>
+  </div>
+</footer>
+
+<div class="dock"><a class="call" href="tel:+12404412783">Call 240-441-2783</a></div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAFSUS | Turkish American Friendship Society of the US, Philadelphia</title>
+<meta name="description" content="TAFSUS has brought the Turkish and American communities of Southeastern Pennsylvania, Delaware and Southern New Jersey together since 1966 through education, culture and social events.">
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:Literata;src:url(/demo/_fonts/literata-latin-wght-normal.woff2) format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:Hanken;src:url(/demo/_fonts/hanken-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:300 800;font-display:swap}
+:root{--teal:#0b5f63;--deep:#07474a;--tulip:#c8372d;--ink:#132326;--paper:#fff;--mist:#eaf2f1;--mute:#4f6366;--rule:#c4d3d2}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 Hanken,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Literata,Georgia,serif;font-weight:500;margin:0;line-height:1.08;letter-spacing:-.018em}
+p{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+:focus-visible{outline:3px solid var(--tulip);outline-offset:3px}
+.w{width:min(1160px,100% - 56px);margin-inline:auto}
+.note{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 20px}
+
+.top{position:sticky;top:0;z-index:10;background:var(--teal);color:#fff}
+.top .w{display:flex;align-items:center;justify-content:space-between;gap:20px;height:70px}
+.name{text-decoration:none;line-height:1.1}
+.name b{font-family:Literata,serif;font-weight:600;font-size:26px;letter-spacing:.02em}
+.name span{font-size:14px;margin-left:12px;color:#cfe3e2}
+.top nav{display:flex;align-items:center;gap:28px;font-size:16.5px}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;background:var(--tulip);color:#fff;font:650 17px/1 Hanken,sans-serif;padding:17px 24px;border-radius:2px;text-decoration:none}
+.btn:hover{background:var(--ink)}
+.top nav .btn{padding:13px 18px}
+.top nav .btn:hover{text-decoration:none}
+
+.open{background:var(--teal);color:#fff;padding:70px 0 84px}
+.open h1{font-size:clamp(42px,7vw,100px);max-width:10.5em}
+.open .row{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:end;margin-top:44px;padding-top:26px;border-top:1px solid rgba(255,255,255,.4)}
+.open .row p{grid-column:1/8;font-size:21px;line-height:1.5;color:#e4f0ef}
+.open .row div{grid-column:9/13;display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;justify-content:flex-end}
+.open .row div a:not(.btn){font-weight:600}
+
+.work{padding:88px 0 60px}
+.work h2,.join h2{font-size:clamp(32px,4vw,52px)}
+.work .hd{max-width:22em}
+.prog{margin-top:36px;border-top:2px solid var(--ink)}
+.prog article{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;padding:28px 0;border-bottom:1px solid var(--rule);align-items:start}
+.prog h3{grid-column:1/6;font-size:clamp(26px,2.7vw,36px)}
+.prog p{grid-column:6/11;color:#2c4144}
+.prog small{grid-column:11/13;font-size:15px;color:var(--mute);text-align:right;line-height:1.4}
+
+.line{background:var(--mist);padding:84px 0 90px}
+.line h2{font-size:clamp(32px,4vw,52px);max-width:14em}
+.line ol{list-style:none;margin:44px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);column-gap:28px;border-top:2px solid var(--teal)}
+.line li{position:relative;padding-top:22px}
+.line li::before{content:"";position:absolute;left:0;top:-8px;width:14px;height:14px;border-radius:50%;background:var(--teal)}
+.line li:last-child::before{background:var(--tulip)}
+.line time{display:block;font-family:Literata,serif;font-weight:500;font-size:40px;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.line li p{margin-top:10px;font-size:16.5px;color:#2c4144}
+
+.join{padding:88px 0}
+.join .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:start}
+.join h2{grid-column:1/7}
+.join .b{grid-column:8/13}
+.join .b p{font-size:19px}
+.join .b .acts{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;margin-top:26px}
+.join .b .acts a:not(.btn){font-weight:600}
+
+.end{background:var(--deep);color:#fff;padding:76px 0 34px}
+.end blockquote{margin:0;font-family:Literata,serif;font-size:clamp(34px,5.4vw,76px);line-height:1.08;letter-spacing:-.018em;max-width:12em}
+.end cite{display:block;margin-top:18px;font:500 19px/1.4 Hanken,sans-serif;letter-spacing:0;color:#cfe3e2}
+.end dl{display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px;margin:60px 0 0;border-top:1px solid rgba(255,255,255,.35)}
+.end dl div{padding-top:16px}
+.end dt{font-size:15.5px;color:#b5d0cf}
+.end dd{margin:2px 0 0;font-size:19px;font-weight:500}
+.end .fine{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 30px;margin-top:48px;padding-top:18px;border-top:1px solid rgba(255,255,255,.2);font-size:14px;color:#b5d0cf}
+
+@media (max-width:940px){
+  .name span{display:none}
+  .top nav a:not(.btn){display:none}
+  .open{padding:44px 0 56px}
+  .open .row,.join .w{display:block}
+  .open .row div{justify-content:flex-start;margin-top:26px}
+  .work{padding:56px 0 30px}
+  .prog article{display:block;padding:22px 0}
+  .prog p{margin-top:10px}
+  .prog small{display:block;text-align:left;margin-top:8px}
+  .line,.join{padding:56px 0}
+  .line ol{display:block;border-top:0;border-left:2px solid var(--teal);margin-top:32px}
+  .line li{padding:0 0 26px 24px}
+  .line li::before{left:-8px;top:12px}
+  .join .b{margin-top:22px}
+  .end{padding-top:56px}
+  .end dl{display:block}
+  .end dl div{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.25)}
+}
+@media (max-width:540px){
+  .w{width:calc(100% - 40px)}
+  .open .row p{font-size:18.5px}
+  .top nav .btn{padding:12px 13px;font-size:15.5px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<p class="note">Preview homepage for TAFSUS, built by Burgama. Not live.</p>
+
+<header class="top">
+  <div class="w">
+    <a class="name" href="#top"><b>TAFSUS</b><span>Turkish American Friendship Society of the US</span></a>
+    <nav aria-label="Main">
+      <a href="#work">What we do</a>
+      <a href="#history">Our history</a>
+      <a href="#join">Membership</a>
+      <a class="btn" href="#join">Become a member</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="open">
+    <div class="w">
+      <h1>Sixty years of Turkish American friendship in Philadelphia.</h1>
+      <div class="row">
+        <p>TAFSUS is a non-profit founded in 1966 to build understanding and friendship between the Turkish and American communities through educational, cultural and social activities. We serve Southeastern Pennsylvania, Delaware and Southern New Jersey.</p>
+        <div><a class="btn" href="#join">Become a member</a><a href="https://tafsus.net/">Join the email list</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="w">
+      <h2 class="hd">What your membership makes possible</h2>
+      <div class="prog">
+        <article><h3>Republic Day Dinner Dance</h3><p>Every autumn we celebrate the founding of the Turkish Republic with dinner, music and dancing. It is the biggest night of our year.</p><small>Every autumn</small></article>
+        <article><h3>ATA School</h3><p>Turkish language and culture classes for children aged 4 to 14 and for adults, so our children can enjoy their heritage as Turkish Americans. Jointly sponsored with the Middle East Center at UPenn.</p><small>Since 2008</small></article>
+        <article><h3>Okumus/TAFSUS Fellowship</h3><p>We send teachers and school administrators to Turkey for a two-week summer study tour. The World Affairs Council of Philadelphia selects the fellows on our behalf.</p><small>Since 1999</small></article>
+        <article><h3>Culture in the city</h3><p>Turkish nights at the Philadelphia Museum of Art, Turkish Delight days at the Penn Museum, concerts, lectures and film, often with partners such as the Alliance Francaise de Philadelphie.</p><small>Through the year</small></article>
+        <article><h3>Getting together</h3><p>Luncheons, holiday celebrations, sing-alongs with the TAFSUS Choir and our picnic at Ridley Creek State Park.</p><small>Through the year</small></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="line" id="history">
+    <div class="w">
+      <h2>From 1966 to today</h2>
+      <ol>
+        <li><time>1966</time><p>TAFSUS is established.</p></li>
+        <li><time>1999</time><p>The Okumus/TAFSUS Fellowship begins sending teachers to Turkey.</p></li>
+        <li><time>2008</time><p>ATA School opens for children and adults.</p></li>
+        <li><time>2010</time><p>Mayor Nutter proclaims May 29 Turkish American Friendship Day in Philadelphia.</p></li>
+        <li><time>2026</time><p>Sixty years of TAFSUS.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="join" id="join">
+    <div class="w">
+      <h2>Annual dues keep every one of these programs going.</h2>
+      <div class="b">
+        <p>Members receive email updates and discounts. Dues are what let TAFSUS keep the Turkish American community in the Philadelphia area connected.</p>
+        <div class="acts"><a class="btn" href="https://tafsus.net/form.html">Join or renew</a><a href="mailto:info@tafsus.net">Ask us a question</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="end">
+  <div class="w">
+    <blockquote>"Peace at home, peace in the world."<cite>Mustafa Kemal Atatürk</cite></blockquote>
+    <dl>
+      <div><dt>Email</dt><dd><a href="mailto:info@tafsus.net">info@tafsus.net</a></dd></div>
+      <div><dt>We serve</dt><dd>Southeastern Pennsylvania, Delaware and Southern New Jersey</dd></div>
+      <div><dt>Membership</dt><dd><a href="https://tafsus.net/form.html">Membership form</a></dd></div>
+    </dl>
+    <p class="fine"><span>Turkish American Friendship Society of the US</span><span>Preview built by Burgama with TAFSUS's own wording. burgama.com</span></p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Honeycomb Salon | Hair in Downtown Charlottesville</title>
+<meta name="description" content="The Honeycomb is a hair salon in the Glass Building, downtown Charlottesville. Six stylists, each with their own book. Pick yours and book online.">
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:Unbounded;src:url(/demo/_fonts/unbounded-latin-wght-normal.woff2) format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:Schibsted;src:url(/demo/_fonts/schibsted-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:400 900;font-display:swap}
+:root{--wall:#4b5729;--wall-deep:#3d4720;--bone:#f2ebd9;--brick:#000;--sign:#e8aa2e;--rule:rgba(242,235,217,.26);--soft:rgba(242,235,217,.78)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--wall);color:var(--bone);font:400 17px/1.55 Schibsted,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-underline-offset:.18em;text-decoration-thickness:1px}
+h1,h2,h3{font-family:Unbounded,"Arial Black",sans-serif;font-weight:500;margin:0;letter-spacing:-.025em;line-height:1.1}
+p{margin:0}
+:focus-visible{outline:2px solid var(--sign);outline-offset:3px}
+.w{width:min(1180px,100% - 48px);margin-inline:auto}
+
+.note{background:var(--brick);color:var(--bone);font-size:13px;padding:6px 24px;text-align:center}
+
+.top{position:sticky;top:0;z-index:10;background:var(--bone);color:#000}
+.top .w{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
+.top img{height:40px;width:auto}
+.top nav{display:flex;align-items:center;gap:30px;font-size:15.5px}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.teeth{height:18px;background:repeating-linear-gradient(90deg,var(--bone) 0 5px,transparent 5px 14px)}
+
+.book{display:inline-block;background:var(--sign);color:#000;font-weight:650;font-size:15.5px;line-height:1;padding:15px 20px;border-radius:2px;text-decoration:none;white-space:nowrap}
+.book:hover{background:var(--bone)}
+.top nav .book{padding:12px 16px;background:#000;color:var(--bone)}
+.top nav .book:hover{background:var(--wall)}
+.top nav .book:hover{text-decoration:none}
+
+.open{padding:64px 0 76px}
+.open .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end}
+.open .say{grid-column:1/8}
+.open h1{font-size:clamp(33px,4.55vw,62px);max-width:11.5em}
+.open .say p{font-size:19px;line-height:1.5;max-width:31em;margin-top:28px;color:var(--soft)}
+.open .go{display:flex;flex-wrap:wrap;align-items:center;gap:22px;margin-top:32px}
+.open figure{grid-column:8/13;margin:0}
+.open figure img{width:100%}
+
+.roster{padding:0 0 92px}
+.roster .lead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:14px 40px;padding:26px 0 24px;border-top:1px solid var(--bone)}
+.roster h2{font-size:clamp(24px,2.6vw,34px)}
+.pick{font-size:17px}
+.pick select{font:inherit;font-weight:650;color:var(--bone);background:var(--wall-deep);border:0;border-bottom:2px solid var(--sign);border-radius:0;padding:6px 30px 6px 10px;margin-left:8px;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--bone) 50%),linear-gradient(135deg,var(--bone) 50%,transparent 50%);background-position:calc(100% - 15px) 55%,calc(100% - 10px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.pick option{color:#000;background:#fff}
+.row{display:grid;grid-template-columns:150px minmax(0,.8fr) minmax(0,1.3fr) 224px;column-gap:32px;align-items:start;padding:26px 0;border-top:1px solid var(--rule)}
+.row[hidden]{display:none}
+.row img{width:150px;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%;filter:grayscale(1)}
+.row h3{font-size:27px;margin-top:-3px}
+.row .role{font-size:15px;color:var(--soft);margin-top:8px}
+.row .does{font-size:19px;line-height:1.35;font-weight:600}
+.row .more{color:var(--soft);margin-top:8px;max-width:34em}
+.row .act{text-align:right}
+.row .days{font-size:15px;color:var(--soft);margin-bottom:14px;line-height:1.4}
+.empty{display:none;padding:26px 0;border-top:1px solid var(--rule)}
+.roster .end{border-top:1px solid var(--rule)}
+
+.room{background:var(--wall-deep);padding:76px 0}
+.room .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end}
+.room .b{grid-column:1/5;grid-row:1/3}
+.room .t{grid-column:6/13;align-self:end}
+.room .s{grid-column:6/13;margin-top:20px;color:var(--soft)}
+.room h2{font-size:clamp(26px,3.3vw,44px);max-width:13em}
+.room .s strong{color:var(--bone);font-weight:600}
+
+.find{background:var(--brick);padding:84px 0 80px}
+.find .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:start}
+.find .pic{grid-column:1/6}
+.find .info{grid-column:7/13}
+.find h2{font-size:clamp(24px,2.75vw,37px);color:var(--sign)}
+.find .where{font-size:19px;margin-top:14px}
+.find table{width:100%;border-collapse:collapse;margin-top:34px;font-size:17px;font-variant-numeric:tabular-nums}
+.find td{padding:11px 0;border-top:1px solid var(--rule)}
+.find td:last-child{text-align:right}
+.find .fine{font-size:15px;color:var(--soft);margin-top:14px;padding-top:14px;border-top:1px solid var(--rule)}
+.find .go{display:flex;flex-wrap:wrap;align-items:center;gap:22px;margin-top:30px}
+
+.foot{background:var(--brick);border-top:1px solid var(--rule);padding:26px 0 30px;font-size:14.5px;color:var(--soft)}
+.foot .w{display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between}
+
+.dock{display:none}
+
+@media (max-width:920px){
+  .top nav a:not(.book){display:none}
+  .open{padding:40px 0 52px}
+  .open .w{display:block}
+  .open figure{margin-top:40px}
+  .row{grid-template-columns:104px minmax(0,1fr);column-gap:20px;row-gap:14px}
+  .row img{width:104px;grid-row:1/3}
+  .row .txt{grid-column:2}
+  .row .act{grid-column:1/-1;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .row .days{margin:0}
+  .room{padding:52px 0}
+  .room .w,.find .w{display:block}
+  .room .b{width:62%;margin-bottom:30px}
+  .room .s{margin-top:16px}
+  .find{padding:52px 0 60px}
+  .find .info{margin-top:34px}
+  .foot{padding-bottom:96px}
+  .dock{display:block;position:fixed;inset:auto 0 0 0;z-index:12;background:var(--brick);padding:10px 24px calc(10px + env(safe-area-inset-bottom))}
+  .dock .book{display:block;text-align:center}
+}
+@media (max-width:520px){
+  .w{width:calc(100% - 36px)}
+  .top img{height:32px}
+  .open .say p{font-size:17.5px}
+  .row h3{font-size:22px}
+  .row .does{font-size:17px}
+  .pick select{margin:8px 0 0;display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<p class="note">Preview homepage for The Honeycomb, built by Burgama. Not live.</p>
+
+<header class="top">
+  <div class="w">
+    <a href="#top"><img src="/demo/honeycomb/logo-bone.png" alt="The Honeycomb"></a>
+    <nav aria-label="Main">
+      <a href="#stylists">Stylists</a>
+      <a href="#room">The salon</a>
+      <a href="#find">Hours and directions</a>
+      <a class="book" href="#stylists">Book an appointment</a>
+    </nav>
+  </div>
+</header>
+<div class="teeth" aria-hidden="true"></div>
+
+<main id="top">
+  <section class="open">
+    <div class="w">
+      <div class="say">
+        <h1>Six stylists share one room in the Glass Building.</h1>
+        <p>The Honeycomb has been cutting and coloring hair in downtown Charlottesville since 2012. Everyone here keeps their own book, so the first step is picking your stylist.</p>
+        <div class="go">
+          <a class="book" href="#stylists">Pick your stylist</a>
+          <a href="#find">313 2nd St SE, Suite 107</a>
+        </div>
+      </div>
+      <figure><img src="/demo/honeycomb/interior.jpg" width="800" height="600" alt="Inside The Honeycomb: styling chairs, round mirrors and green walls hung with plants"></figure>
+    </div>
+  </section>
+
+  <section class="roster" id="stylists">
+    <div class="w">
+      <div class="lead">
+        <h2>Who's in the room</h2>
+        <label class="pick">Show me who does
+          <select id="pick">
+            <option value="all">everything</option>
+            <option value="curly">curly hair</option>
+            <option value="precision">precision cuts</option>
+            <option value="lowcolor">low-maintenance color</option>
+            <option value="vivid">vivid color</option>
+            <option value="affirming">gender-affirming cuts</option>
+            <option value="kids">kids' cuts</option>
+            <option value="notip">gratuity-included pricing</option>
+          </select>
+        </label>
+      </div>
+
+      <article class="row" data-t="precision">
+        <img src="/demo/honeycomb/crystal.jpg" alt="Crystal">
+        <div class="txt"><h3>Crystal</h3><p class="role">Owner. Stylist for 22+ years.</p></div>
+        <div class="txt"><p class="does">Precision cuts and a wide range of color</p><p class="more">A love for every cutting technique, precision cuts most of all. Color services of all kinds, excluding fashion colors.</p></div>
+        <div class="act"><p class="days">Monday to Friday<br>Waitlist if you don't see a time</p><a class="book" href="https://honeycomb-salon-102296.square.site" target="_blank" rel="noopener">Book with Crystal</a></div>
+      </article>
+
+      <article class="row" data-t="">
+        <img src="/demo/honeycomb/claibourne.jpg" alt="Claibourne">
+        <div class="txt"><h3>Claibourne</h3><p class="role">Owner.</p></div>
+        <div class="txt"><p class="does">Hairstylist to the Charlottesville stars</p><p class="more">Currently working part time-ish. If you don't see what you need, add yourself to the waitlist.</p></div>
+        <div class="act"><p class="days">Part time<br>Waitlist open</p><a class="book" href="https://the-honeycomb-108925.square.site" target="_blank" rel="noopener">Book with Claibourne</a></div>
+      </article>
+
+      <article class="row" data-t="curly lowcolor notip">
+        <img src="/demo/honeycomb/anna.jpg" alt="Anna">
+        <div class="txt"><h3>Anna</h3><p class="role">Here since 2012.</p></div>
+        <div class="txt"><p class="does">Curly cuts and lived-in color</p><p class="more">Cuts and color that suit your lifestyle and grow with you. Gratuity is included in the price, so no tip is expected.</p></div>
+        <div class="act"><p class="days">Wed to Fri, 10 to 6<br>Saturday, 12 to 5</p><a class="book" href="https://valley-curl.square.site" target="_blank" rel="noopener">Book with Anna</a></div>
+      </article>
+
+      <article class="row" data-t="affirming kids lowcolor">
+        <img src="/demo/honeycomb/hadley.jpg" alt="Hadley">
+        <div class="txt"><h3>Hadley</h3></div>
+        <div class="txt"><p class="does">Neurodiversity and gender-affirming cuts for all textures</p><p class="more">Low-maintenance color, balayage and grey blending. Kids welcome. Will teach you how to cut your own bangs.</p></div>
+        <div class="act"><p class="days">Openings on the calendar</p><a class="book" href="https://hadleyhair.square.site" target="_blank" rel="noopener">Book with Hadley</a></div>
+      </article>
+
+      <article class="row" data-t="lowcolor notip">
+        <img src="/demo/honeycomb/becca.jpg" alt="Becca">
+        <div class="txt"><h3>Becca</h3></div>
+        <div class="txt"><p class="does">Low-maintenance, low-effort color and cuts</p><p class="more">For all hair textures. Gratuity is included in the price, so no tip is expected.</p></div>
+        <div class="act"><p class="days">Thursday to Sunday</p><a class="book" href="https://thatshairbizbaby.square.site" target="_blank" rel="noopener">Book with Becca</a></div>
+      </article>
+
+      <article class="row" data-t="vivid">
+        <img src="/demo/honeycomb/hannah.jpg" alt="Hannah">
+        <div class="txt"><h3>Hannah</h3></div>
+        <div class="txt"><p class="does">Vivids and balayage</p><p class="more">Loves all things color, including all-over color and foils. A deposit is required for color services.</p></div>
+        <div class="act"><p class="days">Books by Instagram or text</p><a class="book" href="https://www.instagram.com/hannahdoeshairva/" target="_blank" rel="noopener">Message Hannah</a></div>
+      </article>
+
+      <p class="empty" id="empty">Nobody lists that one yet. Choose "everything" to see all six stylists.</p>
+      <div class="end"></div>
+    </div>
+  </section>
+
+  <section class="room" id="room">
+    <div class="w">
+      <img class="b" src="/demo/honeycomb/plants.jpg" width="436" height="600" alt="Styling stations seen through the leaves of the salon's plants">
+      <h2 class="t">Green walls, honeycomb tile and more plants than chairs.</h2>
+      <p class="s">On the shelves: <strong>Redken, Verb, Framesi &amp; Futura and Davines.</strong></p>
+    </div>
+  </section>
+
+  <section class="find" id="find">
+    <div class="w">
+      <img class="pic" src="/demo/honeycomb/front.jpg" width="670" height="600" alt="The Honeycomb's storefront: black brick, plants in the window and a gold sign over the door">
+      <div class="info">
+        <h2>313 2nd St SE, Suite 107</h2>
+        <p class="where">The Glass Building, downtown Charlottesville, VA 22902</p>
+        <table>
+          <tr><td>Monday to Wednesday</td><td>10 am to 7 pm</td></tr>
+          <tr><td>Thursday and Friday</td><td>10 am to 6 pm</td></tr>
+          <tr><td>Saturday</td><td>9 am to 5 pm</td></tr>
+          <tr><td>Sunday</td><td>10 am to 5 pm</td></tr>
+        </table>
+        <p class="fine">Each stylist sets their own days, so check their calendar before you come by. Rated 4.9 from 66 reviews on Google.</p>
+        <div class="go">
+          <a class="book" href="https://www.google.com/maps/search/?api=1&query=Honeycomb%20313%202nd%20St%20SE%20Ste%20107%20Charlottesville%20VA" target="_blank" rel="noopener">Get directions</a>
+          <a href="https://www.instagram.com/cvillehoneycomb/" target="_blank" rel="noopener">@cvillehoneycomb on Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="w">
+    <span>The Honeycomb Salon, est. 2012</span>
+    <span>Preview built by Burgama with The Honeycomb's own photos and wording. burgama.com</span>
+  </div>
+</footer>
+
+<div class="dock"><a class="book" href="#stylists">Book with your stylist</a></div>
+
+<script>
+(function(){
+  var pick=document.getElementById('pick'),rows=document.querySelectorAll('.row'),empty=document.getElementById('empty');
+  pick.addEventListener('change',function(){
+    var f=pick.value,n=0;
+    rows.forEach(function(r){var on=f==='all'||(' '+r.dataset.t+' ').indexOf(' '+f+' ')>-1;r.hidden=!on;if(on)n++});
+    empty.style.display=n?'none':'block';
+  });
+})();
+</script>
+</body>
+</html>
