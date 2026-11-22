@@ -9,6 +9,7 @@ const nextConfig = {
       { source: '/book-online', destination: '/#start-a-project', permanent: true },
       { source: '/form-finished', destination: '/', permanent: true },
       { source: '/privacy-policy', destination: '/privacy', permanent: true },
+      { source: '/services/branding-packaging', destination: '/services/brand-identity', permanent: true },
       { source: '/work/houston-dynamo', destination: '/work', permanent: true },
       { source: '/work/livelihood', destination: '/work', permanent: true },
       { source: '/work/meanwhile-brew', destination: '/work', permanent: true },

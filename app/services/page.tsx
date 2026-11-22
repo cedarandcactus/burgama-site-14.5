@@ -10,8 +10,8 @@ import { JsonLd, absoluteUrl, breadcrumbJsonLd, defaultSocialImage } from '@/lib
 import styles from './services.module.css'
 
 const path = '/services'
-const title = 'Marketing Services in Austin, TX | Burgama'
-const description = 'SEO, websites, social media, paid ads, email, branding and video from one Austin team. See what each service includes and what it costs.'
+const title = 'Austin Marketing Agency: Services and Pricing | Burgama'
+const description = 'Burgama is an Austin marketing agency: SEO, websites, social media, paid ads, email, branding and packaging from one team. See what each service includes and costs.'
 
 export const metadata: Metadata = {
   title: { absolute: title },
@@ -42,7 +42,7 @@ export default function ServicesPage() {
 
       <PageHero
         variant="centered"
-        wordmark="Marketing services from one Austin team"
+        wordmark="Austin marketing agency services, from one team"
         titleId="services-title"
         intro={['Strategy, SEO, websites, social, ads, email and brand work, done by the same people. Each page says what is included and what it costs.']}
         actions={<ModularButton href="#start-a-project">start a project</ModularButton>}
