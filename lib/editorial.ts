@@ -71,8 +71,8 @@ export const ideas: IdeaPost[] = [
       'Building and hosting on Vercel is now our default for client sites at Burgama, for the same reasons we chose it for our own.',
     ],
     internalLink: {
-      href: '/#capabilities',
-      label: 'Explore digital & development',
+      href: '/services/website-design',
+      label: 'See website design and pricing',
     },
     sources: [
       { label: 'Vercel: Domains', href: 'https://vercel.com/docs/domains' },
@@ -110,8 +110,8 @@ export const ideas: IdeaPost[] = [
       'This is how we approach email capture at Burgama. The popup is not the goal. The order that follows it is.',
     ],
     internalLink: {
-      href: '/#capabilities',
-      label: 'Explore marketing & growth',
+      href: '/services/email-marketing',
+      label: 'See the email marketing foundation',
     },
     sources: [
       {
@@ -154,8 +154,8 @@ export const ideas: IdeaPost[] = [
       'At Burgama we now run audits that way by default. If a finding cannot be reproduced on the live site, it does not go in the report.',
     ],
     internalLink: {
-      href: '/#capabilities',
-      label: 'Explore search & strategy',
+      href: '/services/local-seo',
+      label: 'See what our Austin SEO includes',
     },
     sources: [
       {
@@ -195,8 +195,8 @@ export const ideas: IdeaPost[] = [
       'Sorting out app overlap like this is a regular part of the Shopify work we do at Burgama.',
     ],
     internalLink: {
-      href: '/#capabilities',
-      label: 'Explore Shopify & ecommerce',
+      href: '/services/website-design',
+      label: 'See website design and pricing',
     },
     sources: [
       { label: 'Judge.me: Pricing', href: 'https://judge.me/pricing' },
@@ -233,8 +233,8 @@ export const ideas: IdeaPost[] = [
       'This is the kind of thing we do as part of SEO work at Burgama. Before we ever ask Google to look at a page, we make sure the page and the map agree.',
     ],
     internalLink: {
-      href: '/#capabilities',
-      label: 'Explore SEO & search',
+      href: '/services/local-seo',
+      label: 'See what our Austin SEO includes',
     },
     sources: [
       {
@@ -273,8 +273,8 @@ export const ideas: IdeaPost[] = [
       'That is the conversation we have with every local business before we recommend anything at Burgama. Sometimes the answer is to leave the site alone.',
     ],
     internalLink: {
-      href: '/#capabilities',
-      label: 'Explore web design & development',
+      href: '/services/website-design',
+      label: 'See website design and pricing',
     },
     sources: [
       { label: 'Google: PageSpeed Insights', href: 'https://pagespeed.web.dev/' },
@@ -320,6 +320,237 @@ export const ideas: IdeaPost[] = [
       {
         label: 'VentureBeat: OpenAI lets you claim your business in ChatGPT',
         href: 'https://venturebeat.com/technology/openai-lets-you-claim-your-business-in-chatgpt-and-set-up-a-custom-agentic-ai-customer-sales-rep',
+      },
+    ],
+  },
+  {
+    slug: 'how-much-do-facebook-ads-cost',
+    issue: '08',
+    title: 'How much do Facebook ads cost? Start from what a sale is worth',
+    metaTitle: 'How much do Facebook ads cost? Start with one sale',
+    metaDescription:
+      'Facebook ads have no price list. You set the budget. Here is how to work back from what one sale is worth to a budget Meta can actually learn from.',
+    targetKeyword: 'how much do facebook ads cost',
+    categories: ['Business Strategy', 'Ecommerce'],
+    deck: 'Facebook ads have no price list. You set the budget. Here is how to work back from what one sale is worth to a budget Meta can actually learn from.',
+    theme: 'cyan',
+    visual: 'performance',
+    artwork: {
+      code: 'COST / SALE',
+      notation: 'BUDGET / RETURN',
+    },
+    body: [
+      'There is no price list for Facebook ads. You tell Meta how much you are willing to spend, and Meta spends it. Its own pricing page describes two choices: a daily budget, which it calls the average amount you’re willing to spend on an ad set or campaign per day, and a lifetime budget for the entire run. So the honest answer to how much Facebook ads cost is whatever you decide. The more useful question is how much you can afford to pay for one sale, because that number tells you what the budget has to be.',
+      'Start by separating two bills that often get blurred together. The first is ad spend, which goes to Meta. The second is whatever you pay a person or a studio to plan, make and manage the ads. They are not the same money and they should not hide inside one number. When we manage ads, they run in an account the client owns and Meta charges the client’s card directly. If an agency quotes you a single figure that covers both, ask how much of it reaches Meta.',
+      'Now work backwards from a sale. Here is an example with made-up numbers. Say your average order is $60, your gross margin is 65% and payment fees take 3%. Each order leaves you $39 after the cost of the product, and $37.20 after fees of $1.80. If you want every dollar of ad spend to bring back four dollars in sales, a 4x return, you can pay $60 divided by 4, which is $15, to win one purchase. After the ad cost, that order still contributes $22.20.',
+      'That $15 matters because of how Meta’s delivery system learns. Meta says ad sets exit the learning phase as soon as they can deliver stably, and that this usually occurs after about 50 results in the week after the last significant edit. In the example, 50 purchases at $15 each is $750 a week. Multiply by 4.33 weeks and you get $3247.50 a month. That is the spend that gives Meta enough purchases to learn from at the price you can afford. It is a figure to plan around, not a promise of what each purchase will cost.',
+      'This is why a very small budget so often disappoints. If the store in the example spends $300 a month, that pays for 20 purchases at $15, spread over four weeks. Meta never sees anything close to 50 results in a week, so the ad set stays in the learning phase and you end up judging ads that Meta has not finished learning how to deliver. Nothing is broken. The budget is too small for the goal. You can raise the budget, ask Meta to optimize for an earlier step such as an add to cart, or wait.',
+      'You do not need a spreadsheet for this. Our free ROAS calculator, at burgama.com/roas-calculator, takes your order value, margin, fees and target return and gives you the cost per purchase you can afford and the monthly learning budget that goes with it. Run it before you talk to anyone who sells ads, including us. If the monthly figure is far beyond what you can spend, that is worth knowing now, and it costs nothing to find out.',
+      'Then there is the second bill. At Burgama, an Austin studio, management is $750 a month for up to $5000 in monthly ad spend, and $1250 a month from $5000 to $10000. That covers launching, measuring and adjusting the campaigns, with weekly written updates and a monthly report. The ads themselves have to be made too. A first batch of creative, 12 video ads and 6 static ads, is $1500 one time. These are reference prices, and every proposal is custom. Our Meta ads work for MatchDay and Ollivate is on the site as case studies.',
+      'Sometimes the right budget is zero. If people are not yet buying the product without ads, ads will mostly show you that faster and at a cost. If you cannot trace a purchase back to an ad, you will be guessing. If the margin leaves nothing after a realistic cost per purchase, more spend only loses more. Fix the offer, the tracking or the price first. We would rather tell you to wait than manage a budget that cannot work.',
+    ],
+    internalLink: {
+      href: '/roas-calculator',
+      label: 'Run your numbers in the ROAS calculator',
+    },
+    sources: [
+      {
+        label: 'Meta for Business: Facebook and Instagram ads pricing and cost',
+        href: 'https://www.facebook.com/business/ads/pricing',
+      },
+      {
+        label: 'Meta Business Help Center: About the learning phase',
+        href: 'https://www.facebook.com/business/help/112167992830700',
+      },
+    ],
+  },
+  {
+    slug: 'how-much-does-a-website-cost',
+    issue: '09',
+    title: 'How much does a website cost for a small business?',
+    metaTitle: 'How much does a website cost for a small business?',
+    metaDescription:
+      'A 5-page service site and an online store are different jobs. What moves the price of a small business website, and what ours include at $1500 and $2450.',
+    targetKeyword: 'how much does a website cost',
+    categories: ['Web Design', 'Business Strategy'],
+    deck: 'A 5-page service site and an online store are different jobs. What moves the price of a small business website, and what ours include at $1500 and $2450.',
+    theme: 'navy',
+    visual: 'platforms',
+    artwork: {
+      code: 'PAGE / STORE',
+      notation: 'SCOPE / PRICE',
+    },
+    body: [
+      'Two quotes for a small business website can be far apart and both be fair, because they are often quotes for different jobs. A 5-page site for a service business and an online store with a checkout are not the same amount of work. At Burgama, websites for service businesses and nonprofits start at $1500 and ecommerce websites start at $2450. Those are what our Austin studio charges, and they are reference points, since every proposal is custom. Here is what moves the number up or down.',
+      'Three things move the price more than anything else. The first is how many pages there are, because each page has to be designed, written and checked on a phone. The second is whether the site sells anything. A store adds products, payments and a checkout that has to be tested. The third is who writes the words. If you arrive with finished copy, the build is faster. If the studio writes it, that is real work and it belongs in the quote. Ask any designer which of the three their price assumes.',
+      'Our $1500 site is for service businesses and nonprofits that need a clear, credible home online. It is a custom, mobile-friendly website of up to 5 pages with SEO basics, LocalBusiness and FAQ schema, a contact or booking form, analytics setup, two rounds of revisions and redirects from your old site. Extra pages are billed at $100 an hour. It suits a business whose site needs to explain what it does, show that it is real and make it easy to get in touch.',
+      'The $2450 ecommerce website is a custom Shopify store. The store structure is planned for one-time and subscription purchases. You get a custom homepage, shop, product, about, contact and FAQ pages, copywriting for the main pages, three custom rendered images, checkout and payment testing, page speed work, redirects from your old site and 30 days of monitoring after launch. A first draft takes about 4 to 6 weeks. Larger catalogs and extra integrations are scoped in the proposal, which is where a store’s price usually grows.',
+      'The hidden cost of a cheap redesign is not on the invoice. It is the Google traffic you can lose when old pages vanish. Every page on your current site has an address Google already knows, and some of those addresses have earned rankings. Google’s own guidance for moving a site recommends permanent redirects from the old URLs to the new ones, so its signals transfer. On every build we keep or redirect every old URL. When you compare quotes, ask each one what happens to your existing pages. If the answer is vague, the low price is not the real price.',
+      'You may not need a studio at all. Builders like Squarespace are good products, and for a business whose website mostly needs to exist, look credible and let people get in touch, a template you maintain yourself can be the whole job. We wrote about how to tell when you have outgrown one in an earlier article, Squarespace vs a custom website. The short version: if the site is acceptable on a phone and does everything you need, stay where you are and put the money into marketing instead.',
+      'Before you ask anyone for a quote, have a few things ready. A list of the pages you think you need. Whether you will sell online, and roughly how many products. Who is writing the words and supplying the photos. Access to your domain and your current site. Two or three sites you like, with a sentence on why. A quote built on those answers will be closer to the final bill than one built on a guess, and it lets you compare two studios on the same job.',
+      'One note on how the money moves, so there are no surprises. Our projects are billed half at kickoff and half on delivery, and a build starts with a discovery call followed by a custom proposal. Websites we have built include 10 Pillar Productions, Hiking Pony and AVRO, and each has a case study on our site. And if your current site already loads well on a phone, says what you do and brings in enquiries, the cheapest website is the one you already have. We will tell you so.',
+    ],
+    internalLink: {
+      href: '/services/website-design',
+      label: 'See website design and pricing',
+    },
+    sources: [
+      {
+        label: 'Google Search Central: How to move a site',
+        href: 'https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes',
+      },
+    ],
+  },
+  {
+    slug: 'klaviyo-pricing-and-first-flows',
+    issue: '10',
+    title: 'Klaviyo pricing: what it costs and the flows to build first',
+    metaTitle: 'Klaviyo pricing: what it costs and what to build first',
+    metaDescription:
+      'Klaviyo charges by the size of your list, so the cost only makes sense once the automated flows earn it back. How pricing works and which flows come first.',
+    targetKeyword: 'klaviyo pricing',
+    categories: ['Email Marketing', 'Ecommerce', 'Shopify'],
+    deck: 'Klaviyo charges by the size of your list, so the cost only makes sense once the automated flows earn it back. How pricing works and which flows come first.',
+    theme: 'cyan',
+    visual: 'email',
+    artwork: {
+      code: 'LIST / FLOW',
+      notation: 'COST / RETURN',
+    },
+    body: [
+      'Klaviyo charges by the size of your list, not by how much you sell. On its pricing page you select your number of active profiles, which Klaviyo defines as any contact in your database that you can market to, and the price moves with that number. When we read the page in November 2026, the free plan covered up to 250 active profiles and 500 emails per month, and the Email plan was listed at $20 a month for 500 active profiles and 5000 emails per month. Prices change, so read the page itself before you budget.',
+      'That structure has a consequence. Your bill grows as your list grows, whether or not those people buy anything. A list of contacts who never hear from you is a cost and nothing else. So the question is less what Klaviyo costs and more what the list is doing to earn it. In our experience the answer is the automated emails, which Klaviyo calls flows. Until those are built, a store is paying for a tool that can do far more than it is being asked to do.',
+      'Klaviyo sends two kinds of email. A campaign is one message you write and send to a group on a day you choose: a launch, a sale, a newsletter. A flow is a series that sends itself when a person does something, such as joining the list or leaving a cart. Campaigns take effort every time. Flows are built once and keep running. Both matter, but for a small team the flows come first, because they follow up with people on the days you are too busy to write anything.',
+      'There are six flows worth knowing, and it helps to take them in the order a customer meets them. The welcome flow is the first emails a new subscriber gets. Abandoned cart reminds a shopper who added something and left before paying. Browse abandonment follows up with people who looked at a product and went no further. Post-purchase is what a customer hears from you after they buy. Replenishment prompts a reorder around the time the product runs out. Winback gives customers who have gone quiet a reason to return.',
+      'Build the welcome flow and the abandoned cart flow first. Both reach people at the moment they are most interested: one has just asked to hear from you, the other was a step from paying. Post-purchase comes next, because a customer who hears nothing after an order has little reason to come back. Replenishment and winback need order history to work with, so they can wait until you have some. Browse abandonment fits anywhere after the first two. A store with only the first two running is already following up where it used to go silent.',
+      'SMS comes after the flows, not before. On Klaviyo’s pricing page, SMS and MMS are listed as an add-on to the paid plans, so texting is an extra line on the bill. A text also lands somewhere more personal than an inbox, so it should carry a message you already know people want. Once the flows show you which emails people act on, you know what is worth a text. Collect phone numbers with consent in the meantime, and decide what to send them later.',
+      'None of this works without people joining the list, so the signup form comes before everything. If your popup collects an email and then sends the shopper off to their inbox to hunt for a code, fix that first. We covered the structure in an earlier article, How to build an email popup people actually use. A welcome flow that nobody enters is a flow you built and will never see send, and no amount of clever writing inside it changes that.',
+      'If you would rather have it built for you, our Email Marketing Foundation is $1900 and takes about 5 to 6 weeks. It covers the core flows in your own Klaviyo account, which are welcome, abandoned cart, browse abandonment, post-purchase, replenishment and winback, plus SMS signup and a campaign calendar for what to send next. That is the price at our Austin studio, and it is a reference point, since every proposal is custom. Our email work for MatchDay and Patent Earth is on the site as case studies.',
+      'You may not need Klaviyo, or us, yet. If your list fits inside the free plan and you send a note now and then, the free plan is the right price. If the store has very few visitors, flows have nobody to follow up with, and the money is better spent on getting visitors first. Klaviyo starts to earn its fee when people are joining the list every week and leaving carts behind. That is the point to build the foundation, and not before.',
+    ],
+    internalLink: {
+      href: '/services/email-marketing',
+      label: 'See the email marketing foundation',
+    },
+    sources: [
+      { label: 'Klaviyo: Pricing', href: 'https://www.klaviyo.com/pricing' },
+    ],
+  },
+  {
+    slug: 'hire-a-social-media-manager',
+    issue: '11',
+    title: 'How to hire a social media manager for a small business',
+    metaTitle: 'How to hire a social media manager for a small business',
+    metaDescription:
+      'When to hire a social media manager, what to ask a freelancer or an agency before you sign, and how to judge the first month on what you actually get.',
+    targetKeyword: 'hire social media manager',
+    categories: ['Business Strategy', 'Client Process'],
+    deck: 'When to hire a social media manager, what to ask a freelancer or an agency before you sign, and how to judge the first month on what you actually get.',
+    theme: 'cyan',
+    visual: 'audit',
+    artwork: {
+      code: 'MAKE / REPLY',
+      notation: 'PITCH / MONTH',
+    },
+    body: [
+      'Hire a social media manager when the posting is already happening and the replies are not. If comments and messages sit for days while the feed looks busy, the account has outgrown the spare hour you give it. Then judge whoever you hire on the month you actually get, not on the pitch. The rest of this article is how to tell which kind of help you need, what to ask before you sign, and how to test the arrangement for a month before you commit to anything longer.',
+      'First, the honest case for not hiring anyone. Nobody knows the business like the people inside it. The owner who films a short clip at the counter, or the employee who knows every regular by name, will often make better content than an outsider with a nicer camera. If someone on your team enjoys it, posts most weeks and answers people the same day, keep it in-house and spend the money somewhere else. Outside help is for when the work has stopped fitting into anyone’s week.',
+      'It helps to see that social media is really three jobs. Making is the filming, the design and the captions. Posting is the calendar: getting the right piece out on the right day, on each platform, with the audio, tags and location it needs. Replying is everything after that: comments, direct messages, tags and mentions. Making gets the attention because everyone can see it. Replying slips first, because nobody sees an unanswered message except the person who sent it, and that person was often close to booking or buying.',
+      'There are three ways to get help. A freelancer is one person, usually strongest at one of the three jobs, and a good fit when you need a steady hand on the making or the posting and can keep the replies yourself. An in-house hire is inside the business all day and catches the moments nobody outside would see, but it is still one person covering three jobs, and you manage them. An agency brings a team, so planning, making and replying sit with different people, and you are paying for that coverage. None of the three is right for everyone.',
+      'Whichever you lean toward, ask the same four questions before you hire. Who makes the content, and do they need you on camera or on site to do it? Who replies to comments and messages, on which days, and how fast? What do you approve before it goes live, and what happens when you are slow to approve? What does the report show, and how often does it arrive? A good candidate answers all four without reaching for adjectives. If the answer to the reply question is vague, assume replying is not included.',
+      'For a reference point, here is what a managed month looks like with us. Burgama is a studio in Austin, and our Social Media Management is $2500 a month. That covers Reels and posts every week across Instagram, Facebook and TikTok plus a LinkedIn post, at least one Story every day, and a community manager on your accounts every weekday, with every comment and message answered within 24 hours. You approve a monthly content calendar, and nothing goes live without your sign-off. Our social work for Hush Hush Tan and MatchDay is published as case studies on our site.',
+      'One part of that month is worth explaining, because it is a fair test of whether a manager knows the platform. Instagram has a feature called trial reels. By Instagram’s own description, a trial reel is shown to people who do not follow you first, and your followers will not see it in their feed or the Reels tab unless you later share it with everyone. For accounts that have the feature, we post 3 a week, re-testing content that has already done well so it can reach new people with no new filming. Ask any candidate how they would use it.',
+      'Whoever you choose, treat the first month as the trial, whatever the agreement says. We recommend a first term of three months on our own retainers, and the first month is still where you find out. Before it starts, write down what you will check: how many pieces went out against the calendar you approved, how long comments and messages waited for a reply, and whether the report told you something you could act on. Read the account the way a customer would. A month is too short to judge growth and long enough to judge habits.',
+      'If the habits are there at the end of the month, keep going. If you spent week three chasing drafts, you have your answer, and it is better to have it early. And if the month shows that you only needed one of the three jobs covered, hire for that one. Plenty of businesses need someone to reply and nothing else. Sometimes the right hire is smaller than the one you went looking for.',
+    ],
+    internalLink: {
+      href: '/services/social-media-management',
+      label: 'See how we manage social',
+    },
+    sources: [
+      {
+        label: 'Instagram for Creators: Trial reels',
+        href: 'https://creators.instagram.com/blog/instagram-trial-reels',
+      },
+    ],
+  },
+  {
+    slug: 'how-much-does-seo-cost',
+    issue: '12',
+    title: 'How much does SEO cost for a local business?',
+    metaTitle: 'How much does SEO cost for a local business?',
+    metaDescription:
+      'What local SEO costs as a one-time setup and as monthly work, what a quote should list line by line, and what you can do yourself this week for free.',
+    targetKeyword: 'how much does seo cost',
+    categories: ['SEO', 'Business Strategy'],
+    deck: 'What local SEO costs as a one-time setup and as monthly work, what a quote should list line by line, and what you can do yourself this week for free.',
+    theme: 'navy',
+    visual: 'sitemap',
+    artwork: {
+      code: 'ONCE / MONTHLY',
+      notation: 'QUOTE / WORK',
+    },
+    body: [
+      'The short answer, from our own price list: a one-time local setup costs hundreds of dollars and ongoing work costs four figures a month. At Burgama that is $750 once, or $1500 a month. We are a studio in Austin, and those are the prices we publish. But the price matters less than whether the quote names the work. Two quotes for the same amount can describe completely different months, and a cheaper quote that lists nothing is not the better deal.',
+      'Quotes vary so much because SEO is not one job. For one business it means fixing a Google Business Profile that nobody has touched in years. For another it means repairing a site that Google cannot read properly, or writing pages for services that have no page at all. A quote is only comparable to another quote when both say which of those jobs are included. One thing no quote can honestly include is a position. Google’s own guidance on hiring an SEO says it plainly: "No one can guarantee a #1 ranking on Google."',
+      'It helps to split the work into two kinds. One-time work is setup: completing the Google Business Profile, fixing what is broken on the site, getting your name, address and phone number to match across directory listings, and putting a system in place for asking customers for reviews. It has an end. Monthly work is what continues after that: research into what people search and what competitors are doing, new pages, cleaning up old listings, and reporting on what changed. If a monthly quote is mostly setup, it should stop being monthly once the setup is done.',
+      'So ask for the quote line by line. Which pages will be written or fixed, and how many? Which directories? Who owns the Google Business Profile afterward? What does the report contain, and how often does it arrive? Google suggests a few questions of its own for anyone hiring an SEO: ask for examples of previous work, ask what results they expect and in what timeframe, and ask how they measure success. A provider who does real work can answer those in a sentence each. Be careful with one who answers with a promise.',
+      'Some of this costs nothing, and you can do it this week. Google’s help page on local ranking says results are based mainly on relevance, distance and prominence, and that businesses with complete and accurate information are more likely to show up. So verify your profile, fill in every field, keep your hours current including holidays, add real photos, and reply to your reviews. The same page says there is no way to pay Google for a better local ranking. Anyone can do the basics, and the basics are where most of the early gain is.',
+      'Here is what our one-time price covers. The Local Search Starter is $750 and is delivered in 30 days. It includes your Google Business Profile completed, a review request system, three new pages for the searches that bring you customers, a sitemap, LocalBusiness schema and contact form tracking, listings on 10 relevant directories, and a before and after report at 30 days. It is built for a business whose foundations were never set up, and for many small businesses it is all the paid SEO they need for a while.',
+      'The monthly option is the Local SEO and AI Visibility Foundation at $1500 a month, with a three-month first term and then month to month. It covers the Google Business Profile buildout, technical SEO on the site you already have, keyword and competitor research, AI search work, citation cleanup, and weekly and monthly reporting. The first term is three months because SEO takes about 90 days to show real movement, and anyone who promises faster is overselling. Our search work for MatchDay is one of the case studies on our site.',
+      'AI answers are part of the same job now. When someone asks ChatGPT or reads a Google AI Overview instead of scrolling results, the answer is built from the same raw material: your site, your business details and what other sites say about you. The work that helps is structured FAQ content, schema and consistent details everywhere your business is listed. A quote written this year should say whether that is included. It should not appear as a separate, expensive mystery line.',
+      'Finally, when not to pay for monthly SEO yet. If your profile is unverified, your hours are wrong and you have a handful of reviews, do the free work first, or pay for a one-time setup and see what it changes. If most of your customers come by referral and do not search before they call, monthly SEO is a slow way to spend money. And if you cannot give it three months, wait until you can. Sometimes the right amount to spend on SEO this quarter is nothing.',
+    ],
+    internalLink: {
+      href: '/services/local-seo',
+      label: 'See what our Austin SEO includes',
+    },
+    sources: [
+      {
+        label: 'Google Business Profile Help: Tips to improve your local ranking on Google',
+        href: 'https://support.google.com/business/answer/7091',
+      },
+      {
+        label: 'Google Search Central: Do you need an SEO?',
+        href: 'https://developers.google.com/search/docs/fundamentals/do-i-need-seo',
+      },
+    ],
+  },
+  {
+    slug: 'how-much-does-a-logo-and-brand-identity-cost',
+    issue: '13',
+    title: 'How much does a logo and brand identity cost?',
+    metaTitle: 'How much does a logo and brand identity cost?',
+    metaDescription:
+      'A logo alone is the cheap part. What a brand identity includes, what ours costs, what our own rename taught us, and when you do not need a rebrand.',
+    targetKeyword: 'logo design cost',
+    categories: ['Business Strategy', 'Copywriting'],
+    deck: 'A logo alone is the cheap part. What a brand identity includes, what ours costs, what our own rename taught us, and when you do not need a rebrand.',
+    theme: 'cyan',
+    visual: 'reviews',
+    artwork: {
+      code: 'MARK / RULES',
+      notation: 'LOGO / SYSTEM',
+    },
+    body: [
+      'A logo alone is the cheap part. You can get one almost anywhere, at almost any price. What you are paying for in a brand identity is the thinking that makes the logo right and the rules that keep it consistent once other people start using it. At Burgama a brand identity is $3900. Whether you need to spend that, or anything close to it, depends on what you already have and on how many places your brand has to show up.',
+      'There are roughly three ways to get a logo. A template or logo maker gives you a file quickly, and that is all it gives you: a mark that other businesses may be using too, with no reasoning behind it. A freelance designer gives you an original mark and usually a few variations, and how much thinking comes with it depends on the person and the brief. A studio gives you the mark as one part of a system, with the positioning that led to it and the rules for using it. Each is a fair choice at a different stage.',
+      'So what is in a brand identity? It starts with positioning, which is not design at all. It is the written answer to what sets you apart and how to say it so the right people remember. Without it, a logo is a matter of taste, and every round of feedback becomes an argument about which version someone likes. With it, there is something to test the design against. Then comes the logo and wordmark, drawn to hold up at every size, from a favicon to a storefront sign.',
+      'Color and type come next: a palette and typefaces that hold together everywhere the brand appears, so your website, your invoice and your sign look related. Then the logo files themselves, in the formats a printer and a developer will each ask for, which is the part people miss most when they only have one small image saved from an old email. And last, brand guidelines: the usage rules your team and vendors can follow. Guidelines are what stop the brand drifting apart the first time someone outside the business makes something for you.',
+      'Our price for all of that is $3900 for the project: positioning, a logo and wordmark, color palette and type, logo files for web and print, and brand guidelines, with two rounds of revisions included. The people shaping the strategy are the ones making the work, so nothing is handed from a strategist to a designer you never meet. Every proposal is custom, so treat the number as a reference point. Sidecar Spirits, Harvest Dating and Wurqly are three identities we have published on our site.',
+      'We have also been our own client. We were founded as Cedar & Cactus in 2025 and renamed ourselves Burgama in September 2026, because the Austin-rooted name no longer fit work that reaches past Texas. The hard part was not the logo. It was moving everything that carried the old name. Old URLs had to be redirected, Google had to be told about the move, and every profile had to be made to say the same thing. That is the unglamorous part of a rebrand, and it is where a rename either keeps what the business has built or loses it.',
+      'Google’s documentation on moving a site reads like a checklist for that work: use permanent redirects from each old address to its new one, keep them in place for at least a year, and update as many links as you can, including social and profile links. If you are budgeting for a rebrand, budget for this as well as the design. A new name with the old one still scattered across directories and profiles confuses customers and search engines alike, and it is far easier to plan the move than to repair it afterward.',
+      'You may not need a rebrand at all. If people recognize you, your materials look consistent and the name still describes what you do, a new logo is a cost with no return. Often the real problem is smaller: nobody can find the original files, or there are no rules, so every flyer looks different. That calls for a cleanup and a set of guidelines. Rebrand when the name or the look is actively wrong for where the business is going. Being a little tired of it is not enough.',
+      'One last distinction: packaging is its own job. An identity tells you what the brand looks like. Packaging has to apply that across sizes, flavors and formats, to a printer’s specifications, and be readable at a glance on a shelf. We quote packaging design per project after a discovery call, because the price depends on how many products are in the line, and it has its own page on our site at burgama.com/services/packaging-design. If you sell a physical product, plan for both, in that order.',
+    ],
+    internalLink: {
+      href: '/services/brand-identity',
+      label: 'See brand identity and pricing',
+    },
+    sources: [
+      {
+        label: 'Google Search Central: Site moves with URL changes',
+        href: 'https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes',
       },
     ],
   },
