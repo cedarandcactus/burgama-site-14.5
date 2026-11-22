@@ -4,6 +4,14 @@ const nextConfig = {
     return [
       { source: '/contact', destination: '/#start-a-project', permanent: true },
       { source: '/ideas/:path*', destination: '/research/:path*', permanent: true },
+      // Old cedarandcactus.com pages (from the Wayback Machine, Jan to May 2026).
+      { source: '/about', destination: '/studio', permanent: true },
+      { source: '/book-online', destination: '/#start-a-project', permanent: true },
+      { source: '/form-finished', destination: '/', permanent: true },
+      { source: '/privacy-policy', destination: '/privacy', permanent: true },
+      { source: '/work/houston-dynamo', destination: '/work', permanent: true },
+      { source: '/work/livelihood', destination: '/work', permanent: true },
+      { source: '/work/meanwhile-brew', destination: '/work', permanent: true },
     ]
   },
   async rewrites() {
