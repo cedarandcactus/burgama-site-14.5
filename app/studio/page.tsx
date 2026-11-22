@@ -8,7 +8,7 @@ import { SectionRise } from '@/components/home/section-rise'
 import styles from './studio.module.css'
 
 export const metadata: Metadata = {
-  title: 'About Burgama — Independent Creative & Marketing Studio',
+  title: { absolute: 'About Burgama — Independent Creative & Marketing Studio' },
   description: 'Meet the Burgama team and how we bring strategy, design, digital, content, and growth together from the first conversation through launch.',
   alternates: { canonical: '/studio' },
   openGraph: { title: 'About Burgama — Independent Creative & Marketing Studio', description: 'Meet the Burgama team and how we bring strategy, design, digital, content, and growth together from the first conversation through launch.', url: '/studio', type: 'website' },
