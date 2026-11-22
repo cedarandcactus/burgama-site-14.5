@@ -453,3 +453,24 @@ export const services: Service[] = [
 export function getService(slug: string) {
   return services.find(service => service.slug === slug)
 }
+
+// Maps the free-text service labels on a case study to the service pages they belong to,
+// so each case study can link back to the pages it is proof for. Order matters: the first
+// rule that matches a label wins.
+const serviceLabelRules: [RegExp, string][] = [
+  [/seo|city-page|service page strategy/i, 'local-seo'],
+  [/email|klaviyo|deliverability/i, 'email-marketing'],
+  [/meta ads|paid social|ad creative|funnel planning/i, 'meta-ads'],
+  [/social|community management|content calendar/i, 'social-media-management'],
+  [/website|shopify|site structure|checkout|conversion design/i, 'website-design'],
+  [/brand|logo|identity|packaging|lettering|illustration|color and typography|product photography|sku|production artwork|3d mockups/i, 'branding-packaging'],
+]
+
+export function getServicesForLabels(labels: string[]) {
+  const slugs = new Set<string>()
+  for (const label of labels) {
+    const rule = serviceLabelRules.find(([pattern]) => pattern.test(label))
+    if (rule) slugs.add(rule[1])
+  }
+  return services.filter(service => slugs.has(service.slug))
+}

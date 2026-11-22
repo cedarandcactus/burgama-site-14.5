@@ -67,6 +67,8 @@ export const organizationJsonLd = {
     'https://www.instagram.com/byburgama/',
     'https://www.tiktok.com/@byburgama',
     'https://www.linkedin.com/company/burgama/',
+    'https://www.facebook.com/burgamacreativeandmarketing',
+    'https://www.google.com/maps?cid=7788675013204255024',
   ],
 }
 
