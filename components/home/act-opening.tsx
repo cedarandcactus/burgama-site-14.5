@@ -15,6 +15,8 @@ import {
 import { createScrollMomentum, gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
+const heroTitle = 'Creative and marketing studio in Austin, Texas'
+
 const headlines = [
   ['We turn what makes you', 'different into brands', 'the right people remember.'],
   ['We find what sets you apart', 'and build a brand', 'that makes it matter to the people who matter.'],
@@ -111,7 +113,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
         }, 0)
         .to(frost, { opacity: 0.55, ease: 'none', duration: 0.7 }, 0)
 
-      const headline = hero.querySelector<HTMLElement>('h1')
+      const headline = hero.querySelector<HTMLElement>('[data-hero-headline]')
       return createScrollMomentum(hero, [
         { element: film, distance: desktop ? 32 : 10 },
         ...(headline ? [{ element: headline, distance: desktop ? -16 : -5 }] : []),
@@ -136,13 +138,16 @@ export function ActOpening({ children }: { children: ReactNode }) {
       <div ref={frostRef} className={styles.heroFrost} aria-hidden="true" />
       <div className={styles.heroFrame}>
         <div ref={contentRef} className={styles.heroFrameContent}>
-          <h1 id="opening-title" className="font-serif" aria-label={headlines[headlineIndex ?? 0].join(' ')}>
+          {/* The h1 says what Burgama is and where. The rotating brand line below is the visual headline. */}
+          <div className={styles.heroHeading}>
+          <h1 id="opening-title" className={styles.heroTitle}>{heroTitle}</h1>
+          <p className={`font-serif ${styles.heroHeadline}`} data-hero-headline="">
             {headlines.map((lines, variantIndex) => (
               <span
                 key={variantIndex}
                 className={styles.heroHeadlineVariant}
                 data-headline-active={variantIndex === (headlineIndex ?? 0)}
-                aria-hidden="true"
+                aria-hidden={variantIndex !== (headlineIndex ?? 0)}
               >
                 {lines.map((line, index) => (
                   <span key={line} className={styles.heroHeadlineLine}>
@@ -158,7 +163,8 @@ export function ActOpening({ children }: { children: ReactNode }) {
                 ))}
               </span>
             ))}
-          </h1>
+          </p>
+          </div>
           <div className={styles.heroStatement}>
             <p>{statements[headlineIndex ?? 0]}</p>
             <ModularButton href="#studio-introduction">meet the studio</ModularButton>
