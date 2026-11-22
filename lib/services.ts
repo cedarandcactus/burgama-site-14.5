@@ -119,7 +119,7 @@ export const services: Service[] = [
         intro: 'Reference prices. Every proposal is custom.',
         items: [
           { name: 'Service businesses and nonprofits', price: '$1500', period: '/ project', body: 'A custom, mobile-friendly website of up to 5 pages with SEO basics, LocalBusiness and FAQ schema, a contact or booking form, analytics setup, two revision rounds and redirects from your old site. Extra pages are $100 an hour.' },
-          { name: 'Ecommerce websites', price: '$2450', period: '/ project', body: 'An online store built to sell: product pages written for search, a clear path to checkout, analytics setup and redirects from your old site. We scope products and integrations with you before we quote.' },
+          { name: 'Ecommerce websites', price: '$2450', period: '/ project', body: 'A custom Shopify store. Store structure planned for one-time and subscription purchases, a custom homepage, shop, product, about, contact and FAQ pages, copywriting for the main pages, three custom rendered images, checkout and payment testing, page speed work, redirects from your old site and 30 days of monitoring after launch. First draft in about 4 to 6 weeks.' },
         ],
       },
       {
@@ -157,7 +157,8 @@ export const services: Service[] = [
       ['How much does a small business website cost?', 'Websites for service-based businesses and nonprofits start at $1500 for up to 5 pages. Ecommerce websites start at $2450. Extra pages are $100 an hour. Every proposal is custom, so these are reference points.'],
       ['Will I lose my Google rankings in a redesign?', 'No. We keep or redirect every URL from your old site, so you keep the rankings you’ve earned.'],
       ['How many revisions are included?', 'Two rounds of revisions on every deliverable, unless the proposal says otherwise.'],
-      ['Do you build Shopify stores?', 'Yes. Recent Shopify work includes the AVRO and CellinKey stores.'],
+      ['What does an ecommerce website include?', 'The $2450 ecommerce website is a custom Shopify store: store structure for one-time and subscription purchases, a custom homepage, shop, product, about, contact and FAQ pages, copywriting, three custom rendered images, checkout and payment testing, page speed work, redirects and 30 days of monitoring after launch. Larger catalogs and extra integrations are scoped in the proposal.'],
+      ['Do you build Shopify stores?', 'Yes. Ecommerce websites are built on Shopify. Recent Shopify work includes the AVRO and CellinKey stores.'],
       ['How does billing work?', 'Projects are billed half at kickoff and half on delivery.'],
     ],
     closing: { title: 'Tell us about the site you need.', body: 'A discovery call, then a proposal built for your business.' },
@@ -247,11 +248,15 @@ export const services: Service[] = [
     name: 'Meta ads',
     serviceType: 'Facebook and Instagram ads management',
     title: 'Meta Ads Management in Austin, TX | Burgama',
-    description: 'Facebook and Instagram ads managed by the team that makes the creative. Ads run in your own account and you pay Meta directly.',
+    description: 'Facebook and Instagram ads managed by the team that makes the creative. Management from $750 a month. Ads run in your own account and you pay Meta directly.',
     h1: 'Facebook and Instagram ads, managed and measured',
-    intro: 'We plan, make and run your Meta ads, with the creative made by the same team. Ads run in an account you own, and you pay Meta directly for ad spend. Management is quoted per account.',
+    intro: 'We plan, make and run your Meta ads, with the creative made by the same team. Ads run in an account you own, and you pay Meta directly for ad spend. Management starts at $750 a month. A first batch of ad creative is $1500.',
     summary: 'Facebook and Instagram ads, with the creative made in-house.',
-    priceNote: 'Quoted per account',
+    priceNote: 'From $750 a month',
+    offers: [
+      { name: 'Meta ads management', price: '750' },
+      { name: 'Meta ad creative batch', price: '1500' },
+    ],
     sections: [
       {
         kind: 'rows',
@@ -263,6 +268,15 @@ export const services: Service[] = [
           ['Testing', 'New ads tested against what is already working, so spend moves to what performs.'],
           ['Conversion tracking', 'Tracking set up so results are measured, not guessed.'],
           ['Reporting', 'Weekly written updates and a monthly report.'],
+        ],
+      },
+      {
+        kind: 'packages',
+        title: 'What it costs',
+        intro: 'Reference prices. Every proposal is custom, and ad spend is paid to Meta.',
+        items: [
+          { name: 'Ads management', price: '$750', period: 'a month', body: 'Launching, measuring and adjusting your campaigns, with a monthly report. $750 a month covers up to $5000 in monthly ad spend. From $5000 to $10000 in ad spend, management is $1250 a month.' },
+          { name: 'Ad creative batch', price: '$1500', period: 'one time', body: '12 video ads and 6 static ads sized for Meta placements, with account and tracking setup, two revision rounds and the usage license for the creators in the videos. More creative is quoted per batch.' },
         ],
       },
       {
@@ -293,7 +307,7 @@ export const services: Service[] = [
     workTitle: 'Meta ads work',
     work: ['matchday-meta-ads', 'ollivate'],
     faq: [
-      ['How much does Meta ads management cost?', 'Management is quoted per account after a discovery call. Our standard rate is $100 an hour, and most work is quoted as a fixed project or a monthly retainer, so you know the price before we start.'],
+      ['How much does Meta ads management cost?', 'Meta ads management starts at $750 a month for up to $5000 in monthly ad spend, and is $1250 a month from $5000 to $10000 in ad spend. A first batch of ad creative, 12 videos and 6 static ads, is $1500 one time. Ad spend is paid directly to Meta. Every proposal is custom, so these are reference points.'],
       ['Who pays for ad spend?', 'You do, directly. Ads run in accounts you own and Meta charges your card.'],
       ['Who owns the ad account?', 'You do. We work inside your account, and it stays yours.'],
       ['Do you make the ad creative?', 'Yes. Video, UGC and static ads are made by our own team. Outside costs like talent or creator fees are billed at cost, and only with your approval.'],
@@ -366,11 +380,15 @@ export const services: Service[] = [
     name: 'Branding and packaging',
     serviceType: 'Brand identity, packaging design and product photography',
     title: 'Branding and Packaging Design in Austin, TX | Burgama',
-    description: 'Brand identity, packaging design and product photography for consumer brands, from strategy to print-ready files and shelf-ready photos.',
+    description: 'Brand identity, packaging design and product photography for consumer brands, from strategy to print-ready files. Brand identity $3900. Packaging photography $350 per product.',
     h1: 'Brand identity and packaging design',
-    intro: 'We build brand identities and packaging for new and growing brands, and photograph the result. Strategy and design stay with the same people from the first call to the final files. Projects are quoted individually.',
+    intro: 'We build brand identities and packaging for new and growing brands, and photograph the result. Strategy and design stay with the same people from the first call to the final files. A brand identity is $3900. Packaging photography is $350 per product. Packaging design is quoted per project.',
     summary: 'Identity, packaging and product photography.',
-    priceNote: 'Quoted per project',
+    priceNote: 'Brand identity $3900',
+    offers: [
+      { name: 'Brand identity', price: '3900' },
+      { name: 'Packaging photography, per product', price: '350' },
+    ],
     sections: [
       {
         kind: 'rows',
@@ -382,6 +400,15 @@ export const services: Service[] = [
           ['Packaging design', 'Packaging for new products, designed to be read at a glance.'],
           ['Packaging redesign', 'A system for a range that grew one product at a time, so it looks like one family.'],
           ['Product photography', 'Photos of the finished product for your website, ads and retail listings.'],
+        ],
+      },
+      {
+        kind: 'packages',
+        title: 'What it costs',
+        intro: 'Reference prices. Every proposal is custom.',
+        items: [
+          { name: 'Brand identity', price: '$3900', period: '/ project', body: 'Positioning, a logo and wordmark, color palette and type, logo files for web and print, and brand guidelines your team and vendors can follow. Two rounds of revisions are included.' },
+          { name: 'Packaging photography', price: '$350', period: 'per product', body: 'A set of 8 images for each product: 4 of the package for the main product gallery and 4 lifestyle shots with ingredients and props. Props and staging are included, and you get the edited and raw files. We also size, compress and name every image, write the alt text and upload the set to your product page. A full product line is priced as a bundle.' },
         ],
       },
       {
@@ -413,9 +440,9 @@ export const services: Service[] = [
     workTitle: 'Brand and packaging work',
     work: ['hiking-pony-packaging', 'go2bites-packaging', 'harvest-dating', 'cellinkey'],
     faq: [
-      ['How much does branding or packaging design cost?', 'Brand and packaging projects are quoted individually after a discovery call. Our standard rate is $100 an hour, and most work is quoted as a fixed project, so you know the price before we start.'],
+      ['How much does branding or packaging design cost?', 'A brand identity is $3900: positioning, a logo and wordmark, color palette and type, logo files and brand guidelines. Packaging photography is $350 per product for a set of 8 images, uploaded to your product page. Packaging design is quoted per project after a discovery call, as a fixed price, so you know the cost before we start.'],
       ['How many revisions are included?', 'Two rounds of revisions on every deliverable, unless the proposal says otherwise.'],
-      ['Do you shoot product photography?', 'Yes. Recent product photography includes Hiking Pony, Go2Bites and CellinKey.'],
+      ['Do you shoot product photography?', 'Yes. Packaging photography is $350 per product: 8 images, with props, staging, edited and raw files, and the upload to your product page included. Recent product photography includes Hiking Pony, Go2Bites and CellinKey.'],
       ['Do you work with brands outside Austin?', 'Yes. Burgama is based in Austin and works with clients across the US and internationally.'],
       ['How does billing work?', 'Projects are billed half at kickoff and half on delivery.'],
     ],
