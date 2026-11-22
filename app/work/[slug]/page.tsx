@@ -7,6 +7,8 @@ import { CaseStudyEnding } from '@/components/case-study-ending'
 import { SiteFooter } from '@/components/site-footer'
 import { getProject, getProjectNavigation, getPublishedProjects, getRelatedProjects } from '@/lib/projects'
 import { absoluteUrl, breadcrumbJsonLd, JsonLd, primaryImageUrl, siteUrl } from '@/lib/seo'
+import { getServicesForLabels } from '@/lib/services'
+import Link from '@/components/transition-link'
 import './case-study.css'
 
 export function generateStaticParams() {
@@ -35,6 +37,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
   const project = getProject(slug)
   if (!project) notFound()
   const { next, backHref } = getProjectNavigation(project)
+  const relatedServices = getServicesForLabels(project.services)
   const canonicalPath = `/work/${project.slug}`
   const canonicalUrl = absoluteUrl(canonicalPath)
   const projectJsonLd = {
@@ -53,7 +56,8 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
         <div className="cs-story" data-nav-surface="frost">
           {project.heroMedia.src && <div className="cs-hero-media"><MediaLayouts items={[project.heroMedia]} priority /></div>}
           <div className="cs-sections"><ProjectModules modules={project.contentModules} slug={project.slug} /></div>
-          {(project.note || project.credits.length > 0) && <aside className="cs-notes" aria-label="Project notes and credits">
+          {(project.note || project.credits.length > 0 || relatedServices.length > 0) && <aside className="cs-notes" aria-label="Project notes and credits">
+            {relatedServices.length > 0 && <p>Related services: {relatedServices.map((service, index) => <span key={service.slug}>{index > 0 && ', '}<Link href={`/services/${service.slug}`}>{service.name}</Link></span>)}</p>}
             {project.note && <p>{project.note}</p>}
             {project.credits.map(credit => <p key={`${credit.role}-${credit.name}`}>{credit.role}: {credit.name}</p>)}
           </aside>}
