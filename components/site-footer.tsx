@@ -49,6 +49,7 @@ const navigationGroups = [
     links: [
       { label: 'How we work', href: '/#capabilities' },
       { label: 'Work', href: '/work' },
+      { label: 'Services', href: '/services' },
       { label: 'About', href: '/studio' },
       { label: 'Free AI visibility check', href: '/ai-visibility-check' },
     ],
