@@ -5,7 +5,7 @@ import { services } from '@/lib/services'
 import { absoluteUrl } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages = ['/', '/work', '/services', '/studio', '/research', '/faq', '/ai-visibility-check', '/tiktok-shop'].map((path) => ({
+  const staticPages = ['/', '/work', '/services', '/studio', '/research', '/faq', '/ai-visibility-check', '/tiktok-shop', '/roas-calculator'].map((path) => ({
     url: absoluteUrl(path),
     changeFrequency: 'monthly' as const,
     priority: path === '/' ? 1 : 0.8,
