@@ -313,7 +313,7 @@ export const services: Service[] = [
       ['Do you make the ad creative?', 'Yes. Video, UGC and static ads are made by our own team. Outside costs like talent or creator fees are billed at cost, and only with your approval.'],
       ['Do you run ads on other platforms?', 'Yes. Burgama also runs Google, LinkedIn and Reddit ads.'],
     ],
-    closing: { title: 'Bring the offer. We’ll bring the ads.', body: 'Tell us what you sell and who buys it.' },
+    closing: { title: 'Bring the offer. We’ll bring the ads.', body: 'Tell us what you sell and who buys it.', link: { label: 'ROAS calculator', href: '/roas-calculator' } },
   },
   {
     slug: 'email-marketing',
