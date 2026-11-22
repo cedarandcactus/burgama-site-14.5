@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turkish Society of Texas | Turkish Culture, Cooking and Charity in North Texas</title>
+<meta name="description" content="The Turkish Society of Texas (TURKSOTX) is a 501(c)(3) nonprofit sharing Turkish culture and cuisine and raising money for Turkish and American charities. Become a member.">
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:Schibsted;src:url(/demo/_fonts/schibsted-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:400 900;font-display:swap}
+:root{--saffron:#f4b41a;--ink:#16130c;--red:#c4271f;--paper:#fff;--soft:#fbf3dc;--mute:#5d574a;--rule:#d9d2bf}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 Schibsted,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-weight:800;margin:0;line-height:1;letter-spacing:-.035em}
+p{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.w{width:min(1180px,100% - 56px);margin-inline:auto}
+.note{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 20px}
+.top{position:sticky;top:0;z-index:10;background:var(--saffron);border-bottom:2px solid var(--ink)}
+.top .w{display:flex;align-items:center;justify-content:space-between;gap:20px;height:78px}
+.mark{display:flex;align-items:center;gap:13px;text-decoration:none;font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1.05}
+.mark img{width:56px;height:56px;border-radius:50%}
+.top nav{display:flex;align-items:center;gap:28px;font-size:16.5px;font-weight:600}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;background:var(--ink);color:#fff;font:700 17px/1 Schibsted,sans-serif;padding:17px 24px;text-decoration:none}
+.btn:hover{background:var(--red)}
+.top nav .btn{padding:13px 18px}
+.top nav .btn:hover{text-decoration:none}
+.open{background:var(--saffron);padding:64px 0 72px}
+.open h1{font-size:clamp(44px,8.6vw,124px);max-width:9.5em}
+.open .row{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:end;margin-top:40px}
+.open .row p{grid-column:1/8;font-size:21px;line-height:1.5}
+.open .row div{grid-column:9/13;display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:flex-end}
+.open .row div a:not(.btn){font-weight:700}
+.does{padding:84px 0 88px}
+.does .w{display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px}
+.does section{border-top:6px solid var(--ink);padding-top:20px}
+.does h2{font-size:clamp(28px,3vw,40px);line-height:1.05}
+.does p{margin-top:14px;color:#3a362c}
+.ball{background:var(--ink);color:#fff;padding:80px 0}
+.ball .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:end}
+.ball h2{grid-column:1/9;font-size:clamp(38px,6vw,84px)}
+.ball .b{grid-column:9/13;color:#ddd6c4}
+.ball .b b{display:block;color:#fff;font-size:21px;margin-bottom:6px}
+.join{padding:88px 0}
+.join .w{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;align-items:start}
+.join .a{grid-column:1/6}
+.join h2{font-size:clamp(34px,4.4vw,58px)}
+.join .a p{margin-top:20px;color:var(--mute)}
+.join .a .btn{margin-top:26px}
+.join table{grid-column:7/13;width:100%;border-collapse:collapse;border-top:2px solid var(--ink)}
+.join th,.join td{padding:17px 0;border-bottom:1px solid var(--rule);text-align:left;font-weight:600;font-size:20px}
+.join th small{display:block;font-weight:400;font-size:15.5px;color:var(--mute)}
+.join td{text-align:right;font-weight:800;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.join td small{font-weight:400;font-size:15.5px;color:var(--mute);letter-spacing:0}
+.end{background:var(--soft);padding:76px 0 34px}
+.end h2{font-size:clamp(34px,5vw,68px);max-width:12em}
+.end .ways{display:flex;flex-wrap:wrap;gap:12px 40px;margin-top:28px;font-size:21px;font-weight:700}
+.end .fine{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 30px;margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);font-size:14px;color:var(--mute)}
+@media (max-width:940px){
+  .top nav a:not(.btn){display:none}
+  .mark{font-size:18px}.mark img{width:46px;height:46px}
+  .open{padding:40px 0 52px}
+  .open .row,.does .w,.ball .w,.join .w{display:block}
+  .open .row div{justify-content:flex-start;margin-top:26px}
+  .does,.ball,.join{padding:56px 0}
+  .does section{margin-bottom:34px}
+  .ball .b{margin-top:22px}
+  .join table{margin-top:34px}
+  .end{padding-top:56px}
+}
+@media (max-width:540px){
+  .w{width:calc(100% - 40px)}
+  .mark span{display:none}
+  .top nav .btn{padding:12px 13px;font-size:15.5px}
+  .open .row p{font-size:18.5px}
+  .join th,.join td{font-size:18px}.join td{font-size:25px}
+  .end .ways{flex-direction:column;font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<p class="note">Preview homepage for the Turkish Society of Texas, built by Burgama. Not live.</p>
+<header class="top"><div class="w">
+  <a class="mark" href="#top"><img src="/demo/turksotx/logo.png" alt="TURKSOTX seal"><span>Turkish Society<br>of Texas</span></a>
+  <nav aria-label="Main"><a href="#does">What we do</a><a href="#ball">Republic Ball</a><a href="#join">Membership</a><a href="#contact">Contact</a><a class="btn" href="#join">Become a member</a></nav>
+</div></header>
+<main id="top">
+  <section class="open"><div class="w">
+    <h1>We cook Turkish food and give to charity.</h1>
+    <div class="row">
+      <p>The Turkish Society of Texas shares Turkish culture and cuisine through our cooking classes and cookbook, and raises money for charities in the US and Türkiye. We are a 501(c)(3) nonprofit public charity.</p>
+      <div><a class="btn" href="#join">Become a member</a><a href="#does">What we do</a></div>
+    </div>
+  </div></section>
+
+  <section class="does" id="does"><div class="w">
+    <section><h2>Cooking classes and a cookbook</h2><p>Our Turkish cooking classes and our cookbook are how it all started. They share our cuisine and have helped charities in both the USA and Türkiye.</p></section>
+    <section><h2>Culture and education</h2><p>We promote Turkish culture, history and traditions through educational programs.</p></section>
+    <section><h2>The next generation</h2><p>We pass Turkish traditions on to new generations of Turkish Americans.</p></section>
+  </div></section>
+
+  <section class="ball" id="ball"><div class="w">
+    <h2>The Turkish Republic Ball</h2>
+    <div class="b"><b>2026: the 103rd anniversary</b>Held on Friday, October 23 at The Westin Southlake, with dinner and an evening of entertainment. Black tie or business attire.</div>
+  </div></section>
+
+  <section class="join" id="join"><div class="w">
+    <div class="a">
+      <h2>Become a member</h2>
+      <p>Members receive discounts on some TURKSOTX activities and special offers from our Community Partners. Family membership covers two adults and all dependent children aged 21 or younger.</p>
+      <a class="btn" href="https://turksotx.org/membership/">Join online</a>
+    </div>
+    <table>
+      <tr><th scope="row">Family<small>Two adults and dependent children</small></th><td>$50 <small>a year</small></td></tr>
+      <tr><th scope="row">Student</th><td>$20 <small>a year</small></td></tr>
+      <tr><th scope="row">VIP</th><td>$100 <small>a year</small></td></tr>
+      <tr><th scope="row">VIP Corporate</th><td>$500 <small>a year</small></td></tr>
+    </table>
+  </div></section>
+</main>
+<footer class="end" id="contact"><div class="w">
+  <h2>Own a business? Offer our members a benefit.</h2>
+  <p class="ways"><a href="https://turksotx.org/community-partners/">Become a Community Partner</a><a href="https://turksotx.org/turksotx-sponsorship/">Sponsor the gala</a><a href="mailto:president@turksotx.org">president@turksotx.org</a></p>
+  <p class="fine"><span>Turkish Society of Texas (TURKSOTX), a 501(c)(3) nonprofit public charity</span><span>Preview built by Burgama with TURKSOTX's own wording. burgama.com</span></p>
+</div></footer>
+</body>
+</html>
