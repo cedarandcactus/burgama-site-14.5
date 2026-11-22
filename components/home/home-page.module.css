@@ -113,6 +113,8 @@
 }
 
 .heroHeadline {
+  /* A paragraph now, so opt out of the global muted paragraph color. */
+  color: inherit;
   display: grid;
   width: 100%;
   max-width: 26ch;
