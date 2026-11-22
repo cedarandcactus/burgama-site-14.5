@@ -5,8 +5,9 @@
     "name": "Burgama",
     "legalName": "Cedar and Cactus LLC",
     "alternateName": "Cedar & Cactus",
+    "foundingDate": "2025",
     "url": "https://www.burgama.com",
-    "description": "Burgama is a marketing and creative agency in Austin, Texas. We help small and growing businesses get found on Google, in AI answers and on social media.",
+    "description": "Burgama is a creative and marketing studio in Austin, Texas. We help small and growing businesses get found on Google, in AI answers and on social media.",
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
@@ -174,13 +175,13 @@
       "id": "what-is-burgama",
       "section": "about-burgama",
       "question": "What is Burgama?",
-      "answer": "Burgama is a marketing and creative agency in Austin, Texas. We help small and growing businesses get found on Google, in AI answers and on social media. One team does the strategy, SEO, social, video, email, websites and paid ads."
+      "answer": "Burgama is a creative and marketing studio in Austin, Texas. We help small and growing businesses get found on Google, in AI answers and on social media. One team does the strategy, SEO, social, video, email, websites and paid ads."
     },
     {
       "id": "is-burgama-the-same-company-as-cedar-cactus",
       "section": "about-burgama",
       "question": "Is Burgama the same company as Cedar & Cactus?",
-      "answer": "Yes, Burgama is the same company as Cedar & Cactus. Cedar & Cactus became Burgama in September 2026. The founder, team and clients did not change. Our legal name is Cedar and Cactus LLC, doing business as Burgama."
+      "answer": "Yes, Burgama is the same company as Cedar & Cactus. Cedar & Cactus was founded in 2025 and became Burgama in September 2026. The founder, team and clients did not change. Our legal name is Cedar and Cactus LLC, doing business as Burgama."
     },
     {
       "id": "where-is-burgama-based",

@@ -28,6 +28,9 @@ export const organizationJsonLd = {
   '@type': ['Organization', 'ProfessionalService'],
   '@id': `${siteUrl}/#organization`,
   name: siteName,
+  legalName: 'Cedar and Cactus LLC',
+  alternateName: 'Cedar & Cactus',
+  foundingDate: '2025',
   url: `${siteUrl}/`,
   description:
     'Independent creative and marketing studio in Austin, TX, working across brand identity, websites, packaging, content, campaigns, and search.',
