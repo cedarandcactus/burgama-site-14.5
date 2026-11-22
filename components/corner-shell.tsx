@@ -8,6 +8,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 
 const destinations = [
   { label: 'work', href: '/work' },
+  { label: 'services', href: '/services' },
   { label: 'about', href: '/studio' },
   { label: 'research', href: '/research' },
 ]
