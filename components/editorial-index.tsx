@@ -3,6 +3,7 @@ import { PageHero } from '@/components/page-hero'
 import { EditorialArtwork } from '@/components/editorial-artwork'
 import { SectionRise } from '@/components/home/section-rise'
 import { SiteFooter } from '@/components/site-footer'
+import { calculatorPath, calculators } from '@/lib/calculators'
 import { getIdeaReadingTime, ideas } from '@/lib/editorial'
 import styles from './research-index.module.css'
 
@@ -17,7 +18,22 @@ export function EditorialIndex() {
         nextSurface="powder"
         intro={['Practical observations and analysis from our work on websites, ecommerce, and search. What we test, what we question, and how it informs the next decision.']}
       />
-      <section className="studio-band" data-surface="powder" aria-label="All research articles">
+      <section className="studio-band" data-surface="powder" aria-label="Research">
+        <div className={`studio-width ${styles.tools}`}>
+          <h2 className="font-serif">Free calculators</h2>
+          <ul className={styles.toolList}>
+            {calculators.map(calculator => (
+              <li key={calculator.slug}>
+                <Link href={calculatorPath(calculator.slug)} className={styles.toolLink}>
+                  <h3 className="font-serif">{calculator.name}</h3>
+                  <p>{calculator.deck}</p>
+                  <span className={styles.toolAction}>open the calculator</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <h2 className={`font-serif ${styles.articlesHeading}`}>Articles</h2>
         <ul className={`studio-width ${styles.ideaList}`}>
           {ideas.map(idea => (
             <li key={idea.slug}>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
-import styles from '@/app/roas-calculator/roas-calculator.module.css'
+import styles from './calculator.module.css'
 
 // Formulas from the budget calculator we use with clients. Meta's "about 50 results in a
 // week" guideline is from its learning phase help page, linked on the page itself.
