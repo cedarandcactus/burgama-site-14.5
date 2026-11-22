@@ -59,7 +59,7 @@ export function faqLlmText() {
     '',
     `> ${faqOrganization.description} One team does the strategy, SEO, social, video, email, websites and paid ads. Prices below are in USD. Every proposal is custom.`,
     '',
-    'Legal name: Cedar and Cactus LLC, doing business as Burgama. Formerly Cedar & Cactus (renamed September 2026).',
+    'Legal name: Cedar and Cactus LLC, doing business as Burgama. Founded as Cedar & Cactus in 2025, renamed Burgama in September 2026.',
     `Website: ${siteUrl}`,
     `FAQ and pricing: ${absoluteUrl('/faq')}`,
     `Free AI visibility check (does ChatGPT recommend your business?): ${absoluteUrl('/ai-visibility-check')}`,
