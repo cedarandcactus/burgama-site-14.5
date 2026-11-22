@@ -56,7 +56,7 @@ const faqJsonLd = {
 
 export default function RoasCalculatorPage() {
   return (
-    <div className="studio-page">
+    <div className={`studio-page ${styles.page}`}>
       <JsonLd data={appJsonLd} />
       <JsonLd data={faqJsonLd} />
       <JsonLd data={breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'ROAS calculator', path }])} />
@@ -65,17 +65,12 @@ export default function RoasCalculatorPage() {
         variant="centered"
         wordmark="ROAS calculator"
         titleId="calculator-title"
-        intro={['See what a 4x return on ad spend takes. Enter your order value and margin, and get the most you can pay for a purchase, what a month of spend returns, and what you keep.']}
-        actions={<ModularButton href="#calculator">open the calculator</ModularButton>}
+        intro={['See what a 4x return on ad spend takes. The numbers below are examples. Replace them with yours.']}
         nextSurface="powder"
       />
 
-      <section className={`studio-band ${services.band}`} data-surface="powder" id="calculator" aria-labelledby="calculator-heading">
+      <section className={`studio-band ${services.band} ${styles.calculatorBand}`} data-surface="powder" id="calculator" aria-label="ROAS calculator">
         <div className="studio-width">
-          <Reveal variant="section" className={services.heading}>
-            <h2 id="calculator-heading" className="font-serif">Start with 4x. Change anything.</h2>
-            <p>The numbers below are examples. Replace them with yours.</p>
-          </Reveal>
           <RoasCalculator />
         </div>
         <SectionRise surface="white" />
