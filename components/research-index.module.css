@@ -42,3 +42,14 @@
 @media (max-width: 699px) { .artwork[data-variant="hero"] { aspect-ratio: 4 / 3; } .artwork[data-variant="background"] { aspect-ratio: auto; } }
 @media (prefers-reduced-motion: reduce) { .artwork .artworkLayer { animation: none; } }
 @media (hover: hover) and (pointer: fine) { .ideaLink:hover h2 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; } }
+.tools { display: flex; flex-direction: column; align-items: center; gap: clamp(28px, 4vw, 44px); padding-bottom: clamp(72px, 9vw, 128px); }
+.tools h2, .articlesHeading { margin: 0; font-size: var(--type-section-compact-size); font-weight: var(--type-heading-weight); line-height: var(--type-section-leading); text-align: center; }
+.articlesHeading { padding-bottom: clamp(40px, 5vw, 64px); }
+.toolList { display: grid; width: 100%; max-width: 1180px; margin: 0; padding: 0; grid-template-columns: minmax(0, 1fr); gap: 16px; list-style: none; }
+.toolLink { display: flex; height: 100%; padding: clamp(24px, 3vw, 36px); flex-direction: column; gap: 14px; border-radius: 24px; background: var(--palette-navy); color: var(--palette-powder); text-decoration: none; }
+.toolLink:focus-visible { outline: 2px solid var(--palette-navy); outline-offset: 4px; }
+.toolLink h3 { margin: 0; font-size: var(--type-card-size); font-weight: var(--type-heading-weight); line-height: var(--type-card-leading); text-wrap: balance; }
+.toolLink p { margin: 0; font-size: var(--type-body-size); line-height: var(--type-body-leading); color: inherit; }
+.toolAction { margin-top: auto; padding-top: 8px; color: var(--palette-butter); font-size: 15px; font-weight: 600; }
+@media (min-width: 900px) { .toolList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
+@media (hover: hover) and (pointer: fine) { .toolLink:hover .toolAction { text-decoration: underline; text-underline-offset: .2em; } }

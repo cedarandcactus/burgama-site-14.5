@@ -67,7 +67,7 @@ export default function ServicesPage() {
             <nav className="studio-actions" aria-label="More services">
               <ModularButton href="/ai-visibility-check">free AI visibility check</ModularButton>
               <ModularButton href="/tiktok-shop">TikTok Shop</ModularButton>
-              <ModularButton href="/roas-calculator">ROAS calculator</ModularButton>
+              <ModularButton href="/research/roas-calculator">ROAS calculator</ModularButton>
               <ModularButton href="/faq">FAQ and pricing</ModularButton>
             </nav>
           </div>
