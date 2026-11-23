@@ -1,6 +1,8 @@
 /* The calculator sits right under the title, so the hero gives up its usual bottom space. */
 .page :global(.studio-hero) { padding-bottom: clamp(28px, 3.5vw, 48px); }
 .page .calculatorBand { padding-top: 0; }
+/* With the tighter hero, the hero's bottom curve (z-index 2, same color as the hero) overlaps the intro. Keep the text above it. */
+.page :global(.studio-hero-inner) { z-index: 3; }
 
 .calculator { display: grid; max-width: 1180px; margin-inline: auto; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 16px; }
 
