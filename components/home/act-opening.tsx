@@ -15,8 +15,6 @@ import {
 import { createScrollMomentum, gsap, ScrollTrigger } from '@/lib/motion'
 import styles from './home-page.module.css'
 
-const heroTitle = 'Creative and marketing studio in Austin, Texas'
-
 const headlines = [
   ['We turn what makes you', 'different into brands', 'the right people remember.'],
   ['We find what sets you apart', 'and build a brand', 'that makes it matter to the people who matter.'],
@@ -138,16 +136,14 @@ export function ActOpening({ children }: { children: ReactNode }) {
       <div ref={frostRef} className={styles.heroFrost} aria-hidden="true" />
       <div className={styles.heroFrame}>
         <div ref={contentRef} className={styles.heroFrameContent}>
-          {/* The h1 says what Burgama is and where. The rotating brand line below is the visual headline. */}
-          <div className={styles.heroHeading}>
-          <h1 id="opening-title" className={styles.heroTitle}>{heroTitle}</h1>
-          <p className={`font-serif ${styles.heroHeadline}`} data-hero-headline="">
-            {headlines.map((lines, variantIndex) => (
+          {/* The visible headline is the h1. One headline is picked per visit, and only that one is
+              rendered, so the h1 is always a single sentence (the first one in the page source). */}
+          <h1 id="opening-title" className={`font-serif ${styles.heroHeadline}`} data-hero-headline="">
+            {headlines.map((lines, variantIndex) => variantIndex !== (headlineIndex ?? 0) ? null : (
               <span
                 key={variantIndex}
                 className={styles.heroHeadlineVariant}
-                data-headline-active={variantIndex === (headlineIndex ?? 0)}
-                aria-hidden={variantIndex !== (headlineIndex ?? 0)}
+                data-headline-active="true"
               >
                 {lines.map((line, index) => (
                   <span key={line} className={styles.heroHeadlineLine}>
@@ -163,8 +159,7 @@ export function ActOpening({ children }: { children: ReactNode }) {
                 ))}
               </span>
             ))}
-          </p>
-          </div>
+          </h1>
           <div className={styles.heroStatement}>
             <p>{statements[headlineIndex ?? 0]}</p>
             <ModularButton href="#studio-introduction">meet the studio</ModularButton>
