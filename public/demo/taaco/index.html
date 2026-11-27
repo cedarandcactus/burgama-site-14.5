@@ -89,7 +89,40 @@ a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
 .give .thanks{margin-top:44px;font-size:15.5px;color:#b9c2dc}
 .give .fine{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 30px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.2);font-size:14px;color:#b9c2dc}
 
+figure{margin:0}
+figure img{display:block;width:100%;height:100%;object-fit:cover}
+figcaption{font-size:15px;color:var(--mute);margin-top:10px}
+.ph{display:flex;align-items:flex-end;padding:22px;background:#e6e8ee;color:#4a4e58;font-size:15.5px;line-height:1.45}
+.ph b{display:block;font-weight:650;color:var(--ink);font-size:17px}
+.hero-img{margin-top:52px;aspect-ratio:16/7;overflow:hidden}
+.hero-img img{object-position:50% 62%}
+
+.ball{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;margin-top:48px}
+.ball figure:first-child{grid-column:1/9;aspect-ratio:16/9}
+.ball figure:first-child figcaption{color:#ffe3e4}
+.ball .ph{grid-column:9/13;background:rgba(255,255,255,.14);color:#ffe3e4}
+.ball .ph b{color:#fff}
+
+.pics{padding:0 0 88px}
+.pics .w{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto auto;column-gap:28px;row-gap:28px}
+.pics .big{grid-column:1/8;grid-row:1/3;aspect-ratio:16/10}
+.pics .s1{grid-column:8/13;aspect-ratio:16/10}
+.pics .s2{grid-column:8/13;aspect-ratio:16/10}
+.pics .more{grid-column:1/13;display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-top:1px solid var(--rule);padding-top:16px;color:var(--mute);font-size:16px}
+.pics .more a{font-weight:650;color:var(--ink)}
+
+.story .ph{grid-column:1/6;margin-top:34px;aspect-ratio:4/3;background:#e2e5ec}
+.story h2{align-self:start}
+.story .l{grid-column:1/6}
+
 @media (max-width:940px){
+  .hero-img{margin-top:36px;aspect-ratio:4/3}
+  .ball,.pics .w{display:block}
+  .ball .ph{margin-top:16px;min-height:150px}
+  .pics{padding-bottom:56px}
+  .pics .big,.pics .s1,.pics .s2{margin-bottom:16px}
+  .pics .more{display:block}
+  .story .ph{margin:24px 0 0}
   .top .w{height:70px}
   .mark img{width:48px;height:48px}
   .mark span{display:none}
@@ -150,6 +183,9 @@ a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
         <a class="btn line" href="#year">See the year's events</a>
       </div>
     </div>
+    <div class="w">
+      <figure class="hero-img"><img src="https://www.taaco-columbus.org/wp-content/uploads/2022/02/b.146452419155-1.jpg" alt="TAACO members and families gathered on the grass at a summer picnic"></figure>
+    </div>
   </section>
 
   <section class="year" id="year">
@@ -165,6 +201,10 @@ a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
         <li><time datetime="10-29">October 29</time><b>Republic Day Ball</b><span>The highlight of our year.</span></li>
       </ol>
       <p class="also">Through the year we also hold holiday dinners, picnics, the Turkish School for our children and cultural heritage events for the wider Columbus community.</p>
+      <div class="ball">
+        <figure><img src="https://www.taaco-columbus.org/wp-content/uploads/2022/02/b.147812326842-1.jpg" alt="TAACO members in formal dress at the Republic Day Ball" loading="lazy"><figcaption>Members and families at the Republic Day Ball.</figcaption></figure>
+        <div class="ph"><p><b>Placeholder photo</b>A recent Republic Day Ball, such as the dance floor or the head table.</p></div>
+      </div>
     </div>
   </section>
 
@@ -186,9 +226,21 @@ a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
     </div>
   </section>
 
+  <section class="pics" aria-label="Photos from TAACO gatherings">
+    <div class="w">
+      <figure class="big"><img src="https://www.taaco-columbus.org/wp-content/uploads/2022/02/b.146185631696-1.jpg" alt="Members seated around red-covered tables at a TAACO dinner" loading="lazy"></figure>
+      <figure class="s1"><img src="https://www.taaco-columbus.org/wp-content/uploads/2022/02/b.146185683442-1.jpg" alt="Three young girls holding balloons" loading="lazy"></figure>
+      <figure class="s2"><img src="https://www.taaco-columbus.org/wp-content/uploads/2022/02/b.147425804423-1.jpg" alt="Kids smiling together at a TAACO picnic" loading="lazy"></figure>
+      <p class="more"><span>Dinners, picnics and holidays from past years.</span><a href="https://www.taaco-columbus.org/photo-gallery/">See the photo gallery</a></p>
+    </div>
+  </section>
+
   <section class="story" id="story">
     <div class="w">
-      <h2>Two doctors traveled to Chicago in 1968.</h2>
+      <div class="l">
+        <h2>Two doctors traveled to Chicago in 1968.</h2>
+        <div class="ph"><p><b>Placeholder photo</b>An archive photo of TAACO's founders or the first October 29 ball in 1969.</p></div>
+      </div>
       <div class="b">
         <p>The first Turkish professionals came to Columbus in the mid 1950s for specialized training, expecting to stay a couple of years. By the late 1960s it was clear they had a new home.</p>
         <p>In April 1968 two Turkish doctors traveled to Chicago to ask the Consulate General of Turkey whether they could become American citizens without severing ties to their motherland. The Consulate encouraged them to form an association. TAACO was founded in January 1969, and the first October 29 ball welcomed 129 guests.</p>
