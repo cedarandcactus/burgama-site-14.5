@@ -94,7 +94,7 @@ figure img{display:block;width:100%;height:100%;object-fit:cover}
 figcaption{font-size:15px;color:var(--mute);margin-top:10px}
 .ph{display:flex;align-items:flex-end;padding:22px;background:#e6e8ee;color:#4a4e58;font-size:15.5px;line-height:1.45}
 .ph b{display:block;font-weight:650;color:var(--ink);font-size:17px}
-.hero-img{margin-top:52px;aspect-ratio:16/7;overflow:hidden}
+.hero-img{grid-column:1/13;margin-top:52px;aspect-ratio:16/7;overflow:hidden}
 .hero-img img{object-position:50% 62%}
 
 .ball{display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;margin-top:48px}
@@ -105,7 +105,7 @@ figcaption{font-size:15px;color:var(--mute);margin-top:10px}
 
 .pics{padding:0 0 88px}
 .pics .w{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto auto;column-gap:28px;row-gap:28px}
-.pics .big{grid-column:1/8;grid-row:1/3;aspect-ratio:16/10}
+.pics .big{grid-column:1/8;grid-row:1/3}
 .pics .s1{grid-column:8/13;aspect-ratio:16/10}
 .pics .s2{grid-column:8/13;aspect-ratio:16/10}
 .pics .more{grid-column:1/13;display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-top:1px solid var(--rule);padding-top:16px;color:var(--mute);font-size:16px}
@@ -121,6 +121,7 @@ figcaption{font-size:15px;color:var(--mute);margin-top:10px}
   .ball .ph{margin-top:16px;min-height:150px}
   .pics{padding-bottom:56px}
   .pics .big,.pics .s1,.pics .s2{margin-bottom:16px}
+  .pics .big{aspect-ratio:16/10}
   .pics .more{display:block}
   .story .ph{margin:24px 0 0}
   .top .w{height:70px}
